@@ -34,8 +34,6 @@ export const example = v.object({
 	explanation: v.string(),
 });
 
-export const a = 12;
-
 export const testcase = v.object({
 	input: v.string(),
 	output: v.string(),
