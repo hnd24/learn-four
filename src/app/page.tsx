@@ -6,7 +6,7 @@ export default function Home() {
 		<div className="h-screen w-screen flex justify-center items-center">
 			<SignedOut>
 				<SignInButton mode="modal">
-					<Button>Sign in</Button>
+					<Button>Hello</Button>
 				</SignInButton>
 				<SignUpButton />
 			</SignedOut>
