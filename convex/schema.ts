@@ -28,6 +28,7 @@ export const problemInfo = v.object({
 	difficultyLevel: v.number(),
 });
 
+const c = 24;
 export const example = v.object({
 	input: v.string(),
 	output: v.string(),
