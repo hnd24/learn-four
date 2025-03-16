@@ -29,9 +29,12 @@ export const problemInfo = v.object({
 });
 
 export const example = v.object({
+	input: v.string(),
 	output: v.string(),
 	explanation: v.string(),
 });
+
+export const a = 12;
 
 export const testcase = v.object({
 	input: v.string(),
