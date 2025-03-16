@@ -2,6 +2,7 @@ import {defineSchema, defineTable} from "convex/server";
 import {v} from "convex/values";
 
 export const processingNotify = v.union(v.literal("processing"), v.literal("pending"));
+export const role = v.union(v.literal("admin"), v.literal("user"));
 
 export const link = v.object({
 	facebook: v.optional(v.string()),
@@ -21,7 +22,7 @@ export const joinedCourse = v.object({
 	lessonCompleted: v.optional(v.id("lessons")),
 });
 
-export const solvedProblem = v.object({
+export const problemInfo = v.object({
 	problemId: v.id("problems"),
 	problemName: v.string(),
 	difficultyLevel: v.number(),
@@ -56,12 +57,12 @@ export default defineSchema({
 		.index("by_userId", ["userId"])
 		.index("by_email", ["email"]),
 
-	admin: defineTable({
+	role: defineTable({
 		userId: v.string(),
-		email: v.string(),
+		role: role,
 	}).index("by_userId", ["userId"]),
 
-	userActivities: defineTable({
+	activities: defineTable({
 		userId: v.string(),
 		activity: v.optional(v.array(activity)),
 	}),
@@ -72,14 +73,16 @@ export default defineSchema({
 		completedCourses: v.optional(v.array(v.id("courses"))),
 	}),
 
-	userSolvedProblems: defineTable({
-		userId: v.string(),
-		problems: v.optional(v.array(solvedProblem)),
-	}),
-
-	userCreatedProblems: defineTable({
+	authorProblem: defineTable({
 		userId: v.string(),
 		problems: v.optional(v.array(v.id("problems"))),
+	}),
+
+	solution: defineTable({
+		userId: v.string(),
+		problemId: v.id("problems"),
+		code: v.string(),
+		isSolved: v.boolean(),
 	}),
 	/************************************************** */
 
@@ -88,7 +91,7 @@ export default defineSchema({
 		problemName: v.string(),
 		userId: v.string(),
 		processing: processingNotify,
-	}),
+	}).index("by_userId", ["userId"]),
 
 	notifiesToUser: defineTable({
 		problemId: v.id("problems"),
@@ -128,11 +131,6 @@ export default defineSchema({
 		problemId: v.id("problems"),
 	}),
 
-	codeOfUserInProblem: defineTable({
-		userId: v.string(),
-		problemId: v.id("problems"),
-		code: v.string(),
-	}),
 	/************************************************** */
 
 	courses: defineTable({
@@ -142,20 +140,12 @@ export default defineSchema({
 		difficultyLevel: v.number(),
 	}),
 
-	courseBriefs: defineTable({
-		courseId: v.id("courses"),
-		numberOfHours: v.optional(v.number()),
-		numberOfLesson: v.optional(v.number()),
-		numberOfLearner: v.optional(v.number()),
-		star: star,
-	}),
-
 	courseContents: defineTable({
 		description: v.string(),
 		lessons: v.array(
 			v.object({
 				lessonId: v.id("lessons"),
-				lessonName: v.string(),
+				lessonTopic: v.string(),
 			}),
 		),
 	}),
@@ -170,7 +160,7 @@ export default defineSchema({
 
 	lessons: defineTable({
 		courseId: v.id("courses"),
-		name: v.string(),
+		topic: v.string(),
 		stars: star,
 		difficultlyLevel: v.number(),
 	}).index("by_courseId", ["courseId"]),
@@ -190,6 +180,7 @@ export default defineSchema({
 		commentId: v.optional(v.array(v.id("lessonComments"))),
 	}),
 	codeOfUserInLesson: defineTable({
+		//hello
 		userId: v.string(),
 		problemId: v.id("lessons"),
 		code: v.string(),
