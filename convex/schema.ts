@@ -1,7 +1,12 @@
 import {defineSchema, defineTable} from "convex/server";
 import {v} from "convex/values";
 
-export const processingNotify = v.union(v.literal("processing"), v.literal("pending"));
+export const processingNotify = v.union(v.literal("pending"), v.literal("processing"));
+export const statusProblem = v.union(
+	v.literal("approved"),
+	v.literal("pending"),
+	v.literal("rejected"),
+);
 export const role = v.union(v.literal("admin"), v.literal("user"));
 
 export const link = v.object({
@@ -19,13 +24,7 @@ export const activity = v.object({
 
 export const joinedCourse = v.object({
 	courseId: v.id("courses"),
-	lessonCompleted: v.optional(v.id("lessons")),
-});
-
-export const problemInfo = v.object({
-	problemId: v.id("problems"),
-	problemName: v.string(),
-	difficultyLevel: v.number(),
+	lessonCompleted: v.optional(v.array(v.id("lessons"))),
 });
 
 export const example = v.object({
@@ -53,37 +52,34 @@ export default defineSchema({
 		image: v.optional(v.string()),
 		links: v.optional(link),
 		introduce: v.optional(v.string()),
-	})
-		.index("by_userId", ["userId"])
-		.index("by_email", ["email"]),
+	}).index("by_userId", ["userId"]),
 
 	role: defineTable({
 		userId: v.string(),
-		role: role,
+		role: v.optional(role),
 	}).index("by_userId", ["userId"]),
 
 	activities: defineTable({
 		userId: v.string(),
 		activity: v.optional(v.array(activity)),
-	}),
+	}).index("by_userId", ["userId"]),
 
 	userCourses: defineTable({
 		userId: v.string(),
 		joinedCourses: v.optional(v.array(joinedCourse)),
 		completedCourses: v.optional(v.array(v.id("courses"))),
-	}),
+	}).index("by_userId", ["userId"]),
+
+	favoriteProblems: defineTable({
+		userId: v.string(),
+		problemId: v.optional(v.array(v.id("problems"))),
+	}).index("by_userId", ["userId"]),
 
 	authorProblem: defineTable({
 		userId: v.string(),
 		problems: v.optional(v.array(v.id("problems"))),
-	}),
+	}).index("by_userId", ["userId"]),
 
-	solution: defineTable({
-		userId: v.string(),
-		problemId: v.id("problems"),
-		code: v.string(),
-		isSolved: v.boolean(),
-	}),
 	/************************************************** */
 
 	notifiesToAdmin: defineTable({
@@ -94,9 +90,10 @@ export default defineSchema({
 	}).index("by_userId", ["userId"]),
 
 	notifiesToUser: defineTable({
-		problemId: v.id("problems"),
-		problemName: v.string(),
-		isApproved: v.boolean(),
+		topic: v.string(),
+		content: v.optional(v.string()),
+		problemId: v.optional(v.id("problems")),
+		problemName: v.optional(v.string()),
 		isSeen: v.boolean(),
 		userId: v.string(),
 	}).index("by_userId", ["userId"]),
@@ -106,7 +103,7 @@ export default defineSchema({
 		name: v.string(),
 		star: star,
 		difficultyLevel: v.number(),
-		isApproved: v.boolean(),
+		statusProblem: statusProblem,
 		authorId: v.string(),
 		authorName: v.string(),
 	}),
@@ -117,19 +114,21 @@ export default defineSchema({
 		example: v.optional(v.array(example)),
 		structureAnswer: v.string(),
 		testcase: v.array(testcase),
-	}),
+	}).index("by_problemId", ["problemId"]),
 
 	problemComments: defineTable({
 		problemId: v.id("problems"),
 		userId: v.string(),
 		content: v.string(),
 		commentId: v.optional(v.array(v.id("problemComments"))),
-	}),
+	}).index("by_problemId", ["problemId"]),
 
-	favoriteProblems: defineTable({
+	solution: defineTable({
 		userId: v.string(),
 		problemId: v.id("problems"),
-	}),
+		code: v.string(),
+		isSolved: v.boolean(),
+	}).index("by_userId_problemId", ["userId", "problemId"]),
 
 	/************************************************** */
 
