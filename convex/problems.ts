@@ -1,6 +1,8 @@
 import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
+import {example, star, statusProblem, testcase} from "./schema";
+import {getUser} from "./users";
 
 export async function getProblem(ctx: QueryCtx | MutationCtx, problemId: Id<"problems">) {
 	const course = await ctx.db.get(problemId);
@@ -36,6 +38,107 @@ export const getProblemInfo = query({
 	},
 });
 
+export const createProblem = mutation({
+	args: {
+		name: v.string(),
+		star: star,
+		difficultyLevel: v.number(),
+		statusProblem: statusProblem,
+
+		content: v.string(),
+		example: v.optional(v.array(example)),
+		structureAnswer: v.string(),
+		testcase: v.array(testcase),
+	},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError("User not found");
+		}
+		const user = await getUser(ctx, identity.subject);
+		const problemId = await ctx.db.insert("problems", {
+			name: args.name,
+			star: args.star,
+			difficultyLevel: args.difficultyLevel,
+			statusProblem: args.statusProblem,
+			authorId: user._id,
+			authorName: user.name!,
+		});
+
+		await ctx.db.insert("problemContents", {
+			problemId: problemId,
+			content: args.content,
+			example: args.example,
+			structureAnswer: args.structureAnswer,
+			testcase: args.testcase,
+		});
+	},
+});
+
+export const changeProblemInfo = mutation({
+	args: {
+		problemId: v.id("problems"),
+		name: v.string(),
+		difficultyLevel: v.number(),
+		statusProblem: statusProblem,
+	},
+	async handler(ctx, args) {
+		await ctx.db.patch(args.problemId, {
+			name: args.name,
+			difficultyLevel: args.difficultyLevel,
+			statusProblem: args.statusProblem,
+		});
+	},
+});
+
+export const changeProblemContent = mutation({
+	args: {
+		problemId: v.id("problems"),
+		content: v.string(),
+		example: v.optional(v.array(example)),
+		structureAnswer: v.string(),
+		testcase: v.array(testcase),
+	},
+	async handler(ctx, args) {
+		const problemContent = await ctx.db
+			.query("problemContents")
+			.withIndex("by_problemId", q => q.eq("problemId", args.problemId))
+			.first();
+		await ctx.db.patch(problemContent?._id!, {
+			content: args.content,
+			example: args.example,
+			structureAnswer: args.structureAnswer,
+			testcase: args.testcase,
+		});
+	},
+});
+
+export const deleteProblem = mutation({
+	args: {problemId: v.id("problems")},
+	async handler(ctx, args) {
+		await ctx.db.delete(args.problemId);
+		const problemContent = await ctx.db
+			.query("problemContents")
+			.withIndex("by_problemId", q => q.eq("problemId", args.problemId))
+			.first();
+		await ctx.db.delete(problemContent?._id!);
+	},
+});
+
+export const changeStatusProblem = mutation({
+	args: {problemId: v.id("problems"), status: statusProblem},
+	async handler(ctx, args) {
+		await ctx.db.patch(args.problemId, {statusProblem: args.status});
+	},
+});
+
+export const changeStarProblem = mutation({
+	args: {problemId: v.id("problems"), star: star},
+	async handler(ctx, args) {
+		await ctx.db.patch(args.problemId, {star: args.star});
+	},
+});
+
 export const getProblemContent = query({
 	args: {problemId: v.id("problems")},
 	async handler(ctx, args) {
@@ -44,6 +147,40 @@ export const getProblemContent = query({
 			.query("problemContents")
 			.withIndex("by_problemId", q => q.eq("problemId", problem._id))
 			.first();
+	},
+});
+
+export const createProblemComment = mutation({
+	args: {
+		problemId: v.id("problems"),
+		userId: v.string(),
+		content: v.string(),
+		commentId: v.optional(v.array(v.id("problemComments"))),
+	},
+	async handler(ctx, args) {
+		await ctx.db.insert("problemComments", {
+			problemId: args.problemId,
+			userId: args.userId,
+			content: args.content,
+			commentId: args.commentId,
+		});
+	},
+});
+
+export const changeProblemComment = mutation({
+	args: {
+		commentId: v.id("problemComments"),
+		content: v.string(),
+	},
+	async handler(ctx, args) {
+		await ctx.db.patch(args.commentId, {content: args.content});
+	},
+});
+
+export const deleteProblemComment = mutation({
+	args: {commentId: v.id("problemComments")},
+	async handler(ctx, args) {
+		await ctx.db.delete(args.commentId);
 	},
 });
 

@@ -101,7 +101,7 @@ export default defineSchema({
 
 	problems: defineTable({
 		name: v.string(),
-		star: star,
+		star: v.optional(star),
 		difficultyLevel: v.number(),
 		statusProblem: statusProblem,
 		authorId: v.string(),
