@@ -26,7 +26,7 @@ export const seenNotifyToUser = mutation({
 
 export const createNotifyToUser = mutation({
 	args: {
-		topic: v.string(),
+		topic: v.optional(v.string()),
 		content: v.optional(v.string()),
 		problemId: v.optional(v.id("problems")),
 		problemName: v.optional(v.string()),

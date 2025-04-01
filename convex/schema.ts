@@ -66,19 +66,21 @@ export default defineSchema({
 
 	userCourses: defineTable({
 		userId: v.string(),
-		joinedCourses: v.optional(v.array(joinedCourse)),
-		completedCourses: v.optional(v.array(v.id("courses"))),
-	}).index("by_userId", ["userId"]),
+		courseId: v.id("courses"),
+		completedLesson: v.optional(v.array(v.id("lessons"))),
+		isCompleted: v.boolean(),
+	})
+		.index("by_userId_courseId", ["userId", "courseId"])
+		.index("by_userId", ["userId"])
+		.index("by_courseId", ["courseId"]),
 
 	favoriteProblems: defineTable({
 		userId: v.string(),
-		problemId: v.optional(v.array(v.id("problems"))),
-	}).index("by_userId", ["userId"]),
-
-	authorProblem: defineTable({
-		userId: v.string(),
-		problems: v.optional(v.array(v.id("problems"))),
-	}).index("by_userId", ["userId"]),
+		problemId: v.id("problems"),
+	})
+		.index("by_userId_problemId", ["userId", "problemId"])
+		.index("by_userId", ["userId"])
+		.index("by_problemId", ["problemId"]),
 
 	/************************************************** */
 
@@ -87,26 +89,36 @@ export default defineSchema({
 		problemName: v.string(),
 		userId: v.string(),
 		processing: processingNotify,
-	}).index("by_userId", ["userId"]),
+	})
+		.index("by_userId", ["userId"])
+		.index("by_problemId", ["problemId"]),
 
 	notifiesToUser: defineTable({
-		topic: v.string(),
+		topic: v.optional(v.string()),
 		content: v.optional(v.string()),
 		problemId: v.optional(v.id("problems")),
 		problemName: v.optional(v.string()),
 		isSeen: v.boolean(),
 		userId: v.string(),
-	}).index("by_userId", ["userId"]),
+	})
+		.index("by_userId", ["userId"])
+		.index("by_problemId", ["problemId"]),
 	/************************************************** */
 
 	problems: defineTable({
 		name: v.string(),
 		star: v.optional(star),
+		type: v.optional(v.string()),
 		difficultyLevel: v.number(),
 		statusProblem: statusProblem,
 		authorId: v.string(),
 		authorName: v.string(),
-	}),
+	})
+		.index("by_authorId", ["authorId"])
+		.searchIndex("by_name", {
+			searchField: "name",
+			filterFields: ["type"],
+		}),
 
 	problemContents: defineTable({
 		problemId: v.id("problems"),
@@ -120,15 +132,21 @@ export default defineSchema({
 		problemId: v.id("problems"),
 		userId: v.string(),
 		content: v.string(),
-		commentId: v.optional(v.array(v.id("problemComments"))),
-	}).index("by_problemId", ["problemId"]),
+		likes: v.optional(v.number()),
+		dislikes: v.optional(v.number()),
+		commentPId: v.optional(v.id("problemComments")),
+	})
+		.index("by_problemId", ["problemId"])
+		.index("by_commentPId", ["commentPId"]),
 
 	solution: defineTable({
 		userId: v.string(),
 		problemId: v.id("problems"),
 		code: v.string(),
 		isSolved: v.boolean(),
-	}).index("by_userId_problemId", ["userId", "problemId"]),
+	})
+		.index("by_userId_problemId", ["userId", "problemId"])
+		.index("by_problemId", ["problemId"]),
 
 	/************************************************** */
 
@@ -137,24 +155,26 @@ export default defineSchema({
 		image: v.string(),
 		authorId: v.string(),
 		difficultyLevel: v.number(),
+	}).searchIndex("by_name", {
+		searchField: "name",
 	}),
 
 	courseContents: defineTable({
+		courseId: v.id("courses"),
 		description: v.string(),
-		lessons: v.array(
-			v.object({
-				lessonId: v.id("lessons"),
-				lessonTopic: v.string(),
-			}),
-		),
-	}),
+		lessons: v.array(v.id("lessons")),
+	}).index("by_courseId", ["courseId"]),
 
 	courseComments: defineTable({
 		courseId: v.id("courses"),
 		userId: v.string(),
 		content: v.string(),
-		commentId: v.optional(v.array(v.id("courseComments"))),
-	}),
+		likes: v.optional(v.number()),
+		dislikes: v.optional(v.number()),
+		commentPId: v.optional(v.id("courseComments")),
+	})
+		.index("by_courseId", ["courseId"])
+		.index("by_commentPId", ["commentPId"]),
 	/************************************************** */
 
 	lessons: defineTable({
@@ -170,18 +190,25 @@ export default defineSchema({
 		structureAnswer: v.string(),
 		example: v.array(example),
 		testcase: v.array(testcase),
-	}),
+	}).index("by_lessonId", ["lessonId"]),
 
 	lessonComments: defineTable({
-		problemId: v.id("lessons"),
+		lessonId: v.id("lessons"),
 		userId: v.string(),
+		likes: v.optional(v.number()),
+		dislikes: v.optional(v.number()),
 		content: v.string(),
-		commentId: v.optional(v.array(v.id("lessonComments"))),
-	}),
+		commentPId: v.optional(v.id("lessonComments")),
+	})
+		.index("by_lessonId", ["lessonId"])
+		.index("by_commentPId", ["commentPId"]),
+
 	codeOfUserInLesson: defineTable({
-		//hello
 		userId: v.string(),
-		problemId: v.id("lessons"),
+		lessonId: v.id("lessons"),
 		code: v.string(),
-	}),
+	})
+		.index("by_userId_lessonId", ["userId", "lessonId"])
+		.index("by_lessonId", ["lessonId"])
+		.index("by_userId", ["userId"]),
 });
