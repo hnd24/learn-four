@@ -15,7 +15,7 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="px-2 w-full flex flex-col items-center justify-center">
+		<div className="md:px-2 w-full flex flex-col items-center justify-center">
 			<Header />
 			{children}
 		</div>

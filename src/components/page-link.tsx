@@ -20,14 +20,14 @@ export default function PageLink({className, pathName, pathNameCurrent, name}: P
 			<span>{name}</span>
 			<span
 				className={cn(
-					"absolute -bottom-4 left-1/2 w-0 h-1 bg-black",
+					"absolute -bottom-0 left-1/2 w-0 h-0.5 bg-black",
 					"hoverEffect group-hover:w-1/2 group-hover:left-0",
 					pathName === pathNameCurrent && "w-1/2 left-0 bg-deepBlue",
 				)}
 			/>
 			<span
 				className={cn(
-					" absolute -bottom-4 right-1/2 w-0 h-1 bg-black",
+					" absolute -bottom-0 right-1/2 w-0 h-0.5 bg-black",
 					"hoverEffect group-hover:w-1/2 group-hover:right-0",
 					pathName === pathNameCurrent && "w-1/2 right-0 bg-deepBlue",
 				)}
