@@ -100,10 +100,10 @@ export default function Carousel() {
 	useEffect(() => {
 		const slideInterval = setInterval(() => {
 			nextSlide();
-		}, 20000);
+		}, 5000);
 
 		return () => clearInterval(slideInterval);
-	}, []);
+	}, [current]);
 	return (
 		<div className="relative h-72 px-8">
 			<div className="w-full h-full overflow-hidden rounded-lg shadowBlock">
@@ -115,10 +115,12 @@ export default function Carousel() {
 					{extendedListItem.map((item, index) => (
 						<div key={index} className="w-full h-full flex-shrink-0">
 							<div className={cn("w-full h-full bg-gradient-to-r ", item.background)}>
-								<div className="h-full w-full flex py-8 px-16  justify-between ">
+								<div className="h-full w-full flex p-4 md:py-8 md:px-16  justify-between ">
 									<div className="flex flex-col justify-center gap-3 h-full w-full lg:max-w-6/12 font-bold">
-										<span className="text-5xl text-white text-shadow">{item.title}</span>
-										<div className="flex flex-col text-lg text-gray-100 text-shadow">
+										<span className="text-4xl md:text-5xl text-white text-shadow">
+											{item.title}
+										</span>
+										<div className="flex flex-col text-md md:text-lg text-gray-100 text-shadow">
 											<span>{item.description}</span>
 										</div>
 									</div>
@@ -153,7 +155,10 @@ export default function Carousel() {
 			{/* Dots Indicator */}
 			<div className="flex items-center justify-center absolute -bottom-5 left-1/2 -translate-x-1/2 gap-3 z-10">
 				{listItem.map((_, index) => (
-					<span
+					<div
+						onClick={() => {
+							setCurrent(index + 1);
+						}}
 						key={index}
 						className={cn(
 							"h-2 w-6 rounded-full bg-gray-400/60 transition-all duration-300 ",
