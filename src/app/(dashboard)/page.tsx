@@ -1,20 +1,13 @@
 "use client";
 
-import {Button} from "@/components/ui/button";
-import {SignedIn, SignedOut, SignInButton, SignUpButton, UserButton} from "@clerk/nextjs";
+import Carousel from "@/components/carousel";
 
 export default function HomePage() {
 	return (
-		<div className=" ">
-			<SignedOut>
-				<SignInButton mode="modal">
-					<Button>Hello</Button>
-				</SignInButton>
-				<SignUpButton />
-			</SignedOut>
-			<SignedIn>
-				<UserButton />
-			</SignedIn>
+		<div className="w-full flex flex-col items-center justify-center">
+			<div className="w-full my-8">
+				<Carousel />
+			</div>
 		</div>
 	);
 }
