@@ -1,5 +1,4 @@
 import {cn} from "@/lib/utils";
-import {ChevronLeft, ChevronRight} from "lucide-react";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";
 
@@ -16,35 +15,35 @@ const listItem = [
 		title: "Javascript",
 		description:
 			"JavaScript is the programming language of the Web. JavaScript is easy to learn. This tutorial will teach you JavaScript from basic to advanced.",
-		image: "/images/javascript-icon.svg",
+		image: "/logo/javascript-icon.svg",
 	},
 	{
 		background: "from-[#2371b1] to-[#91c2e8]",
 		title: "Python",
 		description:
 			"Python is a programming language that lets you work quickly and integrate systems more effectively. Python is powerful... and fast; plays well with others; and runs everywhere.",
-		image: "/images/python-icon.svg",
+		image: "/logo/python-icon.svg",
 	},
 	{
 		background: "from-[#dd5902] to-[#ffbd4d]",
 		title: "Java",
 		description:
 			"Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
-		image: "/images/java-icon.svg",
+		image: "/logo/java-icon.svg",
 	},
 	{
 		background: "from-[#004482] to-[#83d9ff]",
 		title: "C++",
 		description:
 			"C++ is a general-purpose programming language created by Bjarne Stroustrup. It has imperative, object-oriented and generic programming features, while also providing facilities for low-level memory manipulation.",
-		image: "/images/cpp-icon.svg",
+		image: "/logo/cpp-icon.svg",
 	},
 	{
 		background: "from-[#662579] to-[#e0b5f2]",
 		title: "C#",
 		description:
 			"C# is a modern, object-oriented programming language developed by Microsoft. It is designed for building a variety of applications that run on the .NET Framework.",
-		image: "/images/csharp-icon.svg",
+		image: "/logo/csharp-icon.svg",
 	},
 ];
 
@@ -92,6 +91,16 @@ export default function Carousel() {
 		setCurrent(prev => prev - 1);
 	};
 
+	const handleWheel = (event: React.WheelEvent) => {
+		if (transitionLockRef.current) return;
+
+		if (event.deltaY > 0 || event.deltaX > 0) {
+			nextSlide();
+		} else if (event.deltaY < 0 || event.deltaX < 0) {
+			prevSlide();
+		}
+	};
+
 	const extendedListItem = [
 		listItem[listItem.length - 1], // Clone end
 		...listItem,
@@ -100,15 +109,17 @@ export default function Carousel() {
 	useEffect(() => {
 		const slideInterval = setInterval(() => {
 			nextSlide();
-		}, 5000);
+		}, 60000);
 
 		return () => clearInterval(slideInterval);
 	}, [current]);
+
 	return (
-		<div className="relative h-72 px-8">
-			<div className="w-full h-full overflow-hidden rounded-lg shadowBlock">
+		<div className="relative h-72 w-full">
+			<div className="w-full h-full overflow-hidden rounded-lg  shadowBlock">
 				<div
 					ref={carouselRef}
+					onWheel={handleWheel}
 					className="flex h-full transition-transform duration-500 "
 					style={{transform: `translateX(-${current * 100}%)`}}
 					onTransitionEnd={handleTransitionEnd}>
@@ -141,16 +152,16 @@ export default function Carousel() {
 			</div>
 
 			{/* navigate button */}
-			<button
+			{/* <button
 				onClick={prevSlide}
-				className="absolute left-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 border cursor-pointer">
+				className="absolute hidden md:flex left-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 border cursor-pointer">
 				<ChevronLeft size={24} />
 			</button>
 			<button
 				onClick={nextSlide}
-				className="absolute right-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 border cursor-pointer">
+				className="absolute hidden md:flex right-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 border cursor-pointer">
 				<ChevronRight size={24} />
-			</button>
+			</button> */}
 
 			{/* Dots Indicator */}
 			<div className="flex items-center justify-center absolute -bottom-5 left-1/2 -translate-x-1/2 gap-3 z-10">
