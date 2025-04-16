@@ -36,7 +36,7 @@ export default function ItemCourse({
 						<div className="w-full flex gap-1">
 							<Avatar className="size-6">
 								<AvatarImage src={authorImage} alt="avatar" />
-								<AvatarFallback>C4</AvatarFallback>
+								<AvatarFallback className="bg-azureBlue !text-white text-sm">C4</AvatarFallback>
 							</Avatar>
 							<span className="">{authorName}</span>
 						</div>

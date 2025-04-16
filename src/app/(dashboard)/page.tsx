@@ -2,13 +2,16 @@
 
 import Carousel from "@/components/carousel";
 import ListCourse from "@/feature/home/list-course/list-course";
+import {CourseStoreProvider} from "@/providers/course-store-provider";
 
 export default function HomePage() {
 	return (
-		<div className="w-full flex flex-col items-center justify-center px-4 pt-8 gap-12">
-			<Carousel />
+		<CourseStoreProvider>
+			<div className="w-full h-full flex flex-col px-4 pt-8 gap-10">
+				<Carousel />
 
-			<ListCourse />
-		</div>
+				<ListCourse />
+			</div>
+		</CourseStoreProvider>
 	);
 }

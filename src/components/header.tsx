@@ -13,7 +13,7 @@ export default function HeaderHome() {
 	const pathNameCurrent = usePathname();
 	return (
 		<div
-			className="w-full h-[76px] px-2 flex items-center justify-between border-2  shadow-xl
+			className="w-full h-[76px] px-2 flex items-center justify-between border-2 border-gray-100  shadow-xl
 		md:px-4 md:rounded-lg">
 			<div className="flex items-center gap-10 h-full">
 				<Logo />

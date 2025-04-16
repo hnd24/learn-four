@@ -1,4 +1,3 @@
-import {paginationOptsValidator} from "convex/server";
 import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
@@ -12,10 +11,33 @@ export async function getCourse(ctx: QueryCtx | MutationCtx, courseId: Id<"cours
 	return course;
 }
 
-export const getCourses = query({
-	args: {paginationOpts: paginationOptsValidator},
+export const getCourseInfos = query({
+	args: {},
 	async handler(ctx, args) {
-		return await ctx.db.query("courses").order("desc").paginate(args.paginationOpts);
+		const course = await ctx.db.query("courses").order("desc").collect();
+		if (!course) {
+			return null;
+		}
+		const courseInfo = await Promise.all(
+			course.map(async course => {
+				const courseContent = await ctx.db
+					.query("courseContents")
+					.withIndex("by_courseId", q => q.eq("courseId", course._id))
+					.first();
+				if (!courseContent) {
+					return {
+						...course,
+					};
+				}
+
+				return {
+					...course,
+					...courseContent,
+					lessons: courseContent.lessons.length,
+				};
+			}),
+		);
+		return courseInfo;
 	},
 });
 
@@ -126,8 +148,6 @@ export const createCourse = mutation({
 		name: v.string(),
 		image: v.string(),
 		authorId: v.string(),
-		difficultyLevel: v.number(),
-
 		description: v.string(),
 		lessons: v.array(v.id("lessons")),
 	},
@@ -141,7 +161,6 @@ export const createCourse = mutation({
 			name: args.name,
 			image: args.image,
 			authorId: identity.subject,
-			difficultyLevel: args.difficultyLevel,
 		});
 
 		await ctx.db.insert("courseContents", {
@@ -188,8 +207,6 @@ export const changeCourseInfo = mutation({
 		courseId: v.id("courses"),
 		name: v.optional(v.string()),
 		image: v.optional(v.string()),
-		difficultyLevel: v.optional(v.number()),
-
 		description: v.optional(v.string()),
 		lessons: v.optional(v.array(v.id("lessons"))),
 	},
@@ -202,11 +219,10 @@ export const changeCourseInfo = mutation({
 		if (!courseInfo) {
 			throw new ConvexError("expected course to be defined");
 		}
-		if (args.name || args.image || args.difficultyLevel) {
+		if (args.name || args.image) {
 			await ctx.db.patch(courseInfo._id, {
 				name: args.name || courseInfo.name,
 				image: args.image || courseInfo.image,
-				difficultyLevel: args.difficultyLevel || courseInfo.difficultyLevel,
 			});
 		}
 		if (args.description || args.lessons) {

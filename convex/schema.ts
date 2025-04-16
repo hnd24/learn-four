@@ -154,7 +154,6 @@ export default defineSchema({
 		name: v.string(),
 		image: v.string(),
 		authorId: v.string(),
-		difficultyLevel: v.number(),
 	}).searchIndex("by_name", {
 		searchField: "name",
 	}),

@@ -1,63 +1,48 @@
+"use client";
+
+import {Skeleton} from "@/components/ui/skeleton";
+import {courseData} from "@/data";
+import {useExecuteCourse} from "@/hook/use-execute-course";
+import {useCourseStore} from "@/providers/course-store-provider";
+import {useEffect} from "react";
 import ItemCourse from "./components/item-course";
-const data = [
-	{
-		banner: "/images/banner-javascript.png",
-		language: "Javascript",
-		authorImage: "https://github.com/shadcn.png",
-		authorName: "Nhựt Duy",
-		star: 4.6,
-		lessons: 10,
-	},
-	{
-		banner: "/images/banner-java.png",
-		language: "Java",
-		authorImage: "https://randomuser.me/api/portraits/men/32.jpg",
-		authorName: "Minh Tuấn",
-		star: 4.8,
-		lessons: 12,
-	},
-	{
-		banner: "/images/banner-python.png",
-		language: "Python",
-		authorImage: "https://randomuser.me/api/portraits/women/44.jpg",
-		authorName: "Thanh Hằng",
-		star: 4.7,
-		lessons: 15,
-	},
-	{
-		banner: "/images/banner-cpp.png",
-		language: "C++",
-		authorImage: "https://randomuser.me/api/portraits/men/45.jpg",
-		authorName: "Quốc Anh",
-		star: 4.5,
-		lessons: 11,
-	},
-	{
-		banner: "/images/banner-csharp.png",
-		language: "C#",
-		authorImage: "https://randomuser.me/api/portraits/women/46.jpg",
-		authorName: "Bích Ngọc",
-		star: 4.6,
-		lessons: 13,
-	},
-];
 
 export default function ListCourse() {
+	const {courses, changeCoursesState} = useCourseStore(state => state);
+	const {
+		config: {loading},
+		setConfig,
+	} = useExecuteCourse();
+	const pending = true;
+	const courseData1 = 2;
+	const numberCourse = Array.from({length: 3}, (_, i) => i);
+
+	useEffect(() => {
+		changeCoursesState(courseData);
+		courses.map(item => {
+			console.table(item);
+		});
+	}, [courseData1]);
+
 	return (
 		<div className="h-full w-full border border-gray-100 p-4 md:p-8 gap-4 rounded-lg bg-white shadow-xl flex flex-col">
-			<span className="w-full text-3xl font-bold">List Course :</span>
+			<span className="w-full text-3xl font-bold text-gray-800">List Course :</span>
 			<div className="h-full w-full  grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 *: gap-6">
-				{data.map((item, index) => (
-					<ItemCourse
-						key={index}
-						banner={item.banner}
-						language={item.language}
-						authorImage={item.authorImage}
-						authorName={item.authorName}
-						star={item.star}
-						lessons={item.lessons}
-					/>
-				))}
+				{loading
+					? numberCourse.map((item, index) => (
+							<Skeleton key={index} className="h-72 w-full bg-gray-300 rounded-lg " />
+						))
+					: courses.map((item, index) => (
+							<ItemCourse
+								key={index}
+								banner={item.banner ?? ""}
+								language={item.language ?? ""}
+								authorImage={item.authorImage ?? ""}
+								authorName={item.authorName ?? ""}
+								star={item.star ?? 0}
+								lessons={item.lessons ?? 0}
+							/>
+						))}
 			</div>
 		</div>
 	);

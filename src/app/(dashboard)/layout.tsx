@@ -17,7 +17,7 @@ export default function DashboardLayout({
 	return (
 		<div className="md:px-2 w-full flex flex-col items-center justify-center">
 			<Header />
-			{children}
+			<div className="w-full flex flex-col items-center justify-center ">{children}</div>
 		</div>
 	);
 }
