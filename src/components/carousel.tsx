@@ -108,7 +108,7 @@ export default function Carousel() {
 												</div>
 											</div>
 											<Image
-												src={item.image ?? ""}
+												src={item.logoLanguage ?? ""}
 												alt="programer"
 												height={300}
 												width={300}

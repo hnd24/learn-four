@@ -1,15 +1,16 @@
+import {star} from "@/types";
 import {createStore} from "zustand";
 
 export type CourseState = {
-	id: string;
+	_id: string;
 	language: string;
 	background: string;
 	description: string;
-	image: string;
+	logoLanguage: string;
 	banner: string;
 	authorImage: string;
 	authorName: string;
-	star: number;
+	star: star;
 	lessons: number;
 };
 export type CourseActions = {
@@ -29,7 +30,7 @@ export const createCourseStore = (initState: (Partial<CourseState> & {id: string
 				courses: [...state.courses, ...coursesState],
 			})),
 		changeCoursesState: coursesState =>
-			set(state => ({
+			set(() => ({
 				courses: [...coursesState],
 			})),
 	}));

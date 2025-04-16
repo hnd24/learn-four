@@ -1,14 +1,16 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {StarFillIcon, StarHalfIcon, StarIcon} from "@/icon";
-import {BookOpen} from "lucide-react";
+import {star} from "@/types";
+import {BookOpen, PersonStanding} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Props = {
 	banner: string;
 	language: string;
 	authorImage: string;
 	authorName: string;
-	star: number;
+	star: star;
 	lessons: number;
 };
 
@@ -21,7 +23,8 @@ export default function ItemCourse({
 	lessons,
 }: Props) {
 	return (
-		<div
+		<Link
+			href={`/course/${language}`}
 			className="w-full h-full relative rounded-xl cursor-pointer
 			hover:-translate-y-1 hover:shadow-xl card-border duration-300 overflow-hidden z-0
 			">
@@ -31,7 +34,7 @@ export default function ItemCourse({
 				<Image src={banner} alt="javascript" width={300} height={150} className=" w-full" />
 				<div className="w-full flex flex-col bg-[#f7f7f7] py-2 px-3 gap-2 ">
 					<span className="text-xl font-semibold">{language}</span>
-					<ListStar number={star} />
+					<ListStar star={star} />
 					<div className="w-full flex justify-between gap-2 ">
 						<div className="w-full flex gap-1">
 							<Avatar className="size-6">
@@ -47,21 +50,21 @@ export default function ItemCourse({
 					</div>
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 }
 
-export function ListStar({number = 5}: {number: number}) {
-	let star = [];
-	let i = number;
+export function ListStar({star = {rating: 5, count: 10}}: {star: star}) {
+	let listStar: string[] = [];
+	let i = star.rating;
 	while (i > 0) {
 		if (i >= 1) {
-			star.push("fill");
+			listStar.push("fill");
 		} else {
 			if (i >= 0.5) {
-				star.push("half");
+				listStar.push("half");
 			} else if (i < 0.5) {
-				star.push("empty");
+				listStar.push("empty");
 			}
 		}
 		i--;
@@ -69,7 +72,7 @@ export function ListStar({number = 5}: {number: number}) {
 
 	return (
 		<div className="flex gap-1 items-center ">
-			{star.map((item, index) =>
+			{listStar.map((item, index) =>
 				item === "fill" ? (
 					<StarFillIcon key={index} />
 				) : item === "half" ? (
@@ -78,7 +81,12 @@ export function ListStar({number = 5}: {number: number}) {
 					<StarIcon key={index} />
 				),
 			)}
-			<span className="ml-1 text-lg text-center ">{number}</span>
+			<div className="flex gap-1 ml-1 text-lg text-center ">
+				<span className="">{star.rating}</span>
+				<span>-</span>
+				<span>{star.count}</span>
+				<PersonStanding size={20} className=" relative top-1" />
+			</div>
 		</div>
 	);
 }

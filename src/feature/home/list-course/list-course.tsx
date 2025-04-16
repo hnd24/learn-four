@@ -39,7 +39,7 @@ export default function ListCourse() {
 								language={item.language ?? ""}
 								authorImage={item.authorImage ?? ""}
 								authorName={item.authorName ?? ""}
-								star={item.star ?? 0}
+								star={item.star ?? {rating: 0, count: 0}}
 								lessons={item.lessons ?? 0}
 							/>
 						))}

@@ -41,7 +41,7 @@ export const testcase = v.object({
 
 export const star = v.object({
 	rating: v.number(),
-	numberOfReviewer: v.number(),
+	count: v.number(),
 });
 
 export default defineSchema({
@@ -151,18 +151,16 @@ export default defineSchema({
 	/************************************************** */
 
 	courses: defineTable({
-		name: v.string(),
-		image: v.string(),
-		authorId: v.string(),
-	}).searchIndex("by_name", {
-		searchField: "name",
-	}),
-
-	courseContents: defineTable({
-		courseId: v.id("courses"),
+		language: v.string(),
+		logoLanguage: v.string(),
 		description: v.string(),
+		background: v.string(),
+		banner: v.string(),
+		star: v.optional(star),
+		authorId: v.string(),
+		content: v.string(),
 		lessons: v.array(v.id("lessons")),
-	}).index("by_courseId", ["courseId"]),
+	}),
 
 	courseComments: defineTable({
 		courseId: v.id("courses"),

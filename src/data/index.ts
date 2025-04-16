@@ -5,11 +5,14 @@ export const courseData = [
 		language: "Javascript",
 		description:
 			"JavaScript is the programming language of the Web. JavaScript is easy to learn. This tutorial will teach you JavaScript from basic to advanced.",
-		image: "/logo/javascript-icon.svg",
+		logoLanguage: "/logo/javascript-icon.svg",
 		banner: "/images/banner-javascript.png",
 		authorImage: "https://github.com/shadcn.png",
 		authorName: "Nhựt Duy",
-		star: 4.6,
+		star: {
+			rating: 4.1,
+			count: 120,
+		},
 		lessons: 10,
 	},
 	{
@@ -18,11 +21,14 @@ export const courseData = [
 		language: "Java",
 		description:
 			"Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
-		image: "/logo/java-icon.svg",
+		logoLanguage: "/logo/java-icon.svg",
 		banner: "/images/banner-java.png",
 		authorImage: "https://randomuser.me/api/portraits/men/32.jpg",
 		authorName: "Minh Tuấn",
-		star: 4.8,
+		star: {
+			rating: 4.8,
+			count: 100,
+		},
 		lessons: 12,
 	},
 	{
@@ -31,11 +37,14 @@ export const courseData = [
 		language: "Python",
 		description:
 			"Python is a programming language that lets you work quickly and integrate systems more effectively. Python is powerful... and fast; plays well with others; and runs everywhere.",
-		image: "/logo/python-icon.svg",
+		logoLanguage: "/logo/python-icon.svg",
 		banner: "/images/banner-python.png",
 		authorImage: "https://randomuser.me/api/portraits/women/44.jpg",
 		authorName: "Thanh Hằng",
-		star: 4.7,
+		star: {
+			rating: 3.9,
+			count: 150,
+		},
 		lessons: 15,
 	},
 	{
@@ -44,11 +53,14 @@ export const courseData = [
 		language: "C++",
 		description:
 			"C++ is a general-purpose programming language created by Bjarne Stroustrup. It has imperative, object-oriented and generic programming features, while also providing facilities for low-level memory manipulation.",
-		image: "/logo/cpp-icon.svg",
+		logoLanguage: "/logo/cpp-icon.svg",
 		banner: "/images/banner-cpp.png",
 		authorImage: "https://randomuser.me/api/portraits/men/45.jpg",
 		authorName: "Quốc Anh",
-		star: 4.5,
+		star: {
+			rating: 2.0,
+			count: 130,
+		},
 		lessons: 11,
 	},
 	{
@@ -57,11 +69,14 @@ export const courseData = [
 		language: "C#",
 		description:
 			"C# is a modern, object-oriented programming language developed by Microsoft. It is designed for building a variety of applications that run on the .NET Framework.",
-		image: "/logo/csharp-icon.svg",
+		logoLanguage: "/logo/csharp-icon.svg",
 		banner: "/images/banner-csharp.png",
 		authorImage: "https://randomuser.me/api/portraits/women/46.jpg",
 		authorName: "Bích Ngọc",
-		star: 4.6,
+		star: {
+			rating: 1.5,
+			count: 140,
+		},
 		lessons: 13,
 	},
 ];
@@ -73,6 +88,6 @@ export const defaultBanner = [
 		language: "Learn Four",
 		description:
 			"This place helps you learn programming languages. As well as challenge each other with coding problems to improve your skills together",
-		image: "/images/programer.svg",
+		logoLanguage: "/images/programer.svg",
 	},
 ];

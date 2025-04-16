@@ -2,6 +2,7 @@ import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 import {deleteLesson} from "./lessons";
+import {star} from "./schema";
 
 export async function getCourse(ctx: QueryCtx | MutationCtx, courseId: Id<"courses">) {
 	const course = await ctx.db.get(courseId);
@@ -14,30 +15,42 @@ export async function getCourse(ctx: QueryCtx | MutationCtx, courseId: Id<"cours
 export const getCourseInfos = query({
 	args: {},
 	async handler(ctx, args) {
-		const course = await ctx.db.query("courses").order("desc").collect();
-		if (!course) {
+		const courses = await ctx.db.query("courses").order("desc").collect();
+		if (!courses) {
 			return null;
 		}
-		const courseInfo = await Promise.all(
-			course.map(async course => {
-				const courseContent = await ctx.db
-					.query("courseContents")
-					.withIndex("by_courseId", q => q.eq("courseId", course._id))
-					.first();
-				if (!courseContent) {
+		const courseInfos = await Promise.all(
+			courses.map(async course => {
+				const author = await ctx.db.get(course.authorId as Id<"users">);
+				if (!author) {
 					return {
-						...course,
+						id: course._id,
+						language: course.language,
+						logoLanguage: course.logoLanguage,
+						description: course.description,
+						banner: course.banner,
+						star: course.star,
+						lessons: course.lessons.length,
+						background: course.background,
+						authorName: "Anonymous",
+						authorImage: "https://github.com/shadcn.png",
 					};
 				}
-
 				return {
-					...course,
-					...courseContent,
-					lessons: courseContent.lessons.length,
+					_id: course._id,
+					language: course.language,
+					logoLanguage: course.logoLanguage,
+					description: course.description,
+					banner: course.banner,
+					star: course.star,
+					lessons: course.lessons.length,
+					background: course.background,
+					authorName: author?.name,
+					authorImage: author?.image,
 				};
 			}),
 		);
-		return courseInfo;
+		return courseInfos;
 	},
 });
 
@@ -145,58 +158,61 @@ export const addUserCompletedLesson = mutation({
 
 export const createCourse = mutation({
 	args: {
-		name: v.string(),
-		image: v.string(),
-		authorId: v.string(),
+		language: v.string(),
+		logoLanguage: v.string(),
 		description: v.string(),
-		lessons: v.array(v.id("lessons")),
+		background: v.string(),
+		banner: v.string(),
+		star: v.optional(star),
+		content: v.optional(v.string()),
+		lessons: v.optional(v.array(v.id("lessons"))),
 	},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
 			return null;
 		}
-
 		const courseId = await ctx.db.insert("courses", {
-			name: args.name,
-			image: args.image,
+			...args,
+			content: args.content || "",
+			lessons: args.lessons || [],
 			authorId: identity.subject,
 		});
-
-		await ctx.db.insert("courseContents", {
-			courseId,
-			description: args.description,
-			lessons: args.lessons,
-		});
+		return courseId;
 	},
 });
 
 export const getCourseInfo = query({
 	args: {courseId: v.id("courses")},
 	async handler(ctx, args) {
-		const courseInfo = await ctx.db.get(args.courseId);
-		if (!courseInfo) {
-			throw new ConvexError("Course not found");
+		const course = await ctx.db.get(args.courseId);
+		if (!course) {
+			return null;
 		}
-		const courseContent = await ctx.db
-			.query("courseContents")
-			.withIndex("by_courseId", q => q.eq("courseId", args.courseId))
-			.first();
-		if (!courseContent) {
-			throw new ConvexError("Course content not found");
-		}
+
 		const lessons = await Promise.all(
-			courseContent.lessons!.map(async lessonId => {
+			course.lessons!.map(async lessonId => {
 				const lesson = await ctx.db.get(lessonId);
 				if (!lesson) {
-					throw new ConvexError("Lesson not found");
+					return null;
 				}
 				return lesson;
 			}),
 		);
+		const author = await ctx.db.get(course.authorId as Id<"users">);
+		if (!author) {
+			return {
+				...course,
+				authorName: "Anonymous",
+				authorImage: "https://github.com/shadcn.png",
+				lessons,
+			};
+		}
+
 		return {
-			...courseInfo,
-			...courseContent,
+			...course,
+			authorName: author.name,
+			authorImage: author.image,
 			lessons,
 		};
 	},
@@ -205,9 +221,13 @@ export const getCourseInfo = query({
 export const changeCourseInfo = mutation({
 	args: {
 		courseId: v.id("courses"),
-		name: v.optional(v.string()),
-		image: v.optional(v.string()),
+		language: v.optional(v.string()),
+		logoLanguage: v.optional(v.string()),
 		description: v.optional(v.string()),
+		background: v.optional(v.string()),
+		banner: v.optional(v.string()),
+		star: v.optional(star),
+		content: v.optional(v.string()),
 		lessons: v.optional(v.array(v.id("lessons"))),
 	},
 	async handler(ctx, args) {
@@ -215,29 +235,13 @@ export const changeCourseInfo = mutation({
 		if (!identity) {
 			return null;
 		}
-		const courseInfo = await ctx.db.get(args.courseId);
-		if (!courseInfo) {
-			throw new ConvexError("expected course to be defined");
+		const course = await ctx.db.get(args.courseId);
+		if (!course) {
+			return null;
 		}
-		if (args.name || args.image) {
-			await ctx.db.patch(courseInfo._id, {
-				name: args.name || courseInfo.name,
-				image: args.image || courseInfo.image,
-			});
-		}
-		if (args.description || args.lessons) {
-			const courseContent = await ctx.db
-				.query("courseContents")
-				.withIndex("by_courseId", q => q.eq("courseId", args.courseId))
-				.first();
-			if (!courseContent) {
-				throw new ConvexError("expected course content to be defined");
-			}
-			await ctx.db.patch(courseContent._id, {
-				description: args.description || courseContent.description,
-				lessons: args.lessons || courseContent.lessons,
-			});
-		}
+		await ctx.db.patch(course._id, {
+			...args,
+		});
 	},
 });
 
@@ -255,15 +259,7 @@ export const deleteCourse = mutation({
 		}
 		// delete course
 		await ctx.db.delete(courseInfo._id);
-		// delete course content
-		const courseContent = await ctx.db
-			.query("courseContents")
-			.withIndex("by_courseId", q => q.eq("courseId", args.courseId))
-			.first();
-		if (!courseContent) {
-			throw new ConvexError("expected course content to be defined");
-		}
-		await ctx.db.delete(courseContent._id);
+
 		// delete user course
 		const userCourses = await ctx.db
 			.query("userCourses")
@@ -313,13 +309,6 @@ export const changeLessonsToCourseContent = mutation({
 		if (!identity) {
 			return null;
 		}
-		const courseContent = await ctx.db
-			.query("courseContents")
-			.withIndex("by_courseId", q => q.eq("courseId", args.courseId))
-			.first();
-		if (!courseContent) {
-			throw new ConvexError("expected course content to be defined");
-		}
-		await ctx.db.patch(courseContent._id, {lessons: args.lessons});
+		await ctx.db.patch(args.courseId, {lessons: args.lessons});
 	},
 });
