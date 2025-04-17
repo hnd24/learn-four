@@ -87,7 +87,7 @@ export default function Carousel() {
 			{loading ? (
 				<Skeleton className="h-72 w-full bg-gray-300" />
 			) : (
-				<div className="relative h-72 w-full">
+				<div className="relative h-72 w-full ">
 					<div className="w-full h-full overflow-hidden rounded-lg  shadowBlock">
 						<div
 							ref={carouselRef}

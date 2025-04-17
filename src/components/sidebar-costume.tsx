@@ -14,10 +14,10 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import {listPageList} from "@/constants";
+import {ListPage} from "@/constants";
 
 import {cn} from "@/lib/utils";
-import {CircleArrowRight, Menu} from "lucide-react";
+import {ArrowBigRight, Menu} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -40,26 +40,32 @@ export default function SidebarCostume() {
 					</SheetDescription>
 				</SheetHeader>
 				<div className="flex flex-col border-t-2 pl-4">
-					{listPageList.map((item, index) => {
-						return (
-							<Link
-								key={index}
-								href={item.path}
-								className={cn(
-									"flex items-center gap-2 text-xl pb-2 font-semibold  my-2 border-b-2 border-gray-300",
-									pathNameCurrent === item.path && "text-deepBlue border-deepBlue",
-								)}>
-								<CircleArrowRight
-									className={cn("hidden", pathNameCurrent === item.path && "flex")}
-								/>
-								<span>{item.name}</span>
-							</Link>
-						);
-					})}
+					<div className="flex flex-col py-2">
+						{ListPage.map((item, index) => {
+							return (
+								<Link
+									key={index}
+									href={item.path}
+									className={cn(
+										"flex items-center gap-2 text-xl pb-2 font-semibold  my-2 ",
+										pathNameCurrent === item.path && "text-deepBlue ",
+									)}>
+									<ArrowBigRight
+										className={cn(
+											"text-gray-900",
+											pathNameCurrent === item.path && "text-deepBlue",
+										)}
+									/>
+									<span>{item.name}</span>
+								</Link>
+							);
+						})}
+					</div>
+					<div className="flex flex-col border-t-2 pl-4"></div>
 					<Accordion type="single" collapsible>
 						<AccordionItem value="item-1">
 							<AccordionTrigger
-								className="text-xl py-2 pr-2 font-semibold border-b-2 border-gray-300 rounded-none"
+								className="text-xl py-2 pr-2 font-semibold   rounded-none "
 								classNameTrigger="size-6 ">
 								Language
 							</AccordionTrigger>
@@ -85,11 +91,11 @@ export default function SidebarCostume() {
 									<span>English</span>
 								</div>
 							</AccordionContent>
-							<div className="absolute bottom-4 left-5 w-60 border-t-2 border-gray-300">
-								<SwitchTheme word />
-							</div>
 						</AccordionItem>
 					</Accordion>
+				</div>
+				<div className="absolute bottom-4 right-4 left-4 w-full max-w-11/12 border-t-2 border-gray-300">
+					<SwitchTheme word />
 				</div>
 			</SheetContent>
 		</Sheet>

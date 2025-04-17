@@ -1,6 +1,7 @@
 "use client";
 import Logo from "@/components/logo";
 import {Button} from "@/components/ui/button";
+import {ListPage} from "@/constants";
 import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
 import {LogIn} from "lucide-react";
 import {usePathname} from "next/navigation";
@@ -18,13 +19,23 @@ export default function HeaderHome() {
 			<div className="flex items-center gap-10 h-full">
 				<Logo />
 				<div className="md:flex hidden items-center justify-center gap-6 h-full">
-					<PageLink pathName="/" pathNameCurrent={pathNameCurrent} name="Learning" />
-					<PageLink pathName="/problem" pathNameCurrent={pathNameCurrent} name="Problem" />
-					<PageLink pathName="/about" pathNameCurrent={pathNameCurrent} name="About" />
+					{ListPage.map((page, index) => {
+						return (
+							<PageLink
+								key={index}
+								pathName={page.path}
+								pathNameCurrent={pathNameCurrent}
+								name={page.name}
+							/>
+						);
+					})}
 				</div>
 			</div>
 			<div className="flex items-center gap-2 md:gap-4">
-				<SwitchTheme className="w-fit rounded-full border-2 border-white" size={20} />
+				<SwitchTheme
+					className=" hidden md:flex w-fit rounded-full border-2 border-white"
+					size={20}
+				/>
 				<div className="md:flex hidden">
 					<SwitchLanguage />
 				</div>
