@@ -2,11 +2,11 @@ import {parseAsBoolean, useQueryStates} from "nuqs";
 
 export const useTableProblem = () => {
 	const [config, setConfig] = useQueryStates({
-		stateRow: parseAsBoolean.withDefault(true),
-		levelRow: parseAsBoolean.withDefault(true),
-		nameRow: parseAsBoolean.withDefault(true),
-		topicRow: parseAsBoolean.withDefault(true),
-		starRow: parseAsBoolean.withDefault(true),
+		stateColumn: parseAsBoolean.withDefault(true),
+		levelColumn: parseAsBoolean.withDefault(true),
+		nameColumn: parseAsBoolean.withDefault(true),
+		topicColumn: parseAsBoolean.withDefault(true),
+		starColumn: parseAsBoolean.withDefault(true),
 	});
 	return {
 		config,

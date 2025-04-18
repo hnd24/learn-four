@@ -19,7 +19,7 @@ import LoadMoreButton from "./components/load-more-button";
 export default function ListProblem() {
 	const {problems: data} = useProblemStore(state => state);
 	const {
-		config: {stateRow, levelRow, nameRow, topicRow, starRow},
+		config: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
 	} = useTableProblem();
 	return (
 		<div className="border border-gray-100 shadow-lg rounded-md p-4 bg-white">
@@ -29,11 +29,11 @@ export default function ListProblem() {
 				</TableCaption>
 				<TableHeader>
 					<TableRow>
-						<TableHead className={cn(!stateRow && "hidden")}>State</TableHead>
-						<TableHead className={cn(!levelRow && "hidden")}>Level</TableHead>
-						<TableHead className={cn(!nameRow && "hidden")}>Name</TableHead>
-						<TableHead className={cn(!topicRow && "hidden")}>Topic</TableHead>
-						<TableHead className={cn("text-right pr-3", !starRow && "hidden")}>Star</TableHead>
+						<TableHead className={cn(!stateColumn && "hidden")}>State</TableHead>
+						<TableHead className={cn(!levelColumn && "hidden")}>Level</TableHead>
+						<TableHead className={cn(!nameColumn && "hidden")}>Name</TableHead>
+						<TableHead className={cn(!topicColumn && "hidden")}>Topic</TableHead>
+						<TableHead className={cn("text-right pr-3", !starColumn && "hidden")}>Star</TableHead>
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -43,17 +43,17 @@ export default function ListProblem() {
 							<TableRow
 								key={index}
 								className={cn("hover:bg-gray-200 ", index % 2 === 0 && "bg-gray-100")}>
-								<TableCell className={cn("font-medium", !stateRow && "hidden")}>
+								<TableCell className={cn("font-medium", !stateColumn && "hidden")}>
 									<div className="flex gap-1">
 										<IconState className={cn("hidden size-4 ml-2", state === "Solved" && "flex")} />
 									</div>
 								</TableCell>
-								<TableCell className={cn(!levelRow && "hidden")}>{level}</TableCell>
-								<TableCell className={cn(!nameRow && "hidden")}>
+								<TableCell className={cn(!levelColumn && "hidden")}>{level}</TableCell>
+								<TableCell className={cn(!nameColumn && "hidden")}>
 									<div className="max-w-52 md:max-w-full truncate">{name}</div>
 								</TableCell>
-								<TableCell className={cn(!topicRow && "hidden")}>{topic}</TableCell>
-								<TableCell className={cn("flex justify-end", !starRow && "hidden")}>
+								<TableCell className={cn(!topicColumn && "hidden")}>{topic}</TableCell>
+								<TableCell className={cn("flex justify-end", !starColumn && "hidden")}>
 									<div className="w-10 flex gap-1">
 										<OneStar />
 										{star}

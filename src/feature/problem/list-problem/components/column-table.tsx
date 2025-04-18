@@ -12,7 +12,7 @@ import {Check, Menu} from "lucide-react";
 
 export default function ColumnTable() {
 	const {
-		config: {stateRow, levelRow, nameRow, topicRow, starRow},
+		config: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
 		setConfig,
 	} = useTableProblem();
 	return (
@@ -23,25 +23,35 @@ export default function ColumnTable() {
 				</div>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side="right">
-				<DropdownMenuItem className=" relative" onClick={() => setConfig({stateRow: !stateRow})}>
+				<DropdownMenuItem
+					className=" relative"
+					onClick={() => setConfig({stateColumn: !stateColumn})}>
 					<span>State</span>
-					<Check className={cn("hidden absolute right-2", stateRow && "flex")} />
+					<Check className={cn("hidden absolute right-2", stateColumn && "flex")} />
 				</DropdownMenuItem>
-				<DropdownMenuItem className=" relative" onClick={() => setConfig({levelRow: !levelRow})}>
+				<DropdownMenuItem
+					className=" relative"
+					onClick={() => setConfig({levelColumn: !levelColumn})}>
 					<span>Level</span>
-					<Check className={cn("hidden absolute right-2", levelRow && "flex")} />
+					<Check className={cn("hidden absolute right-2", levelColumn && "flex")} />
 				</DropdownMenuItem>
-				<DropdownMenuItem className=" relative" onClick={() => setConfig({nameRow: !nameRow})}>
+				<DropdownMenuItem
+					className=" relative"
+					onClick={() => setConfig({nameColumn: !nameColumn})}>
 					<span>Name</span>
-					<Check className={cn("hidden absolute right-2", nameRow && "flex")} />
+					<Check className={cn("hidden absolute right-2", nameColumn && "flex")} />
 				</DropdownMenuItem>
-				<DropdownMenuItem className=" relative" onClick={() => setConfig({topicRow: !topicRow})}>
+				<DropdownMenuItem
+					className=" relative"
+					onClick={() => setConfig({topicColumn: !topicColumn})}>
 					<span>Topic</span>
-					<Check className={cn("hidden absolute right-2", topicRow && "flex")} />
+					<Check className={cn("hidden absolute right-2", topicColumn && "flex")} />
 				</DropdownMenuItem>
-				<DropdownMenuItem className=" relative" onClick={() => setConfig({starRow: !starRow})}>
+				<DropdownMenuItem
+					className=" relative"
+					onClick={() => setConfig({starColumn: !starColumn})}>
 					<span>Star</span>
-					<Check className={cn("hidden absolute right-2", starRow && "flex")} />
+					<Check className={cn("hidden absolute right-2", starColumn && "flex")} />
 				</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
