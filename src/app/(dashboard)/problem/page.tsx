@@ -1,24 +1,14 @@
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+"use client";
+
+import ContentProblem from "@/feature/problem/content/content-problem";
+import {ProblemStoreProvider} from "@/providers/problem-store-provider";
 
 export default function ProblemPage() {
 	return (
-		<div className="w-full px-4 pt-8 gap-10">
-			<Select>
-				<SelectTrigger className="w-[180px]">
-					<SelectValue placeholder="Theme" />
-				</SelectTrigger>
-				<SelectContent>
-					<SelectItem value="light">Light</SelectItem>
-					<SelectItem value="dark">Dark</SelectItem>
-					<SelectItem value="system">System</SelectItem>
-				</SelectContent>
-			</Select>
-		</div>
+		<ProblemStoreProvider>
+			<div className="w-full px-1 sm:px-12 pt-8">
+				<ContentProblem />
+			</div>
+		</ProblemStoreProvider>
 	);
 }

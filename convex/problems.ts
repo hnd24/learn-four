@@ -31,7 +31,7 @@ export const getUserProblems = query({
 export const getProblems = query({
 	args: {
 		paginationOpts: paginationOptsValidator,
-		type: v.optional(v.string()),
+		topic: v.optional(v.string()),
 		difficultyLevel: v.optional(v.number()),
 		star: v.optional(star),
 		search: v.optional(v.string()),
@@ -49,10 +49,10 @@ export const getProblems = query({
 				.filter(q => q.eq(q.field("star"), args.star))
 				.order("desc")
 				.paginate(args.paginationOpts);
-		} else if (args.type) {
+		} else if (args.topic) {
 			return await ctx.db
 				.query("problems")
-				.filter(q => q.eq(q.field("type"), args.type))
+				.filter(q => q.eq(q.field("topic"), args.topic))
 				.order("desc")
 				.paginate(args.paginationOpts);
 		} else if (args.search) {
@@ -60,27 +60,27 @@ export const getProblems = query({
 				.query("problems")
 				.withSearchIndex("by_name", q => q.search("name", args.search!))
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.difficultyLevel) {
+		} else if (args.topic && args.difficultyLevel) {
 			return await ctx.db
 				.query("problems")
 				.filter(q =>
 					q.and(
-						q.eq(q.field("type"), args.type),
+						q.eq(q.field("topic"), args.topic),
 						q.eq(q.field("difficultyLevel"), args.difficultyLevel),
 					),
 				)
 				.order("desc")
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.star) {
+		} else if (args.topic && args.star) {
 			return await ctx.db
 				.query("problems")
-				.filter(q => q.and(q.eq(q.field("type"), args.type), q.eq(q.field("star"), args.star)))
+				.filter(q => q.and(q.eq(q.field("topic"), args.topic), q.eq(q.field("star"), args.star)))
 				.order("desc")
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.search) {
+		} else if (args.topic && args.search) {
 			return await ctx.db
 				.query("problems")
-				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("type", args.type))
+				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("topic", args.topic))
 				.paginate(args.paginationOpts);
 		} else if (args.difficultyLevel && args.star) {
 			return await ctx.db
@@ -105,28 +105,28 @@ export const getProblems = query({
 				.withSearchIndex("by_name", q => q.search("name", args.search!))
 				.filter(q => q.eq(q.field("star"), args.star))
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.difficultyLevel && args.star) {
+		} else if (args.topic && args.difficultyLevel && args.star) {
 			return await ctx.db
 				.query("problems")
 				.filter(q =>
 					q.and(
-						q.eq(q.field("type"), args.type),
+						q.eq(q.field("topic"), args.topic),
 						q.eq(q.field("difficultyLevel"), args.difficultyLevel),
 						q.eq(q.field("star"), args.star),
 					),
 				)
 				.order("desc")
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.difficultyLevel && args.search) {
+		} else if (args.topic && args.difficultyLevel && args.search) {
 			return await ctx.db
 				.query("problems")
-				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("type", args.type))
+				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("topic", args.topic))
 				.filter(q => q.eq(q.field("difficultyLevel"), args.difficultyLevel))
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.star && args.search) {
+		} else if (args.topic && args.star && args.search) {
 			return await ctx.db
 				.query("problems")
-				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("type", args.type))
+				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("topic", args.topic))
 				.filter(q => q.eq(q.field("star"), args.star))
 				.paginate(args.paginationOpts);
 		} else if (args.difficultyLevel && args.star && args.search) {
@@ -140,10 +140,10 @@ export const getProblems = query({
 					),
 				)
 				.paginate(args.paginationOpts);
-		} else if (args.type && args.difficultyLevel && args.star && args.search) {
+		} else if (args.topic && args.difficultyLevel && args.star && args.search) {
 			return await ctx.db
 				.query("problems")
-				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("type", args.type))
+				.withSearchIndex("by_name", q => q.search("name", args.search!).eq("topic", args.topic))
 				.filter(q =>
 					q.and(
 						q.eq(q.field("difficultyLevel"), args.difficultyLevel),
@@ -198,7 +198,6 @@ export const createProblem = mutation({
 			difficultyLevel: args.difficultyLevel,
 			statusProblem: args.statusProblem,
 			authorId: user._id,
-			authorName: user.name!,
 		});
 
 		await ctx.db.insert("problemContents", {

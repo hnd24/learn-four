@@ -1,19 +1,17 @@
 "use client";
 
+import {Skeleton} from "@/components/ui/skeleton";
 import {defaultBanner} from "@/data";
 import {useExecuteCourse} from "@/hook/use-execute-course";
 import {cn} from "@/lib/utils";
 import {useCourseStore} from "@/providers/course-store-provider";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";
-import {Skeleton} from "./ui/skeleton";
 
 export default function Carousel() {
 	const {
 		config: {loading},
-		setConfig,
 	} = useExecuteCourse();
-	const pending = true;
 	const {courses} = useCourseStore(state => state);
 	const [current, setCurrent] = useState(1); // start from 1 to match the extendedImages array
 	const carouselRef = useRef<HTMLDivElement>(null);
@@ -95,20 +93,20 @@ export default function Carousel() {
 							className="flex h-full transition-transform duration-500 "
 							style={{transform: `translateX(-${current * 100}%)`}}
 							onTransitionEnd={handleTransitionEnd}>
-							{extendedListItem.map((item, index) => (
+							{extendedListItem.map(({background, language, description, logoLanguage}, index) => (
 								<div key={index} className="w-full h-full flex-shrink-0">
-									<div className={cn("w-full h-full bg-gradient-to-r ", item.background)}>
+									<div className={cn("w-full h-full bg-gradient-to-r ", background)}>
 										<div className="h-full w-full flex p-4 md:py-8 md:px-16  justify-between ">
 											<div className="flex flex-col justify-center gap-3 h-full w-full lg:max-w-6/12 font-bold">
 												<span className="text-4xl md:text-5xl text-white text-shadow">
-													{item.language}
+													{language}
 												</span>
 												<div className="flex flex-col text-md md:text-lg text-gray-100 text-shadow">
-													<span>{item.description}</span>
+													<span>{description}</span>
 												</div>
 											</div>
 											<Image
-												src={item.logoLanguage ?? ""}
+												src={logoLanguage ?? ""}
 												alt="programer"
 												height={300}
 												width={300}

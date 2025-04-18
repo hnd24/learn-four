@@ -108,16 +108,15 @@ export default defineSchema({
 	problems: defineTable({
 		name: v.string(),
 		star: v.optional(star),
-		type: v.optional(v.string()),
+		topic: v.optional(v.string()),
 		difficultyLevel: v.number(),
 		statusProblem: statusProblem,
 		authorId: v.string(),
-		authorName: v.string(),
 	})
 		.index("by_authorId", ["authorId"])
 		.searchIndex("by_name", {
 			searchField: "name",
-			filterFields: ["type"],
+			filterFields: ["topic"],
 		}),
 
 	problemContents: defineTable({

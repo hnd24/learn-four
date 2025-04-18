@@ -1,28 +1,16 @@
 "use client";
 
 import {Skeleton} from "@/components/ui/skeleton";
-import {courseData} from "@/data";
 import {useExecuteCourse} from "@/hook/use-execute-course";
 import {useCourseStore} from "@/providers/course-store-provider";
-import {useEffect} from "react";
 import ItemCourse from "./components/item-course";
 
 export default function ListCourse() {
-	const {courses, changeCoursesState} = useCourseStore(state => state);
+	const {courses} = useCourseStore(state => state);
 	const {
 		config: {loading},
-		setConfig,
 	} = useExecuteCourse();
-	const pending = true;
-	const courseData1 = 2;
 	const numberCourse = Array.from({length: 3}, (_, i) => i);
-
-	useEffect(() => {
-		changeCoursesState(courseData);
-		courses.map(item => {
-			console.table(item);
-		});
-	}, [courseData1]);
 
 	return (
 		<div className="h-full w-full border border-gray-100 p-4 md:p-8 gap-4 rounded-lg bg-white shadow-xl flex flex-col">

@@ -21,7 +21,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLIC_KEY}>
-			<html lang="en">
+			<html lang="en" suppressHydrationWarning>
 				<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 					<ConvexClientProvider>
 						<NuqsAdapter>{children}</NuqsAdapter>

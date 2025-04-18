@@ -1,6 +1,7 @@
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {StarFillIcon, StarHalfIcon, StarIcon} from "@/icon";
-import {star} from "@/types";
+import {StarFillIcon, StarHalfIcon, StarIcon} from "@/icon/star";
+import {StarType} from "@/types";
+
 import {BookOpen, PersonStanding} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,7 @@ type Props = {
 	language: string;
 	authorImage: string;
 	authorName: string;
-	star: star;
+	star: StarType;
 	lessons: number;
 };
 
@@ -54,7 +55,7 @@ export default function ItemCourse({
 	);
 }
 
-export function ListStar({star = {rating: 5, count: 10}}: {star: star}) {
+export function ListStar({star = {rating: 5, count: 10}}: {star: StarType}) {
 	let listStar: string[] = [];
 	let i = star.rating;
 	while (i > 0) {

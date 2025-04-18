@@ -14,17 +14,20 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@/components/ui/sheet";
-import {ListPage} from "@/constants";
+import {DefaultPage, Language} from "@/constants";
 
 import {cn} from "@/lib/utils";
 import {ArrowBigRight, Menu} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import {useState} from "react";
 import SwitchTheme from "./switch-theme";
 
-export default function SidebarCostume() {
+export default function SheetCostume() {
+	const [language, setLanguage] = useState(Language.english.value);
 	const pathNameCurrent = usePathname();
+
 	return (
 		<Sheet>
 			<SheetTrigger>
@@ -41,22 +44,19 @@ export default function SidebarCostume() {
 				</SheetHeader>
 				<div className="flex flex-col border-t-2 pl-4">
 					<div className="flex flex-col py-2">
-						{ListPage.map((item, index) => {
+						{Object.values(DefaultPage).map(({path, name}, index) => {
 							return (
 								<Link
 									key={index}
-									href={item.path}
+									href={path}
 									className={cn(
 										"flex items-center gap-2 text-xl pb-2 font-semibold  my-2 ",
-										pathNameCurrent === item.path && "text-deepBlue ",
+										pathNameCurrent === path && "text-deepBlue ",
 									)}>
 									<ArrowBigRight
-										className={cn(
-											"text-gray-900",
-											pathNameCurrent === item.path && "text-deepBlue",
-										)}
+										className={cn("text-gray-900", pathNameCurrent === path && "text-deepBlue")}
 									/>
-									<span>{item.name}</span>
+									<span>{name}</span>
 								</Link>
 							);
 						})}
@@ -70,26 +70,22 @@ export default function SidebarCostume() {
 								Language
 							</AccordionTrigger>
 							<AccordionContent className="flex flex-col pl-4 relative">
-								<div
-									className={cn(
-										"flex items-center gap-2 text-xl pb-2 font-semibold  my-2 border-b-2 text-deepBlue border-deepBlue",
-									)}>
-									<Image src={"/images/viet-nam-flag.png"} alt="Việt Nam" height={30} width={30} />
-									<span>Việt Nam</span>
-								</div>
-								<div
-									className={cn(
-										"flex items-center gap-2 text-xl pb-2 font-semibold  my-2 border-b-2 border-gray-300",
-									)}>
-									<Image
-										src={"/images/united-states-flag.png"}
-										alt="United States"
-										height={20}
-										width={20}
-										className="size-fit bg-white rounded-full "
-									/>
-									<span>English</span>
-								</div>
+								{Object.values(Language).map(({value, image, label}, index) => {
+									return (
+										<div
+											onClick={() => {
+												setLanguage(value);
+											}}
+											key={index}
+											className={cn(
+												"flex items-center gap-2 text-xl pb-2 font-semibold  my-2 border-b-2  ",
+												language === value ? "text-deepBlue border-deepBlue" : "border-gray-300",
+											)}>
+											<Image src={image} alt="Việt Nam" height={30} width={30} />
+											<span>{label}</span>
+										</div>
+									);
+								})}
 							</AccordionContent>
 						</AccordionItem>
 					</Accordion>

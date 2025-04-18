@@ -1,3 +1,5 @@
+"use client";
+
 import {
 	Select,
 	SelectContent,
@@ -5,34 +7,28 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
+import {Language} from "@/constants";
 import Image from "next/image";
-
-const listLanguage = [
-	{
-		value: "vietnamese",
-		label: "Việt Nam",
-		image: "/logo/vietnam-icon.svg",
-	},
-	{
-		value: "english",
-		label: "English",
-		image: "/logo/us-icon.svg",
-	},
-];
+import {useState} from "react";
 
 export default function SwitchLanguage() {
+	const [language, setLanguage] = useState(Language.english.value);
 	return (
-		<Select defaultValue="vietnamese" onValueChange={value => console.log(value)}>
+		<Select
+			value={language}
+			onValueChange={value => {
+				setLanguage(value);
+			}}>
 			<SelectTrigger className="min-w-40 w-fit border-2 outline-none">
 				<SelectValue placeholder="Language" />
 			</SelectTrigger>
 			<SelectContent>
-				{listLanguage.map((value, index) => {
+				{Object.values(Language).map(({value, image, label}, index) => {
 					return (
-						<SelectItem key={index} value={value.value}>
+						<SelectItem key={index} value={value}>
 							<div className="flex items-center gap-2">
-								<Image src={value.image} alt={value.label} height={20} width={20} />
-								<span>{value.label}</span>
+								<Image src={image} alt={label} height={20} width={20} />
+								<span>{label}</span>
 							</div>
 						</SelectItem>
 					);

@@ -1,12 +1,12 @@
 "use client";
 import Logo from "@/components/logo";
 import {Button} from "@/components/ui/button";
-import {ListPage} from "@/constants";
+import {DefaultPage} from "@/constants";
 import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
 import {LogIn} from "lucide-react";
 import {usePathname} from "next/navigation";
 import PageLink from "./page-link";
-import SidebarCostume from "./sidebar-costume";
+import SheetCostume from "./sheet-costume";
 import SwitchLanguage from "./switch-language";
 import SwitchTheme from "./switch-theme";
 
@@ -14,19 +14,14 @@ export default function HeaderHome() {
 	const pathNameCurrent = usePathname();
 	return (
 		<div
-			className="w-full h-[76px] px-2 flex items-center justify-between border-2 border-gray-100  shadow-xl
+			className=" w-full h-[76px] bg-white pr-4 flex items-center justify-between border-2 border-gray-100  shadow-xl
 		md:px-4 md:rounded-lg">
 			<div className="flex items-center gap-10 h-full">
 				<Logo />
 				<div className="md:flex hidden items-center justify-center gap-6 h-full">
-					{ListPage.map((page, index) => {
+					{Object.values(DefaultPage).map(({path, name}, index) => {
 						return (
-							<PageLink
-								key={index}
-								pathName={page.path}
-								pathNameCurrent={pathNameCurrent}
-								name={page.name}
-							/>
+							<PageLink key={index} pathName={path} pathNameCurrent={pathNameCurrent} name={name} />
 						);
 					})}
 				</div>
@@ -55,7 +50,7 @@ export default function HeaderHome() {
 					</SignedIn>
 				</div>
 				<div className="flex md:hidden">
-					<SidebarCostume />
+					<SheetCostume />
 				</div>
 			</div>
 		</div>
