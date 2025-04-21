@@ -1,6 +1,6 @@
 import {ConvexError, v} from "convex/values";
 import {MutationCtx, QueryCtx, internalMutation, mutation, query} from "./_generated/server";
-import {activity} from "./schema";
+import {activity, link} from "./schema";
 
 export async function getUser(ctx: QueryCtx | MutationCtx, tokenIdentifier: string) {
 	const user = await ctx.db
@@ -9,7 +9,7 @@ export async function getUser(ctx: QueryCtx | MutationCtx, tokenIdentifier: stri
 		.first();
 
 	if (!user) {
-		return null;
+		throw new ConvexError("User not found");
 	}
 
 	return user;
@@ -23,23 +23,6 @@ export async function deleteUserById(ctx: MutationCtx, userId: string) {
 	// Delete the user
 	await ctx.db.delete(user._id);
 
-	// Delete the role
-	const role = await ctx.db
-		.query("role")
-		.withIndex("by_userId", q => q.eq("userId", userId))
-		.first();
-	if (role) {
-		await ctx.db.delete(role._id);
-	}
-
-	// Delete the activity
-	const activity = await ctx.db
-		.query("activities")
-		.withIndex("by_userId", q => q.eq("userId", userId))
-		.first();
-	if (activity) {
-		await ctx.db.delete(activity._id);
-	}
 	// Delete the userCourse
 	const userCourse = await ctx.db
 		.query("userCourses")
@@ -52,16 +35,49 @@ export async function deleteUserById(ctx: MutationCtx, userId: string) {
 			}),
 		);
 	}
-	// Delete the favoriteProblems
-	const favoriteProblems = await ctx.db
-		.query("favoriteProblems")
+
+	// Delete the userInLesson
+	const userInLesson = await ctx.db
+		.query("userLessons")
 		.withIndex("by_userId", q => q.eq("userId", userId))
 		.collect();
-
-	if (favoriteProblems) {
+	if (userInLesson) {
 		await Promise.all(
-			favoriteProblems.map(async problem => {
+			userInLesson.map(async lesson => {
+				await ctx.db.delete(lesson._id);
+			}),
+		);
+	}
+
+	// Delete the userInProblem
+	const userInProblem = await ctx.db
+		.query("userProblems")
+		.withIndex("by_userId", q => q.eq("userId", userId))
+		.collect();
+	if (userInProblem) {
+		await Promise.all(
+			userInProblem.map(async problem => {
 				await ctx.db.delete(problem._id);
+			}),
+		);
+	}
+
+	// Delete the user'comments
+	const userComments = await ctx.db
+		.query("comments")
+		.withIndex("by_userId", q => q.eq("userId", userId))
+		.collect();
+	if (userComments) {
+		await Promise.all(
+			userComments.map(async comment => {
+				if (comment.CCommentId && comment.CCommentId.length > 0) {
+					await Promise.all(
+						comment.CCommentId.map(async commentId => {
+							await ctx.db.delete(commentId);
+						}),
+					);
+				}
+				await ctx.db.delete(comment._id);
 			}),
 		);
 	}
@@ -87,18 +103,6 @@ export async function deleteUserById(ctx: MutationCtx, userId: string) {
 		await Promise.all(
 			notifiesToUser.map(async notify => {
 				await ctx.db.delete(notify._id);
-			}),
-		);
-	}
-	// Delete the codeOfUserInLesson
-	const codeOfUserInLesson = await ctx.db
-		.query("codeOfUserInLesson")
-		.withIndex("by_userId", q => q.eq("userId", userId))
-		.collect();
-	if (codeOfUserInLesson) {
-		await Promise.all(
-			codeOfUserInLesson.map(async code => {
-				await ctx.db.delete(code._id);
 			}),
 		);
 	}
@@ -133,11 +137,7 @@ export const updateUser = internalMutation({
 export const deleteUser = internalMutation({
 	args: {userId: v.string()},
 	async handler(ctx, args) {
-		const user = await getUser(ctx, args.userId);
-		if (!user) {
-			return;
-		}
-		await ctx.db.delete(user._id);
+		deleteUserById(ctx, args.userId);
 	},
 });
 
@@ -150,59 +150,63 @@ export const getUserProfile = query({
 	},
 });
 
-export const updateUserIntroduction = mutation({
-	args: {userId: v.string(), introduce: v.string()},
-	async handler(ctx, args) {
-		const user = await getUser(ctx, args.userId);
-		if (!user) {
-			throw new ConvexError("User not found");
-		}
-		await ctx.db.patch(user._id, {introduce: args.introduce});
+export const updateUserProfile = mutation({
+	args: {
+		name: v.optional(v.string()),
+		image: v.optional(v.string()),
+		links: v.optional(link),
+		introduce: v.optional(v.string()),
 	},
-});
-
-export const getActivities = query({
-	args: {},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
 			return null;
 		}
-
-		return await ctx.db
-			.query("activities")
-			.withIndex("by_userId", q => q.eq("userId", identity.subject))
-			.first();
-	},
-});
-
-export const changeActivity = mutation({
-	args: {activity: activity},
-	async handler(ctx, args) {
-		const identity = await ctx.auth.getUserIdentity();
-		if (!identity) {
-			return null;
-		}
-		const userActivity = await ctx.db
-			.query("activities")
-			.withIndex("by_userId", q => q.eq("userId", identity.subject))
-			.first();
-
-		const newActivities = (userActivity?.activity || []).map(act => {
-			if (act.day === args.activity.day) {
-				act.level = args.activity.level;
-			}
-			return act;
+		const user = await getUser(ctx, identity.subject);
+		await ctx.db.patch(user._id, {
+			name: args.name,
+			image: args.image,
+			links: args.links,
+			introduce: args.introduce,
 		});
+		return await getUser(ctx, identity.subject);
+	},
+});
 
-		if (userActivity) {
-			await ctx.db.patch(userActivity._id, {activity: newActivities});
-		} else {
-			await ctx.db.insert("activities", {
-				userId: identity.subject,
-				activity: [args.activity],
-			});
+export const addActivityForUser = mutation({
+	args: {
+		activity: activity,
+	},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			return null;
 		}
+		const user = await getUser(ctx, identity.subject);
+		await ctx.db.patch(await user._id, {
+			activities: [...(user.activities || []), args.activity],
+		});
+	},
+});
+
+export const changeActivityOfUser = mutation({
+	args: {
+		activity: activity,
+	},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			return null;
+		}
+		const user = await getUser(ctx, identity.subject);
+		await ctx.db.patch(await user._id, {
+			activities: user.activities?.map(activity => {
+				if (activity.day === args.activity.day) {
+					return args.activity;
+				}
+				return activity;
+			}),
+		});
 	},
 });
 
@@ -214,12 +218,6 @@ export const getMe = query({
 			return null;
 		}
 
-		const user = await getUser(ctx, identity.subject);
-
-		if (!user) {
-			return null;
-		}
-
-		return user;
+		return await getUser(ctx, identity.subject);
 	},
 });

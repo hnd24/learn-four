@@ -4,7 +4,9 @@ import {CourseStoreProvider} from "@/providers/course-store-provider";
 export default function HomePage() {
 	return (
 		<CourseStoreProvider>
-			<ContentHome />
+			<div className="w-full h-full px-4 pt-8 ">
+				<ContentHome />
+			</div>
 		</CourseStoreProvider>
 	);
 }

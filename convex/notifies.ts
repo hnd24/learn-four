@@ -1,9 +1,12 @@
+import {paginationOptsValidator} from "convex/server";
 import {v} from "convex/values";
 import {mutation, query} from "./_generated/server";
 import {processingNotify} from "./schema";
 
 export const getNotifiesToUser = query({
-	args: {},
+	args: {
+		paginationOpts: paginationOptsValidator,
+	},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -13,7 +16,8 @@ export const getNotifiesToUser = query({
 		return await ctx.db
 			.query("notifiesToUser")
 			.withIndex("by_userId", q => q.eq("userId", identity.subject))
-			.first();
+			.order("desc")
+			.paginate(args.paginationOpts);
 	},
 });
 
@@ -28,9 +32,6 @@ export const createNotifyToUser = mutation({
 	args: {
 		topic: v.optional(v.string()),
 		content: v.optional(v.string()),
-		problemId: v.optional(v.id("problems")),
-		problemName: v.optional(v.string()),
-		isSeen: v.boolean(),
 		userId: v.string(),
 	},
 	async handler(ctx, args) {
@@ -48,8 +49,19 @@ export const deleteNotifyToUser = mutation({
 	},
 });
 
+export const deleteNotifiesToUser = mutation({
+	args: {notifiesToUser: v.array(v.id("notifiesToUser"))},
+	async handler(ctx, args) {
+		await Promise.all(
+			args.notifiesToUser.map(async notify => {
+				await ctx.db.delete(notify);
+			}),
+		);
+	},
+});
+
 export const getNotifiesToAdmin = query({
-	args: {},
+	args: {paginationOpts: paginationOptsValidator},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -59,7 +71,8 @@ export const getNotifiesToAdmin = query({
 		return await ctx.db
 			.query("notifiesToAdmin")
 			.withIndex("by_userId", q => q.eq("userId", identity.subject))
-			.first();
+			.order("desc")
+			.paginate(args.paginationOpts);
 	},
 });
 
@@ -72,10 +85,11 @@ export const createNotifyToAdmin = mutation({
 	async handler(ctx, args) {
 		await ctx.db.insert("notifiesToAdmin", {
 			...args,
-			processing: processingNotify.members[0].value,
+			processing: processingNotify.members[0].value, //pending
 		});
 	},
 });
+
 export const changeProcessingNotify = mutation({
 	args: {notifiesToAdmin: v.id("notifiesToAdmin"), isProcessing: processingNotify},
 	async handler(ctx, args) {

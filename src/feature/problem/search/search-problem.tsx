@@ -10,11 +10,11 @@ import SearchTopicProblem from "./components/search-topic-problem";
 
 export default function SearchProblem() {
 	return (
-		<div className="w-full hidden xs:flex flex-col 2xl:flex-row gap-2">
+		<div className="w-full hidden md:flex flex-col 2xl:flex-row gap-2">
 			{/* ************************** */}
 			<div className="flex flex-col xl:flex-row gap-2 ">
-				<div className="flex gap-2 w-full justify-center lg:justify-normal">
-					<div className="hidden xs:flex">
+				<div className="flex gap-2 w-full ">
+					<div className="hidden md:flex">
 						<ColumnTable />
 					</div>
 					<Hint label="Select State" side="top">

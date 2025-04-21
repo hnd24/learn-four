@@ -1,10 +1,14 @@
 import {defineSchema, defineTable} from "convex/server";
 import {v} from "convex/values";
 
-export const processingNotify = v.union(v.literal("pending"), v.literal("processing"));
-export const statusProblem = v.union(
-	v.literal("approved"),
+export const processingNotify = v.union(
 	v.literal("pending"),
+	v.literal("processing"),
+	v.literal("done"),
+);
+export const statusPlace = v.union(
+	v.literal("pending"),
+	v.literal("approved"),
 	v.literal("rejected"),
 );
 export const role = v.union(v.literal("admin"), v.literal("user"));
@@ -22,11 +26,6 @@ export const activity = v.object({
 	level: v.number(),
 });
 
-export const joinedCourse = v.object({
-	courseId: v.id("courses"),
-	lessonCompleted: v.optional(v.array(v.id("lessons"))),
-});
-
 export const example = v.object({
 	input: v.string(),
 	output: v.string(),
@@ -39,11 +38,6 @@ export const testcase = v.object({
 	isHidden: v.optional(v.boolean()),
 });
 
-export const star = v.object({
-	rating: v.number(),
-	count: v.number(),
-});
-
 export default defineSchema({
 	users: defineTable({
 		userId: v.string(),
@@ -52,36 +46,47 @@ export default defineSchema({
 		image: v.optional(v.string()),
 		links: v.optional(link),
 		introduce: v.optional(v.string()),
-	}).index("by_userId", ["userId"]),
-
-	role: defineTable({
-		userId: v.string(),
+		activities: v.optional(v.array(activity)),
+		locked: v.optional(v.boolean()),
 		role: v.optional(role),
-	}).index("by_userId", ["userId"]),
-
-	activities: defineTable({
-		userId: v.string(),
-		activity: v.optional(v.array(activity)),
 	}).index("by_userId", ["userId"]),
 
 	userCourses: defineTable({
 		userId: v.string(),
 		courseId: v.id("courses"),
-		completedLesson: v.optional(v.array(v.id("lessons"))),
 		isCompleted: v.boolean(),
 	})
 		.index("by_userId_courseId", ["userId", "courseId"])
-		.index("by_userId", ["userId"])
-		.index("by_courseId", ["courseId"]),
+		.index("by_userId", ["userId"]),
 
-	favoriteProblems: defineTable({
+	userLessons: defineTable({
 		userId: v.string(),
+		lessonId: v.id("lessons"),
+		isCompleted: v.boolean(),
+		code: v.string(),
+	})
+		.index("by_userId_lessonId", ["userId", "lessonId"])
+		.index("by_userId", ["userId"]),
+
+	userProblems: defineTable({
+		userId: v.string(),
+		state: v.string(),
 		problemId: v.id("problems"),
+		favorite: v.optional(v.boolean()),
+		code: v.string(),
+		isSolved: v.boolean(),
 	})
 		.index("by_userId_problemId", ["userId", "problemId"])
-		.index("by_userId", ["userId"])
-		.index("by_problemId", ["problemId"]),
+		.index("by_userId", ["userId"]),
 
+	/************************************************** */
+	comments: defineTable({
+		content: v.string(),
+		likes: v.optional(v.number()),
+		dislikes: v.optional(v.number()),
+		userId: v.string(),
+		CCommentId: v.optional(v.array(v.id("comments"))),
+	}).index("by_userId", ["userId"]),
 	/************************************************** */
 
 	notifiesToAdmin: defineTable({
@@ -89,63 +94,39 @@ export default defineSchema({
 		problemName: v.string(),
 		userId: v.string(),
 		processing: processingNotify,
-	})
-		.index("by_userId", ["userId"])
-		.index("by_problemId", ["problemId"]),
+	}).index("by_userId", ["userId"]),
 
 	notifiesToUser: defineTable({
 		topic: v.optional(v.string()),
 		content: v.optional(v.string()),
-		problemId: v.optional(v.id("problems")),
-		problemName: v.optional(v.string()),
 		isSeen: v.boolean(),
 		userId: v.string(),
-	})
-		.index("by_userId", ["userId"])
-		.index("by_problemId", ["problemId"]),
+	}).index("by_userId", ["userId"]),
+
 	/************************************************** */
 
 	problems: defineTable({
 		name: v.string(),
-		star: v.optional(star),
+		star: v.number(),
+		level: v.string(),
 		topic: v.optional(v.string()),
-		difficultyLevel: v.number(),
-		statusProblem: statusProblem,
+		content: v.string(),
+		example: v.optional(v.array(example)),
+		structureAnswer: v.string(),
+		testcase: v.array(testcase),
+		status: statusPlace,
 		authorId: v.string(),
 	})
 		.index("by_authorId", ["authorId"])
 		.searchIndex("by_name", {
 			searchField: "name",
-			filterFields: ["topic"],
+			filterFields: ["topic", "level", "status", "star"],
 		}),
-
-	problemContents: defineTable({
-		problemId: v.id("problems"),
-		content: v.string(),
-		example: v.optional(v.array(example)),
-		structureAnswer: v.string(),
-		testcase: v.array(testcase),
-	}).index("by_problemId", ["problemId"]),
 
 	problemComments: defineTable({
 		problemId: v.id("problems"),
-		userId: v.string(),
-		content: v.string(),
-		likes: v.optional(v.number()),
-		dislikes: v.optional(v.number()),
-		commentPId: v.optional(v.id("problemComments")),
-	})
-		.index("by_problemId", ["problemId"])
-		.index("by_commentPId", ["commentPId"]),
-
-	solution: defineTable({
-		userId: v.string(),
-		problemId: v.id("problems"),
-		code: v.string(),
-		isSolved: v.boolean(),
-	})
-		.index("by_userId_problemId", ["userId", "problemId"])
-		.index("by_problemId", ["problemId"]),
+		commentId: v.id("comments"),
+	}).index("by_problemId", ["problemId"]),
 
 	/************************************************** */
 
@@ -155,56 +136,38 @@ export default defineSchema({
 		description: v.string(),
 		background: v.string(),
 		banner: v.string(),
-		star: v.optional(star),
+		star: v.number(),
+		leaner: v.number(),
 		authorId: v.string(),
+		authorName: v.string(),
+		authorImage: v.string(),
 		content: v.string(),
-		lessons: v.array(v.id("lessons")),
+		status: statusPlace,
+		lessons: v.optional(v.array(v.id("lessons"))),
 	}),
 
 	courseComments: defineTable({
 		courseId: v.id("courses"),
-		userId: v.string(),
-		content: v.string(),
-		likes: v.optional(v.number()),
-		dislikes: v.optional(v.number()),
-		commentPId: v.optional(v.id("courseComments")),
-	})
-		.index("by_courseId", ["courseId"])
-		.index("by_commentPId", ["commentPId"]),
+		commentId: v.id("comments"),
+	}).index("by_courseId", ["courseId"]),
 	/************************************************** */
 
 	lessons: defineTable({
 		courseId: v.id("courses"),
 		topic: v.string(),
-		stars: star,
+		name: v.string(),
+		stars: v.number(),
+		leaner: v.number(),
 		difficultlyLevel: v.number(),
-	}).index("by_courseId", ["courseId"]),
-
-	lessonContents: defineTable({
-		lessonId: v.id("lessons"),
 		content: v.string(),
 		structureAnswer: v.string(),
 		example: v.array(example),
+		status: statusPlace,
 		testcase: v.array(testcase),
-	}).index("by_lessonId", ["lessonId"]),
+	}).index("by_courseId", ["courseId"]),
 
 	lessonComments: defineTable({
 		lessonId: v.id("lessons"),
-		userId: v.string(),
-		likes: v.optional(v.number()),
-		dislikes: v.optional(v.number()),
-		content: v.string(),
-		commentPId: v.optional(v.id("lessonComments")),
-	})
-		.index("by_lessonId", ["lessonId"])
-		.index("by_commentPId", ["commentPId"]),
-
-	codeOfUserInLesson: defineTable({
-		userId: v.string(),
-		lessonId: v.id("lessons"),
-		code: v.string(),
-	})
-		.index("by_userId_lessonId", ["userId", "lessonId"])
-		.index("by_lessonId", ["lessonId"])
-		.index("by_userId", ["userId"]),
+		commentId: v.id("comments"),
+	}).index("by_lessonId", ["lessonId"]),
 });

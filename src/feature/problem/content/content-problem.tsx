@@ -25,19 +25,20 @@ export default function ContentProblem() {
 
 	return (
 		<div className="w-full grid grid-cols-12 gap-8">
-			<div className="flex flex-col col-span-full 2xl:col-span-8 gap-2 xs:gap-8">
+			<div className="col-span-full lg:col-span-1  w-full " />
+			<div className="flex flex-col col-span-full lg:col-span-10 gap-2 md:gap-8">
 				<div className="flex gap-2">
-					<div className="flex xs:hidden">
+					<div className="flex md:hidden">
 						<ColumnTable />
 					</div>
-					<div className="xs:hidden">
+					<div className="md:hidden">
 						<SheetSearch />
 					</div>
 					<SearchProblem />
 				</div>
 				<ListProblem />
 			</div>
-			<div className="col-span-full 2xl:col-span-4 bg-amber-400 h-12 w-full "></div>
+			<div className="col-span-full lg:col-span-1   w-full " />
 		</div>
 	);
 }

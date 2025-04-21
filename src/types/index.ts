@@ -58,7 +58,7 @@ export type CourseState = {
 	lessons: number;
 };
 
-export type ProblemState = {
+export type ProblemStateType = {
 	_id: string;
 	state: string;
 	level: string;
@@ -66,3 +66,7 @@ export type ProblemState = {
 	topic: string;
 	star: number;
 };
+
+export type processingNotifyType = "pending" | "processing";
+export type statusPlaceType = "pending" | "approved" | "rejected";
+export type roleType = "admin" | "user";

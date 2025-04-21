@@ -17,7 +17,7 @@ export default function SearchStarProblem() {
 	} = useUploadProblem();
 	return (
 		<Select value={star} onValueChange={value => setConfig({star: value})}>
-			<SelectTrigger className="md:min-w-56 h-9 border-2 border-gray-100 shadow-lg">
+			<SelectTrigger className="w-full md:min-w-60 h-9 border-2 border-gray-100 shadow-lg">
 				<SelectValue placeholder="Star" />
 			</SelectTrigger>
 			<SelectContent className="w-full">

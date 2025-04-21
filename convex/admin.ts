@@ -1,6 +1,5 @@
 import {v} from "convex/values";
 import {mutation, query} from "./_generated/server";
-import {role} from "./schema";
 
 export const confirmAdmin = query({
 	args: {},
@@ -8,37 +7,81 @@ export const confirmAdmin = query({
 		const identity = await ctx.auth.getUserIdentity();
 
 		if (!identity) {
-			return null;
+			throw new Error("Not authenticated");
 		}
 
 		const isAdmin = await ctx.db
-			.query("role")
+			.query("users")
 			.withIndex("by_userId", q => q.eq("userId", identity.subject))
 			.first();
-
-		return isAdmin?.role === role.members[0].value;
+		if (isAdmin) {
+			return true;
+		}
+		return false;
 	},
 });
 
 export const addAdmin = mutation({
 	args: {userId: v.string()},
 	async handler(ctx, args) {
-		await ctx.db.insert("role", {
-			userId: args.userId,
-			role: role.members[0].value,
-		});
+		const user = await ctx.db
+			.query("users")
+			.withIndex("by_userId", q => q.eq("userId", args.userId))
+			.first();
+		if (!user) {
+			throw new Error("User not found");
+		}
+		if (user?.role === "admin") {
+			throw new Error("User is already an admin");
+		}
+		if (user?.locked) {
+			throw new Error("User is locked");
+		}
+
+		if (user) {
+			await ctx.db.patch(user._id, {
+				role: "admin",
+			});
+		}
+	},
+});
+
+export const lockUser = mutation({
+	args: {userId: v.string()},
+	async handler(ctx, args) {
+		const user = await ctx.db
+			.query("users")
+			.withIndex("by_userId", q => q.eq("userId", args.userId))
+			.first();
+		if (!user) {
+			throw new Error("User not found");
+		}
+		if (user?.locked) {
+			throw new Error("User is already locked");
+		}
+		if (user?.role === "admin") {
+			throw new Error("User is admin");
+		}
+
+		if (user) {
+			await ctx.db.patch(user._id, {
+				locked: true,
+			});
+		}
 	},
 });
 
 export const removeAdmin = mutation({
 	args: {userId: v.string()},
 	async handler(ctx, args) {
-		const role = await ctx.db
-			.query("role")
+		const user = await ctx.db
+			.query("users")
 			.withIndex("by_userId", q => q.eq("userId", args.userId))
 			.first();
-		if (role) {
-			await ctx.db.delete(role._id);
+		if (user) {
+			await ctx.db.patch(user._id, {
+				role: "user",
+			});
 		}
 	},
 });

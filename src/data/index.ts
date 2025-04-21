@@ -13,6 +13,7 @@ export const courseData = [
 			rating: 4.1,
 			count: 120,
 		},
+		status: "approved",
 		lessons: 10,
 	},
 	{
@@ -29,6 +30,7 @@ export const courseData = [
 			rating: 4.8,
 			count: 100,
 		},
+		status: "approved",
 		lessons: 12,
 	},
 	{
@@ -45,6 +47,7 @@ export const courseData = [
 			rating: 3.9,
 			count: 150,
 		},
+		status: "rejected",
 		lessons: 15,
 	},
 	{
@@ -61,6 +64,7 @@ export const courseData = [
 			rating: 2.0,
 			count: 130,
 		},
+		status: "pending",
 		lessons: 11,
 	},
 	{
@@ -77,6 +81,7 @@ export const courseData = [
 			rating: 4.5,
 			count: 140,
 		},
+		status: "pending",
 		lessons: 13,
 	},
 ];
@@ -94,7 +99,7 @@ export const defaultBanner = [
 
 export const problemData = [
 	{
-		_id: "1213",
+		_id: "1234",
 		state: "Solved",
 		level: "Easy",
 		name: "Sum of Two Numbers",
@@ -102,7 +107,7 @@ export const problemData = [
 		star: 4.5,
 	},
 	{
-		_id: "4567",
+		_id: "1234",
 		state: "Unsolved",
 		level: "Medium",
 		name: "Two Sum",
@@ -110,7 +115,7 @@ export const problemData = [
 		star: 5,
 	},
 	{
-		_id: "8910",
+		_id: "1234",
 		state: "Solved",
 		level: "Hard",
 		name: "Longest Substring Without Repeating Characters",
@@ -118,7 +123,7 @@ export const problemData = [
 		star: 3,
 	},
 	{
-		_id: "1112",
+		_id: "1234",
 		state: "Unsolved",
 		level: "Easy",
 		name: "Valid Parentheses",
@@ -126,7 +131,7 @@ export const problemData = [
 		star: 3.5,
 	},
 	{
-		_id: "1314",
+		_id: "1234",
 		state: "Solved",
 		level: "Medium",
 		name: "3Sum",
@@ -134,7 +139,7 @@ export const problemData = [
 		star: 4,
 	},
 	{
-		_id: "1516",
+		_id: "1234",
 		state: "Unsolved",
 		level: "Hard",
 		name: "Median of Two Sorted Arrays",
@@ -142,7 +147,7 @@ export const problemData = [
 		star: 5,
 	},
 	{
-		_id: "1718",
+		_id: "1234",
 		state: "Solved",
 		level: "Easy",
 		name: "Reverse Integer",
@@ -150,7 +155,7 @@ export const problemData = [
 		star: 2.5,
 	},
 	{
-		_id: "1920",
+		_id: "1234",
 		state: "Unsolved",
 		level: "Medium",
 		name: "Longest Palindromic Substring",
@@ -158,7 +163,7 @@ export const problemData = [
 		star: 4.5,
 	},
 	{
-		_id: "2122",
+		_id: "1234",
 		state: "Solved",
 		level: "Hard",
 		name: "Container With Most Water",
@@ -166,7 +171,7 @@ export const problemData = [
 		star: 3.5,
 	},
 	{
-		_id: "2324",
+		_id: "1234",
 		state: "Unsolved",
 		level: "Easy",
 		name: "Roman to Integer",

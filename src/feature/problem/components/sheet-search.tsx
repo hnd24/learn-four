@@ -19,13 +19,20 @@ import {Input} from "@/components/ui/input";
 import {DifficultLevelProblem, StarProblem, StateProblem, TopicProblem} from "@/constants";
 import {useUploadProblem} from "@/hook/use-upload-problem";
 import {cn} from "@/lib/utils";
+import {useUser} from "@clerk/nextjs";
 import {useState} from "react";
 import SearchButton from "./search-button";
 
 export default function SheetSearch() {
+	const {isSignedIn} = useUser();
 	const [open, setOpen] = useState(false);
 	const {
-		config: {topic, difficultyLevel, star, state},
+		config: {
+			topic: topicConfig,
+			difficultyLevel: levelConfig,
+			star: starConfig,
+			state: stateConfig,
+		},
 		setConfig,
 	} = useUploadProblem();
 	return (
@@ -73,7 +80,7 @@ export default function SheetSearch() {
 										key={index}
 										className={cn(
 											"pl-4 py-1 font-sans text-base cursor-pointer rounded-lg",
-											topic === value && "text-deepBlue bg-[#e3eefb]",
+											topicConfig === value && "text-deepBlue bg-[#e3eefb]",
 										)}>
 										{value}
 									</div>
@@ -94,7 +101,7 @@ export default function SheetSearch() {
 											onClick={() => setConfig({difficultyLevel: value + ""})}
 											className={cn(
 												"flex items-center gap-2 font-sans text-base pl-4 py-1 cursor-pointer rounded-lg",
-												difficultyLevel === value + "" && "text-deepBlue bg-[#e3eefb]",
+												levelConfig === value + "" && "text-deepBlue bg-[#e3eefb]",
 											)}>
 											<div className="flex items-center gap-2">
 												<Icon />
@@ -105,31 +112,9 @@ export default function SheetSearch() {
 								})}
 							</AccordionContent>
 						</AccordionItem>
-						{/* Search State Problem */}
-						<AccordionItem value="item-4" className="px-4">
-							<AccordionTrigger>
-								<span className="text-lg font-semibold">State Level Problem</span>
-							</AccordionTrigger>
-							<AccordionContent>
-								{Object.values(StateProblem).map(({icon, value}, index) => {
-									const Icon = icon;
-									return (
-										<div key={index} onClick={() => setConfig({state: value})}>
-											<div
-												className={cn(
-													"flex items-center gap-2 font-sans text-base pl-4 py-1 cursor-pointer rounded-lg",
-													state === value + "" && "text-deepBlue bg-[#e3eefb]",
-												)}>
-												<Icon className="size-4" />
-												<span>{value}</span>
-											</div>
-										</div>
-									);
-								})}
-							</AccordionContent>
-						</AccordionItem>
+
 						{/* Search Star Problem */}
-						<AccordionItem value="item-5" className="px-4">
+						<AccordionItem value="item-4" className="px-4">
 							<AccordionTrigger>
 								<span className="text-lg font-semibold">Star Problem</span>
 							</AccordionTrigger>
@@ -142,10 +127,33 @@ export default function SheetSearch() {
 											onClick={() => setConfig({star: value})}
 											className={cn(
 												"flex items-center gap-2 font-sans text-base pl-4 py-1 cursor-pointer rounded-lg",
-												star === value && "text-deepBlue bg-[#e3eefb]",
+												starConfig === value && "text-deepBlue bg-[#e3eefb]",
 											)}>
 											<Icon />
 											<span>{star}</span>
+										</div>
+									);
+								})}
+							</AccordionContent>
+						</AccordionItem>
+						{/* Search State Problem */}
+						<AccordionItem value="item-5" className="px-4" disabled={!isSignedIn}>
+							<AccordionTrigger>
+								<span className="text-lg font-semibold">State Level Problem</span>
+							</AccordionTrigger>
+							<AccordionContent>
+								{Object.values(StateProblem).map(({icon, value}, index) => {
+									const Icon = icon;
+									return (
+										<div key={index} onClick={() => setConfig({state: value})}>
+											<div
+												className={cn(
+													"flex items-center gap-2 font-sans text-base pl-4 py-1 cursor-pointer rounded-lg",
+													stateConfig === value + "" && "text-deepBlue bg-[#e3eefb]",
+												)}>
+												<Icon className="size-4" />
+												<span>{value}</span>
+											</div>
 										</div>
 									);
 								})}
