@@ -15,7 +15,7 @@ export const role = v.union(v.literal("admin"), v.literal("user"));
 
 export const link = v.object({
 	facebook: v.optional(v.string()),
-	linkIn: v.optional(v.string()),
+	linkedIn: v.optional(v.string()),
 	gitHub: v.optional(v.string()),
 	youtube: v.optional(v.string()),
 	phone: v.optional(v.string()),
@@ -158,7 +158,7 @@ export default defineSchema({
 		name: v.string(),
 		stars: v.number(),
 		leaner: v.number(),
-		difficultlyLevel: v.number(),
+		level: v.number(),
 		content: v.string(),
 		structureAnswer: v.string(),
 		example: v.array(example),

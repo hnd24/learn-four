@@ -2,8 +2,8 @@ import {AllLevelIcon, EasyLevelIcon, HardLevelIcon, MediumLevelIcon} from "@/ico
 import {FiveStar, FourStar, OneStar, ThreeStar, TwoStar} from "@/icon/star";
 import {SolvedIcon, UnsolvedIcon} from "@/icon/state-icon";
 import {
-	DifficultLevelProblemType,
 	LanguageType,
+	LevelType,
 	StarProblemType,
 	StateProblemType,
 	TopicProblemType,
@@ -27,14 +27,14 @@ export const DefaultPage: Record<PageEnum, PageType> = {
 	About: {name: "About", path: "/about"},
 };
 
-export enum DifficultLevelProblemEnum {
+export enum LevelEnum {
 	All = "All",
 	Easy = "Easy",
 	Medium = "Medium",
 	Hard = "Hard",
 }
 
-export const DifficultLevelProblem: Record<DifficultLevelProblemEnum, DifficultLevelProblemType> = {
+export const Level: Record<LevelEnum, LevelType> = {
 	All: {
 		label: "All",
 		value: 0,

@@ -9,15 +9,19 @@ import {
 	TableHeader,
 	TableRow,
 } from "@/components/ui/table";
-import {DifficultLevelProblem, StateProblem} from "@/constants";
+import {Level, StateProblem} from "@/constants";
 import {useTableProblem} from "@/hook/use-table-porblem";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
 import {useProblemStore} from "@/providers/problem-store-provider";
+import {useUserStore} from "@/providers/user-store-provider";
 import {useRouter} from "next/navigation";
 import LoadMoreButton from "./components/load-more-button";
 
 export default function ListProblem() {
+	const {
+		user: {isSignedIn},
+	} = useUserStore(state => state);
 	const {problems: data} = useProblemStore(state => state);
 	const route = useRouter();
 	const {
@@ -31,7 +35,7 @@ export default function ListProblem() {
 				</TableCaption>
 				<TableHeader>
 					<TableRow>
-						<TableHead className={cn(!stateColumn && "hidden")}>State</TableHead>
+						<TableHead className={cn((!stateColumn || !isSignedIn) && "hidden")}>State</TableHead>
 						<TableHead className={cn(!levelColumn && "hidden")}>Level</TableHead>
 						<TableHead className={cn(!nameColumn && "hidden")}>Name</TableHead>
 						<TableHead className={cn(!topicColumn && "hidden")}>Topic</TableHead>
@@ -40,8 +44,7 @@ export default function ListProblem() {
 				</TableHeader>
 				<TableBody>
 					{data.map(({_id: idProblem, state, level, name, topic, star}, index) => {
-						const IconLevel =
-							DifficultLevelProblem[level as keyof typeof DifficultLevelProblem].icon;
+						const IconLevel = Level[level as keyof typeof Level].icon;
 						const IconState = StateProblem[state as keyof typeof StateProblem].icon;
 						return (
 							<TableRow
@@ -53,7 +56,7 @@ export default function ListProblem() {
 									"hover:bg-gray-200 cursor-pointer",
 									index % 2 === 0 && "bg-gray-100",
 								)}>
-								<TableCell className={cn("font-medium", !stateColumn && "hidden")}>
+								<TableCell className={cn("font-medium", (!stateColumn || !isSignedIn) && "hidden")}>
 									<div className="flex gap-1">
 										<IconState className={cn("hidden size-4 ml-2", state === "Solved" && "flex")} />
 									</div>

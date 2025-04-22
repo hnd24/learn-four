@@ -1,9 +1,9 @@
-import {DifficultLevelProblem, StarProblem, StateProblem, TopicProblem} from "@/constants";
+import {Level, StarProblem, StateProblem, TopicProblem} from "@/constants";
 import {parseAsBoolean, parseAsString, useQueryStates} from "nuqs";
 
 export const useUploadProblem = () => {
 	const [config, setConfig] = useQueryStates({
-		difficultyLevel: parseAsString.withDefault(DifficultLevelProblem.All.value + ""),
+		level: parseAsString.withDefault(Level.All.value + ""),
 		star: parseAsString.withDefault(StarProblem.FiveStar.value),
 		state: parseAsString.withDefault(StateProblem.All.value),
 		searchName: parseAsString.withDefault(""),

@@ -1,3 +1,4 @@
+"use client";
 import {createProblemStore, ProblemStore} from "@/store/problem-store";
 import {createContext, ReactNode, useContext, useRef} from "react";
 import {useStore} from "zustand";

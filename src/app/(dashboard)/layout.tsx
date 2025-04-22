@@ -1,4 +1,5 @@
 import Header from "@/components/header";
+import {UserStoreProvider} from "@/providers/user-store-provider";
 import type {Metadata} from "next";
 
 export const metadata: Metadata = {
@@ -15,10 +16,12 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="md:px-2 w-full flex flex-col items-center justify-center">
-			<Header />
+		<UserStoreProvider>
+			<div className="md:px-2 w-full flex flex-col items-center justify-center">
+				<Header />
 
-			<div className=" w-full flex flex-col items-center justify-center">{children}</div>
-		</div>
+				<div className=" w-full flex flex-col items-center justify-center">{children}</div>
+			</div>
+		</UserStoreProvider>
 	);
 }

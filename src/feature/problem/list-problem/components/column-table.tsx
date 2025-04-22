@@ -8,9 +8,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {useTableProblem} from "@/hook/use-table-porblem";
 import {cn} from "@/lib/utils";
+import {useUserStore} from "@/providers/user-store-provider";
+import {useUser} from "@clerk/nextjs";
 import {Check, Menu} from "lucide-react";
 
 export default function ColumnTable() {
+	const {
+		user: {isSignedIn},
+	} = useUserStore(state => state);
 	const {
 		config: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
 		setConfig,
@@ -24,7 +29,7 @@ export default function ColumnTable() {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side="right">
 				<DropdownMenuItem
-					className=" relative"
+					className={cn(" relative", !isSignedIn && "hidden")}
 					onClick={() => setConfig({stateColumn: !stateColumn})}>
 					<span>State</span>
 					<Check className={cn("hidden absolute right-2", stateColumn && "flex")} />

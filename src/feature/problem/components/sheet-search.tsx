@@ -16,23 +16,20 @@ import {
 } from "@/components/ui/sheet";
 
 import {Input} from "@/components/ui/input";
-import {DifficultLevelProblem, StarProblem, StateProblem, TopicProblem} from "@/constants";
+import {Level, StarProblem, StateProblem, TopicProblem} from "@/constants";
 import {useUploadProblem} from "@/hook/use-upload-problem";
 import {cn} from "@/lib/utils";
-import {useUser} from "@clerk/nextjs";
+import {useUserStore} from "@/providers/user-store-provider";
 import {useState} from "react";
 import SearchButton from "./search-button";
 
 export default function SheetSearch() {
-	const {isSignedIn} = useUser();
+	const {
+		user: {isSignedIn},
+	} = useUserStore(state => state);
 	const [open, setOpen] = useState(false);
 	const {
-		config: {
-			topic: topicConfig,
-			difficultyLevel: levelConfig,
-			star: starConfig,
-			state: stateConfig,
-		},
+		config: {topic: topicConfig, level: levelConfig, star: starConfig, state: stateConfig},
 		setConfig,
 	} = useUploadProblem();
 	return (
@@ -93,12 +90,12 @@ export default function SheetSearch() {
 								<span className="text-lg font-semibold">Difficulty Level Problem</span>
 							</AccordionTrigger>
 							<AccordionContent>
-								{Object.values(DifficultLevelProblem).map(({icon, value, label}, index) => {
+								{Object.values(Level).map(({icon, value, label}, index) => {
 									const Icon = icon;
 									return (
 										<div
 											key={index}
-											onClick={() => setConfig({difficultyLevel: value + ""})}
+											onClick={() => setConfig({level: value + ""})}
 											className={cn(
 												"flex items-center gap-2 font-sans text-base pl-4 py-1 cursor-pointer rounded-lg",
 												levelConfig === value + "" && "text-deepBlue bg-[#e3eefb]",

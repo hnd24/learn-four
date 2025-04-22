@@ -128,7 +128,7 @@ export const getCourseContentById = query({
 								_id: lesson._id,
 								topic: lesson.topic,
 								stars: lesson.stars,
-								difficultlyLevel: lesson.difficultlyLevel,
+								level: lesson.level,
 							};
 						}
 					}),

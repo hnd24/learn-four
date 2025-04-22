@@ -8,10 +8,12 @@ import {
 } from "@/components/ui/select";
 import {StateProblem} from "@/constants";
 import {useUploadProblem} from "@/hook/use-upload-problem";
-import {useUser} from "@clerk/nextjs";
+import {useUserStore} from "@/providers/user-store-provider";
 
 export default function SearchStateProblem() {
-	const {isSignedIn} = useUser();
+	const {
+		user: {isSignedIn},
+	} = useUserStore(state => state);
 	const {
 		config: {state},
 		setConfig,

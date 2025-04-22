@@ -24,7 +24,7 @@ export type StarType = {
 	count: number;
 };
 
-export type DifficultLevelProblemType = {
+export type LevelType = {
 	value: number;
 	label: string;
 	icon: ComponentType<{className?: string}>;
@@ -67,6 +67,30 @@ export type ProblemStateType = {
 	star: number;
 };
 
+export type UserStateType = {
+	userId: string;
+	name: string;
+	email: string;
+	image: string;
+	link?: LinkType;
+	introduction?: string;
+	activities?: ActivityType[];
+	locked?: boolean;
+	role?: roleType;
+	isSignedIn?: boolean;
+};
+
+export type LinkType = {
+	facebook?: string;
+	linkedIn?: string;
+	github?: string;
+	youtube?: string;
+	phone?: string;
+};
+export type ActivityType = {
+	day: string;
+	level: number;
+};
 export type processingNotifyType = "pending" | "processing";
 export type statusPlaceType = "pending" | "approved" | "rejected";
 export type roleType = "admin" | "user";

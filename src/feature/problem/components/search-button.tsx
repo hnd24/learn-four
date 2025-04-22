@@ -10,16 +10,16 @@ type Props = {
 
 export default function SearchButton({className}: Props) {
 	const {
-		config: {topic, difficultyLevel, star, state, searchName},
+		config: {topic, level, star, state, searchName},
 	} = useUploadProblem();
 	const {getProblems, loading} = useGetProblems();
 
 	const handleSearch = () => {
 		if (searchName) {
-			getProblems({topic, difficultyLevel, star, state, searchName});
+			getProblems({topic, level, star, state, searchName});
 			return;
 		}
-		getProblems({topic, difficultyLevel, star, state});
+		getProblems({topic, level, star, state});
 		return;
 	};
 	return (

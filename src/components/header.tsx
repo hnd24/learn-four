@@ -2,9 +2,12 @@
 import Logo from "@/components/logo";
 import {Button} from "@/components/ui/button";
 import {DefaultPage} from "@/constants";
-import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
+import {useGetUser} from "@/data/user";
+import {useUserStore} from "@/providers/user-store-provider";
+import {SignedIn, SignedOut, SignInButton, UserButton, useUser} from "@clerk/nextjs";
 import {LogIn} from "lucide-react";
 import {usePathname} from "next/navigation";
+import {useEffect} from "react";
 import PageLink from "./page-link";
 import SheetCostume from "./sheet-costume";
 import SwitchLanguage from "./switch-language";
@@ -12,6 +15,16 @@ import SwitchTheme from "./switch-theme";
 
 export default function HeaderHome() {
 	const pathNameCurrent = usePathname();
+	const {isSignedIn} = useUser();
+	const {getUser} = useGetUser();
+	const {changeUserState} = useUserStore(state => state);
+	useEffect(() => {
+		if (isSignedIn) {
+			changeUserState(getUser());
+		}
+		changeUserState({});
+		changeUserState({isSignedIn});
+	}, [isSignedIn]);
 	return (
 		<div
 			className=" w-full h-[76px] bg-white pr-4 flex items-center justify-between border-2 border-gray-100  shadow-xl

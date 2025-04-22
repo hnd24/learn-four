@@ -7,22 +7,22 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import {DifficultLevelProblem} from "@/constants";
+import {Level} from "@/constants";
 import {useUploadProblem} from "@/hook/use-upload-problem";
 
-export default function SearchDifficultyLevelProblem() {
+export default function SearchLevelProblem() {
 	const {
-		config: {difficultyLevel},
+		config: {level},
 		setConfig,
 	} = useUploadProblem();
 
 	return (
-		<Select value={difficultyLevel} onValueChange={value => setConfig({difficultyLevel: value})}>
+		<Select value={level} onValueChange={value => setConfig({level: value})}>
 			<SelectTrigger className="min-w-28 sm:min-w-32 h-9 border-2 border-gray-100 shadow-lg">
 				<SelectValue placeholder="Difficulty" />
 			</SelectTrigger>
 			<SelectContent>
-				{Object.values(DifficultLevelProblem).map(({icon, value, label}, index) => {
+				{Object.values(Level).map(({icon, value, label}, index) => {
 					const Icon = icon;
 					return (
 						<SelectItem key={index} value={value + ""}>
