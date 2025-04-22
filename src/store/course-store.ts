@@ -1,25 +1,29 @@
-import {CourseState, StarType} from "@/types";
+import {CourseStateType} from "@/types";
 import {createStore} from "zustand";
 
 export type CourseActions = {
-	addCoursesState: (coursesState: (Partial<CourseState> & {_id: string})[]) => void;
-	changeCoursesState: (coursesState: Partial<CourseState> & {_id: string}[]) => void;
+	addCoursesState: (coursesState: Partial<CourseStateType>[], loading: boolean) => void;
+	changeCoursesState: (coursesState: Partial<CourseStateType>[], loading: boolean) => void;
 };
 
 export type CourseStore = {
-	courses: (Partial<CourseState> & {_id: string})[];
+	courses: Partial<CourseStateType>[];
+	loading: boolean;
 } & CourseActions;
 
-export const createCourseStore = (initState: (Partial<CourseState> & {_id: string})[]) => {
+export const createCourseStore = (initState: Partial<CourseStateType>[]) => {
 	return createStore<CourseStore>()(set => ({
 		courses: initState,
-		addCoursesState: coursesState =>
+		loading: false,
+		addCoursesState: (coursesState, loading) =>
 			set(state => ({
 				courses: [...state.courses, ...coursesState],
+				loading: loading,
 			})),
-		changeCoursesState: coursesState =>
+		changeCoursesState: (coursesState, loading) =>
 			set(() => ({
 				courses: [...coursesState],
+				loading: loading,
 			})),
 	}));
 };

@@ -2,20 +2,18 @@
 
 import {Skeleton} from "@/components/ui/skeleton";
 import {defaultBanner} from "@/data";
-import {useExecuteCourse} from "@/hook/use-execute-course";
 import {cn} from "@/lib/utils";
 import {useCourseStore} from "@/providers/course-store-provider";
+import {CourseStateType} from "@/types";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";
 
 export default function Carousel() {
-	const {
-		config: {loading},
-	} = useExecuteCourse();
-	const {courses} = useCourseStore(state => state);
+	const {courses: data, loading} = useCourseStore(state => state);
+	const courses = data.filter(course => course.status !== "rejected");
 	const [current, setCurrent] = useState(1); // start from 1 to match the extendedImages array
 	const carouselRef = useRef<HTMLDivElement>(null);
-	const listItem = [...defaultBanner, ...courses];
+	const listItem: Partial<CourseStateType>[] = [...defaultBanner, ...courses];
 	const transitionLockRef = useRef(false); // ✅ ref to lock transition
 	const totalImages = listItem.length;
 

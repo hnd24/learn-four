@@ -1,4 +1,6 @@
-export const courseData = [
+import {CourseStateType, ProblemStateType} from "@/types";
+
+export const courseData: CourseStateType[] = [
 	{
 		_id: "123",
 		background: "from-[#c49d0a] to-[#f7ef4d]",
@@ -7,12 +9,11 @@ export const courseData = [
 			"JavaScript is the programming language of the Web. JavaScript is easy to learn. This tutorial will teach you JavaScript from basic to advanced.",
 		logoLanguage: "/icon/javascript-icon.svg",
 		banner: "/images/banner-javascript.png",
+		authorId: "123456",
 		authorImage: "https://github.com/shadcn.png",
 		authorName: "Nhựt Duy",
-		star: {
-			rating: 4.1,
-			count: 120,
-		},
+		star: 4.1,
+		learner: 200,
 		status: "approved",
 		lessons: 10,
 	},
@@ -24,13 +25,12 @@ export const courseData = [
 			"Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
 		logoLanguage: "/icon/java-icon.svg",
 		banner: "/images/banner-java.png",
+		authorId: "789012",
 		authorImage: "https://randomuser.me/api/portraits/men/32.jpg",
 		authorName: "Minh Tuấn",
-		star: {
-			rating: 4.8,
-			count: 100,
-		},
-		status: "approved",
+		star: 4.8,
+		learner: 300,
+		status: "pending",
 		lessons: 12,
 	},
 	{
@@ -41,13 +41,12 @@ export const courseData = [
 			"Python is a programming language that lets you work quickly and integrate systems more effectively. Python is powerful... and fast; plays well with others; and runs everywhere.",
 		logoLanguage: "/icon/python-icon.svg",
 		banner: "/images/banner-python.png",
+		authorId: "345678",
 		authorImage: "https://randomuser.me/api/portraits/women/44.jpg",
 		authorName: "Thanh Hằng",
-		star: {
-			rating: 3.9,
-			count: 150,
-		},
-		status: "rejected",
+		star: 4.9,
+		learner: 250,
+		status: "pending",
 		lessons: 15,
 	},
 	{
@@ -58,12 +57,11 @@ export const courseData = [
 			"C++ is a general-purpose programming language created by Bjarne Stroustrup. It has imperative, object-oriented and generic programming features, while also providing facilities for low-level memory manipulation.",
 		logoLanguage: "/icon/cpp-icon.svg",
 		banner: "/images/banner-cpp.png",
+		authorId: "901234",
 		authorImage: "https://randomuser.me/api/portraits/men/45.jpg",
 		authorName: "Quốc Anh",
-		star: {
-			rating: 2.0,
-			count: 130,
-		},
+		star: 4.3,
+		learner: 180,
 		status: "pending",
 		lessons: 11,
 	},
@@ -75,12 +73,11 @@ export const courseData = [
 			"C# is a modern, object-oriented programming language developed by Microsoft. It is designed for building a variety of applications that run on the .NET Framework.",
 		logoLanguage: "/icon/csharp-icon.svg",
 		banner: "/images/banner-csharp.png",
+		authorId: "161718",
 		authorImage: "https://randomuser.me/api/portraits/women/46.jpg",
 		authorName: "Bích Ngọc",
-		star: {
-			rating: 4.5,
-			count: 140,
-		},
+		star: 4.6,
+		learner: 220,
 		status: "pending",
 		lessons: 13,
 	},
@@ -97,7 +94,7 @@ export const defaultBanner = [
 	},
 ];
 
-export const problemData = [
+export const problemData: ProblemStateType[] = [
 	{
 		_id: "1234",
 		state: "Solved",

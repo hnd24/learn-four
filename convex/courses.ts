@@ -65,6 +65,7 @@ export const getCourseInfos = query({
 				authorId: course.authorId,
 				authorName: course.authorName,
 				star: course.star,
+				learner: course.learner,
 				status: course.status,
 				lessons: course.lessons?.length || 0,
 			};
@@ -102,6 +103,7 @@ export const getCoursesOfUser = query({
 						authorId: course.authorId,
 						authorName: course.authorName,
 						star: course.star,
+						learner: course.learner,
 						status: course.status,
 						isCompleted: userCourse.isCompleted,
 					};
@@ -157,6 +159,7 @@ export const updateCourse = mutation({
 		background: v.optional(v.string()),
 		banner: v.optional(v.string()),
 		star: v.optional(v.number()),
+		learner: v.optional(v.number()),
 		authorId: v.optional(v.string()),
 		authorName: v.optional(v.string()),
 		authorImage: v.optional(v.string()),
@@ -187,7 +190,7 @@ export const createCourse = mutation({
 	async handler(ctx, args) {
 		await ctx.db.insert("courses", {
 			...args,
-			leaner: 0,
+			learner: 0,
 		});
 	},
 });

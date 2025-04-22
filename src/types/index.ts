@@ -6,19 +6,6 @@ export type LanguageType = {
 	image: string;
 };
 
-export type CourseDataType = {
-	id: string;
-	background: string;
-	language: string;
-	description: string;
-	logoLanguage: string;
-	banner: string;
-	authorName: string;
-	authorImage: string;
-	Star: StarType;
-	lessons: number;
-};
-
 export type StarType = {
 	rating: number;
 	count: number;
@@ -45,16 +32,19 @@ export type TopicProblemType = {
 	value: string;
 };
 
-export type CourseState = {
+export type CourseStateType = {
 	_id: string;
 	language: string;
 	background: string;
 	description: string;
 	logoLanguage: string;
 	banner: string;
+	authorId: string;
 	authorImage: string;
 	authorName: string;
-	star: StarType;
+	star: number;
+	learner: number;
+	status: StatusPlaceType;
 	lessons: number;
 };
 
@@ -76,7 +66,7 @@ export type UserStateType = {
 	introduction?: string;
 	activities?: ActivityType[];
 	locked?: boolean;
-	role?: roleType;
+	role?: RoleType;
 	isSignedIn?: boolean;
 };
 
@@ -92,5 +82,5 @@ export type ActivityType = {
 	level: number;
 };
 export type processingNotifyType = "pending" | "processing";
-export type statusPlaceType = "pending" | "approved" | "rejected";
-export type roleType = "admin" | "user";
+export type StatusPlaceType = "pending" | "approved" | "rejected";
+export type RoleType = "admin" | "user";

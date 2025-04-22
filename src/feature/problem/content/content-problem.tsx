@@ -8,25 +8,25 @@ import {useEffect} from "react";
 import SheetSearch from "../components/sheet-search";
 import ColumnTable from "../list-problem/components/column-table";
 import ListProblem from "../list-problem/list-problem";
-import SearchProblem from "../search/search-problem";
+import SearchProblem from "../search/search-name-problem";
 
 export default function ContentProblem() {
 	const {isSignedIn} = useUser();
 	const {setConfig} = useUploadProblem();
 	const {changeProblemState} = useProblemStore(state => state);
 	const {getProblems, loading} = useGetProblems();
+	const data = getProblems();
 	useEffect(() => {
 		setConfig({state: "All"});
 	}, [isSignedIn]);
 
 	useEffect(() => {
-		setConfig({loading});
-	}, [loading]);
-
-	useEffect(() => {
-		if (loading) return;
-		changeProblemState(getProblems({}));
-	}, [loading, getProblems({})]);
+		if (loading) {
+			changeProblemState([], loading);
+		} else {
+			changeProblemState(data, loading);
+		}
+	}, [loading, data]);
 
 	return (
 		<div className="w-full grid grid-cols-12 gap-8">

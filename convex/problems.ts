@@ -88,3 +88,17 @@ export const createProblem = mutation({
 		});
 	},
 });
+
+export const getProblems = query({
+	args: {problemId: v.id("problems")},
+	async handler(ctx, args) {
+		const problem = await getProblem(ctx, args.problemId);
+		const user = await getUser(ctx, problem.authorId);
+		return {
+			...problem,
+			authorId: problem.authorId,
+			authorName: user.name,
+			authorImage: user.image,
+		};
+	},
+});

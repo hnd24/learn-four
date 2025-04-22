@@ -1,15 +1,11 @@
 "use client";
 
 import {Skeleton} from "@/components/ui/skeleton";
-import {useExecuteCourse} from "@/hook/use-execute-course";
 import {useCourseStore} from "@/providers/course-store-provider";
 import ItemCourse from "./components/item-course";
 
 export default function ListCourse() {
-	const {courses} = useCourseStore(state => state);
-	const {
-		config: {loading},
-	} = useExecuteCourse();
+	const {courses, loading} = useCourseStore(state => state);
 	const numberCourse = Array.from({length: 3}, (_, i) => i);
 
 	return (
@@ -17,8 +13,8 @@ export default function ListCourse() {
 			<span className="w-full text-3xl font-bold text-gray-800">List Course :</span>
 			<div className="h-full w-full  grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 *: gap-6">
 				{loading
-					? numberCourse.map((item, index) => (
-							<Skeleton key={index} className="h-72 w-full bg-gray-300 rounded-lg " />
+					? numberCourse.map((_, index) => (
+							<Skeleton key={index} className="h-80 w-full bg-gray-300 rounded-lg " />
 						))
 					: courses.map((item, index) => (
 							<ItemCourse
@@ -27,8 +23,10 @@ export default function ListCourse() {
 								language={item.language ?? ""}
 								authorImage={item.authorImage ?? ""}
 								authorName={item.authorName ?? ""}
-								star={item.star ?? {rating: 0, count: 0}}
+								star={item.star ?? 0}
+								learner={item.learner ?? 0}
 								lessons={item.lessons ?? 0}
+								status={item.status ?? "rejected"}
 							/>
 						))}
 			</div>

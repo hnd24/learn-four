@@ -9,7 +9,7 @@ export default function SearchNameProblem() {
 		<Input
 			type="text"
 			onChange={e => {
-				setConfig({searchName: e.target.value.trim()});
+				setConfig({name: e.target.value.trim()});
 			}}
 			placeholder="Name"
 			className="border-2border-gray-100 shadow-lg"

@@ -1,18 +1,23 @@
+"use client";
+
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {StarFillIcon, StarHalfIcon, StarIcon} from "@/icon/star";
-import {StarType} from "@/types";
+import {cn} from "@/lib/utils";
+import {StatusPlaceType} from "@/types";
 
 import {BookOpen, PersonStanding} from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 type Props = {
 	banner: string;
 	language: string;
 	authorImage: string;
 	authorName: string;
-	star: StarType;
+	star: number;
+	learner: number;
 	lessons: number;
+	status: StatusPlaceType;
 };
 
 export default function ItemCourse({
@@ -21,21 +26,41 @@ export default function ItemCourse({
 	authorImage,
 	authorName,
 	star,
+	learner,
 	lessons,
+	status,
 }: Props) {
+	const router = useRouter();
+	const isApproved = status === "approved";
+	const isRejected = status === "rejected";
+	const handleClick = () => {
+		if (isApproved) {
+			router.push(`/course/${language}`);
+		}
+		return;
+	};
 	return (
-		<Link
-			href={`/course/${language}`}
-			className="w-full h-full relative rounded-xl cursor-pointer
-			hover:-translate-y-1 hover:shadow-xl card-border duration-300 overflow-hidden z-0
-			">
+		<button
+			onClick={handleClick}
+			className={cn(
+				"w-full h-full relative rounded-xl cursor-pointer",
+				"hover:-translate-y-1 hover:shadow-xl card-border duration-300 overflow-hidden z-0",
+				isRejected && "hidden",
+			)}>
 			<div
-				className="w-full flex flex-col z-10 rounded-xl overflow-hidden border-4 border-transparent
+				className={cn(
+					"absolute bg-gray-900 text-gray-100 font-semibold py-1 px-2 left-0 top-4",
+					isApproved && "hidden",
+				)}>
+				Coming soon
+			</div>
+			<div
+				className=" w-full flex flex-col z-10 rounded-xl overflow-hidden border-4 border-transparent
 			">
 				<Image src={banner} alt="javascript" width={300} height={150} className=" w-full" />
-				<div className="w-full flex flex-col bg-[#f7f7f7] py-2 px-3 gap-2 ">
+				<div className="w-full flex flex-col items-start bg-[#f7f7f7] py-2 px-3 gap-2 ">
 					<span className="text-xl font-semibold">{language}</span>
-					<ListStar star={star} />
+					<ListStar star={star} learner={learner} />
 					<div className="w-full flex justify-between gap-2 ">
 						<div className="w-full flex gap-1">
 							<Avatar className="size-6">
@@ -51,13 +76,13 @@ export default function ItemCourse({
 					</div>
 				</div>
 			</div>
-		</Link>
+		</button>
 	);
 }
 
-export function ListStar({star = {rating: 5, count: 10}}: {star: StarType}) {
+export function ListStar({star = 5, learner = 0}: {star: number; learner: number}) {
 	let listStar: string[] = [];
-	let i = star.rating;
+	let i = star;
 	while (i > 0) {
 		if (i >= 1) {
 			listStar.push("fill");
@@ -83,10 +108,10 @@ export function ListStar({star = {rating: 5, count: 10}}: {star: StarType}) {
 				),
 			)}
 			<div className="flex gap-1 ml-1 text-lg text-center ">
-				<span className="">{star.rating}</span>
+				<span className="">{star}</span>
 				<span>-</span>
-				<span>{star.count}</span>
 				<PersonStanding size={20} className=" relative top-1" />
+				<span>{learner}</span>
 			</div>
 		</div>
 	);

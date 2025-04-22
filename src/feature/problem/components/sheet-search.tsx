@@ -59,7 +59,7 @@ export default function SheetSearch() {
 							<span className="text-lg px-2 font-semibold">Name Problem</span>
 							<Input
 								className="text-base"
-								onChange={e => setConfig({searchName: e.target.value.trim()})}
+								onChange={e => setConfig({name: e.target.value.trim()})}
 								placeholder="Search problem by name"
 							/>
 						</AccordionItem>
