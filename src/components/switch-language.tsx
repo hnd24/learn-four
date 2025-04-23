@@ -12,7 +12,7 @@ import Image from "next/image";
 import {useState} from "react";
 
 export default function SwitchLanguage() {
-	const [language, setLanguage] = useState(Language.english.value);
+	const [language, setLanguage] = useState(Language.English.value);
 	return (
 		<Select
 			value={language}

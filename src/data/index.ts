@@ -1,26 +1,28 @@
-import {CourseStateType, ProblemStateType} from "@/types";
+import {CourseDetailStateType, CourseStateType, ProblemStateType, UserStateType} from "@/types";
 
 export const courseData: CourseStateType[] = [
 	{
 		_id: "123",
 		background: "from-[#c49d0a] to-[#f7ef4d]",
-		language: "Javascript",
+		language: "JavaScript",
+		extension: "js",
 		description:
 			"JavaScript is the programming language of the Web. JavaScript is easy to learn. This tutorial will teach you JavaScript from basic to advanced.",
 		logoLanguage: "/icon/javascript-icon.svg",
-		banner: "/images/banner-javascript.png",
+		banner: "/images/banner-Javascript.png",
 		authorId: "123456",
 		authorImage: "https://github.com/shadcn.png",
 		authorName: "Nhựt Duy",
 		star: 4.1,
 		learner: 200,
 		status: "approved",
-		lessons: 10,
+		lessons: 15,
 	},
 	{
 		_id: "456",
 		background: "from-[#dd5902] to-[#ffbd4d]",
 		language: "Java",
+		extension: "java",
 		description:
 			"Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
 		logoLanguage: "/icon/java-icon.svg",
@@ -30,13 +32,14 @@ export const courseData: CourseStateType[] = [
 		authorName: "Minh Tuấn",
 		star: 4.8,
 		learner: 300,
-		status: "pending",
+		status: "approved",
 		lessons: 12,
 	},
 	{
 		_id: "789",
 		background: "from-[#2371b1] to-[#91c2e8]",
 		language: "Python",
+		extension: "py",
 		description:
 			"Python is a programming language that lets you work quickly and integrate systems more effectively. Python is powerful... and fast; plays well with others; and runs everywhere.",
 		logoLanguage: "/icon/python-icon.svg",
@@ -46,13 +49,14 @@ export const courseData: CourseStateType[] = [
 		authorName: "Thanh Hằng",
 		star: 4.9,
 		learner: 250,
-		status: "pending",
+		status: "approved",
 		lessons: 15,
 	},
 	{
 		_id: "101112",
 		background: "from-[#004482] to-[#83d9ff]",
 		language: "C++",
+		extension: "cpp",
 		description:
 			"C++ is a general-purpose programming language created by Bjarne Stroustrup. It has imperative, object-oriented and generic programming features, while also providing facilities for low-level memory manipulation.",
 		logoLanguage: "/icon/cpp-icon.svg",
@@ -62,13 +66,14 @@ export const courseData: CourseStateType[] = [
 		authorName: "Quốc Anh",
 		star: 4.3,
 		learner: 180,
-		status: "pending",
+		status: "approved",
 		lessons: 11,
 	},
 	{
 		_id: "131415",
 		background: "from-[#662579] to-[#e0b5f2]",
 		language: "C#",
+		extension: "cs",
 		description:
 			"C# is a modern, object-oriented programming language developed by Microsoft. It is designed for building a variety of applications that run on the .NET Framework.",
 		logoLanguage: "/icon/csharp-icon.svg",
@@ -78,7 +83,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Bích Ngọc",
 		star: 4.6,
 		learner: 220,
-		status: "pending",
+		status: "approved",
 		lessons: 13,
 	},
 ];
@@ -97,7 +102,6 @@ export const defaultBanner = [
 export const problemData: ProblemStateType[] = [
 	{
 		_id: "1234",
-		state: "Solved",
 		level: "Easy",
 		name: "Sum of Two Numbers",
 		topic: "Array",
@@ -105,7 +109,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Unsolved",
 		level: "Medium",
 		name: "Two Sum",
 		topic: "Array",
@@ -113,7 +116,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Solved",
 		level: "Hard",
 		name: "Longest Substring Without Repeating Characters",
 		topic: "String",
@@ -121,7 +123,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Unsolved",
 		level: "Easy",
 		name: "Valid Parentheses",
 		topic: "String",
@@ -129,7 +130,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Solved",
 		level: "Medium",
 		name: "3Sum",
 		topic: "Array",
@@ -137,7 +137,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Unsolved",
 		level: "Hard",
 		name: "Median of Two Sorted Arrays",
 		topic: "Array",
@@ -145,7 +144,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Solved",
 		level: "Easy",
 		name: "Reverse Integer",
 		topic: "Math",
@@ -153,7 +151,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Unsolved",
 		level: "Medium",
 		name: "Longest Palindromic Substring",
 		topic: "String",
@@ -161,7 +158,6 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Solved",
 		level: "Hard",
 		name: "Container With Most Water",
 		topic: "Array",
@@ -169,10 +165,124 @@ export const problemData: ProblemStateType[] = [
 	},
 	{
 		_id: "1234",
-		state: "Unsolved",
 		level: "Easy",
 		name: "Roman to Integer",
 		topic: "Math",
 		star: 2,
 	},
 ];
+
+export const userData: UserStateType = {
+	userId: "123",
+	name: "Anonymous",
+	email: "xyz@gmail.com",
+	image: "https://github.com/shadcn.png",
+};
+
+export const CourseDetailData: CourseDetailStateType = {
+	_id: "123",
+	background: "from-[#c49d0a] to-[#f7ef4d]",
+	language: "JavaScript",
+	description:
+		"JavaScript is the programming language of the Web. JavaScript is easy to learn. This tutorial will teach you JavaScript from basic to advanced.",
+	logoLanguage: "/icon/JavaScript-icon.svg",
+	banner: "/images/banner-JavaScript.png",
+	authorId: "123456",
+	authorImage: "https://github.com/shadcn.png",
+	authorName: "Nhựt Duy",
+	star: 4.1,
+	learner: 200,
+	status: "approved",
+	lessons: [
+		{
+			_id: "lesson1",
+			topic: "Introduction to JavaScript",
+			stars: 4.5,
+			level: "Easy",
+		},
+		{
+			_id: "lesson2",
+			topic: "JavaScript Variables and Data Types",
+			stars: 5,
+			level: "Medium",
+		},
+		{
+			_id: "lesson3",
+			topic: "JavaScript Functions",
+			stars: 3,
+			level: "Hard",
+		},
+		{
+			_id: "lesson4",
+			topic: "JavaScript Arrays and Objects",
+			stars: 3.5,
+			level: "Easy",
+		},
+		{
+			_id: "lesson5",
+			topic: "JavaScript DOM Manipulation",
+			stars: 4,
+			level: "Medium",
+		},
+		{
+			_id: "lesson6",
+			topic: "JavaScript Events and Event Handling",
+			stars: 5,
+			level: "Hard",
+		},
+		{
+			_id: "lesson7",
+			topic: "JavaScript Promises and Async/Await",
+			stars: 2.5,
+			level: "Easy",
+		},
+		{
+			_id: "lesson8",
+			topic: "JavaScript Error Handling and Debugging",
+			stars: 4.5,
+			level: "Medium",
+		},
+		{
+			_id: "lesson9",
+			topic: "JavaScript ES6 Features",
+			stars: 3.5,
+			level: "Hard",
+		},
+		{
+			_id: "lesson10",
+			topic: "JavaScript APIs and AJAX",
+			stars: 2,
+			level: "Easy",
+		},
+		{
+			_id: "lesson11",
+			topic: "JavaScript Frameworks and Libraries",
+			stars: 4.5,
+			level: "Medium",
+		},
+		{
+			_id: "lesson12",
+			topic: "JavaScript Testing and Debugging",
+			stars: 3.5,
+			level: "Hard",
+		},
+		{
+			_id: "lesson13",
+			topic: "JavaScript Best Practices",
+			stars: 2,
+			level: "Easy",
+		},
+		{
+			_id: "lesson14",
+			topic: "JavaScript Performance Optimization",
+			stars: 4.5,
+			level: "Medium",
+		},
+		{
+			_id: "lesson15",
+			topic: "JavaScript Security",
+			stars: 3.5,
+			level: "Hard",
+		},
+	],
+};

@@ -1,15 +1,9 @@
-import {ProblemStateType, StatusPlaceType} from "@/types";
+import {ProblemStateType} from "@/types";
 import {problemData} from ".";
 
 export const useGetProblems = () => {
 	const data: ProblemStateType[] = problemData;
-	const getProblems = (
-		topic?: string,
-		level?: number,
-		star?: number,
-		state?: StatusPlaceType,
-		name?: string,
-	) => {
+	const getProblems = (topic?: string, level?: number, star?: number, name?: string) => {
 		return data;
 	};
 	const loading = false;

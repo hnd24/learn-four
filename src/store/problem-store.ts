@@ -3,7 +3,8 @@ import {createStore} from "zustand";
 
 export type ProblemActions = {
 	addProblemState: (problemState: Partial<ProblemStateType>[]) => void;
-	changeProblemState: (problemState: Partial<ProblemStateType>[], loading: boolean) => void;
+	changeProblemState: (problemState: Partial<ProblemStateType>[]) => void;
+	changeLoadingState: (loading: boolean) => void;
 	changeProblemColumnTableConfig: (config: Partial<ProblemColumnTableType>) => void;
 };
 export type ProblemStore = {
@@ -27,10 +28,9 @@ export const createProblemStore = (initState: Partial<ProblemStateType>[]) => {
 			set(state => ({
 				problems: [...state.problems, ...problemState],
 			})),
-		changeProblemState: (problemState, loading) =>
+		changeProblemState: problemState =>
 			set(() => ({
 				problems: [...problemState],
-				loading: loading,
 			})),
 		changeProblemColumnTableConfig: config =>
 			set(state => ({
@@ -38,6 +38,10 @@ export const createProblemStore = (initState: Partial<ProblemStateType>[]) => {
 					...state.columnTableConfig,
 					...config,
 				},
+			})),
+		changeLoadingState: loading =>
+			set(() => ({
+				loading: loading,
 			})),
 	}));
 };

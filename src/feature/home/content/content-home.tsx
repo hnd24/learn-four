@@ -3,20 +3,21 @@ import {useGetCourses} from "@/data/course";
 import {useCourseStore} from "@/providers/course-store-provider";
 import {useEffect} from "react";
 import Carousel from "../carousel/carosuel";
-import ListCourse from "../list-course/list-course";
+import ListCourse from "../list-course/list-courses";
 
 export default function ContentHome() {
-	const {getCourses} = useGetCourses();
-	const {loading, changeCoursesState} = useCourseStore(state => state);
+	const {getCourses, loading} = useGetCourses();
+	const {changeCoursesState, changeLoadingState} = useCourseStore(state => state);
 	const data = getCourses();
 
 	useEffect(() => {
-		if (loading) {
-			changeCoursesState([], loading);
-		} else {
-			changeCoursesState(data, loading);
+		if (!loading) {
+			changeCoursesState(data);
 		}
-	}, [loading, data]);
+	}, [data]);
+	useEffect(() => {
+		changeLoadingState(loading);
+	}, [loading]);
 
 	return (
 		<div className="w-full h-full flex flex-col gap-10 md:gap-16">

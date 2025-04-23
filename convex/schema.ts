@@ -132,6 +132,7 @@ export default defineSchema({
 
 	courses: defineTable({
 		language: v.string(),
+		extension: v.string(),
 		logoLanguage: v.string(),
 		description: v.string(),
 		background: v.string(),

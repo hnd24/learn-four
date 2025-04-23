@@ -11,7 +11,7 @@ export default function ListCourse() {
 	return (
 		<div className="h-full w-full border border-gray-100 p-4 md:p-8 gap-4 rounded-lg bg-white shadow-xl flex flex-col">
 			<span className="w-full text-3xl font-bold text-gray-800">List Course :</span>
-			<div className="h-full w-full  grid xl:grid-cols-5 lg:grid-cols-3 md:grid-cols-2 *: gap-6">
+			<div className="h-full w-full  grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-6">
 				{loading
 					? numberCourse.map((_, index) => (
 							<Skeleton key={index} className="h-80 w-full bg-gray-300 rounded-lg " />
@@ -19,6 +19,7 @@ export default function ListCourse() {
 					: courses.map((item, index) => (
 							<ItemCourse
 								key={index}
+								extension={item.extension ?? ""}
 								banner={item.banner ?? ""}
 								language={item.language ?? ""}
 								authorImage={item.authorImage ?? ""}

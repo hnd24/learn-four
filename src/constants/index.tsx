@@ -1,13 +1,7 @@
 import {AllLevelIcon, EasyLevelIcon, HardLevelIcon, MediumLevelIcon} from "@/icon/difficuly-icon";
 import {FiveStar, FourStar, OneStar, ThreeStar, TwoStar} from "@/icon/star";
 import {SolvedIcon, UnsolvedIcon} from "@/icon/state-icon";
-import {
-	LanguageType,
-	LevelType,
-	StarProblemType,
-	StateProblemType,
-	TopicProblemType,
-} from "@/types";
+import {LanguageType, LevelType, StarProblemType, StateProblemType} from "@/types";
 
 import {List} from "lucide-react";
 
@@ -115,53 +109,38 @@ export const StateProblem: Record<StateProblemEnum, StateProblemType> = {
 	},
 };
 
-export enum TopicProblemEnum {
-	Sorting = "Sorting",
-	Array = "Array",
-	String = "String",
-	LinkedList = "LinkedList",
-	Tree = "Tree",
-	Graph = "Graph",
-	DynamicProgramming = "DynamicProgramming",
-}
-export const TopicProblem: Record<TopicProblemEnum, TopicProblemType> = {
-	Sorting: {
-		value: "Sorting",
-	},
-	Array: {
-		value: "Array",
-	},
-	String: {
-		value: "String",
-	},
-	LinkedList: {
-		value: "Linked List",
-	},
-	Tree: {
-		value: "Tree",
-	},
-	Graph: {
-		value: "Graph",
-	},
-	DynamicProgramming: {
-		value: "Dynamic Programming",
-	},
+export const TopicProblem = {
+	Sorting: "Sorting",
+	Array: "Array",
+	String: "String",
+	LinkedList: "Linked List",
+	Tree: "Tree",
+	Graph: "Graph",
+	DynamicProgramming: "Dynamic Programming",
+};
+
+export const ListLanguagePage = {
+	JavaScript: "js",
+	Java: "java",
+	Python: "py",
+	CPlusPlus: "cpp",
+	Csharp: "cs",
 };
 
 export enum LanguageEnum {
-	Vietnamese = "vietnamese",
-	English = "english",
+	English = "English",
+	Vietnamese = "Vietnamese",
 }
 
 export const Language: Record<LanguageEnum, LanguageType> = {
-	vietnamese: {
-		value: "vietnamese",
-		label: "Việt Nam",
-		image: "/icon/vietnam-icon.svg",
-	},
-	english: {
-		value: "english",
+	English: {
+		value: "English",
 		label: "English",
 		image: "/icon/us-icon.svg",
+	},
+	Vietnamese: {
+		value: "Vietnamese",
+		label: "Việt Nam",
+		image: "/icon/vietnam-icon.svg",
 	},
 };

@@ -28,14 +28,11 @@ export type StateProblemType = {
 	icon: ComponentType<{className?: string}>;
 };
 
-export type TopicProblemType = {
-	value: string;
-};
-
 export type CourseStateType = {
 	_id: string;
 	language: string;
 	background: string;
+	extension: string;
 	description: string;
 	logoLanguage: string;
 	banner: string;
@@ -50,7 +47,7 @@ export type CourseStateType = {
 
 export type ProblemStateType = {
 	_id: string;
-	state: string;
+	// state: string;
 	level: string;
 	name: string;
 	topic: string;
@@ -67,7 +64,6 @@ export type UserStateType = {
 	activities?: ActivityType[];
 	locked?: boolean;
 	role?: RoleType;
-	isSignedIn?: boolean;
 };
 
 export type LinkType = {
@@ -83,12 +79,35 @@ export type ActivityType = {
 };
 
 export type ProblemColumnTableType = {
-	stateColumn: boolean;
 	levelColumn: boolean;
 	nameColumn: boolean;
 	topicColumn: boolean;
 	starColumn: boolean;
 };
+
+export type LessonType = {
+	_id: string;
+	topic: string;
+	stars: number;
+	level: string;
+};
+
+export type CourseDetailStateType = {
+	_id: string;
+	language: string;
+	background: string;
+	description: string;
+	logoLanguage: string;
+	banner: string;
+	authorId: string;
+	authorImage: string;
+	authorName: string;
+	star: number;
+	learner: number;
+	status: StatusPlaceType;
+	lessons: LessonType[];
+};
+
 export type processingNotifyType = "pending" | "processing";
 export type StatusPlaceType = "pending" | "approved" | "rejected";
 export type RoleType = "admin" | "user";

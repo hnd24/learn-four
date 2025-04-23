@@ -22,10 +22,10 @@ export default function SearchLevelProblem() {
 				<SelectValue placeholder="Difficulty" />
 			</SelectTrigger>
 			<SelectContent>
-				{Object.values(Level).map(({icon, value, label}, index) => {
+				{Object.values(Level).map(({icon, value, label}) => {
 					const Icon = icon;
 					return (
-						<SelectItem key={index} value={value + ""}>
+						<SelectItem key={label} value={value + ""}>
 							<div className="flex items-center gap-2">
 								<Icon />
 								<span>{label}</span>

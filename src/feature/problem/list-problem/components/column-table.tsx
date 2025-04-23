@@ -8,15 +8,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {cn} from "@/lib/utils";
 import {useProblemStore} from "@/providers/problem-store-provider";
-import {useUserStore} from "@/providers/user-store-provider";
 import {Check, Menu} from "lucide-react";
 
 export default function ColumnTable() {
 	const {
-		user: {isSignedIn},
-	} = useUserStore(state => state);
-	const {
-		columnTableConfig: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
+		columnTableConfig: {levelColumn, nameColumn, topicColumn, starColumn},
 		changeProblemColumnTableConfig: setConfig,
 	} = useProblemStore(state => state);
 
@@ -28,12 +24,12 @@ export default function ColumnTable() {
 				</div>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent side="right">
-				<DropdownMenuItem
+				{/* <DropdownMenuItem
 					className={cn(" relative", !isSignedIn && "hidden")}
 					onClick={() => setConfig({stateColumn: !stateColumn})}>
 					<span>State</span>
 					<Check className={cn("hidden absolute right-2", stateColumn && "flex")} />
-				</DropdownMenuItem>
+				</DropdownMenuItem> */}
 				<DropdownMenuItem
 					className=" relative"
 					onClick={() => setConfig({levelColumn: !levelColumn})}>

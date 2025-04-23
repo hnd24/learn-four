@@ -3,7 +3,6 @@ import {Button} from "@/components/ui/button";
 import {useGetProblems} from "@/data/problem";
 import {useUploadProblem} from "@/hook/use-upload-problem";
 import {cn} from "@/lib/utils";
-import {StatusPlaceType} from "@/types";
 import {Loader2} from "lucide-react";
 type Props = {
 	className?: string;
@@ -11,16 +10,16 @@ type Props = {
 
 export default function SearchButton({className}: Props) {
 	const {
-		config: {topic, level, star, state, name},
+		config: {topic, level, star, name},
 	} = useUploadProblem();
 	const {getProblems, loading} = useGetProblems();
 
 	const handleSearch = () => {
 		if (name) {
-			getProblems(topic, +level, +star, state as StatusPlaceType, name);
+			getProblems(topic, +level, +star, name);
 			return;
 		}
-		getProblems(topic, +level, +star, state as StatusPlaceType);
+		getProblems(topic, +level, +star);
 		return;
 	};
 	return (

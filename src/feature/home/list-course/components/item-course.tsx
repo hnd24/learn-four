@@ -1,11 +1,11 @@
 "use client";
 
+import ListStar from "@/components/list-star";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {StarFillIcon, StarHalfIcon, StarIcon} from "@/icon/star";
 import {cn} from "@/lib/utils";
 import {StatusPlaceType} from "@/types";
 
-import {BookOpen, PersonStanding} from "lucide-react";
+import {BookOpen} from "lucide-react";
 import Image from "next/image";
 import {useRouter} from "next/navigation";
 
@@ -17,6 +17,7 @@ type Props = {
 	star: number;
 	learner: number;
 	lessons: number;
+	extension: string;
 	status: StatusPlaceType;
 };
 
@@ -27,6 +28,7 @@ export default function ItemCourse({
 	authorName,
 	star,
 	learner,
+	extension,
 	lessons,
 	status,
 }: Props) {
@@ -35,7 +37,7 @@ export default function ItemCourse({
 	const isRejected = status === "rejected";
 	const handleClick = () => {
 		if (isApproved) {
-			router.push(`/course/${language}`);
+			router.push(`/course/${extension}`);
 		}
 		return;
 	};
@@ -57,7 +59,7 @@ export default function ItemCourse({
 			<div
 				className=" w-full flex flex-col z-10 rounded-xl overflow-hidden border-4 border-transparent
 			">
-				<Image src={banner} alt="javascript" width={300} height={150} className=" w-full" />
+				<Image src={banner} alt="JavaScript" width={300} height={150} className=" w-full" />
 				<div className="w-full flex flex-col items-start bg-[#f7f7f7] py-2 px-3 gap-2 ">
 					<span className="text-xl font-semibold">{language}</span>
 					<ListStar star={star} learner={learner} />
@@ -67,7 +69,7 @@ export default function ItemCourse({
 								<AvatarImage src={authorImage} alt="avatar" />
 								<AvatarFallback className="bg-azureBlue !text-white text-sm">C4</AvatarFallback>
 							</Avatar>
-							<span className="">{authorName}</span>
+							<span>{authorName}</span>
 						</div>
 						<div className=" flex  gap-1">
 							<BookOpen className="text-gray-500 relative -bottom-1" />
@@ -77,42 +79,5 @@ export default function ItemCourse({
 				</div>
 			</div>
 		</button>
-	);
-}
-
-export function ListStar({star = 5, learner = 0}: {star: number; learner: number}) {
-	let listStar: string[] = [];
-	let i = star;
-	while (i > 0) {
-		if (i >= 1) {
-			listStar.push("fill");
-		} else {
-			if (i >= 0.5) {
-				listStar.push("half");
-			} else if (i < 0.5) {
-				listStar.push("empty");
-			}
-		}
-		i--;
-	}
-
-	return (
-		<div className="flex gap-1 items-center ">
-			{listStar.map((item, index) =>
-				item === "fill" ? (
-					<StarFillIcon key={index} />
-				) : item === "half" ? (
-					<StarHalfIcon key={index} />
-				) : (
-					<StarIcon key={index} />
-				),
-			)}
-			<div className="flex gap-1 ml-1 text-lg text-center ">
-				<span className="">{star}</span>
-				<span>-</span>
-				<PersonStanding size={20} className=" relative top-1" />
-				<span>{learner}</span>
-			</div>
-		</div>
 	);
 }

@@ -95,7 +95,7 @@ export default function Carousel() {
 								<div key={index} className="w-full h-full flex-shrink-0">
 									<div className={cn("w-full h-full bg-gradient-to-r ", background)}>
 										<div className="h-full w-full flex p-4 md:py-8 md:px-16  justify-between ">
-											<div className="flex flex-col justify-center gap-3 h-full w-full lg:max-w-6/12 font-bold">
+											<div className="flex flex-col justify-center gap-3 h-full w-full lg:max-w-1/2 font-bold">
 												<span className="text-4xl md:text-5xl text-white text-shadow">
 													{language}
 												</span>
@@ -109,7 +109,6 @@ export default function Carousel() {
 												height={300}
 												width={300}
 												className="lg:flex hidden image-shadow transition-all duration-300"
-												loading="lazy"
 											/>
 										</div>
 									</div>
@@ -132,7 +131,7 @@ export default function Carousel() {
 			</button> */}
 
 					{/* Dots Indicator */}
-					<div className="flex items-center justify-center absolute -bottom-5 left-1/2 -translate-x-1/2 gap-3 z-10">
+					<div className="flex items-center justify-center absolute -bottom-5 left-1/2 -translate-x-1/2 gap-2 z-10">
 						{listItem.map((_, index) => (
 							<div
 								onClick={() => {

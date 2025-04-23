@@ -16,20 +16,16 @@ import {
 } from "@/components/ui/sheet";
 
 import {Input} from "@/components/ui/input";
-import {Level, StarProblem, StateProblem, TopicProblem} from "@/constants";
+import {Level, StarProblem, TopicProblem} from "@/constants";
 import {useUploadProblem} from "@/hook/use-upload-problem";
 import {cn} from "@/lib/utils";
-import {useUserStore} from "@/providers/user-store-provider";
 import {useState} from "react";
 import SearchButton from "./search-button";
 
 export default function SheetSearch() {
-	const {
-		user: {isSignedIn},
-	} = useUserStore(state => state);
 	const [open, setOpen] = useState(false);
 	const {
-		config: {topic: topicConfig, level: levelConfig, star: starConfig, state: stateConfig},
+		config: {topic: topicConfig, level: levelConfig, star: starConfig},
 		setConfig,
 	} = useUploadProblem();
 	return (
@@ -134,7 +130,7 @@ export default function SheetSearch() {
 							</AccordionContent>
 						</AccordionItem>
 						{/* Search State Problem */}
-						<AccordionItem value="item-5" className="px-4" disabled={!isSignedIn}>
+						{/* <AccordionItem value="item-5" className="px-4" disabled={!isSignedIn}>
 							<AccordionTrigger>
 								<span className="text-lg font-semibold">State Level Problem</span>
 							</AccordionTrigger>
@@ -155,7 +151,7 @@ export default function SheetSearch() {
 									);
 								})}
 							</AccordionContent>
-						</AccordionItem>
+						</AccordionItem> */}
 					</Accordion>
 
 					<SearchButton className="text-lg" />

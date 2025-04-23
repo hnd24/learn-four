@@ -25,7 +25,7 @@ import {useState} from "react";
 import SwitchTheme from "./switch-theme";
 
 export default function SheetCostume() {
-	const [language, setLanguage] = useState(Language.english.value);
+	const [language, setLanguage] = useState(Language.English.value);
 	const pathNameCurrent = usePathname();
 
 	return (
