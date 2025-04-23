@@ -10,7 +10,6 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import {Level, StateProblem} from "@/constants";
-import {useTableProblem} from "@/hook/use-table-porblem";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
 import {useProblemStore} from "@/providers/problem-store-provider";
@@ -22,11 +21,12 @@ export default function ListProblem() {
 	const {
 		user: {isSignedIn},
 	} = useUserStore(state => state);
-	const {problems: data} = useProblemStore(state => state);
-	const route = useRouter();
 	const {
-		config: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
-	} = useTableProblem();
+		problems: data,
+		columnTableConfig: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
+	} = useProblemStore(state => state);
+	const route = useRouter();
+
 	return (
 		<div className="border border-gray-100 shadow-lg rounded-md p-4 bg-white">
 			<Table>

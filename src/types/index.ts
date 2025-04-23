@@ -81,6 +81,14 @@ export type ActivityType = {
 	day: string;
 	level: number;
 };
+
+export type ProblemColumnTableType = {
+	stateColumn: boolean;
+	levelColumn: boolean;
+	nameColumn: boolean;
+	topicColumn: boolean;
+	starColumn: boolean;
+};
 export type processingNotifyType = "pending" | "processing";
 export type StatusPlaceType = "pending" | "approved" | "rejected";
 export type RoleType = "admin" | "user";

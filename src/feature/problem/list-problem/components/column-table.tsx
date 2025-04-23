@@ -6,10 +6,9 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {useTableProblem} from "@/hook/use-table-porblem";
 import {cn} from "@/lib/utils";
+import {useProblemStore} from "@/providers/problem-store-provider";
 import {useUserStore} from "@/providers/user-store-provider";
-import {useUser} from "@clerk/nextjs";
 import {Check, Menu} from "lucide-react";
 
 export default function ColumnTable() {
@@ -17,9 +16,10 @@ export default function ColumnTable() {
 		user: {isSignedIn},
 	} = useUserStore(state => state);
 	const {
-		config: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
-		setConfig,
-	} = useTableProblem();
+		columnTableConfig: {stateColumn, levelColumn, nameColumn, topicColumn, starColumn},
+		changeProblemColumnTableConfig: setConfig,
+	} = useProblemStore(state => state);
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger>
