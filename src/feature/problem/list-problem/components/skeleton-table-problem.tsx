@@ -4,7 +4,7 @@ type Props = {
 	length?: number;
 };
 
-export default function SkeletonListProblem({length = 10}: Props) {
+export default function SkeletonTableProblem({length = 10}: Props) {
 	const lengthProblem = Array.from({length: 10}, (_, i) => i);
 	console.log(lengthProblem);
 	return (

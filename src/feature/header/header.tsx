@@ -1,14 +1,13 @@
 "use client";
-import Logo from "@/components/logo";
+import Logo from "@/feature/header/logo";
 import {Button} from "@/components/ui/button";
 import {DefaultPage} from "@/constants";
 import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
 import {LogIn} from "lucide-react";
 import {usePathname} from "next/navigation";
 import PageLink from "./page-link";
-import SheetCostume from "./sheet-costume";
+import SheetCostume from "../../components/sheet-costume";
 import SwitchLanguage from "./switch-language";
-import SwitchTheme from "./switch-theme";
 
 export default function HeaderHome() {
 	const pathNameCurrent = usePathname();
@@ -25,10 +24,6 @@ export default function HeaderHome() {
 				</div>
 			</div>
 			<div className="flex items-center gap-2 md:gap-4">
-				<SwitchTheme
-					className=" hidden md:flex w-fit rounded-full border-2 border-white"
-					size={20}
-				/>
 				<div className="md:flex hidden">
 					<SwitchLanguage />
 				</div>

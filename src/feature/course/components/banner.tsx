@@ -36,7 +36,7 @@ export default function Banner({course}: {course: Partial<CourseStateType>}) {
 						className="flex md:hidden shadow-xl rounded-md"
 						loading="lazy"
 					/>
-					<span className="text-4xl md:text-5xl text-white text-shadow">{language}</span>
+					<span className="text-4xl md:text-5xl text-white ">{language}</span>
 					<Hint side="bottom" label={description || ""}>
 						<div className=" text-md md:text-lg text-gray-100 md:line-clamp-3 ">{description}</div>
 					</Hint>

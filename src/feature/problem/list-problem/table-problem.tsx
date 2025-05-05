@@ -16,16 +16,19 @@ import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
 import {useRouter} from "next/navigation";
 import LoadMoreButton from "./components/load-more-button";
+import SkeletonTableProblem from "./components/skeleton-table-problem";
 
 export default function TableProblem() {
 	const {
 		config: {levelColumn, nameColumn, topicColumn, starColumn},
 	} = useTableProblem();
-	const {getProblems} = useGetProblems();
+	const {getProblems, loading} = useGetProblems();
 	const data = getProblems();
 	const route = useRouter();
 
-	return (
+	return loading ? (
+		<SkeletonTableProblem />
+	) : (
 		<div className="border border-gray-100 shadow-lg rounded-md p-4 bg-white">
 			<Table>
 				<TableCaption>
@@ -55,10 +58,10 @@ export default function TableProblem() {
 									index % 2 === 0 && "bg-gray-100",
 								)}>
 								{/* <TableCell className={cn("font-medium", (!stateColumn || !isSignedIn) && "hidden")}>
-									<div className="flex gap-1">
-										<IconState className={cn("hidden size-4 ml-2", state === "Solved" && "flex")} />
-									</div>
-								</TableCell> */}
+										<div className="flex gap-1">
+											<IconState className={cn("hidden size-4 ml-2", state === "Solved" && "flex")} />
+										</div>
+									</TableCell> */}
 								<TableCell className={cn(!levelColumn && "hidden")}>
 									<div className="flex gap-2 ml-2 md:ml-0  items-center">
 										<IconLevel />

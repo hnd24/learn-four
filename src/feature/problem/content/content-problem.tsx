@@ -3,7 +3,6 @@
 import {useGetProblems} from "@/data/problem";
 import SheetSearch from "../components/sheet-search";
 import ColumnTable from "../list-problem/components/column-table";
-import SkeletonListProblem from "../list-problem/components/skeleton-list-problem";
 import TableProblem from "../list-problem/table-problem";
 import SearchProblem from "../search/search-name-problem";
 
@@ -23,7 +22,7 @@ export default function ContentProblem() {
 					</div>
 					<SearchProblem />
 				</div>
-				{loading ? <SkeletonListProblem /> : <TableProblem />}
+				<TableProblem />
 			</div>
 			<div className="col-span-full lg:col-span-1   w-full " />
 		</div>

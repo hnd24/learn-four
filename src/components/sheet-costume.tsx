@@ -22,7 +22,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {useState} from "react";
-import SwitchTheme from "./switch-theme";
 
 export default function SheetCostume() {
 	const [language, setLanguage] = useState(Language.English.value);
@@ -89,9 +88,6 @@ export default function SheetCostume() {
 							</AccordionContent>
 						</AccordionItem>
 					</Accordion>
-				</div>
-				<div className="absolute bottom-4 right-4 left-4 w-full max-w-11/12 border-t-2 border-gray-300">
-					<SwitchTheme word />
 				</div>
 			</SheetContent>
 		</Sheet>

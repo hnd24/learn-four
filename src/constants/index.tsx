@@ -16,7 +16,7 @@ export type PageType = {
 };
 
 export const DefaultPage: Record<PageEnum, PageType> = {
-	Home: {name: "Learn", path: "/"},
+	Home: {name: "Home", path: "/"},
 	Problem: {name: "Problem", path: "/problem"},
 	About: {name: "About", path: "/about"},
 };

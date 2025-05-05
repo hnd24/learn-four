@@ -2,13 +2,12 @@ import {cn} from "@/lib/utils";
 import Link from "next/link";
 
 type Props = {
-	className?: string;
 	pathName: string;
 	pathNameCurrent: string;
 	name: string;
 };
 
-export default function PageLink({className, pathName, pathNameCurrent, name}: Props) {
+export default function PageLink({pathName, pathNameCurrent, name}: Props) {
 	return (
 		<Link
 			href={pathName}
