@@ -2,33 +2,16 @@
 import Logo from "@/components/logo";
 import {Button} from "@/components/ui/button";
 import {DefaultPage} from "@/constants";
-import {useGetUser} from "@/data/user";
-import {useUserStore} from "@/providers/user-store-provider";
-import {SignedIn, SignedOut, SignInButton, UserButton, useUser} from "@clerk/nextjs";
+import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
 import {LogIn} from "lucide-react";
 import {usePathname} from "next/navigation";
-import {useEffect} from "react";
 import PageLink from "./page-link";
 import SheetCostume from "./sheet-costume";
 import SwitchLanguage from "./switch-language";
 import SwitchTheme from "./switch-theme";
 
 export default function HeaderHome() {
-	const {changeUserState} = useUserStore(state => state);
 	const pathNameCurrent = usePathname();
-	const {isSignedIn, isLoaded} = useUser();
-	const {getUser} = useGetUser();
-	const userData = getUser();
-	useEffect(() => {
-		if (isSignedIn) {
-			changeUserState({
-				user: userData,
-			});
-		}
-	}, [getUser()]);
-	useEffect(() => {
-		changeUserState({isSignedIn});
-	}, [isSignedIn]);
 	return (
 		<div className=" w-full h-[76px] bg-white pr-2 flex items-center justify-between border-2 border-gray-100  shadow-xl md:px-4 md:rounded-lg">
 			<div className="flex items-center gap-10 h-full">

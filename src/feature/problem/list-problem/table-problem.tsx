@@ -10,17 +10,19 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import {Level} from "@/constants";
+import {useGetProblems} from "@/data/problem";
+import {useTableProblem} from "@/hook/use-table-porblem";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
-import {useProblemStore} from "@/providers/problem-store-provider";
 import {useRouter} from "next/navigation";
 import LoadMoreButton from "./components/load-more-button";
 
 export default function TableProblem() {
 	const {
-		problems: data,
-		columnTableConfig: {levelColumn, nameColumn, topicColumn, starColumn},
-	} = useProblemStore(state => state);
+		config: {levelColumn, nameColumn, topicColumn, starColumn},
+	} = useTableProblem();
+	const {getProblems} = useGetProblems();
+	const data = getProblems();
 	const route = useRouter();
 
 	return (

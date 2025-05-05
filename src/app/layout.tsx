@@ -1,5 +1,4 @@
 import {ConvexClientProvider} from "@/providers/ConvexClientProvider";
-import {UserStoreProvider} from "@/providers/user-store-provider";
 import {ClerkProvider} from "@clerk/nextjs";
 import {Geist, Geist_Mono} from "next/font/google";
 import {NuqsAdapter} from "nuqs/adapters/next/app";
@@ -25,9 +24,7 @@ export default function RootLayout({
 			<html lang="en" suppressHydrationWarning>
 				<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 					<ConvexClientProvider>
-						<NuqsAdapter>
-							<UserStoreProvider>{children}</UserStoreProvider>
-						</NuqsAdapter>
+						<NuqsAdapter>{children}</NuqsAdapter>
 					</ConvexClientProvider>
 				</body>
 			</html>

@@ -2,14 +2,15 @@
 
 import {Skeleton} from "@/components/ui/skeleton";
 import {defaultBanner} from "@/data";
+import {useGetCourses} from "@/data/course";
 import {cn} from "@/lib/utils";
-import {useCourseStore} from "@/providers/course-store-provider";
 import {CourseStateType} from "@/types";
 import Image from "next/image";
 import {useEffect, useRef, useState} from "react";
 
 export default function Carousel() {
-	const {courses: data, loading} = useCourseStore(state => state);
+	const {getCourses, loading} = useGetCourses();
+	const data = getCourses();
 	const courses = data.filter(course => course.status !== "rejected");
 	const [current, setCurrent] = useState(1); // start from 1 to match the extendedImages array
 	const carouselRef = useRef<HTMLDivElement>(null);

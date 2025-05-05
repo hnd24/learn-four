@@ -6,15 +6,15 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {useTableProblem} from "@/hook/use-table-porblem";
 import {cn} from "@/lib/utils";
-import {useProblemStore} from "@/providers/problem-store-provider";
 import {Check, Menu} from "lucide-react";
 
 export default function ColumnTable() {
 	const {
-		columnTableConfig: {levelColumn, nameColumn, topicColumn, starColumn},
-		changeProblemColumnTableConfig: setConfig,
-	} = useProblemStore(state => state);
+		config: {levelColumn, nameColumn, topicColumn, starColumn},
+		setConfig,
+	} = useTableProblem();
 
 	return (
 		<DropdownMenu>

@@ -1,11 +1,12 @@
 "use client";
 
 import {Skeleton} from "@/components/ui/skeleton";
-import {useCourseStore} from "@/providers/course-store-provider";
+import {useGetCourses} from "@/data/course";
 import ItemCourse from "./components/item-course";
 
 export default function ListCourse() {
-	const {courses, loading} = useCourseStore(state => state);
+	const {getCourses, loading} = useGetCourses();
+	const courses = getCourses();
 	const numberCourse = Array.from({length: 3}, (_, i) => i);
 
 	return (

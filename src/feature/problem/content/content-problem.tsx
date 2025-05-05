@@ -1,8 +1,6 @@
 "use client";
 
 import {useGetProblems} from "@/data/problem";
-import {useProblemStore} from "@/providers/problem-store-provider";
-import {useEffect} from "react";
 import SheetSearch from "../components/sheet-search";
 import ColumnTable from "../list-problem/components/column-table";
 import SkeletonListProblem from "../list-problem/components/skeleton-list-problem";
@@ -10,18 +8,7 @@ import TableProblem from "../list-problem/table-problem";
 import SearchProblem from "../search/search-name-problem";
 
 export default function ContentProblem() {
-	const {changeProblemState, changeLoadingState} = useProblemStore(state => state);
-	const {getProblems, loading} = useGetProblems();
-	const data = getProblems();
-
-	useEffect(() => {
-		if (!loading) {
-			changeProblemState(data);
-		}
-	}, [data]);
-	useEffect(() => {
-		changeLoadingState(loading);
-	}, [loading]);
+	const {loading} = useGetProblems();
 
 	return (
 		<div className="w-full grid grid-cols-12 ">
