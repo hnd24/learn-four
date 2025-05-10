@@ -3,6 +3,17 @@ import {FiveStar, FourStar, OneStar, ThreeStar, TwoStar} from "@/icon/star";
 import {SolvedIcon, UnsolvedIcon} from "@/icon/state-icon";
 import {LanguageType, LevelType, StarProblemType, StateProblemType} from "@/types";
 
+export const DRAFT_CODE_KEY = "editor-draft";
+
+export enum LanguageProgramming {
+	JavaScript = "javascript",
+	TypeScript = "typescript",
+	Python = "python",
+	Java = "java",
+	Cpp = "cpp",
+	CSharp = "csharp",
+}
+
 import {List} from "lucide-react";
 
 export enum PageEnum {

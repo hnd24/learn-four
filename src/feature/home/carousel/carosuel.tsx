@@ -1,101 +1,48 @@
 "use client";
 
+import {
+	CarouselContent,
+	CarouselItem,
+	Carousel as CarouselPrimitive,
+} from "@/components/ui/carousel";
 import {Skeleton} from "@/components/ui/skeleton";
 import {defaultBanner} from "@/data";
 import {useGetCourses} from "@/data/course";
 import {cn} from "@/lib/utils";
 import {CourseStateType} from "@/types";
+import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
-import {useEffect, useRef, useState} from "react";
 
 export default function Carousel() {
 	const {getCourses, loading} = useGetCourses();
 	const data = getCourses();
 	const courses = data.filter(course => course.status !== "rejected");
-	const [current, setCurrent] = useState(1); // start from 1 to match the extendedImages array
-	const carouselRef = useRef<HTMLDivElement>(null);
+
 	const listItem: Partial<CourseStateType>[] = [...defaultBanner, ...courses];
-	const transitionLockRef = useRef(false); // ✅ ref to lock transition
-	const totalImages = listItem.length;
-
-	useEffect(() => {
-		const slideInterval = setInterval(() => {
-			nextSlide();
-		}, 60000);
-
-		return () => clearInterval(slideInterval);
-	}, [current]);
-
-	const handleTransitionEnd = () => {
-		const carousel = carouselRef.current;
-		transitionLockRef.current = false;
-
-		if (current === 0) {
-			// if we are at the clone last (left), jump to the real last image
-			setCurrent(totalImages);
-			if (carousel) {
-				carousel.style.transition = "none";
-				carousel.style.transform = `translateX(-${totalImages * 100}%)`;
-				void carousel.offsetWidth; // Force reflow
-				carousel.style.transition = "transform 0.5s";
-			}
-		} else if (current === totalImages + 1) {
-			// if we are at the clone first (right), jump to the real first image
-			setCurrent(1);
-			if (carousel) {
-				carousel.style.transition = "none";
-				carousel.style.transform = `translateX(-100%)`;
-				void carousel.offsetWidth;
-				carousel.style.transition = "transform 0.5s";
-			}
-		}
-	};
-
-	const nextSlide = () => {
-		if (transitionLockRef.current) return;
-		transitionLockRef.current = true;
-		setCurrent(prev => prev + 1);
-	};
-
-	const prevSlide = () => {
-		if (transitionLockRef.current) return;
-		transitionLockRef.current = true;
-		setCurrent(prev => prev - 1);
-	};
-
-	const handleWheel = (event: React.WheelEvent) => {
-		if (transitionLockRef.current) return;
-
-		if (event.deltaY > 0 || event.deltaX > 0) {
-			nextSlide();
-		} else if (event.deltaY < 0 || event.deltaX < 0) {
-			prevSlide();
-		}
-	};
-
-	const extendedListItem = [
-		listItem[listItem.length - 1], // Clone end
-		...listItem,
-		listItem[0], // Clone first
-	];
 
 	return (
 		<>
 			{loading ? (
 				<Skeleton className="h-72 w-full bg-gray-300" />
 			) : (
-				<div className="relative h-72 w-full ">
-					<div className="w-full h-full overflow-hidden rounded-lg  shadowBlock">
-						<div
-							ref={carouselRef}
-							onWheel={handleWheel}
-							className="flex h-full transition-transform duration-500 "
-							style={{transform: `translateX(-${current * 100}%)`}}
-							onTransitionEnd={handleTransitionEnd}>
-							{extendedListItem.map(({background, language, description, logoLanguage}, index) => (
-								<div key={index} className="w-full h-full flex-shrink-0">
-									<div className={cn("w-full h-full bg-gradient-to-r ", background)}>
-										<div className="h-full w-full flex p-4 md:py-8 md:px-16  justify-between ">
+				<CarouselPrimitive
+					plugins={[
+						Autoplay({
+							delay: 60000,
+							stopOnInteraction: true,
+						}),
+					]}
+					opts={{
+						loop: true, // Enable infinite looping
+						align: "center",
+					}}
+					className="border border-gray-100 rounded-lg overflow-hidden shadowBlock">
+					<CarouselContent className="h-72 rounded-lg">
+						{listItem.map(({background, language, description, logoLanguage}, index) => (
+							<CarouselItem key={index}>
+								<div className=" h-full flex-shrink-0">
+									<div className={cn(" h-full bg-gradient-to-r ", background)}>
+										<div className="h-full flex px-4 md:px-12 justify-between ">
 											<div className="flex flex-col justify-center gap-3 h-full w-full lg:max-w-1/2 font-bold">
 												<span className="text-4xl md:text-5xl text-white text-shadow">
 													{language}
@@ -107,46 +54,18 @@ export default function Carousel() {
 											<Image
 												src={logoLanguage ?? ""}
 												alt="programer"
-												height={300}
-												width={300}
+												height={200}
+												width={200}
 												className="lg:flex hidden image-shadow transition-all duration-300"
 											/>
 										</div>
 									</div>
 									,
 								</div>
-							))}
-						</div>
-					</div>
-
-					{/* navigate button */}
-					{/* <button
-				onClick={prevSlide}
-				className="absolute hidden md:flex left-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 border cursor-pointer">
-				<ChevronLeft size={24} />
-			</button>
-			<button
-				onClick={nextSlide}
-				className="absolute hidden md:flex right-3 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10 border cursor-pointer">
-				<ChevronRight size={24} />
-			</button> */}
-
-					{/* Dots Indicator */}
-					<div className="flex items-center justify-center absolute -bottom-5 left-1/2 -translate-x-1/2 gap-2 z-10">
-						{listItem.map((_, index) => (
-							<div
-								onClick={() => {
-									setCurrent(index + 1);
-								}}
-								key={index}
-								className={cn(
-									"h-2 w-6 rounded-full bg-gray-400/60 transition-all duration-300 ",
-									current === index + 1 ? "bg-gray-400 w-10 h-2 " : "",
-								)}
-							/>
+							</CarouselItem>
 						))}
-					</div>
-				</div>
+					</CarouselContent>
+				</CarouselPrimitive>
 			)}
 		</>
 	);

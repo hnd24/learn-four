@@ -32,7 +32,7 @@ export default function TableLesson() {
 						return (
 							<TableRow
 								onClick={() => {
-									route.push(`/problem/${idProblem}`);
+									route.push(`/room/${idProblem}`);
 								}}
 								key={index}
 								className={cn(

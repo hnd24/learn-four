@@ -82,6 +82,8 @@
 }
 
 @theme inline {
+	--color-charcoal: #333333;
+	--color-darkCharcoal: #212121;
 	--color-deepBlue: #3738c4;
 	--color-deepBlueHover: #282991;
 	--color-pulseBlue: #0064e7;

@@ -1,4 +1,13 @@
+import {LanguageProgramming} from "@/constants";
 import {ComponentType} from "react";
+
+export type Theme = "light" | "vs-dark";
+
+export type DraftCode = {
+	language: LanguageProgramming;
+	code?: string;
+	idRoom?: string;
+};
 
 export type LanguageType = {
 	value: string;

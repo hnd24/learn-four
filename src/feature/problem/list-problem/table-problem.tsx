@@ -50,7 +50,7 @@ export default function TableProblem() {
 						return (
 							<TableRow
 								onClick={() => {
-									route.push(`/problem/${idProblem}`);
+									route.push(`/room/${idProblem}`);
 								}}
 								key={index}
 								className={cn(
