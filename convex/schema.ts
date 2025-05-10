@@ -11,7 +11,7 @@ export const statusPlace = v.union(
 	v.literal("approved"),
 	v.literal("rejected"),
 );
-export const role = v.union(v.literal("admin"), v.literal("user"));
+export const role = v.union(v.literal("super_admin"), v.literal("admin"), v.literal("user"));
 
 export const link = v.object({
 	facebook: v.optional(v.string()),
@@ -33,7 +33,7 @@ export const example = v.object({
 });
 
 export const testcase = v.object({
-	input: v.string(),
+	input: v.array(v.object({name: v.string(), value: v.string()})),
 	output: v.string(),
 	isHidden: v.optional(v.boolean()),
 });

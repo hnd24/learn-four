@@ -6,54 +6,41 @@ import {setDraftCode} from "@/lib/utils";
 
 import {useClerk} from "@clerk/nextjs";
 
-import {LanguageProgramming} from "@/constants";
+import {useEffect} from "react";
+import {useRoom} from "../../provider";
 import {CodeEditorSkeleton} from "./code-editor-skeleton";
 
-type Props = {
-	theme: string;
-	language: LanguageProgramming;
-	textSize?: number;
-	value?: string;
-	onChange?: (value?: string) => void;
-	readonly?: boolean;
-};
-type OpaqueRoom = any;
-export const CodeEditor = ({
-	theme = "vs-dark",
-	readonly = false,
-	language,
-	value,
-	textSize,
-	onChange,
-}: Props) => {
+export const CodeEditor = () => {
+	const {theme, language, setCode, code, readonly} = useRoom();
 	// Monaco Editor causes ClerkJS to fail loading
 	// https://github.com/clerk/javascript/issues/1643
-
 	const clerk = useClerk();
 	if (!clerk.loaded) {
 		return null;
 	}
+	useEffect(() => {
+		console.log("code", code);
+	}, [code]);
 
 	const handleChange = (value?: string) => {
-		if (!onChange) return;
+		if (!setCode) return;
 
-		onChange(value);
+		setCode(value || "");
 		setDraftCode({language, code: value});
 	};
 
 	return (
-		<>
+		<div className="flex w-full h-full">
 			<Editor
 				language={language}
 				theme={theme}
-				value={value}
+				value={code}
 				onChange={handleChange}
 				options={{
 					readOnly: readonly,
-					fontSize: textSize,
 					automaticLayout: true,
 					scrollBeyondLastLine: false,
-					padding: {top: 24, bottom: 16},
+					padding: {top: 16, bottom: 16},
 					fontFamily: '"Fira Code", "Cascadia Code", Consolas, monospace',
 					fontLigatures: true,
 					cursorBlinking: "smooth",
@@ -68,6 +55,6 @@ export const CodeEditor = ({
 				}}
 				loading={<CodeEditorSkeleton />}
 			/>
-		</>
+		</div>
 	);
 };

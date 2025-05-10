@@ -2,6 +2,7 @@ import {ConvexClientProvider} from "@/providers/ConvexClientProvider";
 import {ClerkProvider} from "@clerk/nextjs";
 import {Geist, Geist_Mono} from "next/font/google";
 import {NuqsAdapter} from "nuqs/adapters/next/app";
+import {Toaster} from "sonner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,6 +27,7 @@ export default function RootLayout({
 					<ConvexClientProvider>
 						<NuqsAdapter>{children}</NuqsAdapter>
 					</ConvexClientProvider>
+					<Toaster />
 				</body>
 			</html>
 		</ClerkProvider>

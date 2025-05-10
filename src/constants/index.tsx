@@ -5,6 +5,11 @@ import {LanguageType, LevelType, StarProblemType, StateProblemType} from "@/type
 
 export const DRAFT_CODE_KEY = "editor-draft";
 
+export enum Theme {
+	Light = "light",
+	Dark = "vs-dark",
+}
+
 export enum LanguageProgramming {
 	JavaScript = "javascript",
 	TypeScript = "typescript",

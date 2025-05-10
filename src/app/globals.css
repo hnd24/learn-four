@@ -82,7 +82,7 @@
 }
 
 @theme inline {
-	--color-charcoal: #333333;
+	--color-charcoal: #888888;
 	--color-darkCharcoal: #212121;
 	--color-deepBlue: #3738c4;
 	--color-deepBlueHover: #282991;
@@ -177,4 +177,19 @@
 	to {
 		transform: rotate(360deg);
 	}
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	@apply bg-gray-300;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	@apply bg-gray-500 rounded-xl hover:dark:bg-gray-600  hover:bg-gray-400;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-gray-400;
 }

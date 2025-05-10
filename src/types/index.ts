@@ -1,8 +1,6 @@
 import {LanguageProgramming} from "@/constants";
 import {ComponentType} from "react";
 
-export type Theme = "light" | "vs-dark";
-
 export type DraftCode = {
 	language: LanguageProgramming;
 	code?: string;
@@ -37,6 +35,14 @@ export type StateProblemType = {
 	icon: ComponentType<{className?: string}>;
 };
 
+export type StatusPlaceType = "pending" | "approved" | "rejected";
+
+export enum StatusPlace {
+	APPROVED = "approved",
+	PENDING = "pending",
+	REJECTED = "rejected",
+}
+
 export type CourseStateType = {
 	_id: string;
 	language: string;
@@ -50,7 +56,7 @@ export type CourseStateType = {
 	authorName: string;
 	star: number;
 	learner: number;
-	status: StatusPlaceType;
+	status: StatusPlace;
 	lessons: number;
 };
 
@@ -63,6 +69,12 @@ export type ProblemStateType = {
 	star: number;
 };
 
+export enum Role {
+	SUPER_ADMIN = "super_admin",
+	ADMIN = "admin",
+	USER = "user",
+}
+
 export type UserStateType = {
 	userId: string;
 	name: string;
@@ -72,7 +84,7 @@ export type UserStateType = {
 	introduction?: string;
 	activities?: ActivityType[];
 	locked?: boolean;
-	role?: RoleType;
+	role?: Role;
 };
 
 export type LinkType = {
@@ -101,6 +113,12 @@ export type LessonType = {
 	level: string;
 };
 
+export enum StateProblem {
+	PROCESSING = "processing",
+	PENDING = "pending",
+	DONE = "done",
+}
+
 export type CourseDetailStateType = {
 	_id: string;
 	language: string;
@@ -113,10 +131,14 @@ export type CourseDetailStateType = {
 	authorName: string;
 	star: number;
 	learner: number;
-	status: StatusPlaceType;
+	status: StateProblem;
 	lessons: LessonType[];
 };
 
-export type processingNotifyType = "pending" | "processing";
-export type StatusPlaceType = "pending" | "approved" | "rejected";
-export type RoleType = "admin" | "user";
+export type TestcaseType = {
+	input: {
+		name: string;
+		value: string;
+	}[];
+	output: string;
+};
