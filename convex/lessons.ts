@@ -78,7 +78,6 @@ export const createLesson = mutation({
 	async handler(ctx, args) {
 		await ctx.db.insert("lessons", {
 			...args,
-			learner: 0,
 		});
 	},
 });

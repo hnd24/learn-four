@@ -105,7 +105,6 @@ export default defineSchema({
 		level: v.string(),
 		topic: v.optional(v.string()),
 		content: v.string(),
-
 		testcase: v.array(testcase),
 		status: statusPlace,
 		authorId: v.string(),
@@ -151,7 +150,6 @@ export default defineSchema({
 		topic: v.string(),
 		name: v.string(),
 		stars: v.number(),
-		learner: v.number(),
 		level: v.number(),
 		content: v.string(),
 		status: statusPlace,
