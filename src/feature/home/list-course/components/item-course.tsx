@@ -3,7 +3,7 @@
 import ListStar from "@/components/list-star";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {cn} from "@/lib/utils";
-import {StatusPlaceType} from "@/types";
+import {StatusPlace} from "@/types";
 
 import {BookOpen} from "lucide-react";
 import Image from "next/image";
@@ -18,7 +18,7 @@ type Props = {
 	learner: number;
 	lessons: number;
 	extension: string;
-	status: StatusPlaceType;
+	status: StatusPlace;
 };
 
 export default function ItemCourse({

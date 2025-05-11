@@ -14,7 +14,9 @@ import {useGetProblems} from "@/data/problem";
 import {useTableProblem} from "@/hook/use-table-porblem";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
+import {ProblemStateType} from "@/types";
 import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 import LoadMoreButton from "./components/load-more-button";
 import SkeletonTableProblem from "./components/skeleton-table-problem";
 
@@ -22,8 +24,15 @@ export default function TableProblem() {
 	const {
 		config: {levelColumn, nameColumn, topicColumn, starColumn},
 	} = useTableProblem();
+	const [data, setData] = useState<ProblemStateType[]>([]);
 	const {getProblems, loading} = useGetProblems();
-	const data = getProblems();
+	useEffect(() => {
+		const fetchProblems = async () => {
+			const problems = await getProblems();
+			setData(problems);
+		};
+		fetchProblems();
+	}, [getProblems]);
 	const route = useRouter();
 
 	return loading ? (
@@ -44,43 +53,44 @@ export default function TableProblem() {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{data.map(({_id: idProblem, level, name, topic, star}, index) => {
-						const IconLevel = Level[level as keyof typeof Level].icon;
-						// const IconState = StateProblem[state as keyof typeof StateProblem].icon;
-						return (
-							<TableRow
-								onClick={() => {
-									route.push(`/room/${idProblem}`);
-								}}
-								key={index}
-								className={cn(
-									"hover:bg-gray-200 cursor-pointer",
-									index % 2 === 0 && "bg-gray-100",
-								)}>
-								{/* <TableCell className={cn("font-medium", (!stateColumn || !isSignedIn) && "hidden")}>
+					{data &&
+						data.map(({_id: idProblem, level, name, topic, star}, index) => {
+							const IconLevel = Level[level as keyof typeof Level].icon;
+							// const IconState = StateProblem[state as keyof typeof StateProblem].icon;
+							return (
+								<TableRow
+									onClick={() => {
+										route.push(`/room/${idProblem}`);
+									}}
+									key={index}
+									className={cn(
+										"hover:bg-gray-200 cursor-pointer",
+										index % 2 === 0 && "bg-gray-100",
+									)}>
+									{/* <TableCell className={cn("font-medium", (!stateColumn || !isSignedIn) && "hidden")}>
 										<div className="flex gap-1">
 											<IconState className={cn("hidden size-4 ml-2", state === "Solved" && "flex")} />
 										</div>
 									</TableCell> */}
-								<TableCell className={cn(!levelColumn && "hidden")}>
-									<div className="flex gap-2 ml-2 md:ml-0  items-center">
-										<IconLevel />
-										<span className=" hidden md:flex">{level}</span>
-									</div>
-								</TableCell>
-								<TableCell className={cn(!nameColumn && "hidden")}>
-									<div className="max-w-52 md:max-w-full truncate">{name}</div>
-								</TableCell>
-								<TableCell className={cn(!topicColumn && "hidden")}>{topic}</TableCell>
-								<TableCell className={cn("flex justify-end", !starColumn && "hidden")}>
-									<div className="w-10 flex gap-1">
-										<OneStar />
-										{star}
-									</div>
-								</TableCell>
-							</TableRow>
-						);
-					})}
+									<TableCell className={cn(!levelColumn && "hidden")}>
+										<div className="flex gap-2 ml-2 md:ml-0  items-center">
+											<IconLevel />
+											<span className=" hidden md:flex">{level}</span>
+										</div>
+									</TableCell>
+									<TableCell className={cn(!nameColumn && "hidden")}>
+										<div className="max-w-52 md:max-w-full truncate">{name}</div>
+									</TableCell>
+									<TableCell className={cn(!topicColumn && "hidden")}>{topic}</TableCell>
+									<TableCell className={cn("flex justify-end", !starColumn && "hidden")}>
+										<div className="w-10 flex gap-1">
+											<OneStar />
+											{star}
+										</div>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 				</TableBody>
 			</Table>
 		</div>

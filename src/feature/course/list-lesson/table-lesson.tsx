@@ -5,12 +5,21 @@ import {Level} from "@/constants";
 import {useGetLessons} from "@/data/lesson";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
+import {ProblemStateType} from "@/types";
 import {useRouter} from "next/navigation";
+import {useEffect, useState} from "react";
 import SkeletonTableLesson from "./components/skeleton-table-lesson";
 
 export default function TableLesson() {
+	const [data, setData] = useState<ProblemStateType[]>([]);
 	const {getLessons, loading} = useGetLessons();
-	const data = getLessons();
+	useEffect(() => {
+		const fetchLessons = async () => {
+			const lessons = await getLessons();
+			setData(lessons);
+		};
+		fetchLessons();
+	}, [getLessons]);
 	const route = useRouter();
 
 	return loading ? (
@@ -27,37 +36,38 @@ export default function TableLesson() {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{data.map(({_id: idProblem, level, name, topic, star}, index) => {
-						const IconLevel = Level[level as keyof typeof Level].icon;
-						return (
-							<TableRow
-								onClick={() => {
-									route.push(`/room/${idProblem}`);
-								}}
-								key={index}
-								className={cn(
-									"hover:bg-gray-200 cursor-pointer",
-									index % 2 === 0 && "bg-gray-100",
-								)}>
-								<TableCell>
-									<div className="flex gap-2 ml-2 md:ml-0  items-center">
-										<IconLevel />
-										<span className=" hidden md:flex">{level}</span>
-									</div>
-								</TableCell>
-								<TableCell>
-									<div className="max-w-52 md:max-w-full truncate">{name}</div>
-								</TableCell>
-								<TableCell>{topic}</TableCell>
-								<TableCell className="flex justify-end">
-									<div className="w-10 flex gap-1">
-										<OneStar />
-										{star}
-									</div>
-								</TableCell>
-							</TableRow>
-						);
-					})}
+					{data &&
+						data.map(({_id: idProblem, level, name, topic, star}, index) => {
+							const IconLevel = Level[level as keyof typeof Level].icon;
+							return (
+								<TableRow
+									onClick={() => {
+										route.push(`/room/${idProblem}`);
+									}}
+									key={index}
+									className={cn(
+										"hover:bg-gray-200 cursor-pointer",
+										index % 2 === 0 && "bg-gray-100",
+									)}>
+									<TableCell>
+										<div className="flex gap-2 ml-2 md:ml-0  items-center">
+											<IconLevel />
+											<span className=" hidden md:flex">{level}</span>
+										</div>
+									</TableCell>
+									<TableCell>
+										<div className="max-w-52 md:max-w-full truncate">{name}</div>
+									</TableCell>
+									<TableCell>{topic}</TableCell>
+									<TableCell className="flex justify-end">
+										<div className="w-10 flex gap-1">
+											<OneStar />
+											{star}
+										</div>
+									</TableCell>
+								</TableRow>
+							);
+						})}
 				</TableBody>
 			</Table>
 		</div>

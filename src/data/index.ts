@@ -1,4 +1,11 @@
-import {CourseDetailStateType, CourseStateType, ProblemStateType, UserStateType} from "@/types";
+import {
+	CourseDetailStateType,
+	CourseStateType,
+	LessonDetailType,
+	ProblemStateType,
+	StatusPlace,
+	UserStateType,
+} from "@/types";
 
 export const courseData: CourseStateType[] = [
 	{
@@ -15,7 +22,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Nhựt Duy",
 		star: 4.1,
 		learner: 200,
-		status: "approved",
+		status: "approved" as StatusPlace,
 		lessons: 15,
 	},
 	{
@@ -32,7 +39,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Minh Tuấn",
 		star: 4.8,
 		learner: 300,
-		status: "approved",
+		status: "approved" as StatusPlace,
 		lessons: 12,
 	},
 	{
@@ -49,7 +56,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Thanh Hằng",
 		star: 4.9,
 		learner: 250,
-		status: "approved",
+		status: "approved" as StatusPlace,
 		lessons: 15,
 	},
 	{
@@ -66,7 +73,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Quốc Anh",
 		star: 4.3,
 		learner: 180,
-		status: "approved",
+		status: "approved" as StatusPlace,
 		lessons: 11,
 	},
 	{
@@ -83,7 +90,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Bích Ngọc",
 		star: 4.6,
 		learner: 220,
-		status: "approved",
+		status: "approved" as StatusPlace,
 		lessons: 13,
 	},
 ];
@@ -192,7 +199,7 @@ export const CourseDetailData: CourseDetailStateType = {
 	authorName: "Nhựt Duy",
 	star: 4.1,
 	learner: 200,
-	status: "approved",
+	status: "approved" as StatusPlace,
 	lessons: [
 		{
 			_id: "lesson1",
@@ -283,6 +290,62 @@ export const CourseDetailData: CourseDetailStateType = {
 			topic: "JavaScript Security",
 			stars: 3.5,
 			level: "Hard",
+		},
+	],
+};
+
+export const lessonDetailData: LessonDetailType = {
+	_id: "lesson_001",
+	courseId: "course_001",
+	topic: "Array Manipulation",
+	name: "Sum of Two Arrays",
+	stars: 4,
+	learner: 123,
+	level: 2,
+	content: `
+## Bài toán
+
+Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai mảng.
+
+## Input
+- Một mảng \`num1: number[]\`
+- Một mảng \`num2: number[]\`
+
+## Output
+- Trả về tổng của tất cả phần tử trong \`num1\` và \`num2\`
+  `,
+	structureAnswer: `
+function sumArrays(num1, num2) {
+  // TODO: Implement
+}
+  `,
+	example: [
+		{
+			input: [
+				{name: "num1", value: "[1, 2, 3]"},
+				{name: "num2", value: "[4, 5, 6]"},
+			],
+			explanation: "Tổng = 1+2+3+4+5+6 = 21",
+			output: "21",
+		},
+	],
+	status: "approved" as StatusPlace.APPROVED,
+	testcase: [
+		{
+			input: [
+				{name: "num1", value: "[1, 2]"},
+				{name: "num2", value: "[3, 4]"},
+			],
+			output: "10",
+			isHidden: false,
+		},
+		{
+			input: [
+				{name: "num1", value: "[10]"},
+				{name: "num2", value: "[5, 5]"},
+			],
+			output: "20",
+			isHidden: true,
 		},
 	],
 };

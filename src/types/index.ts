@@ -35,8 +35,6 @@ export type StateProblemType = {
 	icon: ComponentType<{className?: string}>;
 };
 
-export type StatusPlaceType = "pending" | "approved" | "rejected";
-
 export enum StatusPlace {
 	APPROVED = "approved",
 	PENDING = "pending",
@@ -131,7 +129,7 @@ export type CourseDetailStateType = {
 	authorName: string;
 	star: number;
 	learner: number;
-	status: StateProblem;
+	status: StatusPlace;
 	lessons: LessonType[];
 };
 
@@ -140,5 +138,30 @@ export type TestcaseType = {
 		name: string;
 		value: string;
 	}[];
-	output: string;
+	output?: string;
+	isHidden?: boolean;
+};
+
+export type ExampleType = {
+	input: {
+		name: string;
+		value: string;
+	}[];
+	explanation: string;
+	output?: string;
+};
+
+export type LessonDetailType = {
+	_id: string;
+	courseId: string;
+	topic: string;
+	name: string;
+	stars: number;
+	learner: number;
+	level: number;
+	content: string;
+	structureAnswer: string;
+	example: ExampleType[];
+	status: StatusPlace;
+	testcase: TestcaseType[];
 };

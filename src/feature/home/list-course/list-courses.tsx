@@ -2,11 +2,20 @@
 
 import {Skeleton} from "@/components/ui/skeleton";
 import {useGetCourses} from "@/data/course";
+import {CourseStateType} from "@/types";
+import {useEffect, useState} from "react";
 import ItemCourse from "./components/item-course";
 
 export default function ListCourse() {
+	const [courses, setCourses] = useState<CourseStateType[]>([]);
 	const {getCourses, loading} = useGetCourses();
-	const courses = getCourses();
+	useEffect(() => {
+		const fetchCourses = async () => {
+			const courses = await getCourses();
+			setCourses(courses.filter(course => course.status !== "rejected"));
+		};
+		fetchCourses();
+	}, [getCourses]);
 	const numberCourse = Array.from({length: 3}, (_, i) => i);
 
 	return (

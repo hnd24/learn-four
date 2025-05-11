@@ -12,13 +12,20 @@ import {cn} from "@/lib/utils";
 import {CourseStateType} from "@/types";
 import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
+import {useEffect, useState} from "react";
 
 export default function Carousel() {
+	const [data, setData] = useState<CourseStateType[]>([]);
 	const {getCourses, loading} = useGetCourses();
-	const data = getCourses();
-	const courses = data.filter(course => course.status !== "rejected");
+	useEffect(() => {
+		const fetchCourses = async () => {
+			const courses = await getCourses();
+			setData(courses.filter(course => course.status !== "rejected"));
+		};
+		fetchCourses();
+	}, [getCourses]);
 
-	const listItem: Partial<CourseStateType>[] = [...defaultBanner, ...courses];
+	const listItem: Partial<CourseStateType>[] = [...defaultBanner, ...data];
 
 	return (
 		<>
