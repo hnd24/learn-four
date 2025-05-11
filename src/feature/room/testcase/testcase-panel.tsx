@@ -1,10 +1,11 @@
 "use client";
 
 import {ScrollArea} from "@/components/ui/scroll-area";
+import {useGetUserLesson} from "@/data/lesson";
 import {cn} from "@/lib/utils";
-import {TestcaseType} from "@/types";
 import {SquareCheckBig, Terminal} from "lucide-react";
 import {useEffect, useState} from "react";
+import {useRoom} from "../provider";
 import ListTestcase from "./components/list-testcase";
 import ResultTestcase from "./components/result-testcase";
 import SkeletonListTestcase from "./components/skeleton-list-testcase";
@@ -14,24 +15,32 @@ enum TypePanel {
 	RESULT = "Test result",
 }
 
-type Props = {
-	testcase: TestcaseType[];
-	loading: boolean;
-};
-export default function TestcasePanel({testcase = [], loading = false}: Props) {
-	const [listTestcase, setListTestcase] = useState<(TestcaseType & {index: number})[]>([]);
-	const [selectedIndex, setSelectedIndex] = useState(0);
+export default function TestcasePanel() {
+	const {
+		lessonDetail,
+		tempTestcases,
+		setTempTestcases,
+		selectedIndex,
+		setSelectedTestcase,
+		selectedTestcase,
+	} = useRoom();
+	const {loading} = useGetUserLesson();
+
 	const [typePanel, setTypePanel] = useState<TypePanel>(TypePanel.TESTCASE);
 
-	const selectedTestcase = listTestcase[selectedIndex];
+	useEffect(() => {
+		if (tempTestcases && tempTestcases.length > 0) {
+			setSelectedTestcase(tempTestcases[selectedIndex]);
+		}
+	}, [tempTestcases, selectedIndex]);
 
 	useEffect(() => {
-		if (testcase && testcase.length > 0) {
-			const initialData = testcase;
+		if (lessonDetail && lessonDetail.testcase) {
+			const initialData = lessonDetail.testcase;
 			const withIndex = initialData.map((item, index) => ({...item, index}));
-			setListTestcase(withIndex);
+			setTempTestcases(withIndex);
 		}
-	}, [testcase]);
+	}, [lessonDetail]);
 
 	return (
 		<div className="w-full h-full flex flex-col">
@@ -59,17 +68,7 @@ export default function TestcasePanel({testcase = [], loading = false}: Props) {
 			<ScrollArea className="flex-1 w-full h-full overflow-auto">
 				{typePanel === TypePanel.TESTCASE &&
 					selectedTestcase &&
-					(loading ? (
-						<SkeletonListTestcase />
-					) : (
-						<ListTestcase
-							listTestcase={listTestcase}
-							selectedIndex={selectedIndex}
-							selectedTestcase={selectedTestcase}
-							setSelectedIndex={setSelectedIndex}
-							setListTestcase={setListTestcase}
-						/>
-					))}
+					(loading ? <SkeletonListTestcase /> : <ListTestcase />)}
 				{typePanel === TypePanel.RESULT && <ResultTestcase />}
 			</ScrollArea>
 		</div>

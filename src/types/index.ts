@@ -162,3 +162,11 @@ export type LessonDetailType = {
 	status: StatusPlace;
 	testcase: TestcaseType[];
 };
+
+export type UserLessonType = {
+	_id: string;
+	lessonId: string;
+	userId: string;
+	code: string;
+	isCompleted: boolean;
+};

@@ -4,29 +4,18 @@ import {Hint} from "@/components/hint";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
-import {TestcaseType} from "@/types";
 import {Plus, Save, X} from "lucide-react";
 import {toast} from "sonner";
+import {useRoom} from "../../provider";
 
-type Props = {
-	listTestcase: (TestcaseType & {index: number})[];
-	selectedIndex: number;
-	selectedTestcase: TestcaseType;
-	setSelectedIndex: (index: number) => void;
-	setListTestcase: (testcases: (TestcaseType & {index: number})[]) => void;
-};
+export default function tempTestcases() {
+	const {selectedIndex, tempTestcases, selectedTestcase, setTempTestcases, setSelectedIndex} =
+		useRoom();
 
-export default function ListTestcase({
-	listTestcase,
-	selectedIndex,
-	selectedTestcase,
-	setSelectedIndex,
-	setListTestcase,
-}: Props) {
 	const updateInputValue = (inputIndex: number, newValue: string) => {
-		if (!listTestcase[selectedIndex]) return;
+		if (!tempTestcases[selectedIndex]) return;
 
-		const updated = [...listTestcase];
+		const updated = [...tempTestcases];
 		const current = updated[selectedIndex];
 
 		updated[selectedIndex] = {
@@ -36,31 +25,33 @@ export default function ListTestcase({
 			),
 		};
 
-		setListTestcase(updated);
+		setTempTestcases(updated);
 	};
 
 	const addTestcase = () => {
-		const base = selectedTestcase || listTestcase[0];
+		const base = selectedTestcase || tempTestcases[0];
 		const newTestcase = {
 			...JSON.parse(JSON.stringify(base)),
-			index: listTestcase.length,
+			index: tempTestcases.length,
 		};
-		setListTestcase([...listTestcase, newTestcase]);
-		setSelectedIndex(listTestcase.length);
+		setTempTestcases([...tempTestcases, newTestcase]);
+		setSelectedIndex(tempTestcases.length);
 	};
 
 	const deleteTestcase = (index: number) => {
-		if (listTestcase.length === 1) {
+		if (tempTestcases.length === 1) {
 			toast.error("Cannot delete the last testcase", {
 				duration: 2000,
 				position: "bottom-right",
-				className: "bg-red-100 text-red-700 border border-red-300",
+				style: {
+					color: "#f87171",
+				},
 			});
 			return;
 		}
 
-		const updated = listTestcase.filter((_, i) => i !== index);
-		setListTestcase(updated);
+		const updated = tempTestcases.filter((_, i) => i !== index);
+		setTempTestcases(updated);
 
 		if (selectedIndex >= updated.length) {
 			setSelectedIndex(updated.length - 1);
@@ -70,7 +61,7 @@ export default function ListTestcase({
 	};
 
 	const saveTestcase = () => {
-		console.log("✅ Save Testcase:", listTestcase);
+		console.log("✅ Save Testcase:", tempTestcases);
 		toast.success("Testcases saved!");
 	};
 
@@ -79,7 +70,7 @@ export default function ListTestcase({
 			{/* Testcase buttons */}
 			<div className="flex items-end gap-4 mb-2">
 				<div className="flex flex-1 gap-3 flex-wrap">
-					{listTestcase.map((_, index) => (
+					{tempTestcases.map((_, index) => (
 						<div
 							key={index}
 							className={cn(

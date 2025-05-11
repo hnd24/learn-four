@@ -1,6 +1,23 @@
+"use client";
+import {useGetLessonById} from "@/data/lesson";
+import {LessonDetailType} from "@/types";
 import {FileText} from "lucide-react";
+import {useEffect, useState} from "react";
+import {useRoom} from "../provider";
 
 export default function DescriptionPanel() {
+	const {idLesson} = useRoom();
+	const [lessonDetail, setLessonDetail] = useState<LessonDetailType | null>(null);
+	const {getLessonById} = useGetLessonById();
+
+	useEffect(() => {
+		const fetchLesson = async () => {
+			const data = await getLessonById(idLesson);
+			setLessonDetail(data);
+		};
+		fetchLesson();
+	}, [getLessonById, idLesson]);
+
 	return (
 		<>
 			{/* Header */}

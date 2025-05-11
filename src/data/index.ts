@@ -4,6 +4,7 @@ import {
 	LessonDetailType,
 	ProblemStateType,
 	StatusPlace,
+	UserLessonType,
 	UserStateType,
 } from "@/types";
 
@@ -338,4 +339,21 @@ Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai m�
 			isHidden: true,
 		},
 	],
+};
+
+export const userLessonData: UserLessonType = {
+	_id: "lesson_001",
+	lessonId: "lesson_001",
+	userId: "user_001",
+	isCompleted: true,
+	code: `function sumArrays(num1, num2) {
+		let sum = 0;
+		for (let i = 0; i < num1.length; i++) {
+				sum += num1[i];
+		}
+		for (let i = 0; i < num2.length; i++) {
+				sum += num2[i];
+		}
+		return sum;
+}`,
 };

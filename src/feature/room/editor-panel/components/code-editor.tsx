@@ -4,27 +4,30 @@ import {Editor} from "@monaco-editor/react";
 
 import {setDraftCode} from "@/lib/utils";
 
-import {useClerk} from "@clerk/nextjs";
+import {useClerk, useUser} from "@clerk/nextjs";
 
-import {LanguageProgramming, Theme} from "@/constants";
-import {useEffect} from "react";
+import {useGetUserLesson} from "@/data/lesson";
+import {useEffect, useState} from "react";
+import {useRoom} from "../../provider";
 import {CodeEditorSkeleton} from "./code-editor-skeleton";
 
-type Props = {
-	theme: Theme;
-	language: LanguageProgramming;
-	setCode: (code: string) => void;
-	code: string;
-	readonly?: boolean;
-};
-
-export const CodeEditor = ({theme, language, setCode, code, readonly}: Props) => {
+export const CodeEditor = () => {
+	const {isSignedIn} = useUser();
+	const {loading} = useGetUserLesson();
+	const [readOnly, setReadOnly] = useState<boolean>(false);
+	const {code, setCode, theme, language} = useRoom();
 	// Monaco Editor causes ClerkJS to fail loading
 	// https://github.com/clerk/javascript/issues/1643
 	const clerk = useClerk();
 	if (!clerk.loaded) {
 		return null;
 	}
+
+	useEffect(() => {
+		if (loading || !isSignedIn) {
+			setReadOnly(true);
+		}
+	}, [isSignedIn, loading]);
 	useEffect(() => {
 		console.log("code", code);
 	}, [code]);
@@ -44,7 +47,7 @@ export const CodeEditor = ({theme, language, setCode, code, readonly}: Props) =>
 				value={code}
 				onChange={handleChange}
 				options={{
-					readOnly: readonly,
+					readOnly: readOnly,
 					automaticLayout: true,
 					scrollBeyondLastLine: false,
 					padding: {top: 16, bottom: 16},

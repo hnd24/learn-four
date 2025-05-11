@@ -1,14 +1,12 @@
 "use client";
 
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
-import {useGetLessonById} from "@/data/lesson";
 import {useIsMobile} from "@/hook/use-mobile";
 import {cn} from "@/lib/utils";
-import {LessonDetailType} from "@/types";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import DescriptionPanel from "../description/description-panel";
 import EditorPanel from "../editor-panel/editor-panel";
-import {DashboardProvider} from "../provider";
+import {DashboardProvider, useRoom} from "../provider";
 import TestcasePanel from "../testcase/testcase-panel";
 
 type Props = {
@@ -17,16 +15,13 @@ type Props = {
 
 export default function ContentRoom({id}: Props) {
 	const isMobile = useIsMobile();
-	const [lessonDetail, setLessonDetail] = useState<LessonDetailType | null>(null);
-	const {getLessonById, loading} = useGetLessonById();
+	const {setIdLesson} = useRoom();
 
 	useEffect(() => {
-		const fetchLesson = async () => {
-			const data = await getLessonById(id);
-			setLessonDetail(data);
-		};
-		fetchLesson();
-	}, [getLessonById, id]);
+		if (id) {
+			setIdLesson(id);
+		}
+	}, [id]);
 
 	return (
 		<DashboardProvider>
@@ -34,6 +29,7 @@ export default function ContentRoom({id}: Props) {
 				<ResizablePanel
 					defaultSize={isMobile ? 100 : 30}
 					className="h-[calc(100vh-98px)] rounded-lg border border-charcoal lg:mr-0.5 shadow-lg">
+					{/* Description Panel  */}
 					<DescriptionPanel />
 				</ResizablePanel>
 				<ResizableHandle
@@ -44,13 +40,15 @@ export default function ContentRoom({id}: Props) {
 						<ResizablePanel
 							defaultSize={50}
 							className="rounded-lg border border-charcoal mb-0.5 shadow-lg">
+							{/* Editor Panel */}
 							<EditorPanel />
 						</ResizablePanel>
 						<ResizableHandle className="bg-transparent hover:bg-pulseBlue" />
 						<ResizablePanel
 							defaultSize={50}
 							className="rounded-lg border border-charcoal mt-0.5 shadow-lg">
-							<TestcasePanel testcase={lessonDetail?.testcase ?? []} loading={loading} />
+							{/* Testcase Panel */}
+							<TestcasePanel />
 						</ResizablePanel>
 					</ResizablePanelGroup>
 				</ResizablePanel>
