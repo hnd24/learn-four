@@ -1,16 +1,10 @@
 // context.ts
-import {LanguageProgramming, Theme} from "@/constants";
+import {RunCode} from "@/types";
 import {createContext} from "react";
 
 export interface RoomContextProps {
-	theme: Theme;
-	setTheme: (theme: Theme) => void;
-	code: string;
-	setCode: (code: string) => void;
-	language: LanguageProgramming;
-	setLanguage: (language: LanguageProgramming) => void;
-	readonly: boolean;
-	setReadonly: (readonly: boolean) => void;
+	setRunCode: (runCode: RunCode) => void;
+	runCode: RunCode;
 }
 
 export const Context = createContext<RoomContextProps | null>(null);

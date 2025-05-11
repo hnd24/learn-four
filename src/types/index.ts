@@ -41,6 +41,13 @@ export enum StatusPlace {
 	REJECTED = "rejected",
 }
 
+export enum RunCode {
+	None = "none",
+	Running = "running",
+	Success = "success",
+	Error = "error",
+}
+
 export type CourseStateType = {
 	_id: string;
 	language: string;
@@ -142,15 +149,6 @@ export type TestcaseType = {
 	isHidden?: boolean;
 };
 
-export type ExampleType = {
-	input: {
-		name: string;
-		value: string;
-	}[];
-	explanation: string;
-	output?: string;
-};
-
 export type LessonDetailType = {
 	_id: string;
 	courseId: string;
@@ -160,8 +158,7 @@ export type LessonDetailType = {
 	learner: number;
 	level: number;
 	content: string;
-	structureAnswer: string;
-	example: ExampleType[];
+
 	status: StatusPlace;
 	testcase: TestcaseType[];
 };

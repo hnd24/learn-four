@@ -22,7 +22,7 @@ export default function SwitchTheme({className, word = false, size = 16}: Props)
 					className={cn(
 						"!text-white font-semibold w-full",
 						"dark:bg-indigo-900 dark:hover:bg-indigo-950",
-						"bg-sunsetCoral hover:bg-sunsetCoralHover ",
+						"bg-sunsetCoral hover:bg-darkSunsetCoral ",
 						className,
 					)}
 					onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>

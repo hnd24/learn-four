@@ -26,12 +26,6 @@ export const activity = v.object({
 	level: v.number(),
 });
 
-export const example = v.object({
-	input: v.array(v.object({name: v.string(), value: v.string()})),
-	output: v.optional(v.string()),
-	explanation: v.string(),
-});
-
 export const testcase = v.object({
 	input: v.array(v.object({name: v.string(), value: v.string()})),
 	output: v.optional(v.string()),
@@ -111,8 +105,7 @@ export default defineSchema({
 		level: v.string(),
 		topic: v.optional(v.string()),
 		content: v.string(),
-		example: v.optional(v.array(example)),
-		structureAnswer: v.string(),
+
 		testcase: v.array(testcase),
 		status: statusPlace,
 		authorId: v.string(),
@@ -161,8 +154,6 @@ export default defineSchema({
 		learner: v.number(),
 		level: v.number(),
 		content: v.string(),
-		structureAnswer: v.string(),
-		example: v.array(example),
 		status: statusPlace,
 		testcase: v.array(testcase),
 	}).index("by_courseId", ["courseId"]),

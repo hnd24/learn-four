@@ -6,6 +6,7 @@ import {TestcaseType} from "@/types";
 import {SquareCheckBig, Terminal} from "lucide-react";
 import {useEffect, useState} from "react";
 import ListTestcase from "./components/list-testcase";
+import ResultTestcase from "./components/result-testcase";
 import SkeletonListTestcase from "./components/skeleton-list-testcase";
 
 enum TypePanel {
@@ -35,7 +36,7 @@ export default function TestcasePanel({testcase = [], loading = false}: Props) {
 	return (
 		<div className="w-full h-full flex flex-col">
 			{/* Tabs */}
-			<div className="flex items-center border-b bg-zinc-100">
+			<div className="flex items-center border-b bg-zinc-200">
 				{[TypePanel.TESTCASE, TypePanel.RESULT].map(panel => (
 					<button
 						key={panel}
@@ -45,9 +46,9 @@ export default function TestcasePanel({testcase = [], loading = false}: Props) {
 							typePanel === panel && "bg-zinc-300",
 						)}>
 						{panel === TypePanel.TESTCASE ? (
-							<SquareCheckBig className="w-5 h-5 text-zinc-600" />
+							<SquareCheckBig className="w-5 h-5 text-leafyGreen" />
 						) : (
-							<Terminal className="w-5 h-5 text-zinc-600" />
+							<Terminal className="w-5 h-5 text-leafyGreen" />
 						)}
 						<span className="text-sm font-medium w-fit truncate text-zinc-800">{panel}</span>
 					</button>
@@ -55,7 +56,7 @@ export default function TestcasePanel({testcase = [], loading = false}: Props) {
 			</div>
 
 			{/* Content */}
-			<ScrollArea className="flex-1 w-full overflow-auto">
+			<ScrollArea className="flex-1 w-full h-full overflow-auto">
 				{typePanel === TypePanel.TESTCASE &&
 					selectedTestcase &&
 					(loading ? (
@@ -69,7 +70,7 @@ export default function TestcasePanel({testcase = [], loading = false}: Props) {
 							setListTestcase={setListTestcase}
 						/>
 					))}
-				{typePanel === TypePanel.RESULT && <></>}
+				{typePanel === TypePanel.RESULT && <ResultTestcase />}
 			</ScrollArea>
 		</div>
 	);

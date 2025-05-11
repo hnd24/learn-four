@@ -13,9 +13,9 @@ export function CodeEditorSkeleton() {
 				<div className="bg-whiteLight py-2 px-6 backdrop-blur-sm rounded-xl">
 					{randomWidth.map((width, i) => (
 						<div key={i} className="mb-3 flex items-center gap-4 ">
-							<Skeleton className="h-4 w-12 bg-gray-500 " />
+							<Skeleton className="h-4 w-12 bg-zinc-300 " />
 							<Skeleton
-								className="h-4 bg-gray-400 "
+								className="h-4 bg-zinc-300 "
 								style={{
 									width: `${width}%`,
 								}}

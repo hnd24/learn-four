@@ -2,7 +2,7 @@ import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 import {removeCComment} from "./comment";
-import {example, statusPlace, testcase} from "./schema";
+import {statusPlace, testcase} from "./schema";
 import {getUser} from "./users";
 
 export async function getProblem(ctx: QueryCtx | MutationCtx, problemId: Id<"problems">) {
@@ -58,8 +58,7 @@ export const updateProblem = mutation({
 		level: v.optional(v.string()),
 		topic: v.optional(v.string()),
 		content: v.optional(v.string()),
-		structureAnswer: v.optional(v.string()),
-		example: v.optional(v.array(example)),
+
 		testcase: v.optional(v.array(testcase)),
 		status: v.optional(statusPlace),
 		authorId: v.optional(v.string()),
@@ -76,8 +75,6 @@ export const createProblem = mutation({
 		level: v.string(),
 		topic: v.optional(v.string()),
 		content: v.string(),
-		structureAnswer: v.string(),
-		example: v.optional(v.array(example)),
 		testcase: v.array(testcase),
 		status: statusPlace,
 		authorId: v.string(),

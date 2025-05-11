@@ -1,5 +1,6 @@
 "use client";
 
+import {Hint} from "@/components/hint";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
@@ -79,33 +80,41 @@ export default function ListTestcase({
 			<div className="flex items-end gap-4 mb-2">
 				<div className="flex flex-1 gap-3 flex-wrap">
 					{listTestcase.map((_, index) => (
-						<div key={index} className="relative group">
-							<Button
-								onClick={() => setSelectedIndex(index)}
-								className={cn(
-									"px-3 py-2 hover:bg-zinc-300 pr-8",
-									selectedIndex === index
-										? "bg-zinc-300 text-zinc-900"
-										: "bg-zinc-200 text-zinc-600 hover:bg-zinc-300",
-								)}>
-								Test {index + 1}
-							</Button>
-							<X
-								className="absolute top-1.5 right-1 size-4 p-0.5 rounded-full opacity-0 group-hover:opacity-100 cursor-pointer hover:bg-zinc-200 text-zinc-600 hover:text-red-500 transition"
-								onClick={e => {
-									e.stopPropagation();
-									deleteTestcase(index);
-								}}
-							/>
+						<div
+							key={index}
+							className={cn(
+								"group rounded-lg flex overflow-hidden hover:bg-zinc-300",
+								selectedIndex === index
+									? "bg-zinc-300 text-zinc-900"
+									: "bg-zinc-200 text-zinc-600 hover:bg-zinc-300",
+							)}>
+							<button className="px-3 py-2" onClick={() => setSelectedIndex(index)}>
+								<span className="whitespace-nowrap">Test {index + 1}</span>
+							</button>
+							<Hint label="Delete Testcase">
+								<button
+									onClick={e => {
+										e.stopPropagation();
+										deleteTestcase(index);
+									}}
+									className="cursor-pointer transition px-1
+							hover:bg-zinc-200">
+									<X className=" size-4 opacity-0 group-hover:opacity-100 group-hover:text-red-500 text-zinc-600 " />
+								</button>
+							</Hint>
 						</div>
 					))}
-					<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={addTestcase}>
-						<Plus />
-					</Button>
+					<Hint label="Add Testcase">
+						<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={addTestcase}>
+							<Plus />
+						</Button>
+					</Hint>
 				</div>
-				<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={saveTestcase}>
-					<Save />
-				</Button>
+				<Hint label="Save Testcase">
+					<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={saveTestcase}>
+						<Save />
+					</Button>
+				</Hint>
 			</div>
 
 			{/* Input fields */}

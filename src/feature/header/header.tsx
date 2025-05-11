@@ -1,12 +1,12 @@
 "use client";
-import Logo from "@/feature/header/logo";
 import {Button} from "@/components/ui/button";
 import {DefaultPage} from "@/constants";
+import Logo from "@/feature/header/logo";
 import {SignedIn, SignedOut, SignInButton, UserButton} from "@clerk/nextjs";
 import {LogIn} from "lucide-react";
 import {usePathname} from "next/navigation";
-import PageLink from "./page-link";
 import SheetCostume from "../../components/sheet-costume";
+import PageLink from "./page-link";
 import SwitchLanguage from "./switch-language";
 
 export default function HeaderHome() {
@@ -32,7 +32,7 @@ export default function HeaderHome() {
 						<SignInButton mode="modal">
 							<Button
 								className=" font-semibold px-5 py-4 rounded-full 
-							bg-deepBlue hover:bg-deepBlueHover cursor-pointer hoverEffect">
+							bg-deepBlue hover:bg-darkDeepBlue cursor-pointer hoverEffect">
 								<span className="md:flex hidden">Log In</span>
 								<LogIn className="flex md:hidden" />
 							</Button>

@@ -6,12 +6,19 @@ import {setDraftCode} from "@/lib/utils";
 
 import {useClerk} from "@clerk/nextjs";
 
+import {LanguageProgramming, Theme} from "@/constants";
 import {useEffect} from "react";
-import {useRoom} from "../../provider";
 import {CodeEditorSkeleton} from "./code-editor-skeleton";
 
-export const CodeEditor = () => {
-	const {theme, language, setCode, code, readonly} = useRoom();
+type Props = {
+	theme: Theme;
+	language: LanguageProgramming;
+	setCode: (code: string) => void;
+	code: string;
+	readonly?: boolean;
+};
+
+export const CodeEditor = ({theme, language, setCode, code, readonly}: Props) => {
 	// Monaco Editor causes ClerkJS to fail loading
 	// https://github.com/clerk/javascript/issues/1643
 	const clerk = useClerk();

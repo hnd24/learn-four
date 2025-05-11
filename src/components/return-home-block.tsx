@@ -10,13 +10,11 @@ export default function ReturnHomeBlock() {
 				alt="Logo"
 				width={200}
 				height={200}
-				className="bg-deepBlueHover rounded-full size-[200px] md:size-[300px] dark:bg-transparent"
+				className="bg-darkDeepBlue rounded-full size-[200px] md:size-[300px] dark:bg-transparent"
 			/>
 			<div className="text-2xl dark:text-white/90 text-center">Not Found!!!</div>
 			<Link href="/">
-				<Button className="bg-deepBlue hover:bg-deepBlueHover  rounded-xl w-32 ">
-					Return Home
-				</Button>
+				<Button className="bg-deepBlue hover:bg-darkDeepBlue  rounded-xl w-32 ">Return Home</Button>
 			</Link>
 		</div>
 	);

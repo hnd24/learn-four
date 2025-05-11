@@ -4,7 +4,7 @@ import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 
 import {removeCComment} from "./comment";
 import {getCourse} from "./courses";
-import {example, statusPlace, testcase} from "./schema";
+import {statusPlace, testcase} from "./schema";
 
 export async function getLesson(ctx: QueryCtx | MutationCtx, lessonId: Id<"lessons">) {
 	const lesson = await ctx.db.get(lessonId);
@@ -56,8 +56,6 @@ export const updateLesson = mutation({
 		stars: v.optional(v.number()),
 		level: v.optional(v.number()),
 		content: v.optional(v.string()),
-		structureAnswer: v.optional(v.string()),
-		example: v.optional(v.array(example)),
 		status: v.optional(statusPlace),
 		testcase: v.optional(v.array(testcase)),
 	},
@@ -74,8 +72,6 @@ export const createLesson = mutation({
 		stars: v.number(),
 		level: v.number(),
 		content: v.string(),
-		structureAnswer: v.string(),
-		example: v.array(example),
 		status: statusPlace,
 		testcase: v.array(testcase),
 	},

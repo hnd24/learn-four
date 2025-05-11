@@ -314,27 +314,17 @@ Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai m�
 ## Output
 - Trả về tổng của tất cả phần tử trong \`num1\` và \`num2\`
   `,
-	structureAnswer: `
-function sumArrays(num1, num2) {
-  // TODO: Implement
-}
-  `,
-	example: [
-		{
-			input: [
-				{name: "num1", value: "[1, 2, 3]"},
-				{name: "num2", value: "[4, 5, 6]"},
-			],
-			explanation: "Tổng = 1+2+3+4+5+6 = 21",
-			output: "21",
-		},
-	],
 	status: "approved" as StatusPlace.APPROVED,
 	testcase: [
 		{
 			input: [
 				{name: "num1", value: "[1, 2]"},
 				{name: "num2", value: "[3, 4]"},
+				{name: "num3", value: "[5, 6]"},
+				{name: "num4", value: "[7, 8]"},
+				{name: "num5", value: "[9, 10]"},
+				{name: "num6", value: "[11, 12]"},
+				{name: "num7", value: "[13, 14]"},
 			],
 			output: "10",
 			isHidden: false,

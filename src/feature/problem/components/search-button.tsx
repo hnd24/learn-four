@@ -26,7 +26,7 @@ export default function SearchButton({className}: Props) {
 		<Button
 			onClick={handleSearch}
 			disabled={loading}
-			className={cn("bg-deepBlue hover:bg-deepBlueHover text-gray-100 border gap-1", className)}>
+			className={cn("bg-deepBlue hover:bg-darkDeepBlue text-gray-100 border gap-1", className)}>
 			<Loader2 className={cn("hidden animate-spin", loading && "flex")} />
 			Search
 		</Button>

@@ -23,14 +23,14 @@ export default function ErrorPage() {
 				<Button
 					onClick={() => window.location.reload()}
 					className={cn(
-						"bg-deepBlue hover:bg-deepBlueHover  rounded-xl w-32",
+						"bg-deepBlue hover:bg-darkDeepBlue  rounded-xl w-32",
 						pathname !== "/" && "rounded-r-none",
 					)}>
 					Reset Page
 				</Button>
 				{pathname !== "/" && (
 					<Button
-						className="bg-deepBlue hover:bg-deepBlueHover rounded-xl rounded-l-none w-32"
+						className="bg-deepBlue hover:bg-darkDeepBlue rounded-xl rounded-l-none w-32"
 						onClick={() => window.location.replace("/")}>
 						Return Home
 					</Button>
