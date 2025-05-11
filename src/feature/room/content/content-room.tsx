@@ -3,10 +3,9 @@
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
 import {useIsMobile} from "@/hook/use-mobile";
 import {cn} from "@/lib/utils";
-import {useEffect} from "react";
 import DescriptionPanel from "../description/description-panel";
 import EditorPanel from "../editor-panel/editor-panel";
-import {DashboardProvider, useRoom} from "../provider";
+import {DashboardProvider} from "../provider";
 import TestcasePanel from "../testcase/testcase-panel";
 
 type Props = {
@@ -15,13 +14,6 @@ type Props = {
 
 export default function ContentRoom({id}: Props) {
 	const isMobile = useIsMobile();
-	const {setIdLesson} = useRoom();
-
-	useEffect(() => {
-		if (id) {
-			setIdLesson(id);
-		}
-	}, [id]);
 
 	return (
 		<DashboardProvider>
@@ -30,7 +22,7 @@ export default function ContentRoom({id}: Props) {
 					defaultSize={isMobile ? 100 : 30}
 					className="h-[calc(100vh-98px)] rounded-lg border border-charcoal lg:mr-0.5 shadow-lg">
 					{/* Description Panel  */}
-					<DescriptionPanel />
+					<DescriptionPanel idLesson={id} />
 				</ResizablePanel>
 				<ResizableHandle
 					className={cn(isMobile && "hidden", "bg-transparent hover:bg-pulseBlue")}
@@ -41,7 +33,7 @@ export default function ContentRoom({id}: Props) {
 							defaultSize={50}
 							className="rounded-lg border border-charcoal mb-0.5 shadow-lg">
 							{/* Editor Panel */}
-							<EditorPanel />
+							<EditorPanel idLesson={id} />
 						</ResizablePanel>
 						<ResizableHandle className="bg-transparent hover:bg-pulseBlue" />
 						<ResizablePanel

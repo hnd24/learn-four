@@ -5,8 +5,12 @@ import {useEffect} from "react";
 import {useRoom} from "../provider";
 import {CodeEditor} from "./components/code-editor";
 
-export default function EditorPanel() {
-	const {setCode, idLesson} = useRoom();
+type Props = {
+	idLesson: string;
+};
+
+export default function EditorPanel({idLesson}: Props) {
+	const {setCode} = useRoom();
 	const {getUserLesson, loading} = useGetUserLesson();
 
 	useEffect(() => {

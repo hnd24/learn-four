@@ -1,13 +1,14 @@
 "use client";
 import {useGetLessonById} from "@/data/lesson";
-import {LessonDetailType} from "@/types";
 import {FileText} from "lucide-react";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useRoom} from "../provider";
 
-export default function DescriptionPanel() {
-	const {idLesson} = useRoom();
-	const [lessonDetail, setLessonDetail] = useState<LessonDetailType | null>(null);
+type Props = {
+	idLesson: string;
+};
+export default function DescriptionPanel({idLesson}: Props) {
+	const {lessonDetail, setLessonDetail} = useRoom();
 	const {getLessonById} = useGetLessonById();
 
 	useEffect(() => {
@@ -17,7 +18,7 @@ export default function DescriptionPanel() {
 		};
 		fetchLesson();
 	}, [getLessonById, idLesson]);
-
+	console.log(lessonDetail);
 	return (
 		<>
 			{/* Header */}

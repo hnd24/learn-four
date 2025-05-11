@@ -12,8 +12,7 @@ export interface RoomContextProps {
 	setLessonDetail: (lessonDetail: LessonDetailType | null) => void;
 	tempTestcases: (TestcaseType & {index: number})[];
 	setTempTestcases: (testcase: (TestcaseType & {index: number})[]) => void;
-	idLesson: string;
-	setIdLesson: (idLesson: string) => void;
+
 	language: LanguageProgramming;
 	setLanguage: (language: LanguageProgramming) => void;
 	theme: Theme;

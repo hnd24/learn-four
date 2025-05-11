@@ -6,7 +6,6 @@ import {ReactNode, useState} from "react";
 import {Context} from "./context";
 
 export default function DashboardProvider({children}: {children: ReactNode}) {
-	const [idLesson, setIdLesson] = useState<string>("");
 	const [runCode, setRunCode] = useState<RunCode>(RunCode.None);
 	const [code, setCode] = useState<string>("");
 	const [lessonDetail, setLessonDetail] = useState<LessonDetailType | null>(null);
@@ -28,8 +27,7 @@ export default function DashboardProvider({children}: {children: ReactNode}) {
 				setLessonDetail,
 				tempTestcases,
 				setTempTestcases,
-				idLesson,
-				setIdLesson,
+
 				theme,
 				setTheme,
 				language,
