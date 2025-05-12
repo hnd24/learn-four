@@ -28,7 +28,7 @@ export const activity = v.object({
 
 export const testcase = v.object({
 	input: v.array(v.object({name: v.string(), value: v.string()})),
-	output: v.optional(v.string()),
+	except: v.optional(v.string()),
 	isHidden: v.optional(v.boolean()),
 });
 

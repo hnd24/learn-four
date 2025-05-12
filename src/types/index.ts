@@ -145,7 +145,7 @@ export type TestcaseType = {
 		name: string;
 		value: string;
 	}[];
-	output?: string;
+	except?: string;
 	isHidden?: boolean;
 };
 
@@ -169,4 +169,21 @@ export type UserLessonType = {
 	userId: string;
 	code: string;
 	isCompleted: boolean;
+};
+
+export enum ExecutedTestcaseStatusType {
+	ACCEPTED = "accepted",
+	REJECTED = "rejected",
+	COMPILATION_ERROR = "compilation_error",
+	RUNTIME_ERROR = "runtime_error",
+	TIME_LIMIT_EXCEEDED = "time_limit_exceeded",
+	WRONG_ANSWER = "wrong_answer",
+	OUTPUT_LIMIT_EXCEEDED = "output_limit_exceeded",
+	OTHER_ERROR = "other_error",
+}
+
+export type ExecuteTestcaseType = {
+	testcase: (TestcaseType & {index: number; status: ExecutedTestcaseStatusType; output: string})[];
+	status: ExecutedTestcaseStatusType;
+	runTime?: number;
 };

@@ -5,15 +5,18 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
 import {Plus, Save, X} from "lucide-react";
+import {useState} from "react";
 import {toast} from "sonner";
 import {useRoom} from "../../provider";
 
-export default function tempTestcases() {
-	const {selectedIndex, tempTestcases, selectedTestcase, setTempTestcases, setSelectedIndex} =
-		useRoom();
+export default function TempTestcases() {
+	const {tempTestcases, setTempTestcases} = useRoom();
+	const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+	const selectedTestcase = tempTestcases[selectedIndex];
 
 	const updateInputValue = (inputIndex: number, newValue: string) => {
-		if (!tempTestcases[selectedIndex]) return;
+		if (!selectedTestcase) return;
 
 		const updated = [...tempTestcases];
 		const current = updated[selectedIndex];
@@ -33,6 +36,7 @@ export default function tempTestcases() {
 		const newTestcase = {
 			...JSON.parse(JSON.stringify(base)),
 			index: tempTestcases.length,
+			isHidden: false,
 		};
 		setTempTestcases([...tempTestcases, newTestcase]);
 		setSelectedIndex(tempTestcases.length);
@@ -43,9 +47,7 @@ export default function tempTestcases() {
 			toast.error("Cannot delete the last testcase", {
 				duration: 2000,
 				position: "bottom-right",
-				style: {
-					color: "#f87171",
-				},
+				style: {color: "#f87171"},
 			});
 			return;
 		}
@@ -66,41 +68,46 @@ export default function tempTestcases() {
 	};
 
 	return (
-		<div className="p-4 ">
+		<div className="p-4">
 			{/* Testcase buttons */}
 			<div className="flex items-end gap-4 mb-2">
 				<div className="flex flex-1 gap-3 flex-wrap">
-					{tempTestcases.map((_, index) => (
-						<div
-							key={index}
-							className={cn(
-								"group rounded-lg flex overflow-hidden hover:bg-zinc-300",
-								selectedIndex === index
-									? "bg-zinc-300 text-zinc-900"
-									: "bg-zinc-200 text-zinc-600 hover:bg-zinc-300",
-							)}>
-							<button className="px-3 py-2" onClick={() => setSelectedIndex(index)}>
-								<span className="whitespace-nowrap">Test {index + 1}</span>
-							</button>
-							<Hint label="Delete Testcase">
-								<button
-									onClick={e => {
-										e.stopPropagation();
-										deleteTestcase(index);
-									}}
-									className="cursor-pointer transition px-1
-							hover:bg-zinc-200">
-									<X className=" size-4 opacity-0 group-hover:opacity-100 group-hover:text-red-500 text-zinc-600 " />
-								</button>
-							</Hint>
-						</div>
-					))}
+					{tempTestcases
+						.filter(testcase => !testcase.isHidden)
+						.map((testcase, index) => {
+							return (
+								<div
+									key={index}
+									className={cn(
+										"group rounded-lg flex overflow-hidden hover:bg-zinc-300",
+										selectedIndex === index
+											? "bg-zinc-300 text-zinc-900"
+											: "bg-zinc-200 text-zinc-600",
+									)}>
+									<button className="px-3 py-1" onClick={() => setSelectedIndex(index)}>
+										<span className="whitespace-nowrap">Test {index + 1}</span>
+									</button>
+									<Hint label="Delete Testcase">
+										<button
+											onClick={e => {
+												e.stopPropagation();
+												deleteTestcase(index);
+											}}
+											className="cursor-pointer transition px-1 hover:bg-zinc-200">
+											<X className="size-4 opacity-0 group-hover:opacity-100 group-hover:text-red-500 text-zinc-600" />
+										</button>
+									</Hint>
+								</div>
+							);
+						})}
+
 					<Hint label="Add Testcase">
 						<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={addTestcase}>
 							<Plus />
 						</Button>
 					</Hint>
 				</div>
+
 				<Hint label="Save Testcase">
 					<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={saveTestcase}>
 						<Save />
@@ -113,7 +120,10 @@ export default function tempTestcases() {
 				{selectedTestcase?.input.map((input, index) => (
 					<div className="flex flex-col gap-1" key={`${input.name}-${index}`}>
 						<span className="text-sm text-zinc-600 font-semibold ml-2">{input.name}</span>
-						<Input value={input.value} onChange={e => updateInputValue(index, e.target.value)} />
+						<Input
+							value={input.value ?? ""}
+							onChange={e => updateInputValue(index, e.target.value)}
+						/>
 					</div>
 				))}
 			</div>

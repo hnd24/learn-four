@@ -40,7 +40,7 @@ export default function ContentRoom({id}: Props) {
 							defaultSize={50}
 							className="rounded-lg border border-charcoal mt-0.5 shadow-lg">
 							{/* Testcase Panel */}
-							<TestcasePanel />
+							<TestcasePanel idLesson={id} />
 						</ResizablePanel>
 					</ResizablePanelGroup>
 				</ResizablePanel>

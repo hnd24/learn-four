@@ -35,7 +35,7 @@ export default function Carousel() {
 				<CarouselPrimitive
 					plugins={[
 						Autoplay({
-							delay: 2000,
+							delay: 60000,
 							stopOnInteraction: true,
 						}),
 					]}

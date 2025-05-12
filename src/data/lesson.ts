@@ -9,7 +9,7 @@ export const useGetLessons = () => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
-		}, 1000);
+		}, 2000);
 		return problemData;
 	}, []);
 
@@ -23,7 +23,7 @@ export const useGetLessonById = () => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
-		}, 1000);
+		}, 2000);
 		return lessonDetailData;
 	}, []);
 
@@ -37,7 +37,7 @@ export const useGetUserLesson = () => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
-		}, 1000);
+		}, 2000);
 		return userLessonData;
 	}, []);
 
