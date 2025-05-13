@@ -1,41 +1,14 @@
 import {AllLevelIcon, EasyLevelIcon, HardLevelIcon, MediumLevelIcon} from "@/icon/difficuly-icon";
 import {FiveStar, FourStar, OneStar, ThreeStar, TwoStar} from "@/icon/star";
 import {SolvedIcon, UnsolvedIcon} from "@/icon/state-icon";
-import {LanguageType, LevelType, StarProblemType, StateProblemType} from "@/types";
+import {LevelType, StarProblemType, StateProblemType} from "@/types";
 
 export const DRAFT_CODE_KEY = "editor-draft";
 
-export enum Theme {
-	Light = "light",
-	Dark = "vs-dark",
-}
-
-export enum LanguageProgramming {
-	JavaScript = "javascript",
-	TypeScript = "typescript",
-	Python = "python",
-	Java = "java",
-	Cpp = "cpp",
-	CSharp = "csharp",
-}
-
 import {List} from "lucide-react";
 
-export enum PageEnum {
-	Home = "Home",
-	Problem = "Problem",
-	About = "About",
-}
-export type PageType = {
-	name: string;
-	path: string;
-};
-
-export const DefaultPage: Record<PageEnum, PageType> = {
-	Home: {name: "Home", path: "/"},
-	Problem: {name: "Problem", path: "/problem"},
-	About: {name: "About", path: "/about"},
-};
+export * from "./code";
+export * from "./setting";
 
 export enum LevelEnum {
 	All = "All",
@@ -141,22 +114,4 @@ export const ListLanguagePage = {
 	Python: "py",
 	CPlusPlus: "cpp",
 	Csharp: "cs",
-};
-
-export enum LanguageEnum {
-	English = "English",
-	Vietnamese = "Vietnamese",
-}
-
-export const Language: Record<LanguageEnum, LanguageType> = {
-	English: {
-		value: "English",
-		label: "English",
-		image: "/icon/us-icon.svg",
-	},
-	Vietnamese: {
-		value: "Vietnamese",
-		label: "Việt Nam",
-		image: "/icon/vietnam-icon.svg",
-	},
 };
