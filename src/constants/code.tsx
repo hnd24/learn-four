@@ -3,11 +3,10 @@ export enum Theme {
 	Dark = "vs-dark",
 }
 
-export enum LanguageProgramming {
-	JavaScript = "javascript",
-	TypeScript = "typescript",
-	Python = "python",
-	Java = "java",
-	Cpp = "cpp",
-	CSharp = "csharp",
-}
+export const ListLanguagePage = {
+	JavaScript: "js",
+	Java: "java",
+	Python: "py",
+	CPlusPlus: "cpp",
+	Csharp: "cs",
+};

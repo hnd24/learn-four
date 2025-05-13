@@ -1,7 +1,7 @@
 "use client";
 
-import {LanguageProgramming, Theme} from "@/constants";
-import {RunCode, TestcaseType} from "@/types";
+import {Theme} from "@/constants";
+import {LanguageProgramming, RunCode, TestcaseType} from "@/types";
 import {ReactNode, useState} from "react";
 import {Context} from "./context";
 
