@@ -55,4 +55,5 @@ sleep 5s
 7. Your instance of Judge0 CE v1.13.1 is now up and running; visit docs at:
 
 - `http://<IP ADDRESS OF YOUR SERVER>:2358/docs`
-- `http://locallhost:2358/docs`
+- `http://localhost:2358/docs`
+- Test code : `http://localhost:2358/dummy-client`
