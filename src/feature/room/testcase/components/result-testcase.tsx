@@ -101,9 +101,9 @@ export default function ResultTestcase({}: Props) {
 	};
 
 	return (
-		<div className="w-full p-4">
+		<div className="w-full p-4 flex justify-center">
 			{runCode === RunCode.None && (
-				<span className="text-zinc-400 font-semibold">You must run your code.</span>
+				<span className=" text-zinc-400 font-semibold">You must run your code.</span>
 			)}
 
 			{runCode === RunCode.Running && (

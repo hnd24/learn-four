@@ -46,7 +46,7 @@ export default function TempTestcases() {
 		if (tempTestcases.length === 1) {
 			toast.error("Cannot delete the last testcase", {
 				duration: 2000,
-				position: "bottom-right",
+				position: "top-center",
 				style: {color: "#f87171"},
 			});
 			return;
@@ -64,7 +64,10 @@ export default function TempTestcases() {
 
 	const saveTestcase = () => {
 		console.log("✅ Save Testcase:", tempTestcases);
-		toast.success("Testcases saved!");
+		toast.success("Testcases saved!", {
+			position: "top-center",
+			style: {color: "#2baa48"},
+		});
 	};
 
 	return (
