@@ -1,16 +1,16 @@
-import {LessonDetailType, ProblemStateType, UserLessonType} from "@/types";
+import {LessonDetailType, LessonType, ProblemStateType, UserLessonType} from "@/types";
 import {useCallback, useState} from "react";
-import {lessonDetailData, problemData, userLessonData} from ".";
+import {lessonDetailData, listLessonData, problemData, userLessonData} from ".";
 
 export const useGetLessons = () => {
 	const [loading, setLoading] = useState(false);
 
-	const getLessons = useCallback(async (): Promise<ProblemStateType[]> => {
+	const getLessons = useCallback(async (language: string): Promise<LessonType[]> => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
 		}, 2000);
-		return problemData;
+		return listLessonData;
 	}, []);
 
 	return {getLessons, loading};

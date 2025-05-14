@@ -1,10 +1,22 @@
 "use client";
+import {useGetLessonById} from "@/data/lesson";
 import {FileText} from "lucide-react";
+import {useEffect, useState} from "react";
 
 type Props = {
 	idLesson: string;
 };
 export default function DescriptionPanel({idLesson}: Props) {
+	const [content, setContent] = useState<string>("");
+	const {getLessonById, loading} = useGetLessonById();
+
+	useEffect(() => {
+		const fetchUserLesson = async () => {
+			const data = await getLessonById(idLesson);
+			setContent(data.content);
+		};
+		fetchUserLesson();
+	}, [getLessonById, idLesson]);
 	return (
 		<>
 			{/* Header */}
@@ -16,10 +28,7 @@ export default function DescriptionPanel({idLesson}: Props) {
 			{/* Body */}
 			<div className="flex-1 p-4 text-sm text-zinc-700 ">
 				{/* Nội dung mô tả sẽ được thêm vào đây */}
-				<p>
-					This panel contains additional details or documentation related to the current file or
-					project.
-				</p>
+				<p>{content}</p>
 			</div>
 		</>
 	);

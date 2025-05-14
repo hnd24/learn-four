@@ -75,34 +75,32 @@ export default function TempTestcases() {
 			{/* Testcase buttons */}
 			<div className="flex items-end gap-4 mb-2">
 				<div className="flex flex-1 gap-3 flex-wrap">
-					{tempTestcases
-						.filter(testcase => !testcase.isHidden)
-						.map((testcase, index) => {
-							return (
-								<div
-									key={index}
-									className={cn(
-										"group rounded-lg flex overflow-hidden hover:bg-zinc-300",
-										selectedIndex === index
-											? "bg-zinc-300 text-zinc-900"
-											: "bg-zinc-200 text-zinc-600",
-									)}>
-									<button className="px-3 py-1" onClick={() => setSelectedIndex(index)}>
-										<span className="whitespace-nowrap">Test {index + 1}</span>
+					{tempTestcases.map((testcase, index) => {
+						return (
+							<div
+								key={index}
+								className={cn(
+									"group rounded-lg flex overflow-hidden hover:bg-zinc-300",
+									selectedIndex === index
+										? "bg-zinc-300 text-zinc-900"
+										: "bg-zinc-200 text-zinc-600",
+								)}>
+								<button className="px-3 py-1" onClick={() => setSelectedIndex(index)}>
+									<span className="whitespace-nowrap">Test {index + 1}</span>
+								</button>
+								<Hint label="Delete Testcase">
+									<button
+										onClick={e => {
+											e.stopPropagation();
+											deleteTestcase(index);
+										}}
+										className="cursor-pointer transition px-1 hover:bg-zinc-200">
+										<X className="size-4 opacity-0 group-hover:opacity-100 group-hover:text-red-500 text-zinc-600" />
 									</button>
-									<Hint label="Delete Testcase">
-										<button
-											onClick={e => {
-												e.stopPropagation();
-												deleteTestcase(index);
-											}}
-											className="cursor-pointer transition px-1 hover:bg-zinc-200">
-											<X className="size-4 opacity-0 group-hover:opacity-100 group-hover:text-red-500 text-zinc-600" />
-										</button>
-									</Hint>
-								</div>
-							);
-						})}
+								</Hint>
+							</div>
+						);
+					})}
 
 					<Hint label="Add Testcase">
 						<Button className="bg-zinc-200 text-zinc-600 hover:bg-zinc-300" onClick={addTestcase}>

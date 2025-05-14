@@ -36,8 +36,8 @@ export default function TestcasePanel({idLesson}: Props) {
 	const [typePanel, setTypePanel] = useState<TypePanel>(TypePanel.TESTCASE);
 
 	useEffect(() => {
-		if (lessonDetail && lessonDetail.testcase) {
-			const initialData = lessonDetail.testcase;
+		if (lessonDetail && lessonDetail.testcaseSample) {
+			const initialData = lessonDetail.testcaseSample;
 			const withIndex = initialData.map((item, index) => ({...item, index}));
 			setTempTestcases(withIndex);
 		}

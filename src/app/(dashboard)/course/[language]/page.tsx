@@ -1,10 +1,13 @@
 import ReturnHomeBlock from "@/components/return-home-block";
-import {ListLanguagePage} from "@/constants";
+
 import ContentCourse from "@/feature/course/content/content-course";
+import {LanguageProgrammingType} from "@/types";
 
 export default async function CourseLanguagePage({params}: {params: {language: string}}) {
 	const {language} = await params;
-	const isNotFound = Object.values(ListLanguagePage).includes(language);
+	const isNotFound = Object.values(LanguageProgrammingType).includes(
+		language as LanguageProgrammingType,
+	);
 
 	if (!isNotFound) {
 		return <ReturnHomeBlock />;

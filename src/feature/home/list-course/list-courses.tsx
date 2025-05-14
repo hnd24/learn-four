@@ -29,7 +29,6 @@ export default function ListCourse() {
 					: courses.map((item, index) => (
 							<ItemCourse
 								key={index}
-								extension={item.extension ?? ""}
 								banner={item.banner ?? ""}
 								language={item.language ?? ""}
 								authorImage={item.authorImage ?? ""}

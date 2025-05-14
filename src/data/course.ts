@@ -1,6 +1,6 @@
-import {CourseStateType} from "@/types";
+import {CourseDetailStateType, CourseStateType} from "@/types";
 import {useCallback, useState} from "react";
-import {courseData} from ".";
+import {courseData, CourseDetailData} from ".";
 
 export const useGetCourses = () => {
 	const [loading, setLoading] = useState(false);
@@ -14,4 +14,21 @@ export const useGetCourses = () => {
 	}, []);
 
 	return {getCourses, loading};
+};
+
+export const useGetDetailCourse = () => {
+	const [loading, setLoading] = useState(false);
+
+	const getDetailCourse = useCallback(
+		async (language: string): Promise<CourseStateType | undefined> => {
+			setLoading(true);
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+			return CourseDetailData;
+		},
+		[],
+	);
+
+	return {getDetailCourse, loading};
 };

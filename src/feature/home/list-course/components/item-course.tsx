@@ -3,7 +3,7 @@
 import ListStar from "@/components/list-star";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {cn} from "@/lib/utils";
-import {StatusPlace} from "@/types";
+import {LanguageProgrammingType, StatusPlace} from "@/types";
 
 import {BookOpen} from "lucide-react";
 import Image from "next/image";
@@ -17,7 +17,7 @@ type Props = {
 	star: number;
 	learner: number;
 	lessons: number;
-	extension: string;
+
 	status: StatusPlace;
 };
 
@@ -28,7 +28,6 @@ export default function ItemCourse({
 	authorName,
 	star,
 	learner,
-	extension,
 	lessons,
 	status,
 }: Props) {
@@ -37,7 +36,9 @@ export default function ItemCourse({
 	const isRejected = status === "rejected";
 	const handleClick = () => {
 		if (isApproved) {
-			router.push(`/course/${extension}`);
+			router.push(
+				`/course/${LanguageProgrammingType[language as keyof typeof LanguageProgrammingType]}`,
+			);
 		}
 		return;
 	};

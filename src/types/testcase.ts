@@ -4,7 +4,6 @@ export type TestcaseType = {
 		value: string;
 	}[];
 	except?: string;
-	isHidden?: boolean;
 };
 
 export enum ExecutedTestcaseStatusType {
@@ -13,8 +12,14 @@ export enum ExecutedTestcaseStatusType {
 	ERROR = "error",
 }
 
-export type ExecuteTestcaseType = {
-	testcase: (TestcaseType & {index: number; status: ExecutedTestcaseStatusType; output: string})[];
+export type TestCaseOutputType = TestcaseType & {
+	index: number;
 	status: ExecutedTestcaseStatusType;
-	runTime?: number;
+	output: string;
+	runTime: number;
+};
+
+export type ExecuteTestcaseType = {
+	testcase: TestCaseOutputType[];
+	status: ExecutedTestcaseStatusType;
 };

@@ -1,4 +1,5 @@
 import {ComponentType} from "react";
+import {TestcaseType} from "./testcase";
 
 export type StarType = {
 	rating: number;
@@ -32,3 +33,13 @@ export enum StatusPlace {
 	PENDING = "pending",
 	REJECTED = "rejected",
 }
+
+export type CodeAnswerType = {
+	code: string;
+	language: string;
+};
+
+export type AnswerType = {
+	code: CodeAnswerType[];
+	testcase: TestcaseType[];
+};

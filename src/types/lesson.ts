@@ -1,4 +1,4 @@
-import {StatusPlace} from "./content";
+import {AnswerType, StatusPlace} from "./content";
 import {TestcaseType} from "./testcase";
 
 export type LessonDetailType = {
@@ -6,18 +6,19 @@ export type LessonDetailType = {
 	courseId: string;
 	topic: string;
 	name: string;
-	stars: number;
+	star: number;
 	learner: number;
 	level: number;
 	content: string;
-
+	nameFn: string;
+	answer: AnswerType;
 	status: StatusPlace;
-	testcase: TestcaseType[];
+	testcaseSample: TestcaseType[];
 };
 
 export type LessonType = {
 	_id: string;
 	topic: string;
-	stars: number;
+	star: number;
 	level: string;
 };

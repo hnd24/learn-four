@@ -1,4 +1,4 @@
-export enum LanguageProgramming {
+export enum LanguageProgrammingType {
 	JavaScript = "javascript",
 	TypeScript = "typescript",
 	Python = "python",
@@ -7,7 +7,7 @@ export enum LanguageProgramming {
 	CSharp = "csharp",
 }
 export type DraftCode = {
-	language: LanguageProgramming;
+	language: LanguageProgrammingType;
 	code?: string;
 	idRoom?: string;
 };

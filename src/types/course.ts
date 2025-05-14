@@ -5,7 +5,7 @@ export type CourseStateType = {
 	_id: string;
 	language: string;
 	background: string;
-	extension: string;
+
 	description: string;
 	logoLanguage: string;
 	banner: string;

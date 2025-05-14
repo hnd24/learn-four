@@ -1,7 +1,7 @@
 import {
-	CourseDetailStateType,
 	CourseStateType,
 	LessonDetailType,
+	LessonType,
 	ProblemStateType,
 	StatusPlace,
 	UserLessonType,
@@ -13,7 +13,6 @@ export const courseData: CourseStateType[] = [
 		_id: "123",
 		background: "from-[#c49d0a] to-[#f7ef4d]",
 		language: "JavaScript",
-		extension: "js",
 		description:
 			"JavaScript is the programming language of the Web. JavaScript is easy to learn. This tutorial will teach you JavaScript from basic to advanced.",
 		logoLanguage: "/icon/javascript-icon.svg",
@@ -27,10 +26,26 @@ export const courseData: CourseStateType[] = [
 		lessons: 15,
 	},
 	{
+		_id: "345",
+		background: "from-[#4d98d8] to-[#a3d2ed]",
+		language: "TypeScript",
+
+		description:
+			"TypeScript is a strict syntactical superset of JavaScript and adds optional static typing to the language. TypeScript is designed for development of large applications and transpiles to JavaScript.",
+		logoLanguage: "/icon/typescript-icon.svg",
+		banner: "/images/banner-typescript.png",
+		authorId: "234567",
+		authorImage: "https://randomuser.me/api/portraits/men/33.jpg",
+		authorName: "Ngọc Bảo",
+		star: 4.7,
+		learner: 150,
+		status: "approved" as StatusPlace,
+		lessons: 10,
+	},
+	{
 		_id: "456",
 		background: "from-[#dd5902] to-[#ffbd4d]",
 		language: "Java",
-		extension: "java",
 		description:
 			"Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",
 		logoLanguage: "/icon/java-icon.svg",
@@ -40,14 +55,14 @@ export const courseData: CourseStateType[] = [
 		authorName: "Minh Tuấn",
 		star: 4.8,
 		learner: 300,
-		status: "approved" as StatusPlace,
+		status: "pending" as StatusPlace,
 		lessons: 12,
 	},
+
 	{
 		_id: "789",
-		background: "from-[#2371b1] to-[#91c2e8]",
+		background: "from-[#2371b1] to-[#77b8e3]",
 		language: "Python",
-		extension: "py",
 		description:
 			"Python is a programming language that lets you work quickly and integrate systems more effectively. Python is powerful... and fast; plays well with others; and runs everywhere.",
 		logoLanguage: "/icon/python-icon.svg",
@@ -57,14 +72,13 @@ export const courseData: CourseStateType[] = [
 		authorName: "Thanh Hằng",
 		star: 4.9,
 		learner: 250,
-		status: "approved" as StatusPlace,
+		status: "rejected" as StatusPlace,
 		lessons: 15,
 	},
 	{
 		_id: "101112",
 		background: "from-[#004482] to-[#83d9ff]",
 		language: "C++",
-		extension: "cpp",
 		description:
 			"C++ is a general-purpose programming language created by Bjarne Stroustrup. It has imperative, object-oriented and generic programming features, while also providing facilities for low-level memory manipulation.",
 		logoLanguage: "/icon/cpp-icon.svg",
@@ -74,14 +88,13 @@ export const courseData: CourseStateType[] = [
 		authorName: "Quốc Anh",
 		star: 4.3,
 		learner: 180,
-		status: "approved" as StatusPlace,
+		status: "pending" as StatusPlace,
 		lessons: 11,
 	},
 	{
 		_id: "131415",
 		background: "from-[#662579] to-[#e0b5f2]",
 		language: "C#",
-		extension: "cs",
 		description:
 			"C# is a modern, object-oriented programming language developed by Microsoft. It is designed for building a variety of applications that run on the .NET Framework.",
 		logoLanguage: "/icon/csharp-icon.svg",
@@ -91,7 +104,7 @@ export const courseData: CourseStateType[] = [
 		authorName: "Bích Ngọc",
 		star: 4.6,
 		learner: 220,
-		status: "approved" as StatusPlace,
+		status: "pending" as StatusPlace,
 		lessons: 13,
 	},
 ];
@@ -187,7 +200,7 @@ export const userData: UserStateType = {
 	image: "https://github.com/shadcn.png",
 };
 
-export const CourseDetailData: CourseDetailStateType = {
+export const CourseDetailData: CourseStateType = {
 	_id: "123",
 	background: "from-[#c49d0a] to-[#f7ef4d]",
 	language: "JavaScript",
@@ -201,134 +214,131 @@ export const CourseDetailData: CourseDetailStateType = {
 	star: 4.1,
 	learner: 200,
 	status: "approved" as StatusPlace,
-	lessons: [
-		{
-			_id: "lesson1",
-			topic: "Introduction to JavaScript",
-			stars: 4.5,
-			level: "Easy",
-		},
-		{
-			_id: "lesson2",
-			topic: "JavaScript Variables and Data Types",
-			stars: 5,
-			level: "Medium",
-		},
-		{
-			_id: "lesson3",
-			topic: "JavaScript Functions",
-			stars: 3,
-			level: "Hard",
-		},
-		{
-			_id: "lesson4",
-			topic: "JavaScript Arrays and Objects",
-			stars: 3.5,
-			level: "Easy",
-		},
-		{
-			_id: "lesson5",
-			topic: "JavaScript DOM Manipulation",
-			stars: 4,
-			level: "Medium",
-		},
-		{
-			_id: "lesson6",
-			topic: "JavaScript Events and Event Handling",
-			stars: 5,
-			level: "Hard",
-		},
-		{
-			_id: "lesson7",
-			topic: "JavaScript Promises and Async/Await",
-			stars: 2.5,
-			level: "Easy",
-		},
-		{
-			_id: "lesson8",
-			topic: "JavaScript Error Handling and Debugging",
-			stars: 4.5,
-			level: "Medium",
-		},
-		{
-			_id: "lesson9",
-			topic: "JavaScript ES6 Features",
-			stars: 3.5,
-			level: "Hard",
-		},
-		{
-			_id: "lesson10",
-			topic: "JavaScript APIs and AJAX",
-			stars: 2,
-			level: "Easy",
-		},
-		{
-			_id: "lesson11",
-			topic: "JavaScript Frameworks and Libraries",
-			stars: 4.5,
-			level: "Medium",
-		},
-		{
-			_id: "lesson12",
-			topic: "JavaScript Testing and Debugging",
-			stars: 3.5,
-			level: "Hard",
-		},
-		{
-			_id: "lesson13",
-			topic: "JavaScript Best Practices",
-			stars: 2,
-			level: "Easy",
-		},
-		{
-			_id: "lesson14",
-			topic: "JavaScript Performance Optimization",
-			stars: 4.5,
-			level: "Medium",
-		},
-		{
-			_id: "lesson15",
-			topic: "JavaScript Security",
-			stars: 3.5,
-			level: "Hard",
-		},
-	],
+	lessons: 15,
 };
+
+export const listLessonData: LessonType[] = [
+	{
+		_id: "lesson1",
+		topic: "Introduction to JavaScript",
+		star: 4.5,
+		level: "Easy",
+	},
+	{
+		_id: "lesson2",
+		topic: "JavaScript Variables and Data Types",
+		star: 5,
+		level: "Medium",
+	},
+	{
+		_id: "lesson3",
+		topic: "JavaScript Functions",
+		star: 3,
+		level: "Hard",
+	},
+	{
+		_id: "lesson4",
+		topic: "JavaScript Arrays and Objects",
+		star: 3.5,
+		level: "Easy",
+	},
+	{
+		_id: "lesson5",
+		topic: "JavaScript DOM Manipulation",
+		star: 4,
+		level: "Medium",
+	},
+	{
+		_id: "lesson6",
+		topic: "JavaScript Events and Event Handling",
+		star: 5,
+		level: "Hard",
+	},
+	{
+		_id: "lesson7",
+		topic: "JavaScript Promises and Async/Await",
+		star: 2.5,
+		level: "Easy",
+	},
+	{
+		_id: "lesson8",
+		topic: "JavaScript Error Handling and Debugging",
+		star: 4.5,
+		level: "Medium",
+	},
+	{
+		_id: "lesson9",
+		topic: "JavaScript ES6 Features",
+		star: 3.5,
+		level: "Hard",
+	},
+	{
+		_id: "lesson10",
+		topic: "JavaScript APIs and AJAX",
+		star: 2,
+		level: "Easy",
+	},
+	{
+		_id: "lesson11",
+		topic: "JavaScript Frameworks and Libraries",
+		star: 4.5,
+		level: "Medium",
+	},
+	{
+		_id: "lesson12",
+		topic: "JavaScript Testing and Debugging",
+		star: 3.5,
+		level: "Hard",
+	},
+	{
+		_id: "lesson13",
+		topic: "JavaScript Best Practices",
+		star: 2,
+		level: "Easy",
+	},
+	{
+		_id: "lesson14",
+		topic: "JavaScript Performance Optimization",
+		star: 4.5,
+		level: "Medium",
+	},
+	{
+		_id: "lesson15",
+		topic: "JavaScript Security",
+		star: 3.5,
+		level: "Hard",
+	},
+];
 
 export const lessonDetailData: LessonDetailType = {
 	_id: "lesson_001",
 	courseId: "course_001",
 	topic: "Array Manipulation",
 	name: "Sum of Two Arrays",
-	stars: 4,
+	star: 4,
 	learner: 123,
 	level: 2,
+	nameFn: "sumArrays",
 	content: `
-## Bài toán
+						## Bài toán
 
-Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai mảng.
+						Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai mảng.
 
-## Input
-- Một mảng \`num1: number[]\`
-- Một mảng \`num2: number[]\`
+						## Input
+						- Một mảng \`num1: number[]\`
+						- Một mảng \`num2: number[]\`
 
-## Output
-- Trả về tổng của tất cả phần tử trong \`num1\` và \`num2\`
-  `,
-	status: "approved" as StatusPlace.APPROVED,
-	testcase: [
+						## Output
+						- Trả về tổng của tất cả phần tử trong \`num1\` và \`num2\`
+						`,
+	status: StatusPlace.APPROVED,
+	testcaseSample: [
 		{
 			input: [
 				{name: "num1", value: "[1, 2]"},
 				{name: "num2", value: "[3, 4]"},
-				{name: "num3", value: "[5, 6]"},
-				{name: "num4", value: "[7, 8]"},
-				{name: "num5", value: "[9, 10]"},
-				{name: "num6", value: "[11, 12]"},
-				{name: "num7", value: "[13, 14]"},
 			],
 			except: "10",
-			isHidden: false,
 		},
 		{
 			input: [
@@ -336,22 +346,57 @@ Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai m�
 				{name: "num2", value: "[5, 5]"},
 			],
 			except: "20",
-			isHidden: true,
 		},
 		{
 			input: [
 				{name: "num1", value: "[1, 2]"},
 				{name: "num2", value: "[3, 4]"},
-				{name: "num3", value: "[5, 6]"},
-				{name: "num4", value: "[7, 8]"},
-				{name: "num5", value: "[9, 10]"},
-				{name: "num6", value: "[11, 12]"},
-				{name: "num7", value: "[13, 14]"},
 			],
 			except: "10",
-			isHidden: false,
 		},
 	],
+	answer: {
+		code: [
+			{
+				language: "javascript",
+				code: `
+							function sumArrays(num1, num2) {
+								let sum = 0;
+								for (let i = 0; i < num1.length; i++) {
+									sum += num1[i];
+								}
+								for (let i = 0; i < num2.length; i++) {
+									sum += num2[i];
+								}
+								return sum;
+							}
+				`.trim(),
+			},
+		],
+		testcase: [
+			{
+				input: [
+					{name: "num1", value: "[1, 2]"},
+					{name: "num2", value: "[3, 4]"},
+				],
+				except: "10",
+			},
+			{
+				input: [
+					{name: "num1", value: "[10]"},
+					{name: "num2", value: "[5, 5]"},
+				],
+				except: "20",
+			},
+			{
+				input: [
+					{name: "num1", value: "[1, 2, 3]"},
+					{name: "num2", value: "[4, 5, 6]"},
+				],
+				except: "21",
+			},
+		],
+	},
 };
 
 export const userLessonData: UserLessonType = {

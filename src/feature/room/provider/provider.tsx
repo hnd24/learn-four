@@ -1,16 +1,18 @@
 "use client";
 
 import {Theme} from "@/constants";
-import {LanguageProgramming, RunCode, TestcaseType} from "@/types";
+import {LanguageProgrammingType, RunCode, TestcaseType} from "@/types";
 import {ReactNode, useState} from "react";
 import {Context} from "./context";
 
 export default function DashboardProvider({children}: {children: ReactNode}) {
-	const [runCode, setRunCode] = useState<RunCode>(RunCode.None);
+	const [runCode, setRunCode] = useState<RunCode>(RunCode.Success);
 	const [code, setCode] = useState<string>("");
 	const [tempTestcases, setTempTestcases] = useState<(TestcaseType & {index: number})[]>([]);
 	const [theme, setTheme] = useState<Theme>(Theme.Light);
-	const [language, setLanguage] = useState<LanguageProgramming>(LanguageProgramming.JavaScript);
+	const [language, setLanguage] = useState<LanguageProgrammingType>(
+		LanguageProgrammingType.JavaScript,
+	);
 
 	return (
 		<Context.Provider

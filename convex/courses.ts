@@ -57,7 +57,6 @@ export const getCourseInfos = query({
 			return {
 				_id: course._id,
 				background: course.background,
-				extension: course.extension,
 				language: course.language,
 				description: course.description,
 				logoLanguage: course.logoLanguage,
@@ -96,7 +95,6 @@ export const getCoursesOfUser = query({
 					return {
 						_id: course._id,
 						background: course.background,
-						extension: course.extension,
 						language: course.language,
 						description: course.description,
 						logoLanguage: course.logoLanguage,
@@ -131,7 +129,7 @@ export const getCourseContentById = query({
 							return {
 								_id: lesson._id,
 								topic: lesson.topic,
-								stars: lesson.stars,
+								star: lesson.star,
 								level: lesson.level,
 							};
 						}
@@ -156,7 +154,6 @@ export const updateCourse = mutation({
 	args: {
 		courseId: v.id("courses"),
 		language: v.optional(v.string()),
-		extension: v.optional(v.string()),
 		logoLanguage: v.optional(v.string()),
 		description: v.optional(v.string()),
 		background: v.optional(v.string()),

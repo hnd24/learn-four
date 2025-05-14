@@ -11,6 +11,7 @@ export const statusPlace = v.union(
 	v.literal("approved"),
 	v.literal("rejected"),
 );
+
 export const role = v.union(v.literal("super_admin"), v.literal("admin"), v.literal("user"));
 
 export const link = v.object({
@@ -29,7 +30,11 @@ export const activity = v.object({
 export const testcase = v.object({
 	input: v.array(v.object({name: v.string(), value: v.string()})),
 	except: v.optional(v.string()),
-	isHidden: v.optional(v.boolean()),
+});
+
+export const answer = v.object({
+	code: v.array(v.object({code: v.string(), language: v.number()})),
+	testcase: v.array(testcase),
 });
 
 export default defineSchema({
@@ -105,7 +110,9 @@ export default defineSchema({
 		level: v.string(),
 		topic: v.optional(v.string()),
 		content: v.string(),
-		testcase: v.array(testcase),
+		answer: answer,
+		nameFn: v.string(),
+		testcaseSample: v.array(testcase),
 		status: statusPlace,
 		authorId: v.string(),
 	})
@@ -124,7 +131,6 @@ export default defineSchema({
 
 	courses: defineTable({
 		language: v.string(),
-		extension: v.string(),
 		logoLanguage: v.string(),
 		description: v.string(),
 		background: v.string(),
@@ -149,11 +155,13 @@ export default defineSchema({
 		courseId: v.id("courses"),
 		topic: v.string(),
 		name: v.string(),
-		stars: v.number(),
+		star: v.number(),
 		level: v.number(),
 		content: v.string(),
+		nameFn: v.string(),
 		status: statusPlace,
-		testcase: v.array(testcase),
+		answer: answer,
+		testcaseSample: v.array(testcase),
 	}).index("by_courseId", ["courseId"]),
 
 	lessonComments: defineTable({

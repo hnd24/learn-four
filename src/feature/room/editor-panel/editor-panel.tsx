@@ -29,7 +29,7 @@ export default function EditorPanel({idLesson}: Props) {
 					<SquareDashedBottomCode className="size-5 text-leafyGreen" />
 				)}
 
-				<span className="text-sm font-medium text-zinc-800 ">Testcase</span>
+				<span className="text-sm font-medium text-zinc-800 ">Code</span>
 			</div>
 			<CodeEditor />
 		</>
