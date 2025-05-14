@@ -4,19 +4,9 @@ import {FileText} from "lucide-react";
 import {useEffect, useState} from "react";
 
 type Props = {
-	idLesson: string;
+	content: string;
 };
-export default function DescriptionPanel({idLesson}: Props) {
-	const [content, setContent] = useState<string>("");
-	const {getLessonById, loading} = useGetLessonById();
-
-	useEffect(() => {
-		const fetchUserLesson = async () => {
-			const data = await getLessonById(idLesson);
-			setContent(data.content);
-		};
-		fetchUserLesson();
-	}, [getLessonById, idLesson]);
+export default function DescriptionPanel({content = ""}: Props) {
 	return (
 		<>
 			{/* Header */}

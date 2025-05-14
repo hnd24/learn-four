@@ -3,7 +3,7 @@
 import ListStar from "@/components/list-star";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {cn} from "@/lib/utils";
-import {LanguageProgrammingType, StatusPlace} from "@/types";
+import {LanguageProgrammingEnum, StatusPlace} from "@/types";
 
 import {BookOpen} from "lucide-react";
 import Image from "next/image";
@@ -37,7 +37,7 @@ export default function ItemCourse({
 	const handleClick = () => {
 		if (isApproved) {
 			router.push(
-				`/course/${LanguageProgrammingType[language as keyof typeof LanguageProgrammingType]}`,
+				`/course/${LanguageProgrammingEnum[language as keyof typeof LanguageProgrammingEnum]}`,
 			);
 		}
 		return;

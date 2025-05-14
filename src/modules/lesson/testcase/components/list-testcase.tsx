@@ -9,7 +9,7 @@ import {useState} from "react";
 import {toast} from "sonner";
 import {useRoom} from "../../provider";
 
-export default function TempTestcases() {
+export default function ListTestcase() {
 	const {tempTestcases, setTempTestcases} = useRoom();
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
@@ -46,7 +46,6 @@ export default function TempTestcases() {
 		if (tempTestcases.length === 1) {
 			toast.error("Cannot delete the last testcase", {
 				duration: 2000,
-				position: "top-center",
 				style: {color: "#f87171"},
 			});
 			return;
@@ -65,7 +64,6 @@ export default function TempTestcases() {
 	const saveTestcase = () => {
 		console.log("✅ Save Testcase:", tempTestcases);
 		toast.success("Testcases saved!", {
-			position: "top-center",
 			style: {color: "#2baa48"},
 		});
 	};
@@ -75,7 +73,7 @@ export default function TempTestcases() {
 			{/* Testcase buttons */}
 			<div className="flex items-end gap-4 mb-2">
 				<div className="flex flex-1 gap-3 flex-wrap">
-					{tempTestcases.map((testcase, index) => {
+					{tempTestcases.map((_, index) => {
 						return (
 							<div
 								key={index}

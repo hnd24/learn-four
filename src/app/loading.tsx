@@ -10,7 +10,7 @@ export default function LoadingPage() {
 				alt="Logo"
 				width={300}
 				height={300}
-				className="animate-pulse duration-1000"
+				className="animate-pulse duration-2000"
 			/>
 		</div>
 	);

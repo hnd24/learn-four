@@ -1,4 +1,4 @@
-export enum LanguageProgrammingType {
+export enum LanguageProgrammingEnum {
 	JavaScript = "javascript",
 	TypeScript = "typescript",
 	Python = "python",
@@ -7,7 +7,7 @@ export enum LanguageProgrammingType {
 	CSharp = "csharp",
 }
 export type DraftCode = {
-	language: LanguageProgrammingType;
+	language: LanguageProgrammingEnum;
 	code?: string;
 	idRoom?: string;
 };
@@ -17,3 +17,18 @@ export enum RunCode {
 	Success = "success",
 	Error = "error",
 }
+
+export enum LanguageExtensionEnum {
+	JavaScript = "js",
+	TypeScript = "ts",
+	Java = "java",
+	Python = "py",
+	CPlusPlus = "cpp",
+	Csharp = "cs",
+}
+
+export type LanguageProgrammingType = {
+	id: number;
+	label: string;
+	extension: LanguageExtensionEnum;
+};

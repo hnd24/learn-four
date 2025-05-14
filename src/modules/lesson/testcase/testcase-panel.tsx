@@ -3,7 +3,7 @@
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {useGetLessonById} from "@/data/lesson";
 import {cn} from "@/lib/utils";
-import {LessonDetailType, RunCode} from "@/types";
+import {RunCode} from "@/types";
 import {Loader2, SquareCheckBig, Terminal} from "lucide-react";
 import {useEffect, useState} from "react";
 import {useRoom} from "../provider";
@@ -17,37 +17,21 @@ enum TypePanel {
 	RESULT = "Test result",
 }
 
-type Props = {
-	idLesson: string;
-};
-
-export default function TestcasePanel({idLesson}: Props) {
-	const {setTempTestcases, runCode} = useRoom();
-	const {loading, getLessonById} = useGetLessonById();
-	const [lessonDetail, setLessonDetail] = useState<LessonDetailType | null>(null);
-	useEffect(() => {
-		const fetchLesson = async () => {
-			const data = await getLessonById(idLesson);
-			setLessonDetail(data);
-		};
-		fetchLesson();
-	}, [getLessonById, idLesson]);
-
+export default function TestcasePanel() {
+	const {runCode} = useRoom();
+	const {loading} = useGetLessonById();
 	const [typePanel, setTypePanel] = useState<TypePanel>(TypePanel.TESTCASE);
 
-	useEffect(() => {
-		if (lessonDetail && lessonDetail.testcaseSample) {
-			const initialData = lessonDetail.testcaseSample;
-			const withIndex = initialData.map((item, index) => ({...item, index}));
-			setTempTestcases(withIndex);
-		}
-	}, [lessonDetail]);
+	// Fetch bài học theo ID
 
+	// Tự động chuyển sang panel kết quả khi chạy xong
 	useEffect(() => {
 		if (runCode === RunCode.Success) {
 			setTypePanel(TypePanel.RESULT);
 		}
 	}, [runCode]);
+
+	const isLoading = loading;
 
 	return (
 		<div className="w-full h-full flex flex-col">
@@ -55,11 +39,9 @@ export default function TestcasePanel({idLesson}: Props) {
 			<div className="flex items-center border-b bg-zinc-200">
 				{[TypePanel.TESTCASE, TypePanel.RESULT].map(panel => (
 					<button
-						disabled={loading}
 						key={panel}
-						onClick={() => {
-							setTypePanel(panel);
-						}}
+						disabled={isLoading}
+						onClick={() => setTypePanel(panel)}
 						className={cn(
 							"h-full px-4 py-2 flex gap-1 bg-zinc-200 hover:bg-zinc-300 cursor-pointer",
 							typePanel === panel && "bg-zinc-300",
@@ -76,13 +58,19 @@ export default function TestcasePanel({idLesson}: Props) {
 				))}
 			</div>
 
-			{/* Content */}
+			{/* Nội dung bên trong Panel */}
 			<ScrollArea className="flex-1 w-full h-full overflow-auto">
-				{typePanel === TypePanel.TESTCASE &&
-					(loading ? <SkeletonListTestcase /> : <ListTestcase />)}
-				{typePanel === TypePanel.RESULT &&
-					// loading execute code
-					(false ? <SkeletonResultTestcase /> : <ResultTestcase />)}
+				{typePanel === TypePanel.TESTCASE ? (
+					isLoading ? (
+						<SkeletonListTestcase />
+					) : (
+						<ListTestcase />
+					)
+				) : runCode === RunCode.Running ? (
+					<SkeletonResultTestcase />
+				) : (
+					<ResultTestcase />
+				)}
 			</ScrollArea>
 		</div>
 	);

@@ -4,6 +4,8 @@ import {Loader2, SquareDashedBottomCode} from "lucide-react";
 import {useEffect} from "react";
 import {useRoom} from "../provider";
 import {CodeEditor} from "./components/code-editor";
+import RunButton from "./components/run-btn";
+import SelectLanguage from "./components/select-language";
 
 type Props = {
 	idLesson: string;
@@ -30,6 +32,8 @@ export default function EditorPanel({idLesson}: Props) {
 				)}
 
 				<span className="text-sm font-medium text-zinc-800 ">Code</span>
+				<RunButton />
+				<SelectLanguage />
 			</div>
 			<CodeEditor />
 		</>

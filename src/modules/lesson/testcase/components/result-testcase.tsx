@@ -2,81 +2,36 @@
 
 import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
-import {
-	ExecutedTestcaseStatusType,
-	ExecuteTestcaseType,
-	RunCode,
-	TestCaseOutputType,
-} from "@/types";
+import {RunCode, RunResultStatus, TestCaseOutputType} from "@/types";
 import {useEffect, useState} from "react";
+import {toast} from "sonner";
 import {useRoom} from "../../provider";
 
-const ExecuteTestcaseData: ExecuteTestcaseType = {
-	testcase: [
-		{
-			runTime: 0.023,
-			index: 0,
-			input: [
-				{name: "num1", value: "[1, 2]"},
-				{name: "num2", value: "[3, 4]"},
-			],
-			except: "10",
-			output: "10",
-			status: ExecutedTestcaseStatusType.ACCEPTED,
-		},
-		{
-			runTime: 0.12,
-			index: 1,
-			input: [
-				{name: "num1", value: "[10]"},
-				{name: "num2", value: "[5, 5]"},
-			],
-			except: "20",
-			output: "20",
-			status: ExecutedTestcaseStatusType.REJECTED,
-		},
-		{
-			runTime: 0.042,
-			index: 2,
-			input: [
-				{name: "num1", value: "[1, 2]"},
-				{name: "num2", value: "[3, 4]"},
-			],
-			except: "10",
-			output: "undefined",
-			status: ExecutedTestcaseStatusType.ERROR,
-		},
-	],
-	status: ExecutedTestcaseStatusType.ERROR,
-};
-
 export default function ResultTestcase() {
-	const {runCode} = useRoom();
+	const {runCode, resultTestcase} = useRoom();
 
 	const [testcases, setTestcases] = useState<TestCaseOutputType[]>([]);
 	const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
 	useEffect(() => {
-		if (ExecuteTestcaseData?.testcase?.length > 0) {
-			setTestcases(ExecuteTestcaseData.testcase);
+		if (resultTestcase && resultTestcase?.testcase?.length > 0) {
+			setTestcases(resultTestcase.testcase);
 			setSelectedIndex(0);
 		}
-	}, []);
+	}, [resultTestcase]);
 
 	const selectedTestcase = testcases[selectedIndex];
-	const numberPassed = testcases.filter(
-		t => t.status === ExecutedTestcaseStatusType.ACCEPTED,
-	).length;
+	const numberPassed = testcases.filter(t => t.status === RunResultStatus.ACCEPTED).length;
 
-	const overallStatus = ExecuteTestcaseData.status;
+	const overallStatus = resultTestcase?.status ?? "";
 
-	const iconStatus = (status: ExecutedTestcaseStatusType) => {
+	const iconStatus = (status: RunResultStatus) => {
 		switch (status) {
-			case ExecutedTestcaseStatusType.ACCEPTED:
+			case RunResultStatus.ACCEPTED:
 				return <span className="bg-leafyGreen size-2 rounded-full" />;
-			case ExecutedTestcaseStatusType.REJECTED:
+			case RunResultStatus.REJECTED:
 				return <span className="bg-tomatoRed size-2 rounded-full" />;
-			case ExecutedTestcaseStatusType.ERROR:
+			case RunResultStatus.ERROR:
 				return <span className="bg-yellow-500 size-2 rounded-full" />;
 			default:
 				return null;
@@ -90,6 +45,17 @@ export default function ResultTestcase() {
 			</div>
 		);
 	}
+	// if (runCode === RunCode.Error) {
+	// 	return (
+	// 		<div className="w-full p-4 flex justify-center">
+	// 			{toast.error("Failed to execute code", {
+	// 				duration: 1200,
+	// 				style: {color: "#f44336"},
+	// 			})}
+	// 			<span className="text-tomatoRed font-semibold">Something went wrong..</span>
+	// 		</div>
+	// 	);
+	// }
 
 	if (runCode === RunCode.Running) {
 		return (
@@ -105,9 +71,9 @@ export default function ResultTestcase() {
 				<span
 					className={cn(
 						"text-xl font-semibold leading-5",
-						overallStatus === ExecutedTestcaseStatusType.ACCEPTED
+						overallStatus === RunResultStatus.ACCEPTED
 							? "text-leafyGreen"
-							: overallStatus === ExecutedTestcaseStatusType.REJECTED
+							: overallStatus === RunResultStatus.REJECTED
 								? "text-tomatoRed"
 								: "text-yellow-500",
 					)}>
@@ -143,9 +109,9 @@ export default function ResultTestcase() {
 				<div
 					className={cn(
 						"flex flex-col gap-4 w-full",
-						selectedTestcase.status === ExecutedTestcaseStatusType.ACCEPTED
+						selectedTestcase.status === RunResultStatus.ACCEPTED
 							? "text-leafyGreen"
-							: selectedTestcase.status === ExecutedTestcaseStatusType.REJECTED
+							: selectedTestcase.status === RunResultStatus.REJECTED
 								? "text-tomatoRed"
 								: "text-yellow-500",
 					)}>

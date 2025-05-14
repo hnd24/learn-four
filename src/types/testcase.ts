@@ -3,23 +3,26 @@ export type TestcaseType = {
 		name: string;
 		value: string;
 	}[];
-	except?: string;
+	except: string;
 };
 
-export enum ExecutedTestcaseStatusType {
+export enum RunResultStatus {
 	ACCEPTED = "accepted",
 	REJECTED = "rejected",
 	ERROR = "error",
 }
 
 export type TestCaseOutputType = TestcaseType & {
-	index: number;
-	status: ExecutedTestcaseStatusType;
+	index?: number;
+	status: RunResultStatus;
+	input: {
+		name: string;
+		value: string;
+	}[];
 	output: string;
 	runTime: number;
 };
-
-export type ExecuteTestcaseType = {
+export type ResultTestcaseType = {
 	testcase: TestCaseOutputType[];
-	status: ExecutedTestcaseStatusType;
+	status: RunResultStatus;
 };

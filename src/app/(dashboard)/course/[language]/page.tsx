@@ -1,12 +1,12 @@
 import ReturnHomeBlock from "@/components/return-home-block";
 
 import ContentCourse from "@/feature/course/content/content-course";
-import {LanguageProgrammingType} from "@/types";
+import {LanguageProgrammingEnum} from "@/types";
 
 export default async function CourseLanguagePage({params}: {params: {language: string}}) {
 	const {language} = await params;
-	const isNotFound = Object.values(LanguageProgrammingType).includes(
-		language as LanguageProgrammingType,
+	const isNotFound = Object.values(LanguageProgrammingEnum).includes(
+		language as LanguageProgrammingEnum,
 	);
 
 	if (!isNotFound) {
