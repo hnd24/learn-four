@@ -22,6 +22,8 @@ export interface RoomContextProps {
 	setResultTestcase: (result: ResultTestcaseType) => void;
 	nameFn: string;
 	setNameFn: (name: string) => void;
+	idLesson: string;
+	setIdLesson: (id: string) => void;
 }
 
 export const Context = createContext<RoomContextProps | null>(null);

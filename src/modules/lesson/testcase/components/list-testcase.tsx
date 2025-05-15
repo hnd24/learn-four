@@ -78,12 +78,14 @@ export default function ListTestcase() {
 							<div
 								key={index}
 								className={cn(
-									"group rounded-lg flex overflow-hidden hover:bg-zinc-300",
+									"group rounded-lg flex overflow-hidden hover:bg-zinc-300 ",
 									selectedIndex === index
 										? "bg-zinc-300 text-zinc-900"
 										: "bg-zinc-200 text-zinc-600",
 								)}>
-								<button className="px-3 py-1" onClick={() => setSelectedIndex(index)}>
+								<button
+									className="px-3 py-1  cursor-pointer"
+									onClick={() => setSelectedIndex(index)}>
 									<span className="whitespace-nowrap">Test {index + 1}</span>
 								</button>
 								<Hint label="Delete Testcase">

@@ -11,16 +11,15 @@ import DescriptionPanel from "../description/description-panel";
 import EditorPanel from "../editor-panel/editor-panel";
 import {useRoom} from "../provider";
 import TestcasePanel from "../testcase/testcase-panel";
-
 type Props = {
 	id: string;
 };
-
 export default function ContentRoom({id}: Props) {
 	const isMobile = useIsMobile();
 	const [data, setData] = useState<LessonDetailType | null>(null);
-	const {language, setAnswerCode, setAnswerTestcase, setTempTestcases, setNameFn} = useRoom();
-	const {getLessonById, loading} = useGetLessonById();
+	const {setIdLesson, language, setAnswerCode, setAnswerTestcase, setTempTestcases, setNameFn} =
+		useRoom();
+	const {getLessonById} = useGetLessonById();
 
 	useEffect(() => {
 		const fetchLesson = async () => {
@@ -28,6 +27,7 @@ export default function ContentRoom({id}: Props) {
 			setData(result);
 		};
 		fetchLesson();
+		setIdLesson(id);
 	}, [getLessonById, id]);
 
 	useEffect(() => {
@@ -51,31 +51,39 @@ export default function ContentRoom({id}: Props) {
 		setNameFn(data.nameFn);
 	}, [data, language]);
 
-	if (loading || !data) return <CostumeLoadingPage />;
+	if (!data) return <CostumeLoadingPage />;
 
 	return (
-		<ResizablePanelGroup direction="horizontal" className="w-full">
-			<ResizablePanel
-				defaultSize={isMobile ? 100 : 30}
-				className="h-[calc(100vh-98px)] rounded-lg border border-charcoal lg:mr-0.5 shadow-lg">
-				<DescriptionPanel content={data.content} />
-			</ResizablePanel>
-			<ResizableHandle className={cn(isMobile && "hidden", "bg-transparent hover:bg-pulseBlue")} />
-			<ResizablePanel defaultSize={70} className={cn(isMobile && "hidden", "ml-0.5")}>
-				<ResizablePanelGroup direction="vertical">
-					<ResizablePanel
-						defaultSize={50}
-						className="rounded-lg border border-charcoal mb-0.5 shadow-lg">
-						<EditorPanel idLesson={id} />
-					</ResizablePanel>
-					<ResizableHandle className="bg-transparent hover:bg-pulseBlue" />
-					<ResizablePanel
-						defaultSize={50}
-						className="rounded-lg border border-charcoal mt-0.5 shadow-lg">
-						<TestcasePanel />
-					</ResizablePanel>
-				</ResizablePanelGroup>
-			</ResizablePanel>
-		</ResizablePanelGroup>
+		<div className="w-full px-4">
+			<ResizablePanelGroup direction="horizontal" className="w-full">
+				<ResizablePanel
+					defaultSize={isMobile ? 100 : 30}
+					className="h-[calc(100vh-98px)] rounded-lg border border-charcoal lg:mr-0.5 shadow-lg">
+					<DescriptionPanel content={data.content} />
+				</ResizablePanel>
+				<ResizableHandle
+					className={
+						" flex self-center h-[calc(100vh-110px)] rounded-2xl bg-zinc-400 md:bg-transparent hover:bg-pulseBlue"
+					}
+				/>
+				<ResizablePanel
+					defaultSize={isMobile ? 0 : 70}
+					className={cn(isMobile && "ml-0", "ml-0.5")}>
+					<ResizablePanelGroup direction="vertical">
+						<ResizablePanel
+							defaultSize={50}
+							className="rounded-lg border border-charcoal mb-0.5 shadow-lg">
+							<EditorPanel idLesson={id} />
+						</ResizablePanel>
+						<ResizableHandle className="rounded-2xl bg-zinc-400 md:bg-transparent hover:bg-pulseBlue" />
+						<ResizablePanel
+							defaultSize={50}
+							className="rounded-lg border border-charcoal mt-0.5 shadow-lg">
+							<TestcasePanel />
+						</ResizablePanel>
+					</ResizablePanelGroup>
+				</ResizablePanel>
+			</ResizablePanelGroup>
+		</div>
 	);
 }

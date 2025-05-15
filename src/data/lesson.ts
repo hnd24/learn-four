@@ -1,6 +1,6 @@
-import {LessonDetailType, LessonType, ProblemStateType, UserLessonType} from "@/types";
+import {LessonDetailType, LessonType, UserLessonType} from "@/types";
 import {useCallback, useState} from "react";
-import {lessonDetailData, listLessonData, problemData, userLessonData} from ".";
+import {lessonDetailData, listLessonData, userLessonData} from ".";
 
 export const useGetLessons = () => {
 	const [loading, setLoading] = useState(false);
@@ -42,4 +42,17 @@ export const useGetUserLesson = () => {
 	}, []);
 
 	return {getUserLesson, loading};
+};
+
+export const useUpdateCodeUserLesson = () => {
+	const [loading, setLoading] = useState(false);
+
+	const updateCode = useCallback(async (idLesson: string, code: string): Promise<void> => {
+		setLoading(true);
+		setTimeout(() => {
+			setLoading(false);
+		}, 2000);
+	}, []);
+
+	return {updateCode, loading};
 };

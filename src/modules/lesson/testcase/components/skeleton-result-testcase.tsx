@@ -8,7 +8,7 @@ export default function SkeletonResultTestcase() {
 					<Skeleton className="h-6 w-22 bg-gray-300 " />
 					<Skeleton className="h-5 w-24 bg-gray-300 " />
 				</div>
-				<Skeleton className="h-5 w-40 bg-gray-300" />
+				{/* <Skeleton className="h-5 w-40 bg-gray-300" /> */}
 				<div className="flex flex-wrap gap-3">
 					<Skeleton className="w-20 h-8 bg-gray-300 " />
 					<Skeleton className="w-20 h-8 bg-gray-300 " />

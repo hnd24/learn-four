@@ -4,7 +4,6 @@ import {Input} from "@/components/ui/input";
 import {cn} from "@/lib/utils";
 import {RunCode, RunResultStatus, TestCaseOutputType} from "@/types";
 import {useEffect, useState} from "react";
-import {toast} from "sonner";
 import {useRoom} from "../../provider";
 
 export default function ResultTestcase() {
@@ -45,17 +44,6 @@ export default function ResultTestcase() {
 			</div>
 		);
 	}
-	// if (runCode === RunCode.Error) {
-	// 	return (
-	// 		<div className="w-full p-4 flex justify-center">
-	// 			{toast.error("Failed to execute code", {
-	// 				duration: 1200,
-	// 				style: {color: "#f44336"},
-	// 			})}
-	// 			<span className="text-tomatoRed font-semibold">Something went wrong..</span>
-	// 		</div>
-	// 	);
-	// }
 
 	if (runCode === RunCode.Running) {
 		return (
@@ -84,9 +72,9 @@ export default function ResultTestcase() {
 				</span>
 			</div>
 
-			<span className="text-zinc-400">
+			{/* <span className="text-zinc-400">
 				Testcase passed: {numberPassed} / {testcases.length}
-			</span>
+			</span> */}
 
 			{/* List testcase */}
 			<div className="flex gap-3 flex-wrap">

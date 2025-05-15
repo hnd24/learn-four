@@ -6,7 +6,8 @@ import {ReactNode, useState} from "react";
 import {Context} from "./context";
 
 export default function DashboardProvider({children}: {children: ReactNode}) {
-	const [runCode, setRunCode] = useState<RunCode>(RunCode.Success);
+	const [idLesson, setIdLesson] = useState<string>("");
+	const [runCode, setRunCode] = useState<RunCode>(RunCode.None);
 	const [code, setCode] = useState<string>("");
 	const [answerCode, setAnswerCode] = useState<string>("");
 	const [tempTestcases, setTempTestcases] = useState<(TestcaseType & {index: number})[]>([]);
@@ -20,6 +21,8 @@ export default function DashboardProvider({children}: {children: ReactNode}) {
 	return (
 		<Context.Provider
 			value={{
+				idLesson,
+				setIdLesson,
 				runCode,
 				setRunCode,
 				code,

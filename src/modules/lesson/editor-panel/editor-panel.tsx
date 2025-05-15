@@ -1,5 +1,6 @@
 "use client";
 import {useGetUserLesson} from "@/data/lesson";
+import {RunCode} from "@/types";
 import {Loader2, SquareDashedBottomCode} from "lucide-react";
 import {useEffect} from "react";
 import {useRoom} from "../provider";
@@ -12,7 +13,7 @@ type Props = {
 };
 
 export default function EditorPanel({idLesson}: Props) {
-	const {setCode} = useRoom();
+	const {setCode, runCode} = useRoom();
 	const {getUserLesson, loading} = useGetUserLesson();
 
 	useEffect(() => {
@@ -24,16 +25,16 @@ export default function EditorPanel({idLesson}: Props) {
 	}, [getUserLesson, idLesson]);
 	return (
 		<>
-			<div className="flex items-center gap-1 px-4 py-2 border-b border-b-charcoal bg-zinc-200">
-				{loading ? (
-					<Loader2 className="size-5 animate-spin" />
-				) : (
-					<SquareDashedBottomCode className="size-5 text-leafyGreen" />
-				)}
-
-				<span className="text-sm font-medium text-zinc-800 ">Code</span>
-				<RunButton />
+			<div className="flex items-center  px-4  border-b border-b-charcoal bg-zinc-200">
+				<div className="py-2 pr-4 border-r-2 border-zinc-300">
+					{runCode === RunCode.Running || loading ? (
+						<Loader2 className="size-5 animate-spin" />
+					) : (
+						<SquareDashedBottomCode className="size-5 text-leafyGreen" />
+					)}
+				</div>
 				<SelectLanguage />
+				<RunButton />
 			</div>
 			<CodeEditor />
 		</>
