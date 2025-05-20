@@ -219,7 +219,7 @@ export const CourseDetailData: CourseStateType = {
 
 export const listLessonData: LessonType[] = [
 	{
-		_id: "lesson1",
+		_id: "lesson_001",
 		topic: "Introduction to JavaScript",
 		star: 4.5,
 		level: "Easy",

@@ -70,7 +70,7 @@ export default function ContentRoom({id}: Props) {
 				<ResizablePanel
 					defaultSize={isMobile ? 100 : 30}
 					className="h-[calc(100vh-98px)] rounded-lg border border-charcoal lg:mr-0.5 shadow-lg">
-					<DescriptionPanel content={data.content} />
+					<DescriptionPanel content={data.content} courseId={data.courseId} cLessonId={data._id} />
 				</ResizablePanel>
 				<ResizableHandle
 					className={

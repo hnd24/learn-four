@@ -1,19 +1,24 @@
 "use client";
-import {FileText} from "lucide-react";
+import SheetListLesson from "../components/sheet-list-lesson";
 import {useRoom} from "../provider";
 import SkeletonDescription from "./components/skeleton-description";
 
 type Props = {
 	content: string;
+	courseId: string;
+	cLessonId: string;
 };
-export default function DescriptionPanel({content = ""}: Props) {
+export default function DescriptionPanel({content = "", courseId = "", cLessonId = ""}: Props) {
 	const {loadingLesson} = useRoom();
 	return (
 		<>
 			{/* Header */}
-			<div className="flex items-center gap-1 px-4 py-2 border-b border-charcoal bg-zinc-200">
-				<FileText className="w-5 h-5 text-deepBlue " />
-				<span className="text-sm font-medium text-zinc-800 ">Description</span>
+			<div className="flex items-center gap-1 p-0.5 border-b border-charcoal bg-zinc-200">
+				<SheetListLesson
+					className=" text-gray-800 font-semibold"
+					courseId={courseId}
+					cLessonId={cLessonId}
+				/>
 			</div>
 
 			{/* Body */}

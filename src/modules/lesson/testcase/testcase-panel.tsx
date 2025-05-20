@@ -30,26 +30,36 @@ export default function TestcasePanel() {
 	return (
 		<div className="w-full h-full flex flex-col">
 			{/* Tabs */}
-			<div className="flex items-center border-b bg-zinc-200">
-				{[TypePanel.TESTCASE, TypePanel.RESULT].map(panel => (
-					<button
-						key={panel}
-						disabled={loading}
-						onClick={() => setTypePanel(panel)}
-						className={cn(
-							"h-full px-4 py-2 flex gap-1 bg-zinc-200 hover:bg-zinc-300 cursor-pointer",
-							typePanel === panel && "bg-zinc-300",
-						)}>
-						{panel === TypePanel.TESTCASE ? (
-							<SquareCheckBig className="w-5 h-5 text-leafyGreen" />
-						) : runCode === RunCode.Running ? (
-							<Loader2 className="size-5 text-leafyGreen animate-spin" />
-						) : (
-							<Terminal className="w-5 h-5 text-leafyGreen" />
-						)}
-						<span className="text-sm font-medium w-fit truncate text-zinc-800">{panel}</span>
-					</button>
-				))}
+			<div className="flex items-center border-b bg-zinc-200 p-0.5">
+				<button
+					disabled={loading}
+					onClick={() => setTypePanel(TypePanel.TESTCASE)}
+					className={cn(
+						"h-full px-3 py-2 rounded-l-lg flex gap-1 bg-zinc-200 hover:bg-zinc-300 cursor-pointer",
+						typePanel === TypePanel.TESTCASE && "bg-zinc-300",
+					)}>
+					<SquareCheckBig className="w-5 h-5 text-leafyGreen" />
+					<span className="text-sm font-medium w-fit truncate text-zinc-800">
+						{TypePanel.TESTCASE}
+					</span>
+				</button>
+
+				<button
+					disabled={loading}
+					onClick={() => setTypePanel(TypePanel.RESULT)}
+					className={cn(
+						"h-full px-3 py-2 rounded-r-lg flex gap-1 bg-zinc-200 hover:bg-zinc-300 cursor-pointer",
+						typePanel === TypePanel.RESULT && "bg-zinc-300",
+					)}>
+					{runCode === RunCode.Running ? (
+						<Loader2 className="size-5 text-leafyGreen animate-spin" />
+					) : (
+						<Terminal className="w-5 h-5 text-leafyGreen" />
+					)}
+					<span className="text-sm font-medium w-fit truncate text-zinc-800">
+						{TypePanel.RESULT}
+					</span>
+				</button>
 			</div>
 
 			{/* Nội dung bên trong Panel */}

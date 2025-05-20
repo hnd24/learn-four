@@ -15,7 +15,7 @@ export default function SelectLanguage() {
 
 	return (
 		<Select value={language} onValueChange={value => setLanguage(value as LanguageProgrammingEnum)}>
-			<SelectTrigger className="min-w-32 w-fit hover:bg-zinc-300 rounded-none cursor-pointer font-semibold">
+			<SelectTrigger className="min-w-32 w-fit border-2 border-gray-300 hover:bg-zinc-300 cursor-pointer font-semibold">
 				<SelectValue placeholder="Select language" />
 			</SelectTrigger>
 			<SelectContent>

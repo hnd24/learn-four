@@ -65,7 +65,7 @@ export default function SheetSearch() {
 								<span className="text-lg font-semibold">Topic Problem</span>
 							</AccordionTrigger>
 							<AccordionContent>
-								{Object.values(TopicProblem).map(({value}, index) => (
+								{Object.values(TopicProblem).map((value, index) => (
 									<div
 										onClick={() => {
 											setConfig({topic: value});

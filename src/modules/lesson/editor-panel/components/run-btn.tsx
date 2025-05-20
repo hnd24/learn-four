@@ -6,6 +6,7 @@ import {useUpdateCodeUserLesson} from "@/hook/data/lesson";
 import {useExecuteCode} from "@/hook/use-exceute-code";
 import {RunCode, RunResultStatus} from "@/types";
 import {useUser} from "@clerk/nextjs";
+import {Loader2, SquareDashedBottomCode} from "lucide-react";
 import {toast} from "sonner";
 import {useRoom} from "../../provider";
 
@@ -96,8 +97,14 @@ export default function RunButton() {
 				<Button
 					disabled={isDisabled}
 					onClick={handleRunCode}
-					className="py-2 px-8 border border-gray-100 rounded-none bg-zinc-700 cursor-pointer">
-					<span className="font-sans text-sm ">Run</span>
+					className="flex gap-2  bg-darkLeafyGreen  hover:bg-darkLeafyGreen/80 cursor-pointer">
+					{runCode === RunCode.Running || loadingUserLesson ? (
+						<Loader2 className="size-5 animate-spin text-gray-200" />
+					) : (
+						<SquareDashedBottomCode className="size-5 text-gray-200" />
+					)}
+
+					<span className="font-sans text-sm  text-gray-200">Run</span>
 				</Button>
 			</div>
 		</Hint>

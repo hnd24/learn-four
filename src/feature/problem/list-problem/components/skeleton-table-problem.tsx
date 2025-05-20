@@ -5,7 +5,7 @@ type Props = {
 };
 
 export default function SkeletonTableProblem({length = 10}: Props) {
-	const lengthProblem = Array.from({length: 10}, (_, i) => i);
+	const lengthProblem = Array.from({length: length}, (_, i) => i);
 	console.log(lengthProblem);
 	return (
 		<div className="border rounded-lg shadow-lg p-4 flex flex-col gap-4">
