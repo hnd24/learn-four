@@ -1,48 +1,34 @@
+// src/providers/room-store-provider.tsx
 "use client";
 
-import {Theme} from "@/constants";
-import {LanguageProgrammingEnum, ResultTestcaseType, RunCode, TestcaseType} from "@/types";
-import {ReactNode, useState} from "react";
-import {Context} from "./context";
+import {type ReactNode, createContext, useRef, useContext} from "react";
+import {useStore} from "zustand";
 
-export default function DashboardProvider({children}: {children: ReactNode}) {
-	const [idLesson, setIdLesson] = useState<string>("");
-	const [runCode, setRunCode] = useState<RunCode>(RunCode.None);
-	const [code, setCode] = useState<string>("");
-	const [answerCode, setAnswerCode] = useState<string>("");
-	const [tempTestcases, setTempTestcases] = useState<(TestcaseType & {index: number})[]>([]);
-	const [answerTestcase, setAnswerTestcase] = useState<TestcaseType[]>([]);
-	const [theme, setTheme] = useState<Theme>(Theme.Light);
-	const [language, setLanguage] = useState<LanguageProgrammingEnum>(
-		LanguageProgrammingEnum.JavaScript,
-	);
-	const [resultTestcase, setResultTestcase] = useState<ResultTestcaseType | null>(null);
-	const [nameFn, setNameFn] = useState<string>("");
-	return (
-		<Context.Provider
-			value={{
-				idLesson,
-				setIdLesson,
-				runCode,
-				setRunCode,
-				code,
-				setCode,
-				answerCode,
-				setAnswerCode,
-				answerTestcase,
-				setAnswerTestcase,
-				tempTestcases,
-				setTempTestcases,
-				resultTestcase,
-				setResultTestcase,
-				theme,
-				setTheme,
-				language,
-				setLanguage,
-				nameFn,
-				setNameFn,
-			}}>
-			{children}
-		</Context.Provider>
-	);
+import {createRoomStore, defaultRoomState, RoomStore} from "./store";
+
+export type RoomStoreApi = ReturnType<typeof createRoomStore>;
+
+export const RoomStoreContext = createContext<RoomStoreApi | undefined>(undefined);
+
+export interface RoomStoreProviderProps {
+	children: ReactNode;
 }
+
+export const RoomStoreProvider = ({children}: RoomStoreProviderProps) => {
+	const storeRef = useRef<RoomStoreApi | null>(null);
+	if (storeRef.current === null) {
+		storeRef.current = createRoomStore(defaultRoomState);
+	}
+
+	return <RoomStoreContext.Provider value={storeRef.current}>{children}</RoomStoreContext.Provider>;
+};
+
+export const useRoomStore = <T,>(selector: (store: RoomStore) => T): T => {
+	const roomStoreContext = useContext(RoomStoreContext);
+
+	if (!roomStoreContext) {
+		throw new Error(`useRoomStore must be used within RoomStoreProvider`);
+	}
+
+	return useStore(roomStoreContext, selector);
+};

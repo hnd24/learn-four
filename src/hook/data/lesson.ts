@@ -1,6 +1,6 @@
 import {LessonDetailType, LessonType, UserLessonType} from "@/types";
 import {useCallback, useState} from "react";
-import {lessonDetailData, listLessonData, userLessonData} from ".";
+import {lessonDetailData, listLessonData, userLessonData} from "../../data";
 
 export const useGetLessons = () => {
 	const [loading, setLoading] = useState(false);

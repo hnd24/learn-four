@@ -1,7 +1,7 @@
 "use client";
 
 import {Skeleton} from "@/components/ui/skeleton";
-import {useGetCourses} from "@/data/course";
+import {useGetCourses} from "@/hook/data/course";
 import {CourseStateType} from "@/types";
 import {useEffect, useState} from "react";
 import ItemCourse from "./components/item-course";

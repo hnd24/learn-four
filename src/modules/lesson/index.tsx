@@ -1,7 +1,7 @@
 "use client";
 
 import ContentRoom from "./content/content-room";
-import {DashboardProvider} from "./provider";
+import {RoomStoreProvider} from "./provider/provider";
 
 type Props = {
 	id: string;
@@ -9,8 +9,8 @@ type Props = {
 
 export default function ModuleRoom({id}: Props) {
 	return (
-		<DashboardProvider>
+		<RoomStoreProvider>
 			<ContentRoom id={id} />
-		</DashboardProvider>
+		</RoomStoreProvider>
 	);
 }

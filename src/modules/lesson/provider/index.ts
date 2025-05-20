@@ -1,12 +1,6 @@
-// index.ts
-import {useContext} from "react";
-import {Context, RoomContextProps} from "./context";
-export {default as DashboardProvider} from "./provider";
+import {useRoomStore} from "./provider";
 
-export const useRoom = (): RoomContextProps => {
-	const context = useContext(Context);
-	if (!context) {
-		throw new Error("useRoom must be used within a DashboardProvider");
-	}
-	return context;
+export const useRoom = () => {
+	const store = useRoomStore(state => state);
+	return store;
 };

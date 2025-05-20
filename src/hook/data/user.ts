@@ -1,6 +1,6 @@
 import {UserStateType} from "@/types";
 import {useCallback, useState} from "react";
-import {userData} from ".";
+import {userData} from "../../data";
 
 export const useGetUser = () => {
 	const [loading, setLoading] = useState(false);

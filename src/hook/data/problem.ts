@@ -1,6 +1,6 @@
 import {ProblemStateType} from "@/types";
 import {useCallback, useState} from "react";
-import {problemData} from ".";
+import {problemData} from "../../data";
 
 export const useGetProblems = () => {
 	const [loading, setLoading] = useState(false);

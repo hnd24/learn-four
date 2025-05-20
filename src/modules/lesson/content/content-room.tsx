@@ -1,7 +1,7 @@
 "use client";
 
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components/ui/resizable";
-import {useGetLessonById} from "@/data/lesson";
+import {useGetLessonById} from "@/hook/data/lesson";
 import {useIsMobile} from "@/hook/use-mobile";
 import {cn} from "@/lib/utils";
 import CostumeLoadingPage from "@/page/costume-loading-page";
@@ -17,9 +17,16 @@ type Props = {
 export default function ContentRoom({id}: Props) {
 	const isMobile = useIsMobile();
 	const [data, setData] = useState<LessonDetailType | null>(null);
-	const {setIdLesson, language, setAnswerCode, setAnswerTestcase, setTempTestcases, setNameFn} =
-		useRoom();
-	const {getLessonById} = useGetLessonById();
+	const {
+		setIdLesson,
+		language,
+		setAnswerCode,
+		setAnswerTestcase,
+		setTempTestcases,
+		setNameFn,
+		setLoadingLesson,
+	} = useRoom();
+	const {getLessonById, loading} = useGetLessonById();
 
 	useEffect(() => {
 		const fetchLesson = async () => {
@@ -50,6 +57,10 @@ export default function ContentRoom({id}: Props) {
 		// Set name function
 		setNameFn(data.nameFn);
 	}, [data, language]);
+
+	useEffect(() => {
+		setLoadingLesson(loading);
+	}, [loading]);
 
 	if (!data) return <CostumeLoadingPage />;
 

@@ -1,6 +1,6 @@
 "use client";
 import {Button} from "@/components/ui/button";
-import {useGetProblems} from "@/data/problem";
+import {useGetProblems} from "@/hook/data/problem";
 import {useUploadProblem} from "@/hook/use-upload-problem";
 import {cn} from "@/lib/utils";
 import {Loader2} from "lucide-react";

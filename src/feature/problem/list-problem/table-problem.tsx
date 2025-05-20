@@ -10,7 +10,7 @@ import {
 	TableRow,
 } from "@/components/ui/table";
 import {Level} from "@/constants";
-import {useGetProblems} from "@/data/problem";
+import {useGetProblems} from "@/hook/data/problem";
 import {useTableProblem} from "@/hook/use-table-porblem";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";

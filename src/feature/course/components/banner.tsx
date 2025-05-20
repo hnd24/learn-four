@@ -3,7 +3,7 @@
 import {Hint} from "@/components/hint";
 import ListStar from "@/components/list-star";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {useGetDetailCourse} from "@/data/course";
+import {useGetDetailCourse} from "@/hook/data/course";
 import {cn} from "@/lib/utils";
 import {CourseStateType} from "@/types";
 import {BookOpen} from "lucide-react";

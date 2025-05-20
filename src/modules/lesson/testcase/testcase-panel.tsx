@@ -1,7 +1,6 @@
 "use client";
 
 import {ScrollArea} from "@/components/ui/scroll-area";
-import {useGetLessonById} from "@/data/lesson";
 import {cn} from "@/lib/utils";
 import {RunCode} from "@/types";
 import {Loader2, SquareCheckBig, Terminal} from "lucide-react";
@@ -18,11 +17,8 @@ enum TypePanel {
 }
 
 export default function TestcasePanel() {
-	const {runCode} = useRoom();
-	const {loading} = useGetLessonById();
+	const {runCode, loadingLesson: loading} = useRoom();
 	const [typePanel, setTypePanel] = useState<TypePanel>(TypePanel.TESTCASE);
-
-	// Fetch bài học theo ID
 
 	// Tự động chuyển sang panel kết quả khi chạy xong
 	useEffect(() => {
@@ -31,8 +27,6 @@ export default function TestcasePanel() {
 		}
 	}, [runCode]);
 
-	const isLoading = loading;
-
 	return (
 		<div className="w-full h-full flex flex-col">
 			{/* Tabs */}
@@ -40,7 +34,7 @@ export default function TestcasePanel() {
 				{[TypePanel.TESTCASE, TypePanel.RESULT].map(panel => (
 					<button
 						key={panel}
-						disabled={isLoading}
+						disabled={loading}
 						onClick={() => setTypePanel(panel)}
 						className={cn(
 							"h-full px-4 py-2 flex gap-1 bg-zinc-200 hover:bg-zinc-300 cursor-pointer",
@@ -61,7 +55,7 @@ export default function TestcasePanel() {
 			{/* Nội dung bên trong Panel */}
 			<ScrollArea className="flex-1 w-full h-full overflow-auto">
 				{typePanel === TypePanel.TESTCASE ? (
-					isLoading ? (
+					loading ? (
 						<SkeletonListTestcase />
 					) : (
 						<ListTestcase />

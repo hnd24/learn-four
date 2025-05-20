@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/carousel";
 import {Skeleton} from "@/components/ui/skeleton";
 import {defaultBanner} from "@/data";
-import {useGetCourses} from "@/data/course";
+import {useGetCourses} from "@/hook/data/course";
 import {cn} from "@/lib/utils";
 import {CourseStateType} from "@/types";
 import Autoplay from "embla-carousel-autoplay";

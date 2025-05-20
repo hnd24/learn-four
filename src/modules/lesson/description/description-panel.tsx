@@ -1,12 +1,13 @@
 "use client";
 import {FileText} from "lucide-react";
 import {useRoom} from "../provider";
+import SkeletonDescription from "./components/skeleton-description";
 
 type Props = {
 	content: string;
 };
 export default function DescriptionPanel({content = ""}: Props) {
-	const {} = useRoom();
+	const {loadingLesson} = useRoom();
 	return (
 		<>
 			{/* Header */}
@@ -18,7 +19,7 @@ export default function DescriptionPanel({content = ""}: Props) {
 			{/* Body */}
 			<div className="flex-1 p-4 text-sm text-zinc-700 ">
 				{/* Nội dung mô tả sẽ được thêm vào đây */}
-				{/* <SkeletonDescription /> */}
+				{loadingLesson && <SkeletonDescription />}
 				<p>{content}</p>
 			</div>
 		</>

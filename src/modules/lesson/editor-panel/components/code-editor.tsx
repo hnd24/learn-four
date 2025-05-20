@@ -6,16 +6,14 @@ import {setDraftCode} from "@/lib/utils";
 
 import {useClerk, useUser} from "@clerk/nextjs";
 
-import {useGetUserLesson} from "@/data/lesson";
 import {useEffect, useState} from "react";
 import {useRoom} from "../../provider";
 import {CodeEditorSkeleton} from "./code-editor-skeleton";
 
 export const CodeEditor = () => {
 	const {isSignedIn} = useUser();
-	const {loading} = useGetUserLesson();
 	const [readOnly, setReadOnly] = useState<boolean>(false);
-	const {code, setCode, theme, language} = useRoom();
+	const {code, setCode, theme, language, loadingUserLesson: loading} = useRoom();
 	// Monaco Editor causes ClerkJS to fail loading
 	// https://github.com/clerk/javascript/issues/1643
 	const clerk = useClerk();

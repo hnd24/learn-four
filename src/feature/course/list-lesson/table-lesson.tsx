@@ -2,7 +2,7 @@
 
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Level} from "@/constants";
-import {useGetLessons} from "@/data/lesson";
+import {useGetLessons} from "@/hook/data/lesson";
 import {OneStar} from "@/icon/star";
 import {cn} from "@/lib/utils";
 import {LessonType} from "@/types";

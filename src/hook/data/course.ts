@@ -1,6 +1,6 @@
-import {CourseDetailStateType, CourseStateType} from "@/types";
+import {CourseStateType} from "@/types";
 import {useCallback, useState} from "react";
-import {courseData, CourseDetailData} from ".";
+import {courseData, CourseDetailData} from "../../data";
 
 export const useGetCourses = () => {
 	const [loading, setLoading] = useState(false);

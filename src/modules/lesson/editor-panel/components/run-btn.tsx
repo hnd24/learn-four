@@ -2,7 +2,7 @@
 import {Hint} from "@/components/hint";
 import {Button} from "@/components/ui/button";
 import {LanguageProgramming} from "@/constants";
-import {useUpdateCodeUserLesson} from "@/data/lesson";
+import {useUpdateCodeUserLesson} from "@/hook/data/lesson";
 import {useExecuteCode} from "@/hook/use-exceute-code";
 import {RunCode, RunResultStatus} from "@/types";
 import {useUser} from "@clerk/nextjs";
@@ -21,12 +21,15 @@ export default function RunButton() {
 		setRunCode,
 		setResultTestcase,
 		nameFn,
+		loadingLesson,
+		loadingUserLesson,
 	} = useRoom();
 	const {isSignedIn} = useUser();
 	const {executeCode} = useExecuteCode();
 	const {updateCode} = useUpdateCodeUserLesson();
 	const language_id = LanguageProgramming[language].id;
-	const isDisabled: boolean = runCode === RunCode.Running || !isSignedIn;
+	const isDisabled: boolean =
+		runCode === RunCode.Running || !isSignedIn || loadingLesson || loadingUserLesson;
 	// Hàm xử lý kết quả trả về từ executeCode
 	const handleTestcaseResult = (result: any, isUserTestcase: boolean) => {
 		const status = result.status;
@@ -93,8 +96,8 @@ export default function RunButton() {
 				<Button
 					disabled={isDisabled}
 					onClick={handleRunCode}
-					className="py-2 px-8 rounded-none bg-zinc-200 border-x-2 border-zinc-300 hover:bg-zinc-300 cursor-pointer">
-					<span className="font-sans text-sm text-zinc-600">Run</span>
+					className="py-2 px-8 border border-gray-100 rounded-none bg-zinc-700 cursor-pointer">
+					<span className="font-sans text-sm ">Run</span>
 				</Button>
 			</div>
 		</Hint>
