@@ -1,5 +1,7 @@
 export type TestcaseType = {
 	input: {
+		valueType: string;
+		isArray: boolean;
 		name: string;
 		value: string;
 	}[];

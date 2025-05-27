@@ -5,6 +5,8 @@ import {useMutation} from "@tanstack/react-query";
 type RunResult = {
 	index?: number;
 	input: {
+		valueType: string;
+		isArray: boolean;
 		name: string;
 		value: string;
 	}[];
@@ -25,22 +27,127 @@ type Props = {
 	source: "answer" | "user";
 };
 
+// Hàm để chuẩn hóa kiểu khai báo biến cho từng ngôn ngữ
+function getVarType(
+	language_id: number,
+	nameVar: string,
+	baseType: string,
+	isArray: boolean = false,
+): string {
+	if (baseType.toLowerCase() === "string") {
+		switch (language_id) {
+			case 54: // C++
+				baseType = "string";
+				break;
+			default: // Java, C#
+				baseType = "string";
+		}
+	}
+
+	switch (language_id) {
+		case 62: // Java
+			return isArray ? `${baseType}[] ${nameVar}` : `${baseType} ${nameVar}`;
+
+		case 51: // C#
+			return isArray ? `${baseType}[] ${nameVar}` : `${baseType} ${nameVar}`;
+
+		case 54: // C++
+			return isArray ? `${baseType} ${nameVar}[]` : `${baseType} ${nameVar}`;
+
+		default:
+			return baseType;
+	}
+}
+
+const getInputValue = (value: string, isArray: boolean): string => {
+	if (isArray) {
+		// data = [1, 2, 3] => {1, 2, 3}
+		return value.replace(/^\[/, "{").replace(/\]$/, "}");
+	}
+	return value; // Trả về giá trị gốc nếu không phải mảng
+};
+
+// Hàm xử lý code cho từng ngôn ngữ
 export const handleFullCode = (
 	language_id: number,
 	code: string,
 	testcase: TestcaseType,
 	nameFn: string,
 ) => {
+	// JavaScript (Node.js)
 	if (language_id === 63) {
-		const readInput = `
-const fs = require('fs');
-const input = fs.readFileSync('/dev/stdin', 'utf8').split('\\n');
-${testcase.input.map((item, idx) => `const ${item.name} = JSON.parse(input[${idx}]);`).join("\n")}
-`;
+		const readInput = `${testcase.input.map(item => `const ${item.name} = ${item.value}`).join(";\n")}`;
 		const callFn = `console.log(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));`;
 		return `${readInput}\n${code}\n${callFn}`;
 	}
-	return code;
+
+	// TypeScript
+	if (language_id === 74) {
+		const readInput = `${testcase.input.map((item, index) => `const ${item.name} = ${item.value}`).join(";\n")}`;
+		const callFn = `console.log(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));`;
+		return `${readInput}\n${code}\n${callFn}`;
+	}
+
+	// Python
+	if (language_id === 71) {
+		const readInput = `${testcase.input.map((item, idx) => `${item.name} = ${item.value}`).join("\n")}`;
+		const callFn = `print(${nameFn}(${testcase.input.map(i => i.name).join(", ")}))`;
+		return `${readInput}\n${code}\n${callFn}`;
+	}
+
+	// Java
+	if (language_id === 62) {
+		return `public class Main {
+	static	${code}
+	public static void main(String[] args) {
+		${testcase.input
+			.map(
+				item =>
+					`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${getInputValue(item.value, item.isArray)};`,
+			)
+			.join("\n\t")}
+  System.out.println(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));
+  }
+}`;
+	}
+
+	// C++
+	if (language_id === 54) {
+		return `#include <iostream>
+using namespace std;
+${code}
+int main() {
+	${testcase.input
+		.map(
+			item =>
+				`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${getInputValue(item.value, item.isArray)};`,
+		)
+		.join("\n\t")}
+	cout << ${nameFn}(${testcase.input.map(i => i.name).join(", ")}) << endl;
+	return 0;
+}`;
+	}
+
+	// C#
+	if (language_id === 51) {
+		return `using System;
+class Program {
+static	${code}
+static void Main(string[] args)
+	{
+		${testcase.input
+			.map(
+				item =>
+					`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${getInputValue(item.value, item.isArray)};`,
+			)
+			.join("\n\t")}
+
+			Console.WriteLine(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));
+	}
+}`;
+	}
+
+	return code; // Default case
 };
 
 export const useExecuteCode = () => {
@@ -55,15 +162,15 @@ export const useExecuteCode = () => {
 
 		const results = await Promise.all(
 			testcase.map(async (test, index) => {
-				const inputValues = test.input.map(i => i.value).join("\n");
 				const fullCode = handleFullCode(language_id, code, test, nameFn);
+				console.log("🚀 ~ testcase.map ~ fullCode:\n", fullCode);
 
 				try {
 					const res = await axiosClient.post("/submissions?base64_encoded=false&wait=true", {
 						source_code: fullCode,
 						language_id,
-						stdin: inputValues,
 					});
+					console.log("🚀 ~ testcase.map ~ res:", res);
 
 					const output = res.data.stdout?.trim() ?? "";
 					const stderr = res.data.stderr?.trim();

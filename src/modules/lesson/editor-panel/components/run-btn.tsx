@@ -59,7 +59,7 @@ export default function RunButton() {
 		await updateCode(idLesson, code); // Cập nhật code của người dùng
 		// Kiểm tra testcase của người dùng trước
 		const resultCheckTempTC = await executeCode({
-			code: answerCode,
+			code: code,
 			language_id,
 			testcase: tempTestcases,
 			nameFn,

@@ -335,22 +335,22 @@ export const lessonDetailData: LessonDetailType = {
 	testcaseSample: [
 		{
 			input: [
-				{name: "num1", value: "[1, 2]"},
-				{name: "num2", value: "[3, 4]"},
+				{name: "num1", value: "[1, 2]", valueType: "int", isArray: true},
+				{name: "num2", value: "[3, 4]", valueType: "int", isArray: true},
 			],
 			except: "10",
 		},
 		{
 			input: [
-				{name: "num1", value: "[10]"},
-				{name: "num2", value: "[5, 5]"},
+				{name: "num1", value: "[10]", valueType: "int", isArray: true},
+				{name: "num2", value: "[5, 5]", valueType: "int", isArray: true},
 			],
 			except: "20",
 		},
 		{
 			input: [
-				{name: "num1", value: "[1, 2]"},
-				{name: "num2", value: "[3, 4]"},
+				{name: "num1", value: "[1, 2]", valueType: "int", isArray: true},
+				{name: "num2", value: "[3, 4]", valueType: "int", isArray: true},
 			],
 			except: "10",
 		},
@@ -376,22 +376,22 @@ export const lessonDetailData: LessonDetailType = {
 		testcase: [
 			{
 				input: [
-					{name: "num1", value: "[1, 2]"},
-					{name: "num2", value: "[3, 4]"},
+					{name: "num1", value: "[1, 2]", valueType: "int", isArray: true},
+					{name: "num2", value: "[3, 4]", valueType: "int", isArray: true},
 				],
 				except: "10",
 			},
 			{
 				input: [
-					{name: "num1", value: "[10]"},
-					{name: "num2", value: "[5, 5]"},
+					{name: "num1", value: "[10]", valueType: "int", isArray: true},
+					{name: "num2", value: "[5, 5]", valueType: "int", isArray: true},
 				],
 				except: "20",
 			},
 			{
 				input: [
-					{name: "num1", value: "[1, 2, 3]"},
-					{name: "num2", value: "[4, 5, 6]"},
+					{name: "num1", value: "[1, 2, 3]", valueType: "int", isArray: true},
+					{name: "num2", value: "[4, 5, 6]", valueType: "int", isArray: true},
 				],
 				except: "21",
 			},

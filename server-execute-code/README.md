@@ -45,7 +45,6 @@ unzip judge0-v1.13.1.zip
 6. Run all services and wait a few seconds until everything is initialized:
 
 ```
-cd judge0-v1.13.1
 docker-compose up -d db redis
 sleep 10s
 docker-compose up -d
