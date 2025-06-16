@@ -21,7 +21,7 @@ export const CodeEditor = () => {
 	const handleChange = (value?: string) => {
 		if (!setCode) return;
 
-		setCode(value || "");
+		setCode({...code, [language]: value || ""});
 		setDraftCode({language, code: value});
 	};
 
@@ -30,7 +30,7 @@ export const CodeEditor = () => {
 			<Editor
 				language={language}
 				theme={theme}
-				value={code}
+				value={code[language]}
 				onChange={handleChange}
 				options={{
 					// readOnly: readOnly,

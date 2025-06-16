@@ -18,9 +18,10 @@ import type * as clerk from "../clerk.js";
 import type * as comment from "../comment.js";
 import type * as courses from "../courses.js";
 import type * as http from "../http.js";
+import type * as languages from "../languages.js";
 import type * as lessons from "../lessons.js";
-import type * as notifies from "../notifies.js";
 import type * as problems from "../problems.js";
+import type * as topic from "../topic.js";
 import type * as users from "../users.js";
 
 /**
@@ -37,9 +38,10 @@ declare const fullApi: ApiFromModules<{
   comment: typeof comment;
   courses: typeof courses;
   http: typeof http;
+  languages: typeof languages;
   lessons: typeof lessons;
-  notifies: typeof notifies;
   problems: typeof problems;
+  topic: typeof topic;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

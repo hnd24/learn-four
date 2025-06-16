@@ -319,18 +319,44 @@ export const lessonDetailData: LessonDetailType = {
 	learner: 123,
 	level: 2,
 	nameFn: "sumArrays",
+	setupAnswer: {
+		header: {
+			cpp: "#include <iostream>\n#include <vector>\nusing namespace std;\n",
+			csharp: "using System;",
+		},
+		printFn: {},
+	},
+	structureAnswer: {
+		javascript: "function sumArrays(num1, num2) {\n\t// Your code here\n}",
+		typescript:
+			"function sumArrays(num1: number[], num2: number[]): number {\n\t// Your code here\n}",
+		python: "def sum_arrays(num1, num2):\n\t# Your code here",
+		java: "public static int sumArrays(int[] num1, int[] num2) {\n\t// Your code here\n}",
+		cpp: `//#include <iostream>\n//#include <vector>\n//using namespace std;
+int sumArrays(const vector<int>& num1, const vector<int>& num2) {
+	// Your code here
+	// return 0;
+}`,
+		csharp: `//using System;
+public class SumArrays {
+	public static int SumArrays(int[] num1, int[] num2) {
+		// Your code here
+		// return 0;
+	}	
+}`,
+	},
 	content: `
-						## Bài toán
+## Bài toán
 
-						Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai mảng.
+Cho 2 mảng số nguyên, hãy tính tổng các phần tử của cả hai mảng.
 
-						## Input
-						- Một mảng \`num1: number[]\`
-						- Một mảng \`num2: number[]\`
+## Input
+- Một mảng \`num1: number[]\`
+- Một mảng \`num2: number[]\`
 
-						## Output
-						- Trả về tổng của tất cả phần tử trong \`num1\` và \`num2\`
-						`,
+## Output
+- Trả về tổng của tất cả phần tử trong \`num1\` và \`num2\`
+`,
 	status: StatusPlace.APPROVED,
 	testcaseSample: [
 		{
@@ -358,19 +384,82 @@ export const lessonDetailData: LessonDetailType = {
 	answer: {
 		code: [
 			{
-				language: "javascript",
-				code: `
-							function sumArrays(num1, num2) {
-								let sum = 0;
-								for (let i = 0; i < num1.length; i++) {
-									sum += num1[i];
-								}
-								for (let i = 0; i < num2.length; i++) {
-									sum += num2[i];
-								}
-								return sum;
-							}
-				`.trim(),
+				javascript: `
+function sumArrays(num1, num2) {
+	let sum = 0;
+	for (let i = 0; i < num1.length; i++) {
+		sum += num1[i];
+	}
+	for (let i = 0; i < num2.length; i++) {
+		sum += num2[i];
+	}
+	return sum;
+}
+				`,
+				typescript: `
+function sumArrays(num1: number[], num2: number[]): number {
+	let sum = 0;
+	for (let i = 0; i < num1.length; i++) {
+		sum += num1[i];
+	}
+	for (let i = 0; i < num2.length; i++) {
+		sum += num2[i];
+	}
+	return sum;
+}
+				`,
+				python: `
+def sum_arrays(num1, num2):
+	sum = 0
+	for i in range(len(num1)):
+		sum += num1[i]
+	for i in range(len(num2)):
+		sum += num2[i]
+	return sum
+				`,
+				java: `
+public class SumArrays {
+	public static int sumArrays(int[] num1, int[] num2) {
+		int sum = 0;
+		for (int i = 0; i < num1.length; i++) {
+			sum += num1[i];
+		}
+		for (int i = 0; i < num2.length; i++) {
+			sum += num2[i];
+		}
+		return sum;
+	}
+}
+				`,
+				cpp: `
+#include <iostream>
+#include <vector>
+using namespace std;
+int sumArrays(const vector<int>& num1, const vector<int>& num2) {
+	int sum = 0;
+	for (int i = 0; i < num1.size(); i++) {
+		sum += num1[i];
+	}
+	for (int i = 0; i < num2.size(); i++) {
+		sum += num2[i];
+	}
+	return sum;
+}
+				`,
+				csharp: `
+public class SumArrays {
+	public static int SumArrays(int[] num1, int[] num2) {
+		int sum = 0;
+		for (int i = 0; i < num1.Length; i++) {
+			sum += num1[i];
+		}
+		for (int i = 0; i < num2.Length; i++) {
+			sum += num2[i];
+		}
+		return sum;
+	}	
+}
+				`,
 			},
 		],
 		testcase: [
@@ -404,14 +493,30 @@ export const userLessonData: UserLessonType = {
 	lessonId: "lesson_001",
 	userId: "user_001",
 	isCompleted: true,
-	code: `function sumArrays(num1, num2) {
-		let sum = 0;
-		for (let i = 0; i < num1.length; i++) {
-				sum += num1[i];
-		}
-		for (let i = 0; i < num2.length; i++) {
-				sum += num2[i];
-		}
-		return sum;
-}`,
+	code: {
+		javascript: `
+function sumArrays(num1, num2) {
+	let sum = 0;
+	for (let i = 0; i < num1.length; i++) {
+		sum += num1[i];
+	}
+	for (let i = 0; i < num2.length; i++) {
+		sum += num2[i];
+	}
+	return sum;
+}
+		`,
+		typescript: `
+function sumArrays(num1: number[], num2: number[]): number {
+	let sum = 0;
+	for (let i = 0; i < num1.length; i++) {
+		sum += num1[i];
+	}
+	for (let i = 0; i < num2.length; i++) {
+		sum += num2[i];
+	}
+	return sum;
+}
+		`,
+	},
 };

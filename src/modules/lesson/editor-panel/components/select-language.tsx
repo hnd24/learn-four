@@ -8,10 +8,12 @@ import {
 	SelectValue,
 } from "@/components/ui/select";
 import {LanguageProgrammingEnum} from "@/types";
+import {memo} from "react";
 import {useRoom} from "../../provider";
 
-export default function SelectLanguage() {
+function SelectLanguage() {
 	const {language, setLanguage} = useRoom();
+	console.log("🚀 ~ SelectLanguage ~ language:", language);
 
 	return (
 		<Select value={language} onValueChange={value => setLanguage(value as LanguageProgrammingEnum)}>
@@ -28,3 +30,5 @@ export default function SelectLanguage() {
 		</Select>
 	);
 }
+
+export default memo(SelectLanguage);

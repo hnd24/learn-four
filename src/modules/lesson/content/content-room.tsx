@@ -24,7 +24,10 @@ export default function ContentRoom({id}: Props) {
 		setAnswerTestcase,
 		setTempTestcases,
 		setNameFn,
+		setSetupAnswer,
 		setLoadingLesson,
+		structureAnswer,
+		setStructureAnswer,
 	} = useRoom();
 	const {getLessonById, loading} = useGetLessonById();
 
@@ -40,12 +43,17 @@ export default function ContentRoom({id}: Props) {
 	useEffect(() => {
 		if (!data) return;
 
-		// Set code theo ngôn ngữ
-		const codeItem = data.answer.code.find(item => item.language === language);
-		setAnswerCode(codeItem?.code || "");
+		// Set answer code
+		setAnswerCode(data.answer.code as Record<string, string>);
 
 		// Set testcase
 		setAnswerTestcase(data.answer.testcase);
+
+		// set setupAnswer
+		setSetupAnswer(data.setupAnswer || "");
+
+		// Set structure answer
+		setStructureAnswer((data.structureAnswer as Record<string, string>) || {});
 
 		// Set testcase sample
 		const withIndex = data.testcaseSample.map((item, index) => ({
@@ -57,6 +65,10 @@ export default function ContentRoom({id}: Props) {
 		// Set name function
 		setNameFn(data.nameFn);
 	}, [data, language]);
+
+	useEffect(() => {
+		console.log("🚀 ~ ContentRoom ~ structureAnswer:", structureAnswer);
+	}, [structureAnswer]);
 
 	useEffect(() => {
 		setLoadingLesson(loading);

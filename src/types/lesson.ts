@@ -10,6 +10,8 @@ export type LessonDetailType = {
 	learner: number;
 	level: number;
 	content: string;
+	structureAnswer: object;
+	setupAnswer: setupAnswerType;
 	nameFn: string;
 	answer: AnswerType;
 	status: StatusPlace;
@@ -22,3 +24,5 @@ export type LessonType = {
 	star: number;
 	level: string;
 };
+
+export type setupAnswerType = {header?: Record<string, string>; printFn?: Record<string, string>};

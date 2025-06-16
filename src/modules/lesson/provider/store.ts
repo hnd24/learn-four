@@ -1,11 +1,18 @@
 // src/stores/room-store.ts
 import {Theme} from "@/constants";
-import {LanguageProgrammingEnum, ResultTestcaseType, RunCode, TestcaseType} from "@/types";
+import {
+	LanguageProgrammingEnum,
+	ResultTestcaseType,
+	RunCode,
+	setupAnswerType,
+	TestcaseType,
+} from "@/types";
 import {createStore} from "zustand/vanilla";
 
 export type RoomState = {
-	code: string;
-	answerCode: string;
+	code: Record<string, string>;
+	answerCode: Record<string, string>;
+	structureAnswer: Record<string, string>;
 	answerTestcase: TestcaseType[];
 	tempTestcases: (TestcaseType & {index: number})[];
 	language: LanguageProgrammingEnum;
@@ -16,11 +23,12 @@ export type RoomState = {
 	loadingUserLesson: boolean;
 	loadingLesson: boolean;
 	runCode: RunCode;
+	setupAnswer: setupAnswerType;
 };
 
 export type RoomActions = {
-	setCode: (code: string) => void;
-	setAnswerCode: (answerCode: string) => void;
+	setCode: (code: Record<string, string>) => void;
+	setAnswerCode: (answerCode: Record<string, string>) => void;
 	setAnswerTestcase: (answerTestcase: TestcaseType[]) => void;
 	setTempTestcases: (tempTestcases: (TestcaseType & {index: number})[]) => void;
 	setLanguage: (language: LanguageProgrammingEnum) => void;
@@ -31,12 +39,36 @@ export type RoomActions = {
 	setLoadingUserLesson: (loading: boolean) => void;
 	setLoadingLesson: (loading: boolean) => void;
 	setRunCode: (runCode: RunCode) => void;
+	setSetupAnswer: (setupAnswer: setupAnswerType) => void;
+	setStructureAnswer: (structureAnswer: Record<string, string>) => void;
 };
 
 // Cấu hình mặc định
 export const defaultRoomState: RoomState = {
-	code: "",
-	answerCode: "",
+	code: {
+		javascript: "",
+		typescript: "",
+		python: "",
+		java: "",
+		cpp: "",
+		csharp: "",
+	},
+	answerCode: {
+		javascript: "",
+		typescript: "",
+		python: "",
+		java: "",
+		cpp: "",
+		csharp: "",
+	},
+	structureAnswer: {
+		javascript: "",
+		typescript: "",
+		python: "",
+		java: "",
+		cpp: "",
+		csharp: "",
+	},
 	answerTestcase: [],
 	tempTestcases: [],
 	language: LanguageProgrammingEnum.JavaScript,
@@ -47,6 +79,7 @@ export const defaultRoomState: RoomState = {
 	loadingUserLesson: false,
 	loadingLesson: false,
 	runCode: RunCode.None,
+	setupAnswer: {},
 };
 
 export type RoomStore = RoomState & RoomActions;
@@ -67,5 +100,7 @@ export const createRoomStore = (initState: RoomState = defaultRoomState) => {
 		setLoadingUserLesson: loadingUserLesson => set({loadingUserLesson}),
 		setLoadingLesson: loadingLesson => set({loadingLesson}),
 		setRunCode: runCode => set({runCode}),
+		setSetupAnswer: setupAnswer => set({setupAnswer}),
+		setStructureAnswer: structureAnswer => set({structureAnswer}),
 	}));
 };

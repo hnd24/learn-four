@@ -2,31 +2,6 @@ import {axiosClient} from "@/lib/axios";
 import {ResultTestcaseType, RunResultStatus, TestcaseType} from "@/types";
 import {useMutation} from "@tanstack/react-query";
 
-type RunResult = {
-	index?: number;
-	input: {
-		valueType: string;
-		isArray: boolean;
-		name: string;
-		value: string;
-	}[];
-	output: string;
-	except: string;
-	status: RunResultStatus;
-	stderr?: string;
-	runTime: number;
-	source: "answer" | "user";
-	error?: boolean;
-};
-
-type Props = {
-	code: string;
-	language_id: number;
-	testcase: TestcaseType[];
-	nameFn?: string;
-	source: "answer" | "user";
-};
-
 // Hàm để chuẩn hóa kiểu khai báo biến cho từng ngôn ngữ
 function getVarType(
 	language_id: number,
@@ -52,19 +27,15 @@ function getVarType(
 			return isArray ? `${baseType}[] ${nameVar}` : `${baseType} ${nameVar}`;
 
 		case 54: // C++
-			return isArray ? `${baseType} ${nameVar}[]` : `${baseType} ${nameVar}`;
+			return isArray ? `vector<${baseType}> ${nameVar}` : `${baseType} ${nameVar}`;
 
 		default:
 			return baseType;
 	}
 }
 
-const getInputValue = (value: string, isArray: boolean): string => {
-	if (isArray) {
-		// data = [1, 2, 3] => {1, 2, 3}
-		return value.replace(/^\[/, "{").replace(/\]$/, "}");
-	}
-	return value; // Trả về giá trị gốc nếu không phải mảng
+const getInputValue = (value: string): string => {
+	return value.replace(/^\[/, "{").replace(/\]$/, "}");
 };
 
 // Hàm xử lý code cho từng ngôn ngữ
@@ -73,37 +44,39 @@ export const handleFullCode = (
 	code: string,
 	testcase: TestcaseType,
 	nameFn: string,
+	header: string,
 ) => {
 	// JavaScript (Node.js)
 	if (language_id === 63) {
 		const readInput = `${testcase.input.map(item => `const ${item.name} = ${item.value}`).join(";\n")}`;
 		const callFn = `console.log(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));`;
-		return `${readInput}\n${code}\n${callFn}`;
+		return `${header}\n${readInput}\n${code}\n${callFn}`;
 	}
 
 	// TypeScript
 	if (language_id === 74) {
 		const readInput = `${testcase.input.map((item, index) => `const ${item.name} = ${item.value}`).join(";\n")}`;
 		const callFn = `console.log(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));`;
-		return `${readInput}\n${code}\n${callFn}`;
+		return `${header}\n${readInput}\n${code}\n${callFn}`;
 	}
 
 	// Python
 	if (language_id === 71) {
 		const readInput = `${testcase.input.map((item, idx) => `${item.name} = ${item.value}`).join("\n")}`;
 		const callFn = `print(${nameFn}(${testcase.input.map(i => i.name).join(", ")}))`;
-		return `${readInput}\n${code}\n${callFn}`;
+		return `${header}\n${readInput}\n${code}\n${callFn}`;
 	}
 
 	// Java
 	if (language_id === 62) {
-		return `public class Main {
+		return `${header}
+	public class Main {
 	static	${code}
 	public static void main(String[] args) {
 		${testcase.input
 			.map(
 				item =>
-					`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${getInputValue(item.value, item.isArray)};`,
+					`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${item.isArray ? getInputValue(item.value) : item.value};`,
 			)
 			.join("\n\t")}
   System.out.println(${nameFn}(${testcase.input.map(i => i.name).join(", ")}));
@@ -113,14 +86,15 @@ export const handleFullCode = (
 
 	// C++
 	if (language_id === 54) {
-		return `#include <iostream>
+		return `${header}
+#include <iostream>
 using namespace std;
 ${code}
 int main() {
 	${testcase.input
 		.map(
 			item =>
-				`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${getInputValue(item.value, item.isArray)};`,
+				`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${item.isArray ? getInputValue(item.value) : item.value};`,
 		)
 		.join("\n\t")}
 	cout << ${nameFn}(${testcase.input.map(i => i.name).join(", ")}) << endl;
@@ -130,7 +104,8 @@ int main() {
 
 	// C#
 	if (language_id === 51) {
-		return `using System;
+		return `${header}
+using System;
 class Program {
 static	${code}
 static void Main(string[] args)
@@ -138,7 +113,7 @@ static void Main(string[] args)
 		${testcase.input
 			.map(
 				item =>
-					`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${getInputValue(item.value, item.isArray)};`,
+					`${getVarType(language_id, item.name, item.valueType, item.isArray)} = ${item.isArray ? getInputValue(item.value) : item.value};`,
 			)
 			.join("\n\t")}
 
@@ -150,11 +125,40 @@ static void Main(string[] args)
 	return code; // Default case
 };
 
+type RunResult = {
+	index?: number;
+	input: {
+		valueType: string;
+		isArray: boolean;
+		name: string;
+		value: string;
+	}[];
+	output: string;
+	except: string;
+	status: RunResultStatus;
+	stderr?: string;
+	runTime: number;
+	source: "answer" | "user";
+	error?: boolean;
+};
+
+type Props = {
+	code: string;
+	language_id: number;
+	header?: string;
+	printFn?: string;
+	testcase: TestcaseType[];
+	nameFn?: string;
+	source: "answer" | "user";
+};
+
 export const useExecuteCode = () => {
 	const executeCodeRequest = async ({
 		code,
 		language_id = 63,
 		testcase,
+		header = "",
+		printFn = "",
 		nameFn = "main",
 		source = "user",
 	}: Props): Promise<ResultTestcaseType> => {
@@ -162,7 +166,7 @@ export const useExecuteCode = () => {
 
 		const results = await Promise.all(
 			testcase.map(async (test, index) => {
-				const fullCode = handleFullCode(language_id, code, test, nameFn);
+				const fullCode = handleFullCode(language_id, code, test, nameFn, header);
 				console.log("🚀 ~ testcase.map ~ fullCode:\n", fullCode);
 
 				try {

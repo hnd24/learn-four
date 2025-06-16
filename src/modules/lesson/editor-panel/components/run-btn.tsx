@@ -18,7 +18,9 @@ export default function RunButton() {
 		answerTestcase,
 		tempTestcases,
 		code,
+		structureAnswer,
 		language,
+		setupAnswer,
 		setRunCode,
 		setResultTestcase,
 		nameFn,
@@ -56,14 +58,24 @@ export default function RunButton() {
 
 	const handleRunCode = async () => {
 		setRunCode(RunCode.Running);
-		await updateCode(idLesson, code); // Cập nhật code của người dùng
+
+		const codeMap = {} as Record<string, string>;
+		// Cập nhật code của người dùng với cấu trúc trả lời
+		Object.entries(structureAnswer).forEach(([key, value]) => {
+			if (code[key] === value) return;
+			codeMap[key] = code[key] || "";
+			return;
+		});
+		await updateCode(idLesson, codeMap); // Cập nhật code của người dùng
 		// Kiểm tra testcase của người dùng trước
 		const resultCheckTempTC = await executeCode({
-			code: code,
+			code: answerCode[language],
 			language_id,
 			testcase: tempTestcases,
 			nameFn,
 			source: "user",
+			header: setupAnswer.header?.[language] || "",
+			printFn: setupAnswer.printFn?.[language] || "",
 		});
 		const {status: statusCheckTC, testcase: resultTempTC} = resultCheckTempTC;
 
@@ -76,11 +88,13 @@ export default function RunButton() {
 
 		// Tiến hành kiểm tra câu trả lời của hệ thống
 		const resultCheckAnswer = await executeCode({
-			code: code,
+			code: code[language],
 			language_id,
 			testcase: answerTestcase,
 			nameFn,
 			source: "answer",
+			header: setupAnswer.header?.[language] || "",
+			printFn: setupAnswer.printFn?.[language] || "",
 		});
 
 		handleTestcaseResult(resultCheckAnswer, false); // Kiểm tra kết quả trả lời

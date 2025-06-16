@@ -47,7 +47,7 @@ export const useGetUserLesson = () => {
 export const useUpdateCodeUserLesson = () => {
 	const [loading, setLoading] = useState(false);
 
-	const updateCode = useCallback(async (idLesson: string, code: string): Promise<void> => {
+	const updateCode = useCallback(async (idLesson: string, code: Record<string, string>): Promise<void> => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);

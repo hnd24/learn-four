@@ -34,12 +34,7 @@ export enum StatusPlace {
 	REJECTED = "rejected",
 }
 
-export type CodeAnswerType = {
-	code: string;
-	language: string;
-};
-
 export type AnswerType = {
-	code: CodeAnswerType[];
+	code: Object;
 	testcase: TestcaseType[];
 };

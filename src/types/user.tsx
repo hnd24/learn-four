@@ -28,10 +28,12 @@ export type ActivityType = {
 	level: number;
 };
 
+
+
 export type UserLessonType = {
 	_id: string;
 	lessonId: string;
 	userId: string;
-	code: string;
+	code: object;
 	isCompleted: boolean;
 };

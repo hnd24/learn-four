@@ -1,171 +1,157 @@
 import {defineSchema, defineTable} from "convex/server";
 import {v} from "convex/values";
 
-export const processingNotify = v.union(
+export const StatusType = v.union(v.literal("private"), v.literal("publish"));
+export const CourseStateType = v.union(
+	v.literal("publish"),
 	v.literal("pending"),
-	v.literal("processing"),
-	v.literal("done"),
+	v.literal("private"),
 );
-export const statusPlace = v.union(
-	v.literal("pending"),
-	v.literal("approved"),
-	v.literal("rejected"),
+export const StateType = v.union(v.literal("completed"), v.literal("progress"));
+export const RoleType = v.union(v.literal("super_admin"), v.literal("admin"), v.literal("user"));
+
+export const LinkType = v.object({
+	Facebook: v.optional(v.string()),
+	LinkedIn: v.optional(v.string()),
+	GitHub: v.optional(v.string()),
+	Youtube: v.optional(v.string()),
+	Phone: v.optional(v.string()),
+});
+
+export const AnswerType = v.record(v.string(), v.string());
+
+export const TemplateType = v.record(
+	v.string(),
+	v.object({
+		head: v.string(),
+		body: v.string(),
+		tail: v.string(),
+	}),
 );
 
-export const role = v.union(v.literal("super_admin"), v.literal("admin"), v.literal("user"));
-
-export const link = v.object({
-	facebook: v.optional(v.string()),
-	linkedIn: v.optional(v.string()),
-	gitHub: v.optional(v.string()),
-	youtube: v.optional(v.string()),
-	phone: v.optional(v.string()),
-});
-
-export const activity = v.object({
-	day: v.string(),
-	level: v.number(),
-});
-
-export const testcase = v.object({
-	input: v.array(v.object({name: v.string(), value: v.string()})),
-	except: v.optional(v.string()),
-});
-
-export const answer = v.object({
-	code: v.array(v.object({code: v.string(), language: v.number()})),
-	testcase: v.array(testcase),
-});
+export const TestcaseType = v.array(
+	v.object({
+		id: v.string(),
+		inputs: v.array(
+			v.object({
+				id: v.string(),
+				label: v.string(),
+				value: v.string(),
+			}),
+		),
+		expected: v.string(),
+	}),
+);
 
 export default defineSchema({
 	users: defineTable({
 		userId: v.string(),
-		name: v.optional(v.string()),
-		email: v.optional(v.string()),
+		name: v.string(),
+		email: v.string(),
 		image: v.optional(v.string()),
-		links: v.optional(link),
+		links: v.optional(LinkType),
 		introduce: v.optional(v.string()),
-		activities: v.optional(v.array(activity)),
+		role: v.optional(RoleType),
 		locked: v.optional(v.boolean()),
-		role: v.optional(role),
 	}).index("by_userId", ["userId"]),
-
-	userCourses: defineTable({
-		userId: v.string(),
-		courseId: v.id("courses"),
-		isCompleted: v.boolean(),
-	})
-		.index("by_userId_courseId", ["userId", "courseId"])
-		.index("by_userId", ["userId"]),
-
-	userLessons: defineTable({
-		userId: v.string(),
-		lessonId: v.id("lessons"),
-		isCompleted: v.boolean(),
-		code: v.string(),
-	})
-		.index("by_userId_lessonId", ["userId", "lessonId"])
-		.index("by_userId", ["userId"]),
-
-	userProblems: defineTable({
-		userId: v.string(),
-		state: v.string(),
-		problemId: v.id("problems"),
-		favorite: v.optional(v.boolean()),
-		code: v.string(),
-		isSolved: v.boolean(),
-	})
-		.index("by_userId_problemId", ["userId", "problemId"])
-		.index("by_userId", ["userId"]),
-
 	/************************************************** */
 	comments: defineTable({
 		content: v.string(),
 		likes: v.optional(v.number()),
 		dislikes: v.optional(v.number()),
 		userId: v.string(),
-		CCommentId: v.optional(v.array(v.id("comments"))),
-	}).index("by_userId", ["userId"]),
+		parent: v.optional(v.string()),
+		placeId: v.string(),
+		reply: v.boolean(),
+	})
+		.index("by_parent", ["parent"])
+		.index("by_userId", ["userId"])
+		.index("by_placeId", ["placeId"]),
 	/************************************************** */
+	user_course: defineTable({
+		userId: v.string(),
+		courseId: v.id("courses"),
+		state: StateType,
+	})
+		.index("by_userId_courseId", ["userId", "courseId"])
+		.index("by_userId", ["userId"]),
 
-	notifiesToAdmin: defineTable({
+	user_lesson: defineTable({
+		userId: v.string(),
+		lessonId: v.id("lessons"),
+		state: StateType,
+		code: v.optional(v.string()),
+	})
+		.index("by_userId_lessonId", ["userId", "lessonId"])
+		.index("by_userId", ["userId"]),
+
+	user_problem: defineTable({
+		userId: v.string(),
 		problemId: v.id("problems"),
-		problemName: v.string(),
-		userId: v.string(),
-		processing: processingNotify,
-	}).index("by_userId", ["userId"]),
-
-	notifiesToUser: defineTable({
-		topic: v.optional(v.string()),
-		content: v.optional(v.string()),
-		isSeen: v.boolean(),
-		userId: v.string(),
-	}).index("by_userId", ["userId"]),
+		state: StateType,
+		code: v.optional(AnswerType),
+	})
+		.index("by_userId_problemId", ["userId", "problemId"])
+		.index("by_userId", ["userId"]),
 
 	/************************************************** */
-
 	problems: defineTable({
 		name: v.string(),
-		star: v.number(),
 		level: v.string(),
-		topic: v.optional(v.string()),
+		topic: v.id("topics"),
 		content: v.string(),
-		answer: answer,
-		nameFn: v.string(),
-		testcaseSample: v.array(testcase),
-		status: statusPlace,
+		answer: AnswerType,
+		template: TemplateType,
+		testcase: TestcaseType,
+		status: StatusType,
 		authorId: v.string(),
 	})
 		.index("by_authorId", ["authorId"])
+		.index("by_topic", ["topic"])
 		.searchIndex("by_name", {
 			searchField: "name",
-			filterFields: ["topic", "level", "status", "star"],
+			filterFields: ["topic", "level", "status"],
 		}),
-
-	problemComments: defineTable({
-		problemId: v.id("problems"),
-		commentId: v.id("comments"),
-	}).index("by_problemId", ["problemId"]),
+	/************************************************** */
+	topics: defineTable({
+		value: v.string(),
+		name: v.string(),
+		status: StatusType,
+	}),
+	/************************************************** */
+	languages: defineTable({
+		name: v.string(),
+		idJude0: v.number(),
+	}),
 
 	/************************************************** */
-
 	courses: defineTable({
-		language: v.string(),
-		logoLanguage: v.string(),
+		logo: v.string(),
 		description: v.string(),
 		background: v.string(),
 		banner: v.string(),
-		star: v.number(),
 		learner: v.number(),
-		authorId: v.string(),
-		authorName: v.string(),
-		authorImage: v.string(),
 		content: v.string(),
-		status: statusPlace,
-		lessons: v.optional(v.array(v.id("lessons"))),
+		authorId: v.string(),
+		status: CourseStateType,
+		language: v.id("languages"),
 	}),
-
-	courseComments: defineTable({
-		courseId: v.id("courses"),
-		commentId: v.id("comments"),
-	}).index("by_courseId", ["courseId"]),
 	/************************************************** */
 
 	lessons: defineTable({
 		courseId: v.id("courses"),
-		topic: v.string(),
 		name: v.string(),
-		star: v.number(),
 		level: v.number(),
 		content: v.string(),
-		nameFn: v.string(),
-		status: statusPlace,
-		answer: answer,
-		testcaseSample: v.array(testcase),
+		answer: v.string(),
+		template: v.object({
+			head: v.string(),
+			body: v.string(),
+			tail: v.string(),
+		}),
+		status: StatusType,
+		language: v.id("languages"),
 	}).index("by_courseId", ["courseId"]),
 
-	lessonComments: defineTable({
-		lessonId: v.id("lessons"),
-		commentId: v.id("comments"),
-	}).index("by_lessonId", ["lessonId"]),
+	/************************************************** */
 });

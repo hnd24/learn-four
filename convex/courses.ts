@@ -2,9 +2,8 @@ import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 
-import {removeCComment} from "./comment";
 import {removeLesson} from "./lessons";
-import {statusPlace} from "./schema";
+import {CourseStateType} from "./schema";
 
 export async function getCourse(ctx: QueryCtx, courseId: Id<"courses">) {
 	const course = await ctx.db.get(courseId);
@@ -15,24 +14,14 @@ export async function getCourse(ctx: QueryCtx, courseId: Id<"courses">) {
 }
 
 export async function removeCourse(ctx: MutationCtx, courseId: Id<"courses">) {
-	const course = await ctx.db.get(courseId);
-	if (course?.lessons && course.lessons.length > 0) {
-		await Promise.all(
-			course.lessons.map(async lessonId => {
-				await removeLesson(ctx, lessonId);
-			}),
-		);
-	}
-	const courseComments = await ctx.db
-		.query("courseComments")
+	const lessons = await ctx.db
+		.query("lessons")
 		.withIndex("by_courseId", q => q.eq("courseId", courseId))
 		.collect();
-
-	if (courseComments && courseComments.length > 0) {
+	if (lessons.length > 0) {
 		await Promise.all(
-			courseComments.map(async courseComment => {
-				ctx.db.delete(courseComment._id);
-				await removeCComment(ctx, courseComment.commentId);
+			lessons.map(async lesson => {
+				await removeLesson(ctx, lesson._id);
 			}),
 		);
 	}
@@ -46,152 +35,114 @@ export const deleteCourse = mutation({
 	},
 });
 
-export const getCourseInfos = query({
+export const getCourses = query({
 	args: {},
 	async handler(ctx, args) {
-		const courses = await ctx.db.query("courses").order("desc").collect();
-		if (!courses) {
-			return [];
-		}
-		return courses.map(course => {
-			return {
-				_id: course._id,
-				background: course.background,
-				language: course.language,
-				description: course.description,
-				logoLanguage: course.logoLanguage,
-				banner: course.banner,
-				authorImage: course.authorImage,
-				authorId: course.authorId,
-				authorName: course.authorName,
-				star: course.star,
-				learner: course.learner,
-				status: course.status,
-				lessons: course.lessons?.length || 0,
-			};
-		});
-	},
-});
-
-export const getCoursesOfUser = query({
-	args: {},
-	async handler(ctx, args) {
-		const identity = await ctx.auth.getUserIdentity();
-		if (!identity) {
-			throw new ConvexError("User not found");
-		}
-		const userCourses = await ctx.db
-			.query("userCourses")
-			.withIndex("by_userId", q => q.eq("userId", identity.subject))
-			.collect();
-		if (userCourses.length === 0) {
+		const courses = await ctx.db.query("courses").collect();
+		if (courses.length === 0) {
 			return [];
 		}
 		return Promise.all(
-			userCourses.map(async userCourse => {
-				const course = await ctx.db.get(userCourse.courseId);
-
-				if (course) {
-					return {
-						_id: course._id,
-						background: course.background,
-						language: course.language,
-						description: course.description,
-						logoLanguage: course.logoLanguage,
-						banner: course.banner,
-						authorImage: course.authorImage,
-						authorId: course.authorId,
-						authorName: course.authorName,
-						star: course.star,
-						learner: course.learner,
-						status: course.status,
-						isCompleted: userCourse.isCompleted,
-					};
-				}
+			courses.map(async course => {
+				const lessons = await ctx.db
+					.query("lessons")
+					.withIndex("by_courseId", q => q.eq("courseId", course._id))
+					.collect();
+				const language = await ctx.db.get(course.language);
+				const author = await ctx.db
+					.query("users")
+					.withIndex("by_userId", q => q.eq("userId", course.authorId))
+					.unique();
+				const lessonCount = lessons.length;
+				return {
+					...course,
+					language: language?.name,
+					logoLanguage: course?.logo,
+					lessons: lessonCount,
+					authorId: author?._id,
+					authorName: author?.name,
+					authorImage: author?.image,
+				};
 			}),
 		);
 	},
 });
 
-export const getCourseContentById = query({
+export const getCourseById = query({
 	args: {courseId: v.id("courses")},
 	async handler(ctx, args) {
-		const course = await ctx.db.get(args.courseId);
+		const course = await getCourse(ctx, args.courseId);
 		if (!course) {
 			throw new ConvexError("Course not found");
 		}
-		if (course.lessons && course.lessons.length > 0) {
-			const lessonInfos = await Promise.all(
-				await Promise.all(
-					course.lessons?.map(async lessonId => {
-						const lesson = await ctx.db.get(lessonId);
-						if (lesson) {
-							return {
-								_id: lesson._id,
-								topic: lesson.topic,
-								star: lesson.star,
-								level: lesson.level,
-							};
-						}
-					}),
-				),
-			);
-			return {
-				_id: course._id,
-				content: course.content,
-				lessons: lessonInfos,
-			};
-		}
+		const lessons = await ctx.db
+			.query("lessons")
+			.withIndex("by_courseId", q => q.eq("courseId", course._id))
+			.collect();
+		const language = await ctx.db.get(course.language);
+		const author = await ctx.db
+			.query("users")
+			.withIndex("by_userId", q => q.eq("userId", course.authorId))
+			.unique();
 		return {
-			_id: course._id,
-			content: course.content,
-			lessons: [],
+			...course,
+			language: language?.name,
+			logoLanguage: course?.logo,
+			lessons: lessons.map(lesson => ({
+				_id: lesson._id,
+				name: lesson.name,
+				level: lesson.level,
+			})),
+			authorId: author?._id,
+			authorName: author?.name,
+			authorImage: author?.image,
 		};
-	},
-});
-
-export const updateCourse = mutation({
-	args: {
-		courseId: v.id("courses"),
-		language: v.optional(v.string()),
-		logoLanguage: v.optional(v.string()),
-		description: v.optional(v.string()),
-		background: v.optional(v.string()),
-		banner: v.optional(v.string()),
-		star: v.optional(v.number()),
-		learner: v.optional(v.number()),
-		authorId: v.optional(v.string()),
-		authorName: v.optional(v.string()),
-		authorImage: v.optional(v.string()),
-		content: v.optional(v.string()),
-		status: v.optional(statusPlace),
-		lessons: v.optional(v.array(v.id("lessons"))),
-	},
-	async handler(ctx, args) {
-		await ctx.db.patch(args.courseId, {...args});
 	},
 });
 
 export const createCourse = mutation({
 	args: {
-		language: v.string(),
-		extension: v.string(),
-		logoLanguage: v.string(),
 		description: v.string(),
 		background: v.string(),
 		banner: v.string(),
-		star: v.number(),
-		authorId: v.string(),
-		authorName: v.string(),
-		authorImage: v.string(),
+		learner: v.number(),
 		content: v.string(),
-		status: statusPlace,
-		lessons: v.optional(v.array(v.id("lessons"))),
+		authorId: v.string(),
+		status: CourseStateType,
+		logo: v.string(),
+		language: v.id("languages"),
 	},
 	async handler(ctx, args) {
 		await ctx.db.insert("courses", {
 			...args,
 			learner: 0,
 		});
+	},
+});
+
+export const updateCourse = mutation({
+	args: {
+		courseId: v.id("courses"),
+		description: v.optional(v.string()),
+		background: v.optional(v.string()),
+		banner: v.optional(v.string()),
+		learner: v.optional(v.number()),
+		logo: v.optional(v.string()),
+		content: v.optional(v.string()),
+		status: v.optional(CourseStateType),
+		language: v.optional(v.id("languages")),
+	},
+	async handler(ctx, args) {
+		const course = await getCourse(ctx, args.courseId);
+		if (!course) {
+			throw new ConvexError("Course not found");
+		}
+		const {courseId, ...fields} = args;
+		// Remove undefined fields before patching
+		const updateFields = Object.fromEntries(
+			Object.entries(fields).filter(([_, v]) => v !== undefined),
+		);
+		if (Object.keys(updateFields).length === 0) return;
+		await ctx.db.patch(course._id, updateFields);
 	},
 });
