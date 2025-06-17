@@ -5,29 +5,29 @@ import {LevelType, StarProblemType, StateProblemType} from "@/types";
 import {List} from "lucide-react";
 
 export enum LevelEnum {
-	All = "All",
-	Easy = "Easy",
-	Medium = "Medium",
-	Hard = "Hard",
+	All = "all",
+	Easy = "easy",
+	Medium = "medium",
+	Hard = "hard",
 }
 
 export const Level: Record<LevelEnum, LevelType> = {
-	All: {
+	all: {
 		label: "All",
 		value: 0,
 		icon: AllLevelIcon,
 	},
-	Easy: {
+	easy: {
 		label: "Easy",
 		value: 1,
 		icon: EasyLevelIcon,
 	},
-	Medium: {
+	medium: {
 		label: "Medium",
 		value: 2,
 		icon: MediumLevelIcon,
 	},
-	Hard: {
+	hard: {
 		label: "Hard",
 		value: 3,
 		icon: HardLevelIcon,

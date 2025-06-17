@@ -2,7 +2,7 @@ import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 import {removeComment} from "./comment";
-import {StatusType} from "./schema";
+import {levelType, StatusType} from "./schema";
 
 export async function getLesson(ctx: QueryCtx | MutationCtx, lessonId: Id<"lessons">) {
 	const lesson = await ctx.db.get(lessonId);
@@ -39,7 +39,7 @@ export const createLesson = mutation({
 	args: {
 		courseId: v.id("courses"),
 		name: v.string(),
-		level: v.number(),
+		level: levelType,
 		content: v.string(),
 		answer: v.string(),
 		template: v.object({
@@ -62,7 +62,7 @@ export const updateLesson = mutation({
 		lessonId: v.id("lessons"),
 		courseId: v.optional(v.id("courses")),
 		name: v.optional(v.string()),
-		level: v.optional(v.number()),
+		level: v.optional(levelType),
 		content: v.optional(v.string()),
 		answer: v.optional(v.string()),
 		template: v.optional(

@@ -4,7 +4,7 @@ import {ConvexError, v} from "convex/values";
 import {Id} from "./_generated/dataModel";
 import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 import {removeComment} from "./comment";
-import {AnswerType, StatusType, TemplateType, TestcaseType} from "./schema";
+import {AnswerType, levelType, StatusType, TemplateType, TestcaseType} from "./schema";
 import {getUser} from "./users";
 
 export async function getProblem(ctx: QueryCtx | MutationCtx, problemId: Id<"problems">) {
@@ -48,7 +48,7 @@ export const updateProblem = mutation({
 	args: {
 		problemId: v.id("problems"),
 		name: v.optional(v.string()),
-		level: v.optional(v.string()),
+		level: levelType,
 		topic: v.optional(v.id("topics")),
 		content: v.optional(v.string()),
 		answer: v.optional(AnswerType),
@@ -71,7 +71,7 @@ export const updateProblem = mutation({
 export const createProblem = mutation({
 	args: {
 		name: v.string(),
-		level: v.string(),
+		level: levelType,
 		topic: v.id("topics"),
 		content: v.string(),
 		answer: AnswerType,
@@ -118,6 +118,7 @@ export const queryProblems = query({
 	},
 	async handler(ctx, args) {
 		const {name, level, topic, status, paginationOpts} = args;
+		const identity = await ctx.auth.getUserIdentity();
 		const preIndexQuery = ctx.db.query("problems");
 		const baseQuery = name
 			? preIndexQuery.withSearchIndex("by_name", q => q.search("name", name))
@@ -136,7 +137,24 @@ export const queryProblems = query({
 			return true;
 		});
 
-		const results = await filteredQuery.paginate(paginationOpts);
-		return results;
+		const rawResults = await filteredQuery.paginate(paginationOpts);
+		if (!identity) {
+			return rawResults;
+		}
+		const user = await getUser(ctx, identity.subject);
+		return await Promise.all(
+			rawResults.page.map(async problem => {
+				const state = await ctx.db
+					.query("user_problem")
+					.withIndex("by_userId_problemId", q =>
+						q.eq("userId", user.userId).eq("problemId", problem._id),
+					)
+					.unique();
+				return {
+					...problem,
+					state: state ? state.state : "unsolved",
+				};
+			}),
+		);
 	},
 });

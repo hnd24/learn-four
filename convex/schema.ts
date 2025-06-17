@@ -9,6 +9,7 @@ export const CourseStateType = v.union(
 );
 export const StateType = v.union(v.literal("completed"), v.literal("progress"));
 export const RoleType = v.union(v.literal("super_admin"), v.literal("admin"), v.literal("user"));
+export const levelType = v.union(v.literal("easy"), v.literal("medium"), v.literal("hard"));
 
 export const LinkType = v.object({
 	Facebook: v.optional(v.string()),
@@ -97,7 +98,7 @@ export default defineSchema({
 	/************************************************** */
 	problems: defineTable({
 		name: v.string(),
-		level: v.string(),
+		level: levelType,
 		topic: v.id("topics"),
 		content: v.string(),
 		answer: AnswerType,
@@ -141,7 +142,7 @@ export default defineSchema({
 	lessons: defineTable({
 		courseId: v.id("courses"),
 		name: v.string(),
-		level: v.number(),
+		level: levelType,
 		content: v.string(),
 		answer: v.string(),
 		template: v.object({
