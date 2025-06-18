@@ -15,12 +15,10 @@ export const createLanguage = mutation({
 		name: v.string(),
 		logo: v.string(),
 		idJude0: v.number(),
+		extension: v.string(),
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert("languages", {
-			name: args.name,
-			idJude0: args.idJude0,
-		});
+		await ctx.db.insert("languages", args);
 	},
 });
 
@@ -29,6 +27,7 @@ export const updateLanguage = mutation({
 		languageId: v.id("languages"),
 		name: v.optional(v.string()),
 		idJude0: v.optional(v.number()),
+		extension: v.optional(v.string()),
 	},
 	async handler(ctx, args) {
 		const language = await getLanguage(ctx, args.languageId);
@@ -59,10 +58,6 @@ export const deleteLanguage = mutation({
 export const getLanguages = query({
 	async handler(ctx) {
 		const languages = await ctx.db.query("languages").collect();
-		return languages.map(language => ({
-			_id: language._id,
-			name: language.name,
-			idJude0: language.idJude0,
-		}));
+		return languages.map(language => language);
 	},
 });

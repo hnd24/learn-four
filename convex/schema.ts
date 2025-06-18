@@ -123,13 +123,13 @@ export default defineSchema({
 	languages: defineTable({
 		name: v.string(),
 		idJude0: v.number(),
+		extension: v.string(),
 	}),
 
 	/************************************************** */
 	courses: defineTable({
 		logo: v.string(),
 		description: v.string(),
-		background: v.string(),
 		banner: v.string(),
 		learner: v.number(),
 		content: v.string(),

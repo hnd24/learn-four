@@ -88,11 +88,19 @@ export const updateLesson = mutation({
 export const getLessonInCourse = query({
 	args: {courseId: v.id("courses")},
 	async handler(ctx, args) {
+		const course = await ctx.db.get(args.courseId);
+		if (!course) {
+			throw new ConvexError("Course not found");
+		}
+		const language = await ctx.db.get(course.language);
 		const lessons = await ctx.db
 			.query("lessons")
 			.withIndex("by_courseId", q => q.eq("courseId", args.courseId))
 			.collect();
-		return lessons;
+		return lessons.map(lesson => ({
+			...lesson,
+			language,
+		}));
 	},
 });
 
