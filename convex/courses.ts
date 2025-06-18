@@ -49,19 +49,11 @@ export const getCourses = query({
 					.withIndex("by_courseId", q => q.eq("courseId", course._id))
 					.collect();
 				const language = await ctx.db.get(course.language);
-				const author = await ctx.db
-					.query("users")
-					.withIndex("by_userId", q => q.eq("userId", course.authorId))
-					.unique();
 				const lessonCount = lessons.length;
 				return {
 					...course,
 					language: language?.name,
-					logoLanguage: course?.logo,
 					lessons: lessonCount,
-					authorId: author?._id,
-					authorName: author?.name,
-					authorImage: author?.image,
 				};
 			}),
 		);

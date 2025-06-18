@@ -1,19 +1,10 @@
-import {ConvexClientProvider} from "@/providers/ConvexClientProvider";
+import {inter} from "@/lib/font";
+import {ConvexClientProvider} from "@/providers/convex-client-provider";
+import {ThemeProvider} from "@/providers/theme-provider";
 import {ClerkProvider} from "@clerk/nextjs";
-import {Geist, Geist_Mono} from "next/font/google";
 import {NuqsAdapter} from "nuqs/adapters/next/app";
 import {Toaster} from "sonner";
 import "./globals.css";
-
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
-});
 
 export default function RootLayout({
 	children,
@@ -23,11 +14,18 @@ export default function RootLayout({
 	return (
 		<ClerkProvider publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLIC_KEY}>
 			<html lang="en" suppressHydrationWarning>
-				<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-					<ConvexClientProvider>
-						<NuqsAdapter>{children}</NuqsAdapter>
-					</ConvexClientProvider>
-					<Toaster />
+				<body className={`${inter.className} antialiased`}>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="light"
+						enableSystem
+						disableTransitionOnChange
+						forcedTheme="light">
+						<ConvexClientProvider>
+							<NuqsAdapter>{children}</NuqsAdapter>
+						</ConvexClientProvider>
+						<Toaster />
+					</ThemeProvider>
 				</body>
 			</html>
 		</ClerkProvider>

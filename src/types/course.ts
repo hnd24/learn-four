@@ -1,20 +1,19 @@
 import {StatusPlace} from "./content";
 import {LessonType} from "./lesson";
 
+export type STATUS = "private" | "public" | "pending";
+
 export type CourseStateType = {
 	_id: string;
-	language: string;
-	background: string;
-
-	description: string;
-	logoLanguage: string;
-	banner: string;
+	_creationTime: number;
+	content: string;
+	status: STATUS;
 	authorId: string;
-	authorImage: string;
-	authorName: string;
-	star: number;
+	logo: string;
+	description: string;
+	banner: string;
 	learner: number;
-	status: StatusPlace;
+	language: string;
 	lessons: number;
 };
 

@@ -1,4 +1,3 @@
-import Header from "@/feature/header/header";
 import type {Metadata} from "next";
 
 export const metadata: Metadata = {
@@ -6,19 +5,13 @@ export const metadata: Metadata = {
 		template: "%s | Learn Four",
 		default: "Learn Four",
 	},
-	description: "Useful programming courses are waiting for you",
+	description: "Learn Four is a platform for learning and practicing programming concepts.",
 };
 
-export default function DashboardLayout({
+export default function HomeLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return (
-		<div className="md:px-2 max-w-[1880px] mx-auto w-full flex flex-col items-center justify-center">
-			<Header />
-
-			<div className=" w-full flex flex-col items-center justify-center">{children}</div>
-		</div>
-	);
+	return <>{children}</>;
 }
