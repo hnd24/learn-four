@@ -1,13 +1,13 @@
-import {StatusPlace} from "./content";
-import {LessonType} from "./lesson";
+import {StatusPlace} from './content';
+import {LessonType} from './lesson';
 
-export type STATUS = "private" | "public" | "pending";
+export type STATUS_COURSE = 'public' | 'private' | 'pending';
 
 export type CourseStateType = {
 	_id: string;
 	_creationTime: number;
 	content: string;
-	status: STATUS;
+	status: STATUS_COURSE;
 	authorId: string;
 	logo: string;
 	description: string;

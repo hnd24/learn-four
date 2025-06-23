@@ -1,9 +1,10 @@
-import ListCourseCard from "@/modules/dashboard/components/list-course-card";
-import {Logo} from "@/modules/dashboard/components/logo";
-import {Navbar} from "@/modules/dashboard/components/navbar";
-import ProblemBtn from "@/modules/dashboard/components/problems-btn";
-import {SignInBtn} from "@/modules/dashboard/components/sign-in-btn";
-import Link from "next/link";
+import {Logo} from '@/components/logo';
+import AdminBtn from '@/modules/dashboard/components/admin-btn';
+import ListCourseCard from '@/modules/dashboard/components/list-course-card';
+import {Navbar} from '@/modules/dashboard/components/navbar';
+import ProblemBtn from '@/modules/dashboard/components/problems-btn';
+import {SignInBtn} from '@/modules/dashboard/components/sign-in-btn';
+import Link from 'next/link';
 
 export default function HomePage() {
 	return (
@@ -13,10 +14,10 @@ export default function HomePage() {
 					<div className="mr-4 hidden md:flex">
 						<Logo />
 					</div>
-					{/* TODO: create Navbar for mobile */}
 					<Navbar />
-
-					<div className="flex flex-1 items-center justify-end space-x-2">
+					{/* TODO: switch admin mode */}
+					<div className="flex flex-1 items-center justify-end space-x-2 gap-2">
+						<AdminBtn />
 						<SignInBtn />
 					</div>
 				</div>
@@ -40,9 +41,9 @@ export default function HomePage() {
 							</h1>
 						</div>
 						<p className="text-muted-foreground max-w-[42rem] leading-normal sm:text-xl sm:leading-8">
-							LearnFour is a modern platform designed for IT students to strengthen programming and
-							algorithmic thinking through structured lessons, coding challenges, and real-time code
-							execution in multiple languages.
+							LearnFour is a modern platform designed for IT students to strengthen
+							programming and algorithmic thinking through structured lessons, coding
+							challenges, and real-time code execution in multiple languages.
 						</p>
 					</div>
 				</section>
@@ -56,9 +57,10 @@ export default function HomePage() {
 							Language Programming Courses
 						</h2>
 						<p className="text-muted-foreground max-w-[85%] leading-normal sm:text-lg sm:leading-7">
-							Master programming languages by completing structured, beginner-friendly courses that
-							guide you step by step from fundamental concepts to practical applications, helping
-							you build a solid foundation and confidence in real-world coding
+							Master programming languages by completing structured, beginner-friendly
+							courses that guide you step by step from fundamental concepts to
+							practical applications, helping you build a solid foundation and
+							confidence in real-world coding
 						</p>
 					</div>
 					<ListCourseCard />
@@ -74,8 +76,8 @@ export default function HomePage() {
 							<br /> Your Problem - Solving Skills <br />✨ Coding Challenges 🎖️
 						</h2>
 						<p className="text-muted-foreground max-w-[85%] leading-normal sm:text-lg sm:leading-7">
-							Join thousands of learners who are sharpening their coding skills and mastering
-							algorithms through hands-on challenges on LearnFour.
+							Join thousands of learners who are sharpening their coding skills and
+							mastering algorithms through hands-on challenges on LearnFour.
 						</p>
 						<div className="space-x-4">
 							<ProblemBtn />
@@ -90,13 +92,19 @@ export default function HomePage() {
 							© 2025 LearnFour. Empowering the next generation of developers.
 						</p>
 						<div className="flex space-x-4 mt-2 md:mt-0">
-							<Link href="/about" className="hover:underline text-muted-foreground text-sm">
+							<Link
+								href="/about"
+								className="hover:underline text-muted-foreground text-sm">
 								About
 							</Link>
-							<Link href="/contact" className="hover:underline text-muted-foreground text-sm">
+							<Link
+								href="/contact"
+								className="hover:underline text-muted-foreground text-sm">
 								Contact
 							</Link>
-							<Link href="/privacy" className="hover:underline text-muted-foreground text-sm">
+							<Link
+								href="/privacy"
+								className="hover:underline text-muted-foreground text-sm">
 								Privacy Policy
 							</Link>
 						</div>

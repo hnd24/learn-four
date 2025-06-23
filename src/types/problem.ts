@@ -1,3 +1,5 @@
+export type STATUS_PROBLEM = 'public' | 'private';
+
 export type ProblemStateType = {
 	_id: string;
 	// state: string;

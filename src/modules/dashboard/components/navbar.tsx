@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import {Button} from "@/components/ui/button";
+import {Button} from '@/components/ui/button';
 import {
 	Sheet,
 	SheetContent,
@@ -8,18 +8,18 @@ import {
 	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
-} from "@/components/ui/sheet";
-import {Menu} from "lucide-react";
-import Link from "next/link";
-import {NAVIGATION_ITEMS} from "../constants";
-import {Logo} from "./logo";
+} from '@/components/ui/sheet';
+import {Menu} from 'lucide-react';
+import Link from 'next/link';
+import {Logo} from '../../../components/logo';
+import {NAVIGATION_ITEMS} from '../constants';
 
 const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
 	e.preventDefault();
-	const targetId = href.split("#")[1];
+	const targetId = href.split('#')[1];
 	const targetElement = document.getElementById(targetId);
 	if (targetElement) {
-		targetElement.scrollIntoView({behavior: "smooth", block: "start"});
+		targetElement.scrollIntoView({behavior: 'smooth', block: 'start'});
 	}
 };
 

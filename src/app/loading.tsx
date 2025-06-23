@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function LoadingPage() {
 	return (
@@ -10,7 +10,7 @@ export default function LoadingPage() {
 				alt="Logo"
 				width={300}
 				height={300}
-				className="animate-pulse duration-2000"
+				className="animate-pulse duration-2000 bg-white p-2 rounded-full"
 			/>
 		</div>
 	);

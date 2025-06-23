@@ -1,10 +1,11 @@
-import {inter} from "@/lib/font";
-import {ConvexClientProvider} from "@/providers/convex-client-provider";
-import {ThemeProvider} from "@/providers/theme-provider";
-import {ClerkProvider} from "@clerk/nextjs";
-import {NuqsAdapter} from "nuqs/adapters/next/app";
-import {Toaster} from "sonner";
-import "./globals.css";
+import {inter} from '@/lib/font';
+import {ConvexClientProvider} from '@/providers/convex-client-provider';
+import {ThemeProvider} from '@/providers/theme-provider';
+import {ClerkProvider} from '@clerk/nextjs';
+import {Provider as JotaiProvider} from 'jotai';
+import {NuqsAdapter} from 'nuqs/adapters/next/app';
+import {Toaster} from 'sonner';
+import './globals.css';
 
 export default function RootLayout({
 	children,
@@ -22,7 +23,9 @@ export default function RootLayout({
 						disableTransitionOnChange
 						forcedTheme="light">
 						<ConvexClientProvider>
-							<NuqsAdapter>{children}</NuqsAdapter>
+							<NuqsAdapter>
+								<JotaiProvider>{children}</JotaiProvider>
+							</NuqsAdapter>
 						</ConvexClientProvider>
 						<Toaster />
 					</ThemeProvider>
