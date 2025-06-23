@@ -1,10 +1,11 @@
+import ListCourseCard from '@/modules/admin/components/list-course-card';
 import SelectTypeCourse from '@/modules/admin/components/select-type-course';
 import {Suspense} from 'react';
 
 export default function AdminPage() {
 	return (
 		// This page is for the course management section of the admin panel.
-		<main className="flex flex-col w-screen min-h-[calc(100vh-64px)] bg-secondary">
+		<main className="flex flex-col w-screen min-h-[calc(100vh-64px)]">
 			{/* sidebar */}
 			<Suspense fallback={null}>
 				<aside className="bg-background fixed inset-y-0 top-16 left-0 hidden w-64 border-r lg:flex">
@@ -13,10 +14,12 @@ export default function AdminPage() {
 					</div>
 				</aside>
 			</Suspense>
-
-			<section className=" md:ml-64  flex flex-col  ">
-				<span>Course</span>
-			</section>
+			<div className=" lg:ml-64 flex items-center flex-col pt-10">
+				{/* TODO: List course */}
+				<section className="size-full">
+					<ListCourseCard />
+				</section>
+			</div>
 		</main>
 	);
 }
