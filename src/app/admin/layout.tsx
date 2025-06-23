@@ -12,9 +12,9 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="flex h-screen w-screen flex-col overflow-hidden">
+		<div className="flex  min-h-screen flex-col ">
 			<Header />
-			<main className="size-full">{children}</main>
+			{children}
 		</div>
 	);
 }

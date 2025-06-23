@@ -8,9 +8,9 @@ import Navbar from './navbar';
 
 export default function Header() {
 	return (
-		<header className="fixed inset-x-0 top-0 z-50 h-16 border-b dark:bg-[#121215]">
+		<header className="bg-background sticky top-0 z-50 w-full h-16 border-b backdrop-blur">
 			<div className="flex size-full items-center">
-				<div className="hidden md:flex justify-center w-64 h-16 border-r">
+				<div className="hidden lg:flex justify-center w-64 h-16 border-r">
 					<Logo />
 				</div>
 				<div className="flex flex-1 px-6 items-center justify-between">

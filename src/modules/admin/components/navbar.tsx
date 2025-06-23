@@ -42,7 +42,7 @@ export default function Navbar() {
 		<>
 			<Sheet>
 				<SheetTrigger asChild>
-					<Button size="icon" variant="ghost" className="md:hidden">
+					<Button size="icon" variant="ghost" className="lg:hidden">
 						<Menu />
 					</Button>
 				</SheetTrigger>
@@ -75,7 +75,7 @@ export default function Navbar() {
 				</SheetContent>
 			</Sheet>
 
-			<div className="hidden md:block">
+			<div className="hidden lg:block">
 				<NavbarContent pathname={pathname} />
 			</div>
 		</>
@@ -84,7 +84,7 @@ export default function Navbar() {
 
 export const NavbarContent = ({pathname = 'course'}: {pathname: string}) => {
 	return (
-		<nav className="hidden md:flex items-center gap-6 text-base font-semibold">
+		<nav className="hidden lg:flex items-center gap-6 text-base font-semibold">
 			{Object.entries(PAGES).map(([key, value]) => (
 				<Link
 					key={key}
