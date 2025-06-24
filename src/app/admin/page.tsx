@@ -14,7 +14,7 @@ export default function AdminPage() {
 					</div>
 				</aside>
 			</Suspense>
-			<div className=" lg:ml-64 flex items-center flex-col pt-10">
+			<div className=" lg:ml-64 flex items-center flex-col pt-10 px-10">
 				{/* TODO: List course */}
 				<section className="size-full">
 					<ListCourseCard />

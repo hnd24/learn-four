@@ -1,6 +1,6 @@
-import {CourseStateType} from "@/types";
-import {useCallback, useState} from "react";
-import {courseData, CourseDetailData} from "../../data";
+import {CourseDetailType, CourseStateType} from '@/types';
+import {useCallback, useState} from 'react';
+import {courseData, CourseDetailData} from '../../data';
 
 export const useGetCourses = () => {
 	const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export const useGetDetailCourse = () => {
 	const [loading, setLoading] = useState(false);
 
 	const getDetailCourse = useCallback(
-		async (language: string): Promise<CourseStateType | undefined> => {
+		async (idCourse: string): Promise<CourseDetailType | undefined> => {
 			setLoading(true);
 			setTimeout(() => {
 				setLoading(false);

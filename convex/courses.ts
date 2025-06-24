@@ -1,22 +1,22 @@
-import {ConvexError, v} from "convex/values";
-import {Id} from "./_generated/dataModel";
-import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
+import {ConvexError, v} from 'convex/values';
+import {Id} from './_generated/dataModel';
+import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
 
-import {removeLesson} from "./lessons";
-import {CourseStateType} from "./schema";
+import {removeLesson} from './lessons';
+import {CourseStateType} from './schema';
 
-export async function getCourse(ctx: QueryCtx, courseId: Id<"courses">) {
+export async function getCourse(ctx: QueryCtx, courseId: Id<'courses'>) {
 	const course = await ctx.db.get(courseId);
 	if (!course) {
-		throw new ConvexError("expected course to be defined");
+		throw new ConvexError('expected course to be defined');
 	}
 	return course;
 }
 
-export async function removeCourse(ctx: MutationCtx, courseId: Id<"courses">) {
+export async function removeCourse(ctx: MutationCtx, courseId: Id<'courses'>) {
 	const lessons = await ctx.db
-		.query("lessons")
-		.withIndex("by_courseId", q => q.eq("courseId", courseId))
+		.query('lessons')
+		.withIndex('by_courseId', q => q.eq('courseId', courseId))
 		.collect();
 	if (lessons.length > 0) {
 		await Promise.all(
@@ -29,7 +29,7 @@ export async function removeCourse(ctx: MutationCtx, courseId: Id<"courses">) {
 }
 
 export const deleteCourse = mutation({
-	args: {courseId: v.id("courses")},
+	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
 		await removeCourse(ctx, args.courseId);
 	},
@@ -38,15 +38,15 @@ export const deleteCourse = mutation({
 export const getCourses = query({
 	args: {},
 	async handler(ctx, args) {
-		const courses = await ctx.db.query("courses").collect();
+		const courses = await ctx.db.query('courses').collect();
 		if (courses.length === 0) {
 			return [];
 		}
 		return Promise.all(
 			courses.map(async course => {
 				const lessons = await ctx.db
-					.query("lessons")
-					.withIndex("by_courseId", q => q.eq("courseId", course._id))
+					.query('lessons')
+					.withIndex('by_courseId', q => q.eq('courseId', course._id))
 					.collect();
 				const language = await ctx.db.get(course.language);
 				const lessonCount = lessons.length;
@@ -61,25 +61,24 @@ export const getCourses = query({
 });
 
 export const getCourseById = query({
-	args: {courseId: v.id("courses")},
+	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
 		const course = await getCourse(ctx, args.courseId);
 		if (!course) {
-			throw new ConvexError("Course not found");
+			throw new ConvexError('Course not found');
 		}
 		const lessons = await ctx.db
-			.query("lessons")
-			.withIndex("by_courseId", q => q.eq("courseId", course._id))
+			.query('lessons')
+			.withIndex('by_courseId', q => q.eq('courseId', course._id))
 			.collect();
 		const language = await ctx.db.get(course.language);
 		const author = await ctx.db
-			.query("users")
-			.withIndex("by_userId", q => q.eq("userId", course.authorId))
+			.query('users')
+			.withIndex('by_userId', q => q.eq('userId', course.authorId))
 			.unique();
 		return {
 			...course,
 			language: language?.name,
-			logoLanguage: course?.logo,
 			lessons: lessons.map(lesson => ({
 				_id: lesson._id,
 				name: lesson.name,
@@ -102,10 +101,10 @@ export const createCourse = mutation({
 		authorId: v.string(),
 		status: CourseStateType,
 		logo: v.string(),
-		language: v.id("languages"),
+		language: v.id('languages'),
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert("courses", {
+		await ctx.db.insert('courses', {
 			...args,
 			learner: 0,
 		});
@@ -114,7 +113,7 @@ export const createCourse = mutation({
 
 export const updateCourse = mutation({
 	args: {
-		courseId: v.id("courses"),
+		courseId: v.id('courses'),
 		description: v.optional(v.string()),
 		background: v.optional(v.string()),
 		banner: v.optional(v.string()),
@@ -122,12 +121,12 @@ export const updateCourse = mutation({
 		logo: v.optional(v.string()),
 		content: v.optional(v.string()),
 		status: v.optional(CourseStateType),
-		language: v.optional(v.id("languages")),
+		language: v.optional(v.id('languages')),
 	},
 	async handler(ctx, args) {
 		const course = await getCourse(ctx, args.courseId);
 		if (!course) {
-			throw new ConvexError("Course not found");
+			throw new ConvexError('Course not found');
 		}
 		const {courseId, ...fields} = args;
 		// Remove undefined fields before patching

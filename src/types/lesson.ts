@@ -1,5 +1,7 @@
-import {AnswerType, StatusPlace} from "./content";
-import {TestcaseType} from "./testcase";
+import {AnswerType, StatusPlace} from './content';
+import {TestcaseType} from './testcase';
+
+export type LEVEL_LESSON = 'easy' | 'medium' | 'hard';
 
 export type LessonDetailType = {
 	_id: string;
@@ -20,9 +22,8 @@ export type LessonDetailType = {
 
 export type LessonType = {
 	_id: string;
-	topic: string;
-	star: number;
-	level: string;
+	name: string;
+	level: LEVEL_LESSON;
 };
 
 export type setupAnswerType = {header?: Record<string, string>; printFn?: Record<string, string>};

@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @plugin "tailwindcss-animate";
 
@@ -165,7 +165,7 @@
 }
 
 .card-border:hover::before {
-	content: "";
+	content: '';
 	position: absolute;
 	top: -50%;
 	right: 25%;
@@ -200,4 +200,12 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 	@apply bg-gray-400;
+}
+
+.truncate-3line {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }

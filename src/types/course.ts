@@ -1,4 +1,3 @@
-import {StatusPlace} from './content';
 import {LessonType} from './lesson';
 
 export type STATUS_COURSE = 'public' | 'private' | 'pending';
@@ -17,18 +16,18 @@ export type CourseStateType = {
 	lessons: number;
 };
 
-export type CourseDetailStateType = {
+export type CourseDetailType = {
 	_id: string;
-	language: string;
-	background: string;
+	_creationTime: number;
+	content: string;
+	status: STATUS_COURSE;
+	logo: string;
 	description: string;
-	logoLanguage: string;
 	banner: string;
-	authorId: string;
-	authorImage: string;
-	authorName: string;
-	star: number;
 	learner: number;
-	status: StatusPlace;
+	language: string;
+	authorId: string;
+	authorName: string;
+	authorImage: string;
 	lessons: LessonType[];
 };
