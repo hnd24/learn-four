@@ -1,11 +1,11 @@
-import {LessonDetailType, LessonType, UserLessonType} from "@/types";
-import {useCallback, useState} from "react";
-import {lessonDetailData, listLessonData, userLessonData} from "../../data";
+import {LessonDetailType, LessonType, UserLessonType} from '@/types';
+import {useCallback, useState} from 'react';
+import {lessonDetailData, listLessonData, userLessonData} from '../../data';
 
 export const useGetLessons = () => {
 	const [loading, setLoading] = useState(false);
 
-	const getLessons = useCallback(async (language: string): Promise<LessonType[]> => {
+	const getLessons = useCallback(async (language: string): Promise<LessonType[] | undefined> => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
@@ -19,7 +19,7 @@ export const useGetLessons = () => {
 export const useGetLessonById = () => {
 	const [loading, setLoading] = useState(false);
 
-	const getLessonById = useCallback(async (id: string): Promise<LessonDetailType> => {
+	const getLessonById = useCallback(async (id: string): Promise<LessonDetailType | undefined> => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);
@@ -33,13 +33,16 @@ export const useGetLessonById = () => {
 export const useGetUserLesson = () => {
 	const [loading, setLoading] = useState(false);
 
-	const getUserLesson = useCallback(async (idLesson: string): Promise<UserLessonType> => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-		return userLessonData;
-	}, []);
+	const getUserLesson = useCallback(
+		async (idLesson: string): Promise<UserLessonType | undefined> => {
+			setLoading(true);
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+			return userLessonData;
+		},
+		[],
+	);
 
 	return {getUserLesson, loading};
 };
@@ -47,12 +50,15 @@ export const useGetUserLesson = () => {
 export const useUpdateCodeUserLesson = () => {
 	const [loading, setLoading] = useState(false);
 
-	const updateCode = useCallback(async (idLesson: string, code: Record<string, string>): Promise<void> => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-	}, []);
+	const updateCode = useCallback(
+		async (idLesson: string, code: Record<string, string>): Promise<void> => {
+			setLoading(true);
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+		},
+		[],
+	);
 
 	return {updateCode, loading};
 };

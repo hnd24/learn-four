@@ -8,7 +8,6 @@ export type LessonDetailType = {
 	courseId: string;
 	topic: string;
 	name: string;
-	star: number;
 	learner: number;
 	level: number;
 	content: string;
@@ -24,6 +23,7 @@ export type LessonType = {
 	_id: string;
 	name: string;
 	level: LEVEL_LESSON;
+	state?: 'completed' | 'progress' | 'unsolved';
 };
 
 export type setupAnswerType = {header?: Record<string, string>; printFn?: Record<string, string>};

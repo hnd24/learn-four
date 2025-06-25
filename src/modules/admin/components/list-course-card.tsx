@@ -7,14 +7,14 @@ import {CourseStateType} from '@/types';
 import {Plus} from 'lucide-react';
 import Image from 'next/image';
 import {useEffect, useState} from 'react';
-import {useStatusFilter} from '../hook/use-filters';
+import {useFilter} from '../hook/use-filters';
 import DialogCourse from './dialog-course';
 
 export default function ListCourseCard() {
 	const {getCourses, loading} = useGetCourses();
 	const {
-		status: {type: status},
-	} = useStatusFilter();
+		filter: {status},
+	} = useFilter();
 
 	const [rawCourses, setRawCourses] = useState<CourseStateType[]>([]);
 	const [courses, setCourses] = useState<CourseStateType[]>([]);
@@ -24,7 +24,7 @@ export default function ListCourseCard() {
 	useEffect(() => {
 		const fetchCourses = async () => {
 			const data = await getCourses();
-			if (data.length > 0) {
+			if (data && data.length > 0) {
 				setRawCourses(data);
 				setCourses(data); // mặc định hiển thị tất cả
 			}
@@ -51,7 +51,7 @@ export default function ListCourseCard() {
 		);
 	}
 	return (
-		<div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[82rem] md:grid-cols-3 xl:grid-cols-4">
+		<div className="mx-auto grid gap-4 sm:grid-cols-2 md:max-w-[82rem] md:grid-cols-3 xl:grid-cols-4">
 			{courses.map(courses => (
 				<Card
 					onClick={() => {

@@ -5,7 +5,7 @@ import {courseData, CourseDetailData} from '../../data';
 export const useGetCourses = () => {
 	const [loading, setLoading] = useState(false);
 
-	const getCourses = useCallback(async (): Promise<CourseStateType[]> => {
+	const getCourses = useCallback(async (): Promise<CourseStateType[] | undefined> => {
 		setLoading(true);
 		setTimeout(() => {
 			setLoading(false);

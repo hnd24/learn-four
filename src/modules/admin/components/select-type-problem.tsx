@@ -1,13 +1,13 @@
 'use client';
 import {STATUS_PROBLEM_ITEMS} from '../constants';
-import {useStatusFilter} from '../hook/use-filters';
+import {useFilter} from '../hook/use-filters';
 import {SidebarItem} from './sidebar-item';
 
 export default function SelectTypeProblem() {
 	const {
-		status: {type},
-		setStatus,
-	} = useStatusFilter();
+		filter: {status},
+		setFilter,
+	} = useFilter();
 	return (
 		<section className="flex-col">
 			<p className="px-2 py-1.5 text-base font-semibold data-[inset]:pl-8">Status</p>
@@ -17,10 +17,10 @@ export default function SelectTypeProblem() {
 						key={key}
 						title={value.label}
 						icon={value.icon}
-						isActive={type === key}
+						isActive={status === key}
 						onClick={() =>
-							setStatus({
-								type: key,
+							setFilter({
+								status: key,
 							})
 						}
 					/>

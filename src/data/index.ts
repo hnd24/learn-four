@@ -8,6 +8,7 @@ import {
 	UserLessonType,
 	UserStateType,
 } from '@/types';
+import {TopicType} from '@/types/topic';
 
 export const courseData: CourseStateType[] = [
 	{
@@ -105,76 +106,94 @@ export const defaultBanner = [
 	},
 ];
 
+export const topicData: TopicType[] = [
+	{
+		_id: '1234',
+		name: 'Array',
+		status: 'public',
+	},
+	{
+		_id: '1235',
+		name: 'String',
+		status: 'public',
+	},
+	{
+		_id: '1236',
+		name: 'Math',
+		status: 'public',
+	},
+];
+
 export const problemData: ProblemStateType[] = [
 	{
 		_id: '1234',
-		level: 'Easy',
+		level: 'easy',
 		name: 'Sum of Two Numbers',
 		topic: 'Array',
-		star: 4.5,
+		state: 'completed',
 	},
 	{
-		_id: '1234',
-		level: 'Medium',
+		_id: '2345',
+		level: 'medium',
 		name: 'Two Sum',
 		topic: 'Array',
-		star: 5,
+		state: 'progress',
 	},
 	{
-		_id: '1234',
-		level: 'Hard',
+		_id: '3456',
+		level: 'hard',
 		name: 'Longest Substring Without Repeating Characters',
 		topic: 'String',
-		star: 3,
+		state: 'unsolved',
 	},
 	{
-		_id: '1234',
-		level: 'Easy',
+		_id: '4567',
+		level: 'easy',
 		name: 'Valid Parentheses',
 		topic: 'String',
-		star: 3.5,
+		state: 'completed',
 	},
 	{
-		_id: '1234',
-		level: 'Medium',
+		_id: '5678',
+		level: 'medium',
 		name: '3Sum',
 		topic: 'Array',
-		star: 4,
+		state: 'progress',
 	},
 	{
-		_id: '1234',
-		level: 'Hard',
+		_id: '6789',
+		level: 'hard',
 		name: 'Median of Two Sorted Arrays',
 		topic: 'Array',
-		star: 5,
+		state: 'unsolved',
 	},
 	{
-		_id: '1234',
-		level: 'Easy',
+		_id: '7890',
+		level: 'easy',
 		name: 'Reverse Integer',
 		topic: 'Math',
-		star: 2.5,
+		state: 'completed',
 	},
 	{
-		_id: '1234',
-		level: 'Medium',
+		_id: '8901',
+		level: 'medium',
 		name: 'Longest Palindromic Substring',
 		topic: 'String',
-		star: 4.5,
+		state: 'progress',
 	},
 	{
-		_id: '1234',
-		level: 'Hard',
+		_id: '6799',
+		level: 'hard',
 		name: 'Container With Most Water',
 		topic: 'Array',
-		star: 3.5,
+		state: 'unsolved',
 	},
 	{
-		_id: '1234',
-		level: 'Easy',
+		_id: '6712',
+		level: 'easy',
 		name: 'Roman to Integer',
 		topic: 'Math',
-		star: 2,
+		state: 'completed',
 	},
 ];
 
@@ -360,7 +379,6 @@ export const lessonDetailData: LessonDetailType = {
 	courseId: 'course_001',
 	topic: 'Array Manipulation',
 	name: 'Sum of Two Arrays',
-	star: 4,
 	learner: 123,
 	level: 2,
 	nameFn: 'sumArrays',

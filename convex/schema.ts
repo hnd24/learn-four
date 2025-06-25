@@ -1,15 +1,15 @@
-import {defineSchema, defineTable} from "convex/server";
-import {v} from "convex/values";
+import {defineSchema, defineTable} from 'convex/server';
+import {v} from 'convex/values';
 
-export const StatusType = v.union(v.literal("private"), v.literal("publish"));
+export const StatusType = v.union(v.literal('private'), v.literal('public'));
 export const CourseStateType = v.union(
-	v.literal("publish"),
-	v.literal("pending"),
-	v.literal("private"),
+	v.literal('public'),
+	v.literal('pending'),
+	v.literal('private'),
 );
-export const StateType = v.union(v.literal("completed"), v.literal("progress"));
-export const RoleType = v.union(v.literal("super_admin"), v.literal("admin"), v.literal("user"));
-export const levelType = v.union(v.literal("easy"), v.literal("medium"), v.literal("hard"));
+export const StateType = v.union(v.literal('completed'), v.literal('progress'));
+export const RoleType = v.union(v.literal('super_admin'), v.literal('admin'), v.literal('user'));
+export const levelType = v.union(v.literal('easy'), v.literal('medium'), v.literal('hard'));
 
 export const LinkType = v.object({
 	Facebook: v.optional(v.string()),
@@ -54,7 +54,7 @@ export default defineSchema({
 		introduce: v.optional(v.string()),
 		role: v.optional(RoleType),
 		locked: v.optional(v.boolean()),
-	}).index("by_userId", ["userId"]),
+	}).index('by_userId', ['userId']),
 	/************************************************** */
 	comments: defineTable({
 		content: v.string(),
@@ -65,41 +65,41 @@ export default defineSchema({
 		placeId: v.string(),
 		reply: v.boolean(),
 	})
-		.index("by_parent", ["parent"])
-		.index("by_userId", ["userId"])
-		.index("by_placeId", ["placeId"]),
+		.index('by_parent', ['parent'])
+		.index('by_userId', ['userId'])
+		.index('by_placeId', ['placeId']),
 	/************************************************** */
 	user_course: defineTable({
 		userId: v.string(),
-		courseId: v.id("courses"),
+		courseId: v.id('courses'),
 		state: StateType,
 	})
-		.index("by_userId_courseId", ["userId", "courseId"])
-		.index("by_userId", ["userId"]),
+		.index('by_userId_courseId', ['userId', 'courseId'])
+		.index('by_userId', ['userId']),
 
 	user_lesson: defineTable({
 		userId: v.string(),
-		lessonId: v.id("lessons"),
+		lessonId: v.id('lessons'),
 		state: StateType,
 		code: v.optional(v.string()),
 	})
-		.index("by_userId_lessonId", ["userId", "lessonId"])
-		.index("by_userId", ["userId"]),
+		.index('by_userId_lessonId', ['userId', 'lessonId'])
+		.index('by_userId', ['userId']),
 
 	user_problem: defineTable({
 		userId: v.string(),
-		problemId: v.id("problems"),
+		problemId: v.id('problems'),
 		state: StateType,
 		code: v.optional(AnswerType),
 	})
-		.index("by_userId_problemId", ["userId", "problemId"])
-		.index("by_userId", ["userId"]),
+		.index('by_userId_problemId', ['userId', 'problemId'])
+		.index('by_userId', ['userId']),
 
 	/************************************************** */
 	problems: defineTable({
 		name: v.string(),
 		level: levelType,
-		topic: v.id("topics"),
+		topic: v.id('topics'),
 		content: v.string(),
 		answer: AnswerType,
 		template: TemplateType,
@@ -107,15 +107,14 @@ export default defineSchema({
 		status: StatusType,
 		authorId: v.string(),
 	})
-		.index("by_authorId", ["authorId"])
-		.index("by_topic", ["topic"])
-		.searchIndex("by_name", {
-			searchField: "name",
-			filterFields: ["topic", "level", "status"],
+		.index('by_authorId', ['authorId'])
+		.index('by_topic', ['topic'])
+		.searchIndex('by_name', {
+			searchField: 'name',
+			filterFields: ['topic', 'level', 'status'],
 		}),
 	/************************************************** */
 	topics: defineTable({
-		value: v.string(),
 		name: v.string(),
 		status: StatusType,
 	}),
@@ -135,12 +134,12 @@ export default defineSchema({
 		content: v.string(),
 		authorId: v.string(),
 		status: CourseStateType,
-		language: v.id("languages"),
+		language: v.id('languages'),
 	}),
 	/************************************************** */
 
 	lessons: defineTable({
-		courseId: v.id("courses"),
+		courseId: v.id('courses'),
 		name: v.string(),
 		level: levelType,
 		content: v.string(),
@@ -151,8 +150,8 @@ export default defineSchema({
 			tail: v.string(),
 		}),
 		status: StatusType,
-		language: v.id("languages"),
-	}).index("by_courseId", ["courseId"]),
+		language: v.id('languages'),
+	}).index('by_courseId', ['courseId']),
 
 	/************************************************** */
 });

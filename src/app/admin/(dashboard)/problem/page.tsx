@@ -1,9 +1,10 @@
+import ListProblem from '@/modules/admin/components/list-problem';
 import SelectTypeProblem from '@/modules/admin/components/select-type-problem';
 import {Suspense} from 'react';
 
 export default function ProblemPage() {
 	return (
-		<main className="flex flex-col w-screen min-h-[calc(100vh-64px)] bg-secondary">
+		<main className="flex flex-col w-screen min-h-[calc(100vh-64px)] ">
 			{/* sidebar */}
 			<Suspense fallback={null}>
 				<aside className="bg-background fixed inset-y-0 top-16 left-0 hidden w-64 border-r lg:flex">
@@ -13,9 +14,12 @@ export default function ProblemPage() {
 				</aside>
 			</Suspense>
 
-			<section className=" md:ml-64  flex flex-col ">
-				<span>Problem</span>
-			</section>
+			<div className=" lg:ml-64 flex items-center flex-col p-4 md:p-10">
+				{/* TODO: List course */}
+				<section className="size-full">
+					<ListProblem />
+				</section>
+			</div>
 		</main>
 	);
 }

@@ -1,29 +1,29 @@
-import {filter} from "convex-helpers/server/filter";
-import {paginationOptsValidator} from "convex/server";
-import {ConvexError, v} from "convex/values";
-import {Id} from "./_generated/dataModel";
-import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
-import {removeComment} from "./comment";
-import {AnswerType, levelType, StatusType, TemplateType, TestcaseType} from "./schema";
-import {getUser} from "./users";
+import {filter} from 'convex-helpers/server/filter';
+import {paginationOptsValidator} from 'convex/server';
+import {ConvexError, v} from 'convex/values';
+import {Id} from './_generated/dataModel';
+import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
+import {removeComment} from './comment';
+import {AnswerType, levelType, StatusType, TemplateType, TestcaseType} from './schema';
+import {getUser} from './users';
 
-export async function getProblem(ctx: QueryCtx | MutationCtx, problemId: Id<"problems">) {
+export async function getProblem(ctx: QueryCtx | MutationCtx, problemId: Id<'problems'>) {
 	const problem = await ctx.db.get(problemId);
 	if (!problem) {
-		throw new ConvexError("expected problem to be defined");
+		throw new ConvexError('expected problem to be defined');
 	}
 	return problem;
 }
 
-export async function removeProblem(ctx: MutationCtx, problemId: Id<"problems">) {
+export async function removeProblem(ctx: MutationCtx, problemId: Id<'problems'>) {
 	const problem = await getProblem(ctx, problemId);
 	if (!problem) {
 		return;
 	}
 	// Remove all comments associated with this problem
 	const comments = await ctx.db
-		.query("comments")
-		.withIndex("by_placeId", q => q.eq("placeId", problem._id))
+		.query('comments')
+		.withIndex('by_placeId', q => q.eq('placeId', problem._id))
 		.collect();
 	if (comments.length > 0) {
 		await Promise.all(
@@ -38,7 +38,7 @@ export async function removeProblem(ctx: MutationCtx, problemId: Id<"problems">)
 }
 
 export const deleteProblem = mutation({
-	args: {problemId: v.id("problems")},
+	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
 		await removeProblem(ctx, args.problemId);
 	},
@@ -46,10 +46,10 @@ export const deleteProblem = mutation({
 
 export const updateProblem = mutation({
 	args: {
-		problemId: v.id("problems"),
+		problemId: v.id('problems'),
 		name: v.optional(v.string()),
 		level: levelType,
-		topic: v.optional(v.id("topics")),
+		topic: v.optional(v.id('topics')),
 		content: v.optional(v.string()),
 		answer: v.optional(AnswerType),
 		template: v.optional(TemplateType),
@@ -72,7 +72,7 @@ export const createProblem = mutation({
 	args: {
 		name: v.string(),
 		level: levelType,
-		topic: v.id("topics"),
+		topic: v.id('topics'),
 		content: v.string(),
 		answer: AnswerType,
 		template: TemplateType,
@@ -85,7 +85,7 @@ export const createProblem = mutation({
 			return null;
 		}
 		const user = await getUser(ctx, identity.subject);
-		await ctx.db.insert("problems", {
+		await ctx.db.insert('problems', {
 			authorId: user.userId,
 			...args,
 		});
@@ -93,7 +93,7 @@ export const createProblem = mutation({
 });
 
 export const getDetailProblemById = query({
-	args: {problemId: v.id("problems")},
+	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
 		const problem = await getProblem(ctx, args.problemId);
 		const user = await getUser(ctx, problem.authorId);
@@ -112,16 +112,16 @@ export const queryProblems = query({
 	args: {
 		name: v.optional(v.string()),
 		level: v.optional(v.string()),
-		topic: v.optional(v.id("topics")),
+		topic: v.optional(v.id('topics')),
 		status: v.optional(StatusType),
 		paginationOpts: paginationOptsValidator,
 	},
 	async handler(ctx, args) {
 		const {name, level, topic, status, paginationOpts} = args;
 		const identity = await ctx.auth.getUserIdentity();
-		const preIndexQuery = ctx.db.query("problems");
+		const preIndexQuery = ctx.db.query('problems');
 		const baseQuery = name
-			? preIndexQuery.withSearchIndex("by_name", q => q.search("name", name))
+			? preIndexQuery.withSearchIndex('by_name', q => q.search('name', name))
 			: preIndexQuery;
 
 		const filteredQuery = filter(baseQuery, problem => {
@@ -145,14 +145,17 @@ export const queryProblems = query({
 		return await Promise.all(
 			rawResults.page.map(async problem => {
 				const state = await ctx.db
-					.query("user_problem")
-					.withIndex("by_userId_problemId", q =>
-						q.eq("userId", user.userId).eq("problemId", problem._id),
+					.query('user_problem')
+					.withIndex('by_userId_problemId', q =>
+						q.eq('userId', user.userId).eq('problemId', problem._id),
 					)
 					.unique();
 				return {
-					...problem,
-					state: state ? state.state : "unsolved",
+					_id: problem._id,
+					name: problem.name,
+					level: problem.level,
+					topic: problem.topic,
+					state: state ? state.state : 'unsolved',
 				};
 			}),
 		);

@@ -1,9 +1,12 @@
 import {parseAsString, useQueryStates} from 'nuqs';
 
-export const useStatusFilter = () => {
-	const [status, setStatus] = useQueryStates({
-		type: parseAsString.withDefault('all'),
+export const useFilter = () => {
+	const [filter, setFilter] = useQueryStates({
+		status: parseAsString.withDefault('all'),
+		name: parseAsString.withDefault(''),
+		topic: parseAsString.withDefault('all'),
+		level: parseAsString.withDefault('all'),
 	});
 
-	return {status, setStatus};
+	return {filter, setFilter};
 };

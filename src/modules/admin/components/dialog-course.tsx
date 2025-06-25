@@ -22,7 +22,7 @@ import {
 import {useGetDetailCourse} from '@/hook/data/course';
 import {cn} from '@/lib/utils';
 import {CourseDetailType} from '@/types';
-import {PersonStanding, PlusIcon} from 'lucide-react';
+import {PersonStanding, Plus} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
@@ -122,10 +122,9 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 						<Table>
 							<TableHeader>
 								<TableRow>
-									<TableHead className="max-w-16 grid place-items-center">
-										Level
-									</TableHead>
-									<TableHead className="">Name</TableHead>
+									{/* <TableHead className="w-6"></TableHead> */}
+									<TableHead className="w-20 text-center">Level</TableHead>
+									<TableHead>Name</TableHead>
 								</TableRow>
 							</TableHeader>
 							<TableBody>
@@ -134,9 +133,14 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 										key={lesson._id}
 										className={cn('cursor-pointer')}
 										onClick={() => {
-											router.push(`/admin/lesson/${lesson._id}`);
+											router.push(`/admin/room/lesson/${lesson._id}`);
 										}}>
-										<TableCell className="max-w-16 grid place-items-center">
+										{/* <TableCell>
+											{lesson?.state === 'completed' && (
+												<CircleCheckBig className="size-4 text-green-500" />
+											)}
+										</TableCell> */}
+										<TableCell className="w-20 min-h-8 flex justify-center items-center">
 											<LevelIcon level={lesson.level} />
 										</TableCell>
 
@@ -146,11 +150,11 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 							</TableBody>
 							{/* TODO: Add new lesson row */}
 							<TableFooter>
-								<TableRow className="mt-2">
+								<TableRow className="mt-2 cursor-pointer">
 									<TableCell
 										className="bg-darkOceanBlue/15 hover:bg-darkAzureBlue/20 group "
 										colSpan={2}>
-										<PlusIcon className="text-leafyGreen mx-auto group-hover:scale-110" />
+										<Plus className="text-leafyGreen mx-auto group-hover:scale-110" />
 									</TableCell>
 								</TableRow>
 							</TableFooter>
