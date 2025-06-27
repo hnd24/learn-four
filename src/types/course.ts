@@ -1,9 +1,10 @@
+import {Id} from '../../convex/_generated/dataModel';
 import {LessonType} from './lesson';
 
 export type STATUS_COURSE = 'public' | 'private' | 'pending';
 
 export type CourseStateType = {
-	_id: string;
+	_id: Id<'courses'>;
 	_creationTime: number;
 	content: string;
 	status: STATUS_COURSE;
@@ -17,7 +18,7 @@ export type CourseStateType = {
 };
 
 export type CourseDetailType = {
-	_id: string;
+	_id: Id<'courses'>;
 	_creationTime: number;
 	content: string;
 	status: STATUS_COURSE;

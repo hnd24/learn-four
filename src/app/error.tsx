@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import {Button} from "@/components/ui/button";
-import {cn} from "@/lib/utils";
-import Image from "next/image";
-import {usePathname} from "next/navigation";
+import {Button} from '@/components/ui/button';
+import {cn} from '@/lib/utils';
+import Image from 'next/image';
+import {usePathname} from 'next/navigation';
 
 export default function ErrorPage() {
-	const pathname = usePathname() || "";
+	const pathname = usePathname() || '';
 	return (
 		<div
-			className="h-screen bg-whiteLight dark:bg-blackLight
+			className="h-screen bg-whiteLight dark:
       w-full flex flex-col justify-center items-center gap-4">
 			<Image
 				src={`/images/error.svg`}
@@ -23,15 +23,15 @@ export default function ErrorPage() {
 				<Button
 					onClick={() => window.location.reload()}
 					className={cn(
-						"bg-deepBlue hover:bg-darkDeepBlue  rounded-xl w-32",
-						pathname !== "/" && "rounded-r-none",
+						'bg-deepBlue hover:bg-darkDeepBlue  rounded-xl w-32',
+						pathname !== '/' && 'rounded-r-none',
 					)}>
 					Reset Page
 				</Button>
-				{pathname !== "/" && (
+				{pathname !== '/' && (
 					<Button
 						className="bg-deepBlue hover:bg-darkDeepBlue rounded-xl rounded-l-none w-32"
-						onClick={() => window.location.replace("/")}>
+						onClick={() => window.location.replace('/')}>
 						Return Home
 					</Button>
 				)}

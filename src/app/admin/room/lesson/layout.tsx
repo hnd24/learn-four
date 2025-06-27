@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 
 export const metadata: Metadata = {
-	title: 'Admin',
+	title: 'Lesson | Admin',
 	description: 'Learn Four is a platform for learning and practicing programming concepts.',
 };
 

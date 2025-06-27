@@ -149,6 +149,7 @@ export default defineSchema({
 			body: v.string(),
 			tail: v.string(),
 		}),
+		testcase: TestcaseType,
 		status: StatusType,
 		language: v.id('languages'),
 	}).index('by_courseId', ['courseId']),

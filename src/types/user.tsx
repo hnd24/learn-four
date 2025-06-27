@@ -1,39 +1,20 @@
-export enum Role {
-	SUPER_ADMIN = "super_admin",
-	ADMIN = "admin",
-	USER = "user",
-}
+export type ROLE_USER = 'admin' | 'super_admin' | 'user';
+
+export type LinkType = {
+	Facebook: string;
+	LinkedIn: string;
+	GitHub: string;
+	Youtube: string;
+	Phone: string;
+};
 
 export type UserStateType = {
 	userId: string;
 	name: string;
 	email: string;
 	image: string;
-	link?: LinkType;
+	link?: Partial<LinkType>;
 	introduction?: string;
-	activities?: ActivityType[];
 	locked?: boolean;
-	role?: Role;
-};
-
-export type LinkType = {
-	facebook?: string;
-	linkedIn?: string;
-	github?: string;
-	youtube?: string;
-	phone?: string;
-};
-export type ActivityType = {
-	day: string;
-	level: number;
-};
-
-
-
-export type UserLessonType = {
-	_id: string;
-	lessonId: string;
-	userId: string;
-	code: object;
-	isCompleted: boolean;
+	role?: ROLE_USER;
 };

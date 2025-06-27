@@ -48,7 +48,7 @@ export const updateProblem = mutation({
 	args: {
 		problemId: v.id('problems'),
 		name: v.optional(v.string()),
-		level: levelType,
+		level: v.optional(levelType),
 		topic: v.optional(v.id('topics')),
 		content: v.optional(v.string()),
 		answer: v.optional(AnswerType),
@@ -159,5 +159,51 @@ export const queryProblems = query({
 				};
 			}),
 		);
+	},
+});
+
+export const checkUserProblem = query({
+	args: {problemId: v.id('problems'), userId: v.string()},
+	async handler(ctx, args) {
+		const {problemId, userId} = args;
+		const userProblem = await ctx.db
+			.query('user_problem')
+			.withIndex('by_userId_problemId', q =>
+				q.eq('userId', userId).eq('problemId', problemId),
+			)
+			.unique();
+		if (!userProblem) {
+			return false;
+		}
+		return true;
+	},
+});
+
+export const createUserProblem = mutation({
+	args: {problemId: v.id('problems'), userId: v.string()},
+	async handler(ctx, args) {
+		const {problemId, userId} = args;
+		await ctx.db.insert('user_problem', {
+			userId: userId,
+			problemId: problemId,
+			state: 'progress',
+		});
+	},
+});
+
+export const getUserProblem = query({
+	args: {problemId: v.id('problems'), userId: v.string()},
+	async handler(ctx, args) {
+		const {problemId, userId} = args;
+		const userProblem = await ctx.db
+			.query('user_problem')
+			.withIndex('by_userId_problemId', q =>
+				q.eq('userId', userId).eq('problemId', problemId),
+			)
+			.unique();
+		if (!userProblem) {
+			return null;
+		}
+		return userProblem;
 	},
 });

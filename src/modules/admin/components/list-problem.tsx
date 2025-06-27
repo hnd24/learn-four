@@ -119,7 +119,7 @@ export default function ListProblem() {
 								<TableCell className="w-20 min-h-9 flex ml-2 items-center">
 									<LevelIcon level={problem.level} />
 								</TableCell>
-								<TableCell className="text-start">{problem.name}</TableCell>
+								<TableCell>{problem.name}</TableCell>
 							</TableRow>
 						))}
 					</TableBody>

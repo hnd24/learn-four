@@ -1,29 +1,41 @@
-import {AnswerType, StatusPlace} from './content';
-import {TestcaseType} from './testcase';
+import {Id} from '../../convex/_generated/dataModel';
+import {TestcaseType} from './common';
+
+export type STATUS_LESSON = 'public' | 'private';
 
 export type LEVEL_LESSON = 'easy' | 'medium' | 'hard';
 
 export type LessonDetailType = {
-	_id: string;
-	courseId: string;
-	topic: string;
+	_id: Id<'lessons'>;
+	_creationTime?: number;
 	name: string;
-	learner: number;
-	level: number;
 	content: string;
-	structureAnswer: object;
-	setupAnswer: setupAnswerType;
-	nameFn: string;
-	answer: AnswerType;
-	status: StatusPlace;
-	testcaseSample: TestcaseType[];
+	courseId: string;
+	level: 'easy' | 'medium' | 'hard';
+	answer: string;
+	template: {
+		head: string;
+		body: string;
+		tail: string;
+	};
+	testcase: TestcaseType[];
+	status: 'private' | 'public';
+	language: string;
 };
 
 export type LessonType = {
-	_id: string;
+	_id: Id<'lessons'>;
+	_creationTime?: number;
 	name: string;
 	level: LEVEL_LESSON;
 	state?: 'completed' | 'progress' | 'unsolved';
 };
 
-export type setupAnswerType = {header?: Record<string, string>; printFn?: Record<string, string>};
+export type UserLessonType = {
+	_id: Id<'user_lesson'>;
+	_creationTime: number;
+	code?: string | undefined;
+	userId: string;
+	state: 'completed' | 'progress';
+	lessonId: Id<'lessons'>;
+};

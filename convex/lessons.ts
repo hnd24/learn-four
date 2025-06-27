@@ -1,21 +1,21 @@
-import {ConvexError, v} from "convex/values";
-import {Id} from "./_generated/dataModel";
-import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
-import {removeComment} from "./comment";
-import {levelType, StatusType} from "./schema";
+import {ConvexError, v} from 'convex/values';
+import {Id} from './_generated/dataModel';
+import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
+import {removeComment} from './comment';
+import {levelType, StateType, StatusType, TestcaseType} from './schema';
 
-export async function getLesson(ctx: QueryCtx | MutationCtx, lessonId: Id<"lessons">) {
+export async function getLesson(ctx: QueryCtx | MutationCtx, lessonId: Id<'lessons'>) {
 	const lesson = await ctx.db.get(lessonId);
 	if (!lesson) {
-		throw new ConvexError("expected lesson to be defined");
+		throw new ConvexError('expected lesson to be defined');
 	}
 	return lesson;
 }
 
-export async function removeLesson(ctx: MutationCtx, lessonId: Id<"lessons">) {
+export async function removeLesson(ctx: MutationCtx, lessonId: Id<'lessons'>) {
 	const comments = await ctx.db
-		.query("comments")
-		.withIndex("by_placeId", q => q.eq("placeId", lessonId))
+		.query('comments')
+		.withIndex('by_placeId', q => q.eq('placeId', lessonId))
 		.collect();
 	if (comments.length > 0) {
 		// Recursively delete all comments associated with this lesson
@@ -29,7 +29,7 @@ export async function removeLesson(ctx: MutationCtx, lessonId: Id<"lessons">) {
 }
 
 export const deleteLesson = mutation({
-	args: {lessonId: v.id("lessons")},
+	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
 		await removeLesson(ctx, args.lessonId);
 	},
@@ -37,7 +37,7 @@ export const deleteLesson = mutation({
 
 export const createLesson = mutation({
 	args: {
-		courseId: v.id("courses"),
+		courseId: v.id('courses'),
 		name: v.string(),
 		level: levelType,
 		content: v.string(),
@@ -47,11 +47,12 @@ export const createLesson = mutation({
 			body: v.string(),
 			tail: v.string(),
 		}),
+		testcase: TestcaseType,
 		status: StatusType,
-		language: v.id("languages"),
+		language: v.id('languages'),
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert("lessons", {
+		await ctx.db.insert('lessons', {
 			...args,
 		});
 	},
@@ -59,8 +60,8 @@ export const createLesson = mutation({
 
 export const updateLesson = mutation({
 	args: {
-		lessonId: v.id("lessons"),
-		courseId: v.optional(v.id("courses")),
+		lessonId: v.id('lessons'),
+		courseId: v.optional(v.id('courses')),
 		name: v.optional(v.string()),
 		level: v.optional(levelType),
 		content: v.optional(v.string()),
@@ -72,8 +73,9 @@ export const updateLesson = mutation({
 				tail: v.string(),
 			}),
 		),
+		testcase: v.optional(TestcaseType),
 		status: v.optional(StatusType),
-		language: v.optional(v.id("languages")),
+		language: v.optional(v.id('languages')),
 	},
 	async handler(ctx, args) {
 		const {lessonId, ...updateFields} = args;
@@ -86,16 +88,16 @@ export const updateLesson = mutation({
 });
 
 export const getLessonInCourse = query({
-	args: {courseId: v.id("courses")},
+	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
 		const course = await ctx.db.get(args.courseId);
 		if (!course) {
-			throw new ConvexError("Course not found");
+			throw new ConvexError('Course not found');
 		}
 		const language = await ctx.db.get(course.language);
 		const lessons = await ctx.db
-			.query("lessons")
-			.withIndex("by_courseId", q => q.eq("courseId", args.courseId))
+			.query('lessons')
+			.withIndex('by_courseId', q => q.eq('courseId', args.courseId))
 			.collect();
 		return lessons.map(lesson => ({
 			...lesson,
@@ -105,19 +107,66 @@ export const getLessonInCourse = query({
 });
 
 export const getDetailLessonById = query({
-	args: {lessonId: v.id("lessons")},
+	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
 		const lesson = await getLesson(ctx, args.lessonId);
 		if (!lesson) {
-			throw new ConvexError("Lesson not found");
+			throw new ConvexError('Lesson not found');
 		}
 		const language = await ctx.db
-			.query("languages")
-			.withIndex("by_id", q => q.eq("_id", lesson.language))
+			.query('languages')
+			.withIndex('by_id', q => q.eq('_id', lesson.language))
 			.unique();
 		return {
 			...lesson,
 			language,
 		};
+	},
+});
+
+export const checkUserLesson = query({
+	args: {lessonId: v.id('lessons'), userId: v.id('users')},
+	async handler(ctx, args) {
+		const userLesson = await ctx.db
+			.query('user_lesson')
+			.withIndex('by_userId_lessonId', q =>
+				q.eq('userId', args.userId).eq('lessonId', args.lessonId),
+			)
+			.unique();
+		if (!userLesson) {
+			return false;
+		}
+		return true;
+	},
+});
+
+export const createUserLesson = mutation({
+	args: {
+		userId: v.string(),
+		lessonId: v.id('lessons'),
+		state: StateType,
+	},
+	async handler(ctx, args) {
+		await ctx.db.insert('user_lesson', {
+			userId: args.userId,
+			lessonId: args.lessonId,
+			state: args.state,
+		});
+	},
+});
+
+export const getUserLesson = query({
+	args: {lessonId: v.id('lessons'), userId: v.id('users')},
+	async handler(ctx, args) {
+		const userLesson = await ctx.db
+			.query('user_lesson')
+			.withIndex('by_userId_lessonId', q =>
+				q.eq('userId', args.userId).eq('lessonId', args.lessonId),
+			)
+			.unique();
+		if (!userLesson) {
+			return null;
+		}
+		return userLesson;
 	},
 });

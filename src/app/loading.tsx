@@ -3,7 +3,7 @@ import Image from 'next/image';
 export default function LoadingPage() {
 	return (
 		<div
-			className="h-screen bg-blackLight
+			className="h-screen 
       w-full flex flex-col justify-center items-center">
 			<Image
 				src={`/images/loading.svg`}

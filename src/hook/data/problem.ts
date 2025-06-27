@@ -1,4 +1,11 @@
-import {ProblemStateType} from '@/types';
+import {
+	AnswerType,
+	LEVEL_PROBLEM,
+	ProblemStateType,
+	STATUS_PROBLEM,
+	TemplateType,
+	TestcaseType,
+} from '@/types';
 import {useCallback, useState} from 'react';
 import {problemData} from '../../data';
 
@@ -44,4 +51,32 @@ export const useQueryProblem = () => {
 	);
 
 	return {queryProblem, loading};
+};
+
+type UpdateProblemArgs = {
+	name: string;
+	level: LEVEL_PROBLEM;
+	topic: string;
+	content: string;
+	answer: AnswerType;
+	template: TemplateType;
+	testcase: TestcaseType[];
+	status: STATUS_PROBLEM;
+	authorId: string;
+};
+
+export const useUpdateProblem = () => {
+	const [loading, setLoading] = useState(false);
+
+	const updateProblem = useCallback(
+		async (problemId: string, args: Partial<UpdateProblemArgs>): Promise<void> => {
+			setLoading(true);
+			setTimeout(() => {
+				setLoading(false);
+			}, 2000);
+		},
+		[],
+	);
+
+	return {updateProblem, loading};
 };
