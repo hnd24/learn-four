@@ -1,7 +1,9 @@
 'use client';
 
 import {Input} from '@/components/ui/input';
+import {useDebounce} from '@/hook/use-debounce';
 import {Search} from 'lucide-react';
+import {useEffect, useState} from 'react';
 import {useFilter} from '../hook/use-filters';
 
 export default function SearchName() {
@@ -10,18 +12,20 @@ export default function SearchName() {
 		setFilter,
 	} = useFilter();
 
+	const [inputValue, setInputValue] = useState(name);
+	const debouncedValue = useDebounce(inputValue, 500); // debounce sau 500ms
+
+	useEffect(() => {
+		setFilter({name: debouncedValue.trim()});
+	}, [debouncedValue, setFilter]);
+
 	return (
 		<div className="relative w-full lg:w-64">
 			<Input
-				defaultValue={name}
+				value={inputValue}
 				placeholder="Search title..."
-				onChange={e => {
-					if (!e.target.value.trim()) {
-						setFilter({name: e.target.value.trim()});
-					}
-				}}
+				onChange={e => setInputValue(e.target.value)}
 				className="bg-primary-foreground pr-8"
-				onFocus={e => e.target.select()}
 			/>
 			<Search className="hidden sm:flex text-muted-foreground absolute top-1/2 right-2 size-4 -translate-y-1/2" />
 		</div>

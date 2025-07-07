@@ -1,5 +1,7 @@
 import {Logo} from '@/components/logo';
 import {ProblemDetailType} from '@/types';
+import {PublishButton} from './publish-btn';
+import Title from './title';
 
 type Props = {
 	problem: ProblemDetailType;
@@ -11,13 +13,17 @@ export default function Header({problem}: Props) {
 			<div className="flex size-full items-center justify-between px-4 py-3">
 				<Logo className="hidden lg:block" link="/admin" />
 
-				<div className="w-1/3 px-4">{/* TODO: Title */}</div>
+				<div className="w-1/3 px-4">
+					<Title problemId={problem._id} title={problem.name} />
+				</div>
 
 				<div className="flex items-center gap-x-3">
 					{/* TODO: Avatar Stack */}
 					<div className="hidden md:block"></div>
 
-					{/* TODO: Switch status button */}
+					<div className="md:mr-6">
+						<PublishButton problemId={problem._id} status={problem.status} />
+					</div>
 				</div>
 			</div>
 		</header>

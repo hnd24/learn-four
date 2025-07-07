@@ -2,6 +2,7 @@
 
 import {LevelIcon} from '@/components/level-icon';
 import {Button} from '@/components/ui/button';
+import {Skeleton} from '@/components/ui/skeleton';
 import {
 	Table,
 	TableBody,
@@ -13,10 +14,9 @@ import {
 } from '@/components/ui/table';
 import {useQueryProblem} from '@/hook/data/problem';
 import {ProblemStateType} from '@/types';
-import {Plus, Search} from 'lucide-react';
+import {Plus} from 'lucide-react';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
-import {useFilter} from '../hook/use-filters';
 import SearchName from './search-name';
 import SelectLevel from './select-level';
 import SelectTopic from './select-topic';
@@ -24,38 +24,14 @@ import SelectTopic from './select-topic';
 export default function ListProblem() {
 	const [problems, setProblems] = useState<ProblemStateType[] | undefined>(undefined);
 	const router = useRouter();
-	const {queryProblem, loading} = useQueryProblem();
-	const {filter} = useFilter();
-
-	const handleSearch = async () => {
-		const params = {
-			...(filter.name === '' ? {} : {name: filter.name}),
-			...(filter.topic === 'all' ? {} : {topic: filter.topic}),
-			...(filter.level === 'all' ? {} : {level: filter.level}),
-			...(filter.status === 'all' ? {} : {status: filter.status}),
-		};
-		if (Object.keys(params).length > 0) {
-			console.log('🚀 ~ handleSearch ~ params:', params);
-			const data = await queryProblem(params.name, params.topic, params.level, params.status);
+	const {data, isPending, loadMore, status} = useQueryProblem();
+	useEffect(() => {
+		if (data) {
 			setProblems(data);
 		}
-	};
+	}, [data]);
 
-	useEffect(() => {
-		const fetchProblems = async () => {
-			const data = await queryProblem();
-			if (data) {
-				setProblems(data);
-			}
-		};
-		fetchProblems();
-	}, [queryProblem]);
-
-	useEffect(() => {
-		handleSearch();
-	}, [filter.status]);
-
-	if (loading || !problems) {
+	if (isPending || status === 'LoadingFirstPage') {
 		return (
 			<div className="mx-auto flex max-w-7xl flex-col items-center justify-center gap-4">
 				<div className="text-lg font-semibold">Loading...</div>
@@ -65,36 +41,29 @@ export default function ListProblem() {
 
 	return (
 		<div className="mx-auto flex max-w-7xl flex-col gap-6">
-			{/* TODO: search section */}
 			<div className="flex flex-col md:flex-row gap-2">
-				<div className="flex gap-2">
-					<SearchName />
-					<Button className="flex md:hidden" onClick={handleSearch}>
-						<p className="hidden sm:flex">Search</p>
-						<Search className="flex sm:hidden" />
-					</Button>
-				</div>
+				<SearchName />
 				<div className="flex gap-2">
 					<SelectTopic />
 					<SelectLevel />
-					<Button className="hidden md:flex" onClick={handleSearch}>
-						Search
-					</Button>
 				</div>
 			</div>
 
 			<div className="mx-auto w-full flex flex-col gap-4">
-				{/* TODO: add btn */}
 				<Button
 					variant="outline"
 					size="icon"
 					className="w-full bg-darkOceanBlue/15 hover:bg-darkAzureBlue/20 group">
 					<Plus className="text-leafyGreen mx-auto group-hover:scale-110" />
 				</Button>
-				{/* TODO: list problem */}
 				<Table>
 					<TableCaption>
-						<Button> Load more </Button>
+						<Button
+							onClick={() => {
+								loadMore();
+							}}>
+							Load more
+						</Button>
 					</TableCaption>
 					<TableHeader>
 						<TableRow>
@@ -104,7 +73,14 @@ export default function ListProblem() {
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						{problems.map(problem => (
+						{!problems && (
+							<TableRow>
+								<TableCell colSpan={2} className="text-center">
+									No problems found
+								</TableCell>
+							</TableRow>
+						)}
+						{(problems ?? []).map(problem => (
 							<TableRow
 								key={problem._id}
 								className={'cursor-pointer'}
@@ -128,3 +104,29 @@ export default function ListProblem() {
 		</div>
 	);
 }
+
+export const ProblemTableSkeleton = () => {
+	return (
+		<div className="bg-background flex flex-col items-center justify-center rounded-md border">
+			<ProblemRowSkeleton />
+			<ProblemRowSkeleton />
+			<ProblemRowSkeleton />
+		</div>
+	);
+};
+
+export const ProblemRowSkeleton = () => {
+	return (
+		<div className="flex h-20 w-full items-center border-b p-4 last:border-b-0">
+			<div className="flex w-full items-center gap-x-3">
+				<div className="flex h-12 w-10 items-center justify-center rounded-md border px-2 py-3">
+					<Skeleton className="size-5 rounded" />
+				</div>
+				<div className="flex flex-col gap-y-2">
+					<Skeleton className="h-4 w-32 rounded" />
+					<Skeleton className="h-3 w-24 rounded" />
+				</div>
+			</div>
+		</div>
+	);
+};

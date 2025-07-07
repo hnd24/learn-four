@@ -41,7 +41,7 @@ export const updateTopic = mutation({
 			if (topic.status !== args.status) {
 				const problems = await ctx.db
 					.query('problems')
-					.withIndex('by_topic', q => q.eq('topic', topic._id))
+					.withIndex('by_topicId', q => q.eq('topicId', topic._id))
 					.collect();
 				if (problems.length > 0) {
 					await Promise.all(
@@ -83,7 +83,7 @@ export const deleteTopic = mutation({
 		// Delete all problems associated with this topic
 		const problems = await ctx.db
 			.query('problems')
-			.withIndex('by_topic', q => q.eq('topic', topic._id))
+			.withIndex('by_topicId', q => q.eq('topicId', topic._id))
 			.collect();
 		Promise.all(problems.map(problem => ctx.db.delete(problem._id)));
 	},

@@ -99,7 +99,7 @@ export default defineSchema({
 	problems: defineTable({
 		name: v.string(),
 		level: levelType,
-		topic: v.id('topics'),
+		topicId: v.id('topics'),
 		content: v.string(),
 		answer: AnswerType,
 		template: TemplateType,
@@ -108,10 +108,10 @@ export default defineSchema({
 		authorId: v.string(),
 	})
 		.index('by_authorId', ['authorId'])
-		.index('by_topic', ['topic'])
+		.index('by_topicId', ['topicId'])
 		.searchIndex('by_name', {
 			searchField: 'name',
-			filterFields: ['topic', 'level', 'status'],
+			filterFields: ['topicId', 'level', 'status'],
 		}),
 	/************************************************** */
 	topics: defineTable({

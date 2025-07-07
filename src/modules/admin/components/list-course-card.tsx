@@ -7,11 +7,12 @@ import {CourseStateType} from '@/types';
 import {Plus} from 'lucide-react';
 import Image from 'next/image';
 import {useEffect, useState} from 'react';
+import {Id} from '../../../../convex/_generated/dataModel';
 import {useFilter} from '../hook/use-filters';
 import DialogCourse from './dialog-course';
 
 export default function ListCourseCard() {
-	const {getCourses, loading} = useGetCourses();
+	const {data, isPending} = useGetCourses();
 	const {
 		filter: {status},
 	} = useFilter();
@@ -19,18 +20,14 @@ export default function ListCourseCard() {
 	const [rawCourses, setRawCourses] = useState<CourseStateType[]>([]);
 	const [courses, setCourses] = useState<CourseStateType[]>([]);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
-	const [idCourse, setIdCourse] = useState<string>('');
+	const [idCourse, setIdCourse] = useState<Id<'courses'> | undefined>(undefined);
 
 	useEffect(() => {
-		const fetchCourses = async () => {
-			const data = await getCourses();
-			if (data && data.length > 0) {
-				setRawCourses(data);
-				setCourses(data); // mặc định hiển thị tất cả
-			}
-		};
-		fetchCourses();
-	}, [getCourses]);
+		if (data && data.length > 0) {
+			setRawCourses(data);
+			setCourses(data); // mặc định hiển thị tất cả
+		}
+	}, [data, isPending]);
 
 	useEffect(() => {
 		if (status === 'all') {
@@ -40,7 +37,7 @@ export default function ListCourseCard() {
 			setCourses(filtered);
 		}
 	}, [status, rawCourses]);
-	if (loading) {
+	if (isPending) {
 		const randomArray = Array.from({length: 6}, (_, i) => i + 1);
 		return (
 			<div className="mx-auto grid justify-center gap-4 sm:grid-cols-2  md:max-w-[82rem]  md:grid-cols-3 xl:grid-cols-4">
@@ -90,7 +87,7 @@ export default function ListCourseCard() {
 					</CardDescription>
 				</CardContent>
 			</Button>
-			{idCourse && (
+			{typeof idCourse !== 'undefined' && (
 				<DialogCourse
 					isOpen={isOpen}
 					onClose={() => {

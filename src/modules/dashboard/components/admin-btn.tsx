@@ -21,7 +21,7 @@ export default function AdminBtn() {
 			}
 		};
 		check();
-	}, [loading, isSignedIn, user?.id]);
+	}, [checkAdmin, loading, isSignedIn, user?.id]);
 	return (
 		<>
 			{isAdmin && (

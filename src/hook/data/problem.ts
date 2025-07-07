@@ -1,62 +1,55 @@
+'use client';
+
+import {useFilter} from '@/modules/admin/hook/use-filters';
 import {
 	AnswerType,
 	LEVEL_PROBLEM,
+	ProblemDetailType,
 	ProblemStateType,
 	STATUS_PROBLEM,
 	TemplateType,
 	TestcaseType,
 } from '@/types';
 import {useCallback, useState} from 'react';
-import {problemData} from '../../data';
+import {Id} from '../../../convex/_generated/dataModel';
+import {problemData, ProblemDetailData} from '../../data';
 
-export const useGetProblems = () => {
-	const [loading, setLoading] = useState(false);
-
-	const getProblems = useCallback(
-		async (
-			topic?: string,
-			level?: string,
-			name?: string,
-			status?: string,
-		): Promise<ProblemStateType[] | undefined> => {
-			setLoading(true);
-			setTimeout(() => {
-				setLoading(false);
-			}, 2000);
-			return problemData;
-		},
-		[],
-	);
-
-	return {getProblems, loading};
+export const useGetProblemById = (id: Id<'problems'>) => {
+	const [isPending, setIsPending] = useState(false);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	const data: ProblemDetailType | undefined = ProblemDetailData;
+	return {data, isPending};
 };
 
 export const useQueryProblem = () => {
-	const [loading, setLoading] = useState(false);
+	const {filter} = useFilter();
+	const params = {
+		...(filter.name === '' ? {} : {name: filter.name}),
+		...(filter.topic === 'all' ? {} : {topic: filter.topic}),
+		...(filter.level === 'all' ? {} : {level: filter.level}),
+		...(filter.status === 'all' ? {} : {status: filter.status}),
+	};
+	console.log('🚀 ~ handleSearch ~ params:', params);
+	const [isPending, setIsPending] = useState(false);
 
-	const queryProblem = useCallback(
-		async (
-			name?: string,
-			topic?: string,
-			level?: string,
-			status?: string,
-		): Promise<ProblemStateType[] | undefined> => {
-			setLoading(true);
-			setTimeout(() => {
-				setLoading(false);
-			}, 2000);
-			return problemData;
-		},
-		[],
-	);
+	const data: ProblemStateType[] | undefined = problemData;
+	const loadMore = () => {
+		setIsPending(true);
+		setTimeout(() => {
+			setIsPending(false);
+		}, 2000);
+	};
+	const status = 'CanLoadMore';
 
-	return {queryProblem, loading};
+	return {data, isPending, loadMore, status};
 };
 
 type UpdateProblemArgs = {
 	name: string;
 	level: LEVEL_PROBLEM;
-	topic: string;
+	topicId: Id<'topics'>;
 	content: string;
 	answer: AnswerType;
 	template: TemplateType;
@@ -69,7 +62,7 @@ export const useUpdateProblem = () => {
 	const [loading, setLoading] = useState(false);
 
 	const updateProblem = useCallback(
-		async (problemId: string, args: Partial<UpdateProblemArgs>): Promise<void> => {
+		async (problemId: Id<'problems'>, args: Partial<UpdateProblemArgs>): Promise<void> => {
 			setLoading(true);
 			setTimeout(() => {
 				setLoading(false);

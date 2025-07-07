@@ -17,17 +17,13 @@ export default function SelectTopic() {
 		filter: {topic},
 		setFilter,
 	} = useFilter();
-	const {getTopic, loading} = useGetTopics();
+	const {data, loading} = useGetTopics();
 	const [topics, setTopics] = useState<TopicType[] | undefined>(undefined);
 	useEffect(() => {
-		const fetchTopics = async () => {
-			const topics = await getTopic();
-			if (topics) {
-				setTopics(topics as TopicType[]);
-			}
-		};
-		fetchTopics();
-	}, [getTopic]);
+		if (data && data.length > 0) {
+			setTopics(data as TopicType[]);
+		}
+	}, [data, loading]);
 	if (loading || !topics) {
 		<div className="min-w-64 h-9 px-4 border rounded-lg flex items-center text-sm text-muted-foreground">
 			Loading...

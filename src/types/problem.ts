@@ -1,5 +1,6 @@
 import {Id} from '../../convex/_generated/dataModel';
 import {AnswerType, TemplateType, TestcaseType} from './common';
+import {TopicType} from './topic';
 
 export type STATUS_PROBLEM = 'public' | 'private';
 
@@ -11,7 +12,7 @@ export type ProblemStateType = {
 	_id: Id<'problems'>;
 	level: string;
 	name: string;
-	topic: string;
+	topic: TopicType | null;
 	state?: USER_PROBLEM_STATE;
 };
 
@@ -25,7 +26,7 @@ export type ProblemDetailType = {
 	template: TemplateType;
 	testcase: TestcaseType[];
 	status: STATUS_PROBLEM;
-	topic: string;
+	topic: TopicType | null;
 	authorId: string;
 	authorName?: string;
 	authorImage?: string;

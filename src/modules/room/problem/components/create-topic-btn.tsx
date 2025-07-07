@@ -1,0 +1,57 @@
+'use client';
+
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {useAddTopic} from '@/hook/data/topic';
+import {Plus} from 'lucide-react';
+import {useState} from 'react';
+import {Id} from '../../../../../convex/_generated/dataModel';
+
+type Props = {
+	onClose: () => void;
+	onChange: (value: Id<'topics'>) => void;
+};
+export default function CreateTopicBtn({onClose, onChange}: Props) {
+	const {addTopic, loading} = useAddTopic();
+	const [value, setValue] = useState('');
+
+	const onSubmit = async () => {
+		const id = await addTopic(value.trim());
+		if (!id) {
+			return;
+		}
+		onChange(id);
+		setValue('');
+		onClose();
+		return;
+	};
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter' && value.trim()) {
+			e.preventDefault();
+			onSubmit();
+		}
+
+		if (e.key === 'Escape') {
+			e.stopPropagation();
+			e.preventDefault();
+			onClose();
+		}
+	};
+	return (
+		<div className="flex flex-col space-y-2">
+			<div className="flex items-center space-x-2">
+				<Input
+					autoFocus
+					value={value}
+					onChange={e => setValue(e.target.value)}
+					onKeyDown={onKeyDown}
+					placeholder="Enter new category name"
+				/>
+				<Button onClick={onSubmit} disabled={loading || !value.trim()} type="button">
+					<Plus />
+				</Button>
+			</div>
+		</div>
+	);
+}

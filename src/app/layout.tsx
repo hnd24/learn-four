@@ -1,10 +1,10 @@
+import {Toaster} from '@/components/ui/sonner';
 import {inter} from '@/lib/font';
 import {ConvexClientProvider} from '@/providers/convex-client-provider';
 import {ThemeProvider} from '@/providers/theme-provider';
 import {ClerkProvider} from '@clerk/nextjs';
 import {Provider as JotaiProvider} from 'jotai';
 import {NuqsAdapter} from 'nuqs/adapters/next/app';
-import {Toaster} from 'sonner';
 import './globals.css';
 
 export default function RootLayout({
@@ -24,7 +24,10 @@ export default function RootLayout({
 						forcedTheme="light">
 						<ConvexClientProvider>
 							<NuqsAdapter>
-								<JotaiProvider>{children}</JotaiProvider>
+								<JotaiProvider>
+									{children}
+									<Toaster />
+								</JotaiProvider>
 							</NuqsAdapter>
 						</ConvexClientProvider>
 						<Toaster />

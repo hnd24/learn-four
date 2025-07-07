@@ -1,48 +1,35 @@
 import {listLessonData} from '@/data';
 import {LessonDetailType, LessonType, UserLessonType} from '@/types';
-import {useCallback, useState} from 'react';
+import {useState} from 'react';
+import {Id} from '../../../convex/_generated/dataModel';
 
-export const useGetLessons = () => {
-	const [loading, setLoading] = useState(false);
+export const useGetDetailLesson = (language: string) => {
+	const [isPending, setIsPending] = useState(false);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	const data: LessonType[] | undefined = listLessonData;
 
-	const getLessons = useCallback(async (language: string): Promise<LessonType[] | undefined> => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-		return listLessonData;
-	}, []);
-
-	return {getLessons, loading};
+	return {data, isPending};
 };
 
-export const useGetLessonById = () => {
-	const [loading, setLoading] = useState(false);
+export const useGetLessonById = (id: Id<'lessons'>) => {
+	const [isPending, setIsPending] = useState(false);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	// TODO - Replace with actual data fetching logic
+	const data: LessonDetailType | undefined = undefined;
 
-	const getLessonById = useCallback(async (id: string): Promise<LessonDetailType | undefined> => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-		return undefined;
-	}, []);
-
-	return {getLessonById, loading};
+	return {data, isPending};
 };
 
 export const useGetUserLesson = () => {
-	const [loading, setLoading] = useState(false);
-
-	const getUserLesson = useCallback(
-		async (idLesson: string): Promise<UserLessonType | undefined> => {
-			setLoading(true);
-			setTimeout(() => {
-				setLoading(false);
-			}, 2000);
-			return undefined;
-		},
-		[],
-	);
-
-	return {getUserLesson, loading};
+	const [isPending, setIsPending] = useState(false);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	// TODO - Replace with actual data fetching logic
+	const data: UserLessonType | undefined = undefined;
+	return {data, isPending};
 };

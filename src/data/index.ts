@@ -4,6 +4,7 @@ import {
 	LessonType,
 	ProblemDetailType,
 	ProblemStateType,
+	TopicType,
 	UserProblemType,
 } from '@/types';
 import {Id} from '../../convex/_generated/dataModel';
@@ -93,75 +94,133 @@ export const courseData: CourseStateType[] = [
 	},
 ];
 
+export const topicData: TopicType[] = [
+	{
+		_id: '1' as Id<'topics'>,
+		name: 'Array',
+		status: 'public',
+	},
+	{
+		_id: '2' as Id<'topics'>,
+		name: 'String',
+		status: 'public',
+	},
+	{
+		_id: '3' as Id<'topics'>,
+		name: 'Math',
+		status: 'public',
+	},
+];
+
 export const problemData: ProblemStateType[] = [
 	{
 		_id: '1234' as Id<'problems'>,
 		level: 'easy',
 		name: 'Sum of Two Numbers',
-		topic: 'Array',
+		topic: {
+			_id: '1' as Id<'topics'>,
+			name: 'Array',
+			status: 'public',
+		},
 		state: 'completed',
 	},
 	{
 		_id: '2345' as Id<'problems'>,
 		level: 'medium',
 		name: 'Two Sum',
-		topic: 'Array',
+		topic: {
+			_id: '2' as Id<'topics'>,
+			name: 'String',
+			status: 'public',
+		},
 		state: 'progress',
 	},
 	{
 		_id: '3456' as Id<'problems'>,
 		level: 'hard',
 		name: 'Longest Substring Without Repeating Characters',
-		topic: 'String',
+		topic: {
+			_id: '2' as Id<'topics'>,
+			name: 'String',
+			status: 'public',
+		},
 		state: 'unsolved',
 	},
 	{
 		_id: '4567' as Id<'problems'>,
 		level: 'easy',
 		name: 'Valid Parentheses',
-		topic: 'String',
+		topic: {
+			_id: '2' as Id<'topics'>,
+			name: 'String',
+			status: 'public',
+		},
 		state: 'completed',
 	},
 	{
 		_id: '5678' as Id<'problems'>,
 		level: 'medium',
 		name: '3Sum',
-		topic: 'Array',
+		topic: {
+			_id: '1' as Id<'topics'>,
+			name: 'Array',
+			status: 'public',
+		},
 		state: 'progress',
 	},
 	{
 		_id: '6789' as Id<'problems'>,
 		level: 'hard',
 		name: 'Median of Two Sorted Arrays',
-		topic: 'Array',
+		topic: {
+			_id: '3' as Id<'topics'>,
+			name: 'Math',
+			status: 'public',
+		},
 		state: 'unsolved',
 	},
 	{
 		_id: '7890' as Id<'problems'>,
 		level: 'easy',
 		name: 'Reverse Integer',
-		topic: 'Math',
+		topic: {
+			_id: '3' as Id<'topics'>,
+			name: 'Math',
+			status: 'public',
+		},
 		state: 'completed',
 	},
 	{
 		_id: '8901' as Id<'problems'>,
 		level: 'medium',
 		name: 'Longest Palindromic Substring',
-		topic: 'String',
+		topic: {
+			_id: '2' as Id<'topics'>,
+			name: 'String',
+			status: 'public',
+		},
 		state: 'progress',
 	},
 	{
 		_id: '6799' as Id<'problems'>,
 		level: 'hard',
 		name: 'Container With Most Water',
-		topic: 'Array',
+		topic: {
+			_id: '1' as Id<'topics'>,
+			name: 'Array',
+			status: 'public',
+		},
 		state: 'unsolved',
 	},
 	{
 		_id: '6712' as Id<'problems'>,
 		level: 'easy',
 		name: 'Roman to Integer',
-		topic: 'Math',
+		topic: {
+			_id: '2' as Id<'topics'>,
+			name: 'String',
+			status: 'public',
+		},
 		state: 'completed',
 	},
 ];
@@ -400,8 +459,12 @@ export const ProblemDetailData: ProblemDetailType = {
 			expected: '3',
 		},
 	],
-	status: 'public',
-	topic: 'math',
+	status: 'private',
+	topic: {
+		_id: '1' as Id<'topics'>,
+		name: 'Array',
+		status: 'public',
+	},
 	authorId: 'user789',
 	authorName: 'John Doe',
 	authorImage: 'https://github.com/shadcn.png',

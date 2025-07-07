@@ -49,7 +49,7 @@ export const updateProblem = mutation({
 		problemId: v.id('problems'),
 		name: v.optional(v.string()),
 		level: v.optional(levelType),
-		topic: v.optional(v.id('topics')),
+		topicId: v.optional(v.id('topics')),
 		content: v.optional(v.string()),
 		answer: v.optional(AnswerType),
 		template: v.optional(TemplateType),
@@ -72,7 +72,7 @@ export const createProblem = mutation({
 	args: {
 		name: v.string(),
 		level: levelType,
-		topic: v.id('topics'),
+		topicId: v.id('topics'),
 		content: v.string(),
 		answer: AnswerType,
 		template: TemplateType,
@@ -97,7 +97,7 @@ export const getDetailProblemById = query({
 	async handler(ctx, args) {
 		const problem = await getProblem(ctx, args.problemId);
 		const user = await getUser(ctx, problem.authorId);
-		const topic = await ctx.db.get(problem.topic);
+		const topic = await ctx.db.get(problem.topicId);
 		return {
 			...problem,
 			topic,
@@ -112,12 +112,12 @@ export const queryProblems = query({
 	args: {
 		name: v.optional(v.string()),
 		level: v.optional(v.string()),
-		topic: v.optional(v.id('topics')),
+		topicId: v.optional(v.id('topics')),
 		status: v.optional(StatusType),
 		paginationOpts: paginationOptsValidator,
 	},
 	async handler(ctx, args) {
-		const {name, level, topic, status, paginationOpts} = args;
+		const {name, level, topicId, status, paginationOpts} = args;
 		const identity = await ctx.auth.getUserIdentity();
 		const preIndexQuery = ctx.db.query('problems');
 		const baseQuery = name
@@ -128,7 +128,7 @@ export const queryProblems = query({
 			if (level && problem.level !== level) {
 				return false;
 			}
-			if (topic && problem.topic !== topic) {
+			if (topicId && problem.topicId !== topicId) {
 				return false;
 			}
 			if (status && problem.status !== status) {
@@ -142,6 +142,7 @@ export const queryProblems = query({
 			return rawResults;
 		}
 		const user = await getUser(ctx, identity.subject);
+		const topics = await ctx.db.query('topics').collect();
 		return await Promise.all(
 			rawResults.page.map(async problem => {
 				const state = await ctx.db
@@ -154,7 +155,7 @@ export const queryProblems = query({
 					_id: problem._id,
 					name: problem.name,
 					level: problem.level,
-					topic: problem.topic,
+					topic: topics.find(t => t._id === problem.topicId) || null,
 					state: state ? state.state : 'unsolved',
 				};
 			}),

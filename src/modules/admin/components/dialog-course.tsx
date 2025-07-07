@@ -26,27 +26,24 @@ import {PersonStanding, Plus} from 'lucide-react';
 import Image from 'next/image';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
+import {Id} from '../../../../convex/_generated/dataModel';
 
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
-	idCourse: string;
+	idCourse: Id<'courses'>;
 };
 
 export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
-	const {loading, getDetailCourse} = useGetDetailCourse();
+	const {isPending, data} = useGetDetailCourse(idCourse);
 	const [course, setCourse] = useState<CourseDetailType | undefined>(undefined);
 	const router = useRouter();
-	const disabled = loading || !idCourse || !course;
+	const disabled = isPending || !idCourse || !course;
 	useEffect(() => {
-		const fetchCourse = async () => {
-			if (idCourse) {
-				const data = await getDetailCourse(idCourse);
-				setCourse(data);
-			}
-		};
-		fetchCourse();
-	}, [idCourse]);
+		if (data) {
+			setCourse(data);
+		}
+	}, [idCourse, data, isPending]);
 	if (disabled) {
 		return (
 			<Dialog open={isOpen} onOpenChange={onClose}>
