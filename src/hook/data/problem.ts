@@ -6,13 +6,15 @@ import {
 	LEVEL_PROBLEM,
 	ProblemDetailType,
 	ProblemStateType,
+	ProblemTemplateType,
+	ProblemTestcaseType,
 	STATUS_PROBLEM,
 	TemplateType,
 	TestcaseType,
 } from '@/types';
 import {useCallback, useState} from 'react';
 import {Id} from '../../../convex/_generated/dataModel';
-import {problemData, ProblemDetailData} from '../../data';
+import {problemData, ProblemDetailData, ProblemTemplateData, ProblemTestcaseData} from '../../data';
 
 export const useGetProblemById = (id: Id<'problems'>) => {
 	const [isPending, setIsPending] = useState(false);
@@ -20,6 +22,24 @@ export const useGetProblemById = (id: Id<'problems'>) => {
 		setIsPending(false);
 	}, 2000);
 	const data: ProblemDetailType | undefined = ProblemDetailData;
+	return {data, isPending};
+};
+
+export const useGetProblemTestcase = (problemId: Id<'problems'>) => {
+	const [isPending, setIsPending] = useState(false);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	const data: ProblemTestcaseType | undefined = ProblemTestcaseData;
+	return {data, isPending};
+};
+
+export const useGetProblemTemplate = (problemId: Id<'problems'>) => {
+	const [isPending, setIsPending] = useState(false);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	const data: ProblemTemplateType | undefined = ProblemTemplateData;
 	return {data, isPending};
 };
 

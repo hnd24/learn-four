@@ -5,8 +5,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import {LEVELS} from '@/constants';
 import {cn} from '@/lib/utils';
-import {LEVELS} from '../../constants';
 
 type Props = {
 	value: 'easy' | 'medium' | 'hard';

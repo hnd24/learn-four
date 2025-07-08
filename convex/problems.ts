@@ -95,7 +95,7 @@ export const createProblem = mutation({
 export const getDetailProblemById = query({
 	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
-		const problem = await getProblem(ctx, args.problemId);
+		const {testcase, template, ...problem} = await getProblem(ctx, args.problemId);
 		const user = await getUser(ctx, problem.authorId);
 		const topic = await ctx.db.get(problem.topicId);
 		return {
@@ -206,5 +206,35 @@ export const getUserProblem = query({
 			return null;
 		}
 		return userProblem;
+	},
+});
+
+export const getTestcaseByProblemId = query({
+	args: {problemId: v.id('problems')},
+	async handler(ctx, args) {
+		const {problemId} = args;
+		const problem = await getProblem(ctx, problemId);
+		if (!problem) {
+			return null;
+		}
+		return {
+			problemId: problem._id,
+			testcase: problem.testcase,
+		};
+	},
+});
+
+export const getTemplateByProblemId = query({
+	args: {problemId: v.id('problems')},
+	async handler(ctx, args) {
+		const {problemId} = args;
+		const problem = await getProblem(ctx, problemId);
+		if (!problem) {
+			return null;
+		}
+		return {
+			problemId: problem._id,
+			template: problem.template,
+		};
 	},
 });

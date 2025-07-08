@@ -1,9 +1,12 @@
 import {
 	CourseDetailType,
 	CourseStateType,
+	LanguageType,
 	LessonType,
 	ProblemDetailType,
 	ProblemStateType,
+	ProblemTemplateType,
+	ProblemTestcaseType,
 	TopicType,
 	UserProblemType,
 } from '@/types';
@@ -441,24 +444,6 @@ export const ProblemDetailData: ProblemDetailType = {
 			tail: '\n// End of solution',
 		},
 	},
-	testcase: [
-		{
-			id: 'tc1',
-			inputs: [
-				{id: 'a', label: 'a', value: '2'},
-				{id: 'b', label: 'b', value: '3'},
-			],
-			expected: '5',
-		},
-		{
-			id: 'tc2',
-			inputs: [
-				{id: 'a', label: 'a', value: '-1'},
-				{id: 'b', label: 'b', value: '4'},
-			],
-			expected: '3',
-		},
-	],
 	status: 'private',
 	topic: {
 		_id: '1' as Id<'topics'>,
@@ -468,6 +453,104 @@ export const ProblemDetailData: ProblemDetailType = {
 	authorId: 'user789',
 	authorName: 'John Doe',
 	authorImage: 'https://github.com/shadcn.png',
+};
+
+export const ProblemTestcaseData: ProblemTestcaseType = {
+	problemId: 'prob123456' as Id<'problems'>,
+	testcase: [
+		{
+			id: 'tc1',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '2'},
+				{id: 'b', label: 'arg2', value: '3'},
+			],
+			expected: '5',
+		},
+		{
+			id: 'tc2',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '-1'},
+				{id: 'b', label: 'arg2', value: '4'},
+			],
+			expected: '3',
+		},
+		{
+			id: 'tc3',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '0'},
+				{id: 'b', label: 'arg2', value: '0'},
+			],
+			expected: '0',
+		},
+		{
+			id: 'tc4',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '100'},
+				{id: 'b', label: 'arg2', value: '200'},
+			],
+			expected: '300',
+		},
+		{
+			id: 'tc5',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '123456789'},
+				{id: 'b', label: 'arg2', value: '987654321'},
+			],
+			expected: '1111111110',
+		},
+		{
+			id: 'tc6',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '999999999'},
+				{id: 'b', label: 'arg2', value: '1'},
+			],
+			expected: '1000000000',
+		},
+		{
+			id: 'tc7',
+			inputs: [
+				{id: 'a', label: 'arg1', value: '-100'},
+				{id: 'b', label: 'arg2', value: '-200'},
+			],
+			expected: '-300',
+		},
+	],
+};
+
+export const ProblemTemplateData: ProblemTemplateType = {
+	problemId: 'prob123456' as Id<'problems'>,
+	template: {
+		javascript: {
+			head: '// Your solution in JavaScript\n',
+			body: 'function sum(a, b) {\n  // TODO: implement\n}',
+			tail: '\n// End of solution',
+		},
+		typescript: {
+			head: '// Your solution in TypeScript\n',
+			body: 'function sum(a: number, b: number): number {\n  // TODO: implement\n}',
+			tail: '\n// End of solution',
+		},
+		python: {
+			head: '# Your solution in Python\n',
+			body: 'def sum(a, b):\n    # TODO: implement',
+			tail: '\n# End of solution',
+		},
+		java: {
+			head: '// Your solution in Java\npublic class Solution {\n',
+			body: '    public int sum(int a, int b) {\n        // TODO: implement\n    }',
+			tail: '\n}',
+		},
+		csharp: {
+			head: '// Your solution in C#\npublic class Solution {\n',
+			body: '    public int Sum(int a, int b) {\n        // TODO: implement\n    }',
+			tail: '\n}',
+		},
+		cpp: {
+			head: '// Your solution in C++\n',
+			body: 'int sum(int a, int b) {\n    // TODO: implement\n}',
+			tail: '\n// End of solution',
+		},
+	},
 };
 
 export const UserProblemData: UserProblemType = {
@@ -480,4 +563,58 @@ export const UserProblemData: UserProblemType = {
 	state: 'completed',
 	userId: 'user789',
 	problemId: 'prob123456' as Id<'problems'>,
+};
+
+export const LanguageData: LanguageType[] = [
+	{
+		_id: 'rs70hama6aw5h9havyf8k5w5nn7k9d34' as Id<'languages'>,
+		extension: 'js',
+		idJude0: 102,
+		name: 'JavaScript',
+		_creationTime: 1751904162519.7346,
+	},
+	{
+		_id: 'rs732jarak5t2pjn65razddxwh7k8zh2' as Id<'languages'>,
+		extension: 'ts',
+		idJude0: 101,
+		name: 'TypeScript',
+		_creationTime: 1751904220758.2996,
+	},
+	{
+		_id: 'rs71fz19hjgyh0ychexfwxf21n7k9qn2' as Id<'languages'>,
+		extension: 'py',
+		idJude0: 100,
+		name: 'Python',
+		_creationTime: 1751904271410.8945,
+	},
+	{
+		_id: 'rs7fb176vxk098w81wvpxf06qn7k97c1' as Id<'languages'>,
+		extension: 'java',
+		idJude0: 91,
+		name: 'Java',
+		_creationTime: 1751904271410.8948,
+	},
+	{
+		_id: 'rs76dtqyrtdyjqez6w7w0ysa2n7k8ax3' as Id<'languages'>,
+		extension: 'cs',
+		idJude0: 51,
+		name: 'C#',
+		_creationTime: 1751904271410.895,
+	},
+	{
+		_id: 'rs7c0g7bjf63b89v7ne5crhgzn7k8w22' as Id<'languages'>,
+		extension: 'cpp',
+		idJude0: 54,
+		name: 'C++',
+		_creationTime: 1751904271410.8953,
+	},
+];
+
+export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
+	63: 102, // JavaScript (Node.js 22.08.0)
+	71: 100, // Python (3.12.5)
+	101: 101, // TypeScript (5.6.2)
+	62: 91, // Java (JDK 17.0.6)
+	54: 54, // C++ (GCC 14.1.0)
+	51: 51, // C# (Mono
 };

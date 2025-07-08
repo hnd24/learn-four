@@ -24,12 +24,21 @@ export type ProblemDetailType = {
 	level: LEVEL_PROBLEM;
 	answer: AnswerType;
 	template: TemplateType;
-	testcase: TestcaseType[];
 	status: STATUS_PROBLEM;
 	topic: TopicType | null;
 	authorId: string;
 	authorName?: string;
 	authorImage?: string;
+};
+
+export type ProblemTestcaseType = {
+	problemId: Id<'problems'>;
+	testcase: TestcaseType[];
+};
+
+export type ProblemTemplateType = {
+	problemId: Id<'problems'>;
+	template: TemplateType;
 };
 
 export type UserProblemType = {

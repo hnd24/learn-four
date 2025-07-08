@@ -10,12 +10,14 @@ export type AnswerType = {
 	[language: string]: string;
 };
 
+export type InputTestCaseType = {
+	id: string;
+	label: string;
+	value: string;
+};
+
 export type TestcaseType = {
 	id: string;
-	inputs: {
-		id: string;
-		label: string;
-		value: string;
-	}[];
+	inputs: InputTestCaseType[];
 	expected: string;
 };
