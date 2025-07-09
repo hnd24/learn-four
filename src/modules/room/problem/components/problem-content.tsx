@@ -6,7 +6,7 @@ import {ProblemDetailType} from '@/types';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
 import {useProblemId} from '../hook/use-problem-id';
-import CodeArea from './code-area/code-area';
+import CodeArea from './code-area';
 
 type Props = {
 	preloadedProblem: ProblemDetailType;

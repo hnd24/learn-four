@@ -7,7 +7,7 @@ import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {CodeXml, Palette} from 'lucide-react';
 import {useState} from 'react';
 import {TabValue} from '../../types';
-import TestcaseArea from '../testcase/testcase-area';
+import TestcaseArea from '../testcase-area';
 import {CodeEditor} from './code-editor';
 
 type Props = {

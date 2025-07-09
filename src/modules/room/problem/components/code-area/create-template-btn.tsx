@@ -32,10 +32,10 @@ import {useAtomValue} from 'jotai';
 import {FileCode, Loader2} from 'lucide-react';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
+import {ActionSelector} from '../../../../../components/action-selector';
 import {codeAtom} from '../../atom/code';
 import {languagesAtom} from '../../atom/language';
 import {useProblemId} from '../../hook/use-problem-id';
-import {ActionSelector} from '../action-selector';
 
 type TemplateType = {
 	[lang: string]: {
