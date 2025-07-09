@@ -11,8 +11,8 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {LoaderCircle} from 'lucide-react';
 import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
-import {Id} from '../../../../../convex/_generated/dataModel';
-import {problemSchema, ProblemValues} from '../schema/problem';
+import {Id} from '../../../../../../convex/_generated/dataModel';
+import {problemSchema, ProblemValues} from '../../schema/problem';
 import LevelSelection from './level-selection';
 import TopicSelection from './topic-selection';
 type Props = {
@@ -41,8 +41,9 @@ export default function FormPublishProblem({problemId, onClose}: Props) {
 		}
 	}, [problemId, data, loading]);
 
-	const onSubmit = async (data: ProblemValues) => {
-		await updateProblem(problemId, {
+	const onSubmit = (data: ProblemValues) => {
+		// IMPORTANT
+		updateProblem(problemId, {
 			name: data.name,
 			level: data.level,
 			topicId: data.topicId as Id<'topics'>,

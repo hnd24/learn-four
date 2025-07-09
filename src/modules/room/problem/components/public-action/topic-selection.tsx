@@ -16,8 +16,8 @@ import {Popover, PopoverContent, PopoverTrigger} from '@/components/ui/popover';
 import {useGetTopics} from '@/hook/data/topic';
 import {cn} from '@/lib/utils';
 import {useState} from 'react';
-import {Id} from '../../../../../convex/_generated/dataModel';
-import CreateTopicBtn from './create-topic-btn';
+import {Id} from '../../../../../../convex/_generated/dataModel';
+import CreateTopicBtn from '../create-topic-btn';
 
 type Props = {
 	value: Id<'topics'>;

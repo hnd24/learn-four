@@ -3,10 +3,8 @@ import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {Id} from '../../../../../convex/_generated/dataModel';
 import {codeDataAtom} from '../atom/code';
-import {useProblemId} from './use-problem-id';
 
-export const useHydrateTemplate = () => {
-	const problemId: Id<'problems'> = useProblemId();
+export const useHydrateTemplate = (problemId: Id<'problems'>) => {
 	const {data} = useGetProblemTemplate(problemId);
 	const setCode = useSetAtom(codeDataAtom);
 

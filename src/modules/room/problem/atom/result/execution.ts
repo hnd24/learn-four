@@ -14,7 +14,9 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
 	const language = get(languagesAtom);
 	const testCases = get(testCasesAtoms);
 	if (!language) {
-		toast.error('No language selected');
+		toast.error('No language selected', {
+			style: {color: 'red'},
+		});
 		return;
 	}
 	try {

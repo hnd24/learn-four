@@ -12,7 +12,7 @@ import {useUpdateProblem} from '@/hook/data/problem';
 import {STATUS_PROBLEM} from '@/types';
 import {CloudUpload, PencilLine} from 'lucide-react';
 import {useState} from 'react';
-import {Id} from '../../../../../convex/_generated/dataModel';
+import {Id} from '../../../../../../convex/_generated/dataModel';
 import FormPublishProblem from './form-public';
 
 type Props = {
@@ -24,8 +24,9 @@ export const PublishButton = ({problemId, status}: Props) => {
 	const {updateProblem, isPending} = useUpdateProblem();
 	const [open, setOpen] = useState(false);
 
-	const onClick = async () => {
-		await updateProblem(problemId, {status: 'private'});
+	const onClick = () => {
+		// IMPORTANT
+		updateProblem(problemId, {status: 'private'});
 	};
 
 	if (status === 'public') {

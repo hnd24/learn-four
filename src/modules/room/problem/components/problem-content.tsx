@@ -1,20 +1,25 @@
 'use client';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
+import {ProblemDetailData} from '@/data';
 import {useMediaQuery} from '@/hook/use-media-query';
 import {ProblemDetailType} from '@/types';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
-import CodeArea from './code-area';
+import {useProblemId} from '../hook/use-problem-id';
+import CodeArea from './code-area/code-area';
 
 type Props = {
-	problem: ProblemDetailType;
+	preloadedProblem: ProblemDetailType;
 };
 
-export default function ProblemContent({problem}: Props) {
+export default function ProblemContent({preloadedProblem}: Props) {
+	// IMPORTANT
+	// const problem = usePreloadedQuery(preloadedProblem);
+	const problem = ProblemDetailData;
 	const isMobile = useMediaQuery('(max-width: 767px)');
-
-	useHydrateTestCases();
-	useHydrateTemplate();
+	const problemId = useProblemId();
+	useHydrateTestCases(problemId);
+	useHydrateTemplate(problemId);
 
 	if (isMobile) {
 		<div className="flex w-screen overflow-hidden">

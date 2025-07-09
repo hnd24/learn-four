@@ -10,7 +10,7 @@ import {useGetLanguages} from '@/hook/data/language';
 import {useAtom} from 'jotai';
 import {useEffect} from 'react';
 import {toast} from 'sonner';
-import {languagesAtom} from '../atom/language';
+import {languagesAtom} from '../../atom/language';
 
 export default function LanguageSelector() {
 	const {data: LANGUAGES, isPending} = useGetLanguages();

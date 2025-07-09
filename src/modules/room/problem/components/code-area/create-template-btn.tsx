@@ -32,10 +32,10 @@ import {useAtomValue} from 'jotai';
 import {FileCode, Loader2} from 'lucide-react';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
-import {codeAtom} from '../atom/code';
-import {languagesAtom} from '../atom/language';
-import {useProblemId} from '../hook/use-problem-id';
-import {ActionSelector} from './action-selector';
+import {codeAtom} from '../../atom/code';
+import {languagesAtom} from '../../atom/language';
+import {useProblemId} from '../../hook/use-problem-id';
+import {ActionSelector} from '../action-selector';
 
 type TemplateType = {
 	[lang: string]: {
@@ -85,6 +85,7 @@ export default function CreateTemplateBtn() {
 	};
 
 	const onSubmit = () => {
+		// IMPORTANT
 		updateProblem(problemId, {
 			template: formData,
 		});
@@ -212,6 +213,7 @@ export default function CreateTemplateBtn() {
 								Cancel
 							</Button>
 							<Button type="button" onClick={onSubmit} disabled={isPending}>
+								{isPending ? <Loader2 className="animate-spin" /> : null}
 								Create
 							</Button>
 						</DialogFooter>

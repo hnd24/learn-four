@@ -26,11 +26,10 @@ export default function RootLayout({
 							<NuqsAdapter>
 								<JotaiProvider>
 									{children}
-									<Toaster />
+									<Toaster richColors />
 								</JotaiProvider>
 							</NuqsAdapter>
 						</ConvexClientProvider>
-						<Toaster />
 					</ThemeProvider>
 				</body>
 			</html>

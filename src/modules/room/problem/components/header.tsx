@@ -1,13 +1,29 @@
+import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
+import {Button} from '@/components/ui/button';
+import {ProblemDetailData} from '@/data';
 import {ProblemDetailType} from '@/types';
-import {PublishButton} from './publish-btn';
+import {Bell} from 'lucide-react';
+import {PublishButton} from './public-action/publish-btn';
 import Title from './title';
 
 type Props = {
-	problem: ProblemDetailType;
+	preloadedProblem: ProblemDetailType;
 };
 
-export default function Header({problem}: Props) {
+export default function Header({preloadedProblem}: Props) {
+	// IMPORTANT
+	// const problem = usePreloadedQuery(preloadedProblem);
+	const problem = ProblemDetailData;
+
+	if (!problem) {
+		return (
+			<header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
+				<Logo className="hidden lg:block" link="/admin" />
+			</header>
+		);
+	}
+
 	return (
 		<header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
 			<div className="flex size-full items-center justify-between px-4 py-3">
@@ -21,8 +37,16 @@ export default function Header({problem}: Props) {
 					{/* TODO: Avatar Stack */}
 					<div className="hidden md:block"></div>
 
-					<div className="md:mr-6">
+					<div className="flex gap-2">
 						<PublishButton problemId={problem._id} status={problem.status} />
+						<Hint label="coming soon">
+							<Button
+								variant="secondary"
+								size="icon"
+								className="hidden md:flex group">
+								<Bell className=" group-hover:scale-105" />
+							</Button>
+						</Hint>
 					</div>
 				</div>
 			</div>

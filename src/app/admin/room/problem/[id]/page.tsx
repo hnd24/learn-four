@@ -13,7 +13,7 @@ export default async function ProblemDetailPage({params}: {params: Params}) {
 	}
 	const token = await getAuthToken();
 
-	// const problem = await preloadQuery(
+	// const preloadedProblem = await preloadQuery(
 	// 	api.problems.getDetailProblemById,
 	// 	{
 	// 		problemId: id as Id<'problems'>,
@@ -21,14 +21,15 @@ export default async function ProblemDetailPage({params}: {params: Params}) {
 	// 	{ token },
 	// )
 
-	const problem = ProblemDetailData;
+	// IMPORTANT
+	const preloadedProblem = ProblemDetailData;
 
 	return (
 		<div className="flex h-screen flex-col overflow-hidden">
-			<Header problem={problem} />
+			<Header preloadedProblem={preloadedProblem} />
 			<main className="mt-16 flex size-full">
 				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-					<ProblemContent problem={problem} />
+					<ProblemContent preloadedProblem={preloadedProblem} />
 				</div>
 			</main>
 		</div>

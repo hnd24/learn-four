@@ -21,9 +21,7 @@ export default function Title({problemId, title}: Props) {
 			await updateProblem(problemId, {name: value});
 		};
 		if (title === value || !value.trim()) {
-			toast.error('Title cannot be empty or unchanged', {
-				style: {color: 'red'},
-			});
+			toast.error('Title cannot be empty or unchanged');
 			return;
 		}
 		updateTitle();
@@ -31,7 +29,7 @@ export default function Title({problemId, title}: Props) {
 	if (isPending) {
 		return (
 			<div className="flex h-full items-center justify-center">
-				<span className="text-muted-foreground">isPending...</span>
+				<span className="text-muted-foreground">Loading...</span>
 			</div>
 		);
 	}

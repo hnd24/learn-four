@@ -16,19 +16,19 @@ export default function Header() {
 				<div className="flex flex-1 px-6 items-center justify-between">
 					{/* TODO: navbar */}
 					<Navbar />
-					<Hint label="coming soon">
-						<div className="flex items-center gap-3">
-							<ClientOnly>
-								<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
-							</ClientOnly>
+					<div className="flex items-center gap-3">
+						<ClientOnly>
+							<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
+						</ClientOnly>
+						<Hint label="coming soon">
 							<Button
 								variant="secondary"
 								size="icon"
 								className="hidden md:flex group">
 								<Bell className=" group-hover:scale-105" />
 							</Button>
-						</div>
-					</Hint>
+						</Hint>
+					</div>
 				</div>
 			</div>
 		</header>
