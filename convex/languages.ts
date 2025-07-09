@@ -1,11 +1,11 @@
-import {ConvexError, v} from "convex/values";
-import {Id} from "./_generated/dataModel";
-import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
+import {ConvexError, v} from 'convex/values';
+import {Id} from './_generated/dataModel';
+import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
 
-export async function getLanguage(ctx: QueryCtx | MutationCtx, languageId: Id<"languages">) {
+export async function getLanguage(ctx: QueryCtx | MutationCtx, languageId: Id<'languages'>) {
 	const language = await ctx.db.get(languageId);
 	if (!language) {
-		throw new ConvexError("expected language to be defined");
+		throw new ConvexError('expected language to be defined');
 	}
 	return language;
 }
@@ -13,26 +13,25 @@ export async function getLanguage(ctx: QueryCtx | MutationCtx, languageId: Id<"l
 export const createLanguage = mutation({
 	args: {
 		name: v.string(),
-		logo: v.string(),
 		idJude0: v.number(),
-		extension: v.string(),
+		value: v.string(),
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert("languages", args);
+		await ctx.db.insert('languages', args);
 	},
 });
 
 export const updateLanguage = mutation({
 	args: {
-		languageId: v.id("languages"),
+		languageId: v.id('languages'),
 		name: v.optional(v.string()),
 		idJude0: v.optional(v.number()),
-		extension: v.optional(v.string()),
+		value: v.optional(v.string()),
 	},
 	async handler(ctx, args) {
 		const language = await getLanguage(ctx, args.languageId);
 		if (!language) {
-			throw new ConvexError("Language not found");
+			throw new ConvexError('Language not found');
 		}
 
 		const {languageId, ...fields} = args;
@@ -45,7 +44,7 @@ export const updateLanguage = mutation({
 });
 
 export const deleteLanguage = mutation({
-	args: {languageId: v.id("languages")},
+	args: {languageId: v.id('languages')},
 	async handler(ctx, args) {
 		const language = await getLanguage(ctx, args.languageId);
 		if (!language) {
@@ -57,7 +56,7 @@ export const deleteLanguage = mutation({
 
 export const getLanguages = query({
 	async handler(ctx) {
-		const languages = await ctx.db.query("languages").collect();
+		const languages = await ctx.db.query('languages').collect();
 		return languages.map(language => language);
 	},
 });

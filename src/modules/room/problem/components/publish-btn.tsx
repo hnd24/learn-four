@@ -21,7 +21,7 @@ type Props = {
 };
 
 export const PublishButton = ({problemId, status}: Props) => {
-	const {updateProblem, loading} = useUpdateProblem();
+	const {updateProblem, isPending} = useUpdateProblem();
 	const [open, setOpen] = useState(false);
 
 	const onClick = async () => {
@@ -30,7 +30,7 @@ export const PublishButton = ({problemId, status}: Props) => {
 
 	if (status === 'public') {
 		return (
-			<Button onClick={onClick} disabled={loading}>
+			<Button onClick={onClick} disabled={isPending}>
 				<PencilLine />
 				<span className="hidden sm:block">Edit</span>
 			</Button>
@@ -40,7 +40,7 @@ export const PublishButton = ({problemId, status}: Props) => {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
-				<Button variant="outline" disabled={loading}>
+				<Button variant="outline" disabled={isPending}>
 					<CloudUpload />
 					<span className="hidden sm:block">Publish</span>
 				</Button>

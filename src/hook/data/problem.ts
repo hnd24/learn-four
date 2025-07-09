@@ -79,17 +79,27 @@ type UpdateProblemArgs = {
 };
 
 export const useUpdateProblem = () => {
-	const [loading, setLoading] = useState(false);
+	const [isPending, setIsPending] = useState(false);
 
 	const updateProblem = useCallback(
 		async (problemId: Id<'problems'>, args: Partial<UpdateProblemArgs>): Promise<void> => {
-			setLoading(true);
+			setIsPending(true);
 			setTimeout(() => {
-				setLoading(false);
+				setIsPending(false);
 			}, 2000);
 		},
 		[],
 	);
 
-	return {updateProblem, loading};
+	return {updateProblem, isPending};
+};
+
+export const useGetStatusProblem = () => {
+	const [isPending, setIsPending] = useState(false);
+	setIsPending(true);
+	setTimeout(() => {
+		setIsPending(false);
+	}, 2000);
+	const data = 'private';
+	return {data, isPending};
 };

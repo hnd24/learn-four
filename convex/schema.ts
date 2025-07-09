@@ -122,7 +122,7 @@ export default defineSchema({
 	languages: defineTable({
 		name: v.string(),
 		idJude0: v.number(),
-		extension: v.string(),
+		value: v.string(),
 	}),
 
 	/************************************************** */

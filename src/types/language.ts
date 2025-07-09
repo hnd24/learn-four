@@ -5,5 +5,5 @@ export type LanguageType = {
 	_creationTime?: number;
 	name: string;
 	idJude0: number;
-	extension: string;
+	value: string;
 };

@@ -14,7 +14,7 @@ type Props = {
 export default function Title({problemId, title}: Props) {
 	const [value, setValue] = useState<string>(title || '');
 	const [isEditing, setIsEditing] = useState<boolean>(false);
-	const {updateProblem, loading} = useUpdateProblem();
+	const {updateProblem, isPending} = useUpdateProblem();
 
 	const onSubmit = () => {
 		const updateTitle = async () => {
@@ -28,10 +28,10 @@ export default function Title({problemId, title}: Props) {
 		}
 		updateTitle();
 	};
-	if (loading) {
+	if (isPending) {
 		return (
 			<div className="flex h-full items-center justify-center">
-				<span className="text-muted-foreground">Loading...</span>
+				<span className="text-muted-foreground">isPending...</span>
 			</div>
 		);
 	}
@@ -62,7 +62,7 @@ export default function Title({problemId, title}: Props) {
 						onSubmit();
 						setIsEditing(false);
 					}}
-					disabled={loading}
+					disabled={isPending}
 				/>
 			</form>
 		);

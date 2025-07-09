@@ -22,7 +22,7 @@ type Props = {
 
 export default function FormPublishProblem({problemId, onClose}: Props) {
 	const {data, isPending: loading} = useGetProblemById(problemId);
-	const {updateProblem, loading: isPending} = useUpdateProblem();
+	const {updateProblem, isPending} = useUpdateProblem();
 	const form = useForm<ProblemValues>({
 		resolver: zodResolver(problemSchema),
 		defaultValues: {

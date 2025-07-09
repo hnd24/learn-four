@@ -3,12 +3,10 @@ import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {Id} from '../../../../../convex/_generated/dataModel';
 import {testCaseDataAtom} from '../atom/testcase';
+import {useProblemId} from './use-problem-id';
 
-type Props = {
-	problemId: Id<'problems'>;
-};
-
-export const useHydrateTestCases = ({problemId}: Props) => {
+export const useHydrateTestCases = () => {
+	const problemId: Id<'problems'> = useProblemId();
 	const {data} = useGetProblemTestcase(problemId);
 	const setTestCases = useSetAtom(testCaseDataAtom);
 

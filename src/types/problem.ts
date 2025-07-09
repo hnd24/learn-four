@@ -23,7 +23,6 @@ export type ProblemDetailType = {
 	content: string;
 	level: LEVEL_PROBLEM;
 	answer: AnswerType;
-	template: TemplateType;
 	status: STATUS_PROBLEM;
 	topic: TopicType | null;
 	authorId: string;
@@ -33,11 +32,16 @@ export type ProblemDetailType = {
 
 export type ProblemTestcaseType = {
 	problemId: Id<'problems'>;
+	isPublic: boolean;
 	testcase: TestcaseType[];
 };
 
 export type ProblemTemplateType = {
 	problemId: Id<'problems'>;
+	isPublic: boolean;
+	code: {
+		[language: string]: string;
+	};
 	template: TemplateType;
 };
 

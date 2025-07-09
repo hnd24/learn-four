@@ -2,6 +2,9 @@
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
 import {ProblemDetailType} from '@/types';
+import {useHydrateTemplate} from '../hook/use-hydrate-template';
+import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
+import CodeArea from './code-area';
 
 type Props = {
 	problem: ProblemDetailType;
@@ -10,7 +13,8 @@ type Props = {
 export default function ProblemContent({problem}: Props) {
 	const isMobile = useMediaQuery('(max-width: 767px)');
 
-    
+	useHydrateTestCases();
+	useHydrateTemplate();
 
 	if (isMobile) {
 		<div className="flex w-screen overflow-hidden">
@@ -27,8 +31,7 @@ export default function ProblemContent({problem}: Props) {
 				</ResizablePanel>
 				<ResizableHandle withHandle className="mx-2" />
 				<ResizablePanel defaultSize={50} minSize={30}>
-					{/* TODO: CodeArea */}
-					{/* <CodeArea /> */}
+					<CodeArea isPrivate={problem.status === 'private'} />
 				</ResizablePanel>
 			</ResizablePanelGroup>
 		</div>

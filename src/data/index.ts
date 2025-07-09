@@ -406,44 +406,13 @@ export const ProblemDetailData: ProblemDetailType = {
 	level: 'easy',
 	answer: {
 		javascript: 'function sum(a, b) {\n  return a + b;\n}',
-		typescript: 'function sum(a: number, b: number): number {\n  return a + b;\n}',
+		typescript: 'function sum(a: number, b: number) {\n  return a + b;\n}',
 		python: 'def sum(a, b):\n    return a + b',
 		java: 'public int sum(int a, int b) {\n    return a + b;\n}',
 		csharp: 'public int Sum(int a, int b) {\n    return a + b;\n}',
 		cpp: 'int sum(int a, int b) {\n    return a + b;\n}',
 	},
-	template: {
-		javascript: {
-			head: '// Your solution in JavaScript\n',
-			body: 'function sum(a, b) {\n  // TODO: implement\n}',
-			tail: '\n// End of solution',
-		},
-		typescript: {
-			head: '// Your solution in TypeScript\n',
-			body: 'function sum(a: number, b: number): number {\n  // TODO: implement\n}',
-			tail: '\n// End of solution',
-		},
-		python: {
-			head: '# Your solution in Python\n',
-			body: 'def sum(a, b):\n    # TODO: implement',
-			tail: '\n# End of solution',
-		},
-		java: {
-			head: '// Your solution in Java\npublic class Solution {\n',
-			body: '    public int sum(int a, int b) {\n        // TODO: implement\n    }',
-			tail: '\n}',
-		},
-		csharp: {
-			head: '// Your solution in C#\npublic class Solution {\n',
-			body: '    public int Sum(int a, int b) {\n        // TODO: implement\n    }',
-			tail: '\n}',
-		},
-		cpp: {
-			head: '// Your solution in C++\n',
-			body: 'int sum(int a, int b) {\n    // TODO: implement\n}',
-			tail: '\n// End of solution',
-		},
-	},
+
 	status: 'private',
 	topic: {
 		_id: '1' as Id<'topics'>,
@@ -457,6 +426,7 @@ export const ProblemDetailData: ProblemDetailType = {
 
 export const ProblemTestcaseData: ProblemTestcaseType = {
 	problemId: 'prob123456' as Id<'problems'>,
+	isPublic: false,
 	testcase: [
 		{
 			id: 'tc1',
@@ -519,6 +489,15 @@ export const ProblemTestcaseData: ProblemTestcaseType = {
 
 export const ProblemTemplateData: ProblemTemplateType = {
 	problemId: 'prob123456' as Id<'problems'>,
+	isPublic: false,
+	code: {
+		javascript: 'function sum(a, b) {\n  // TODO: implement\n}',
+		typescript: 'function sum(a: number, b: number) {\n  // TODO: implement\n}',
+		python: 'def sum(a, b):\n    # TODO: implement',
+		java: 'public int sum(int a, int b) {\n    // TODO: implement\n}',
+		csharp: 'public int Sum(int a, int b) {\n    // TODO: implement\n}',
+		cpp: 'int sum(int a, int b) {\n    // TODO: implement\n}',
+	},
 	template: {
 		javascript: {
 			head: '// Your solution in JavaScript\n',
@@ -527,7 +506,7 @@ export const ProblemTemplateData: ProblemTemplateType = {
 		},
 		typescript: {
 			head: '// Your solution in TypeScript\n',
-			body: 'function sum(a: number, b: number): number {\n  // TODO: implement\n}',
+			body: 'function sum(a: number, b: number) {\n  // TODO: implement\n}',
 			tail: '\n// End of solution',
 		},
 		python: {
@@ -568,42 +547,42 @@ export const UserProblemData: UserProblemType = {
 export const LanguageData: LanguageType[] = [
 	{
 		_id: 'rs70hama6aw5h9havyf8k5w5nn7k9d34' as Id<'languages'>,
-		extension: 'js',
+		value: 'javascript',
 		idJude0: 102,
 		name: 'JavaScript',
 		_creationTime: 1751904162519.7346,
 	},
 	{
 		_id: 'rs732jarak5t2pjn65razddxwh7k8zh2' as Id<'languages'>,
-		extension: 'ts',
+		value: 'typescript',
 		idJude0: 101,
 		name: 'TypeScript',
 		_creationTime: 1751904220758.2996,
 	},
 	{
 		_id: 'rs71fz19hjgyh0ychexfwxf21n7k9qn2' as Id<'languages'>,
-		extension: 'py',
+		value: 'python',
 		idJude0: 100,
 		name: 'Python',
 		_creationTime: 1751904271410.8945,
 	},
 	{
 		_id: 'rs7fb176vxk098w81wvpxf06qn7k97c1' as Id<'languages'>,
-		extension: 'java',
+		value: 'java',
 		idJude0: 91,
 		name: 'Java',
 		_creationTime: 1751904271410.8948,
 	},
 	{
 		_id: 'rs76dtqyrtdyjqez6w7w0ysa2n7k8ax3' as Id<'languages'>,
-		extension: 'cs',
+		value: 'cpp',
 		idJude0: 51,
 		name: 'C#',
 		_creationTime: 1751904271410.895,
 	},
 	{
 		_id: 'rs7c0g7bjf63b89v7ne5crhgzn7k8w22' as Id<'languages'>,
-		extension: 'cpp',
+		value: 'csharp',
 		idJude0: 54,
 		name: 'C++',
 		_creationTime: 1751904271410.8953,

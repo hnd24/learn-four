@@ -217,7 +217,9 @@ export const getTestcaseByProblemId = query({
 		if (!problem) {
 			return null;
 		}
+		const isPublic = problem.status === 'public';
 		return {
+			isPublic,
 			problemId: problem._id,
 			testcase: problem.testcase,
 		};
@@ -232,9 +234,31 @@ export const getTemplateByProblemId = query({
 		if (!problem) {
 			return null;
 		}
+		const isPublic = problem.status === 'public';
+		const code: {[lang: string]: string} = {};
+		Object.keys(problem.template).forEach(lang => {
+			if (!problem.template[lang]) {
+				const {head, body, tail} = problem.template[lang];
+				if (isPublic) {
+					code[lang] = `${body}`;
+					return;
+				}
+				code[lang] = `${head}\n\n${body}\n\n${tail}`;
+			}
+		});
 		return {
-			problemId: problem._id,
+			isPublic,
+			code: code,
 			template: problem.template,
 		};
+	},
+});
+
+export const getStatusProblemById = query({
+	args: {problemId: v.id('problems')},
+	async handler(ctx, args) {
+		const {problemId} = args;
+		const problem = await getProblem(ctx, problemId);
+		return problem.status;
 	},
 });
