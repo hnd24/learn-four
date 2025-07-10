@@ -1,6 +1,6 @@
 'use server';
 
-import {MAX_RETRIES, RETRY_DELAY_MS} from '@/constants';
+import {JUDGE0_LANGUAGE_ID_MAP, MAX_RETRIES, RETRY_DELAY_MS} from '@/constants';
 import {wait} from '../lib/utils';
 import {ApiResponse, BatchedApiResponse} from '../problem/types';
 
@@ -118,7 +118,7 @@ export const runBatchedCodeWithJudge0 = async (submissions: Props[]) => {
 			},
 			body: JSON.stringify({
 				submissions: submissions.map(s => ({
-					language_id: s.languageIdJudge0,
+					language_id: JUDGE0_LANGUAGE_ID_MAP[s.languageIdJudge0],
 					source_code: s.sourceCode,
 					stdin: s.stdin,
 					expected_output: s.expectedOutput,

@@ -43,18 +43,6 @@ export function getOverallStatus(results: TestResult[]) {
 	return hasWrongAnswer ? StatusResult.WrongAnswer : StatusResult.Accepted;
 }
 
-export function formatTime(value: number) {
-	const numberFormatter = new Intl.NumberFormat('en-US', {
-		maximumFractionDigits: 1,
-	});
-
-	if (value < 1) {
-		return `${numberFormatter.format(value * 1000)} ms`;
-	} else {
-		return `${numberFormatter.format(value)} s`;
-	}
-}
-
 export function wait(ms: number) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }

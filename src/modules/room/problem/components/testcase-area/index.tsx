@@ -7,9 +7,10 @@ import {TestCaseTab} from '../../types';
 
 import {useAtom, useAtomValue} from 'jotai';
 import {Loader2} from 'lucide-react';
-import Testcase from '.';
 import {executingAtom} from '../../atom/result/execution';
 import {activeTabAtom} from '../../atom/tab';
+import Result from './result';
+import Testcase from './testcase';
 
 export default function TestcaseArea() {
 	const [activeTab, setActiveTab] = useAtom(activeTabAtom);
@@ -46,13 +47,11 @@ export default function TestcaseArea() {
 				</div>
 
 				<TabsContent value="testcase" className="flex-1 overflow-hidden">
-					{/* TODO: Testcase */}
 					<Testcase />
 				</TabsContent>
 
 				<TabsContent value="result" className="flex-1 overflow-hidden">
-					{/* TODO: Result */}
-					{/* <Results /> */}
+					<Result />
 				</TabsContent>
 			</Tabs>
 		</div>

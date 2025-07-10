@@ -12,7 +12,7 @@ export const addInputToTestCase = atom(null, (get, set) => {
 
 	const newInput: InputTestCaseType = {
 		id: nanoid(),
-		label: `arg${testCase.inputs.length}`,
+		label: `arg${testCase.inputs.length + 1}`,
 		value: '',
 	};
 

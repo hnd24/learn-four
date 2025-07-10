@@ -28,3 +28,12 @@ export const INITIAL_TEST_CASE: TestcaseType = {
 
 export const MAX_RETRIES = 10;
 export const RETRY_DELAY_MS = 1000;
+
+export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
+	63: 102, // JavaScript (Node.js 22.08.0)
+	74: 101, // TypeScript (5.6.2)
+	71: 100, // Python (3.12.5)
+	62: 91, // Java (JDK 17.0.6)
+	54: 54, // C++ (GCC 14.1.0)
+	51: 51, // C# (Mono
+};

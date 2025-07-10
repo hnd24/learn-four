@@ -11,12 +11,11 @@ import {testCasesAtoms} from '../testcase';
 export const executingAtom = atom<boolean>(false);
 
 export const executeCodeAtom = atom(null, async (get, set, code: string) => {
+	console.log('🚀 ~ executeCodeAtom ~ code:', code);
 	const language = get(languagesAtom);
 	const testCases = get(testCasesAtoms);
 	if (!language) {
-		toast.error('No language selected', {
-			style: {color: 'red'},
-		});
+		toast.error('No language selected');
 		return;
 	}
 	try {

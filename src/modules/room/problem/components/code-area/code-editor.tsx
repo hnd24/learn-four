@@ -12,6 +12,7 @@ import {languagesAtom} from '../../atom/language';
 import CreateTemplateBtn from './create-template-btn';
 import LanguageSelector from './language-selector';
 import {ResetCodeButton} from './reset-code';
+import RunCodeBtn from './run-code-btn';
 
 type Props = {
 	isPrivate: boolean;
@@ -55,8 +56,7 @@ export const CodeEditor = ({isPrivate}: Props) => {
 						<AlignLeft />
 					</ActionSelector>
 					<ResetCodeButton />
-					{/* TODO: RunCode */}
-					{/* <RunCodeButton /> */}
+					<RunCodeBtn />
 					<CreateTemplateBtn />
 				</div>
 			</div>

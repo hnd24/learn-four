@@ -1,19 +1,18 @@
-import {DRAFT_CODE_KEY} from "@/constants";
-import {DraftCode} from "@/types";
-import {clsx, type ClassValue} from "clsx";
-import {twMerge} from "tailwind-merge";
+import {clsx, type ClassValue} from 'clsx';
+import {twMerge} from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
 }
 
-export const setDraftCode = (draft: DraftCode) => {
-	if (!draft.code) return;
+export function formatTime(value: number) {
+	const numberFormatter = new Intl.NumberFormat('en-US', {
+		maximumFractionDigits: 1,
+	});
 
-	localStorage.setItem(DRAFT_CODE_KEY, JSON.stringify(draft));
-};
-
-export const getDraftCode = () => {
-	const draft = localStorage.getItem(DRAFT_CODE_KEY);
-	return draft ? (JSON.parse(draft) as DraftCode) : null;
-};
+	if (value < 1) {
+		return `${numberFormatter.format(value * 1000)} ms`;
+	} else {
+		return `${numberFormatter.format(value)} s`;
+	}
+}

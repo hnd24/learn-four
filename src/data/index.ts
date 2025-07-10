@@ -491,7 +491,8 @@ export const ProblemTemplateData: ProblemTemplateType = {
 	problemId: 'prob123456' as Id<'problems'>,
 	isPublic: false,
 	code: {
-		javascript: 'function sum(a, b) {\n  // TODO: implement\n}',
+		javascript:
+			'// Your solution in JavaScript\nfunction sum(a, b) {\n  // TODO: implement\n}\n// End of solution',
 		typescript: 'function sum(a: number, b: number) {\n  // TODO: implement\n}',
 		python: 'def sum(a, b):\n    # TODO: implement',
 		java: 'public int sum(int a, int b) {\n    // TODO: implement\n}',
@@ -548,28 +549,28 @@ export const LanguageData: LanguageType[] = [
 	{
 		_id: 'rs70hama6aw5h9havyf8k5w5nn7k9d34' as Id<'languages'>,
 		value: 'javascript',
-		idJude0: 102,
+		idJude0: 63,
 		name: 'JavaScript',
 		_creationTime: 1751904162519.7346,
 	},
 	{
 		_id: 'rs732jarak5t2pjn65razddxwh7k8zh2' as Id<'languages'>,
 		value: 'typescript',
-		idJude0: 101,
+		idJude0: 74,
 		name: 'TypeScript',
 		_creationTime: 1751904220758.2996,
 	},
 	{
 		_id: 'rs71fz19hjgyh0ychexfwxf21n7k9qn2' as Id<'languages'>,
 		value: 'python',
-		idJude0: 100,
+		idJude0: 71,
 		name: 'Python',
 		_creationTime: 1751904271410.8945,
 	},
 	{
 		_id: 'rs7fb176vxk098w81wvpxf06qn7k97c1' as Id<'languages'>,
 		value: 'java',
-		idJude0: 91,
+		idJude0: 62,
 		name: 'Java',
 		_creationTime: 1751904271410.8948,
 	},
@@ -588,12 +589,3 @@ export const LanguageData: LanguageType[] = [
 		_creationTime: 1751904271410.8953,
 	},
 ];
-
-export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
-	63: 102, // JavaScript (Node.js 22.08.0)
-	71: 100, // Python (3.12.5)
-	101: 101, // TypeScript (5.6.2)
-	62: 91, // Java (JDK 17.0.6)
-	54: 54, // C++ (GCC 14.1.0)
-	51: 51, // C# (Mono
-};

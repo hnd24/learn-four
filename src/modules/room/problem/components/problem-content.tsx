@@ -18,6 +18,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 	const problem = ProblemDetailData;
 	const isMobile = useMediaQuery('(max-width: 767px)');
 	const problemId = useProblemId();
+
 	useHydrateTestCases(problemId);
 	useHydrateTemplate(problemId);
 
@@ -36,7 +37,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 				</ResizablePanel>
 				<ResizableHandle withHandle className="mx-2" />
 				<ResizablePanel defaultSize={50} minSize={30}>
-					<CodeArea isPrivate={problem.status === 'private'} />
+					<CodeArea isPrivate={true} />
 				</ResizablePanel>
 			</ResizablePanelGroup>
 		</div>
