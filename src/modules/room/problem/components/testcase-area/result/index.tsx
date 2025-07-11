@@ -32,8 +32,6 @@ export default function Result() {
 	}
 
 	const diff = highlightDiff(currentResult.output, currentResult.expected);
-	console.log('🚀 ~ Result ~ diff:', diff);
-	console.log('🚀 ~ Result ~ currentResult:', currentResult);
 	const isShow = currentResult.status !== StatusResult.TimeLimitExceeded;
 
 	return (

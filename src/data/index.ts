@@ -2,6 +2,7 @@ import {
 	CourseDetailType,
 	CourseStateType,
 	LanguageType,
+	lessonsCourseType,
 	LessonType,
 	ProblemDetailType,
 	ProblemStateType,
@@ -16,6 +17,7 @@ export const courseData: CourseStateType[] = [
 	{
 		_id: '123' as Id<'courses'>,
 		language: 'JavaScript',
+		name: 'JavaScript Course',
 		description:
 			'JavaScript is the programming language of the Web. JavaScript is easy to learn.',
 		banner: '/images/banner-Javascript.png',
@@ -24,12 +26,13 @@ export const courseData: CourseStateType[] = [
 		status: 'public',
 		lessons: 15,
 		_creationTime: 0,
-		content: 'hello world',
+		document: 'hello world',
 		logo: '/icon/default/javascript.svg',
 	},
 	{
 		_id: '345' as Id<'courses'>,
 		language: 'TypeScript',
+		name: 'TypeScript Course',
 		description:
 			'TypeScript is a strict syntactical superset of JavaScript and adds optional static typing to the language.',
 		banner: '/images/banner-typescript.png',
@@ -38,12 +41,13 @@ export const courseData: CourseStateType[] = [
 		status: 'public',
 		lessons: 10,
 		_creationTime: 0,
-		content: '',
+		document: '',
 		logo: '/icon/default/typescript.svg',
 	},
 	{
 		_id: '456' as Id<'courses'>,
 		language: 'Java',
+		name: 'Java Course',
 		description: 'Java is a high-level, class-based, object-oriented programming language.',
 		banner: '/images/banner-java.png',
 		authorId: '789012',
@@ -51,13 +55,14 @@ export const courseData: CourseStateType[] = [
 		status: 'public',
 		lessons: 12,
 		_creationTime: 0,
-		content: '',
+		document: '',
 		logo: '/icon/default/java.svg',
 	},
 
 	{
 		_id: '789' as Id<'courses'>,
 		language: 'Python',
+		name: 'Python Course',
 		description: 'Python is powerful... and fast.',
 		banner: '/images/banner-python.png',
 		authorId: '345678',
@@ -65,12 +70,13 @@ export const courseData: CourseStateType[] = [
 		status: 'public',
 		lessons: 15,
 		_creationTime: 0,
-		content: '',
+		document: '',
 		logo: '/icon/default/python.svg',
 	},
 	{
 		_id: '101112' as Id<'courses'>,
 		language: 'C++',
+		name: 'C++ Course',
 		description:
 			'C++ supports multiple programming paradigms and low-level memory manipulation.',
 		banner: '/images/banner-cpp.png',
@@ -79,12 +85,13 @@ export const courseData: CourseStateType[] = [
 		status: 'public',
 		lessons: 11,
 		_creationTime: 0,
-		content: '',
+		document: '',
 		logo: '/icon/default/cpp.svg',
 	},
 	{
 		_id: '131415' as Id<'courses'>,
 		language: 'C#',
+		name: 'C# Course',
 		description: 'C# is a modern, object-oriented language for .NET applications.',
 		banner: '/images/banner-csharp.png',
 		authorId: '161718',
@@ -92,10 +99,107 @@ export const courseData: CourseStateType[] = [
 		status: 'public',
 		lessons: 13,
 		_creationTime: 0,
-		content: '',
+		document: '',
 		logo: '/icon/default/csharp.svg',
 	},
 ];
+
+export const lessonsCourseData: lessonsCourseType = {
+	courseId: '123' as Id<'courses'>,
+	status: 'public',
+	lessons: [
+		{
+			_id: 'lesson_001' as Id<'lessons'>,
+			name: 'Introduction to JavaScript',
+			status: 'public',
+			level: 'easy',
+		},
+		{
+			_id: 'lesson2' as Id<'lessons'>,
+			name: 'JavaScript Variables and Data Types',
+			status: 'public',
+			level: 'medium',
+		},
+		{
+			_id: 'lesson3' as Id<'lessons'>,
+			name: 'JavaScript Functions',
+			status: 'private',
+			level: 'hard',
+		},
+		{
+			_id: 'lesson4' as Id<'lessons'>,
+			name: 'JavaScript Arrays and Objects',
+			status: 'public',
+			level: 'hard',
+		},
+		{
+			_id: 'lesson5' as Id<'lessons'>,
+			name: 'JavaScript DOM Manipulation',
+			status: 'public',
+			level: 'medium',
+		},
+		{
+			_id: 'lesson6' as Id<'lessons'>,
+			name: 'JavaScript Events and Event Handling',
+			status: 'private',
+			level: 'hard',
+		},
+		{
+			_id: 'lesson7' as Id<'lessons'>,
+			name: 'JavaScript Promises and Async/Await',
+			status: 'public',
+			level: 'easy',
+		},
+		{
+			_id: 'lesson8' as Id<'lessons'>,
+			name: 'JavaScript Error Handling and Debugging',
+			status: 'public',
+			level: 'medium',
+		},
+		{
+			_id: 'lesson9' as Id<'lessons'>,
+			name: 'JavaScript ES6 Features',
+			status: 'private',
+			level: 'hard',
+		},
+		{
+			_id: 'lesson10' as Id<'lessons'>,
+			name: 'JavaScript APIs and AJAX',
+			status: 'public',
+			level: 'easy',
+		},
+		{
+			_id: 'lesson11' as Id<'lessons'>,
+			name: 'JavaScript Frameworks and Libraries',
+			status: 'public',
+			level: 'medium',
+		},
+		{
+			_id: 'lesson12' as Id<'lessons'>,
+			name: 'JavaScript Testing and Debugging',
+			status: 'private',
+			level: 'hard',
+		},
+		{
+			_id: 'lesson13' as Id<'lessons'>,
+			name: 'JavaScript Best Practices',
+			status: 'public',
+			level: 'easy',
+		},
+		{
+			_id: 'lesson14' as Id<'lessons'>,
+			name: 'JavaScript Performance Optimization',
+			status: 'public',
+			level: 'medium',
+		},
+		{
+			_id: 'lesson15' as Id<'lessons'>,
+			name: 'JavaScript Security',
+			status: 'private',
+			level: 'hard',
+		},
+	],
+};
 
 export const topicData: TopicType[] = [
 	{
@@ -231,93 +335,18 @@ export const problemData: ProblemStateType[] = [
 export const CourseDetailData: CourseDetailType = {
 	_id: '123' as Id<'courses'>,
 	language: 'JavaScript',
+	name: 'JavaScript Course',
 	description: 'JavaScript is the programming language of the Web. JavaScript is easy to learn.',
 	banner: '/images/banner-Javascript.png',
 	authorId: '123456',
 	learner: 200,
 	status: 'public',
 	_creationTime: 0,
-	content: 'hello world',
+	document: 'hello world',
 	logo: '/icon/default/javascript.svg',
 	authorName: 'Anonymous',
 	authorImage: 'https://github.com/shadcn.png',
-	lessons: [
-		{
-			_id: 'lesson_001' as Id<'lessons'>,
-			name: 'Introduction to JavaScript',
-			level: 'easy',
-		},
-		{
-			_id: 'lesson2' as Id<'lessons'>,
-			name: 'JavaScript Variables and Data Types',
-			level: 'medium',
-		},
-		{
-			_id: 'lesson3' as Id<'lessons'>,
-			name: 'JavaScript Functions',
-			level: 'hard',
-		},
-		{
-			_id: 'lesson4' as Id<'lessons'>,
-			name: 'JavaScript Arrays and Objects',
-			level: 'hard',
-		},
-		{
-			_id: 'lesson5' as Id<'lessons'>,
-			name: 'JavaScript DOM Manipulation',
-			level: 'medium',
-		},
-		{
-			_id: 'lesson6' as Id<'lessons'>,
-			name: 'JavaScript Events and Event Handling',
-			level: 'hard',
-		},
-		{
-			_id: 'lesson7' as Id<'lessons'>,
-			name: 'JavaScript Promises and Async/Await',
-			level: 'easy',
-		},
-		{
-			_id: 'lesson8' as Id<'lessons'>,
-			name: 'JavaScript Error Handling and Debugging',
-			level: 'medium',
-		},
-		{
-			_id: 'lesson9' as Id<'lessons'>,
-			name: 'JavaScript ES6 Features',
-			level: 'hard',
-		},
-		{
-			_id: 'lesson10' as Id<'lessons'>,
-			name: 'JavaScript APIs and AJAX',
-			level: 'easy',
-		},
-		{
-			_id: 'lesson11' as Id<'lessons'>,
-			name: 'JavaScript Frameworks and Libraries',
-			level: 'medium',
-		},
-		{
-			_id: 'lesson12' as Id<'lessons'>,
-			name: 'JavaScript Testing and Debugging',
-			level: 'hard',
-		},
-		{
-			_id: 'lesson13' as Id<'lessons'>,
-			name: 'JavaScript Best Practices',
-			level: 'easy',
-		},
-		{
-			_id: 'lesson14' as Id<'lessons'>,
-			name: 'JavaScript Performance Optimization',
-			level: 'medium',
-		},
-		{
-			_id: 'lesson15' as Id<'lessons'>,
-			name: 'JavaScript Security',
-			level: 'hard',
-		},
-	],
+	lessons: 15,
 };
 
 export const listLessonData: LessonType[] = [
@@ -325,76 +354,91 @@ export const listLessonData: LessonType[] = [
 		_id: 'lesson_001' as Id<'lessons'>,
 		name: 'Introduction to JavaScript',
 		level: 'easy',
+		status: 'public',
 	},
 	{
 		_id: 'lesson2' as Id<'lessons'>,
 		name: 'JavaScript Variables and Data Types',
 		level: 'medium',
+		status: 'public',
 	},
 	{
 		_id: 'lesson3' as Id<'lessons'>,
 		name: 'JavaScript Functions',
 		level: 'hard',
+		status: 'private',
 	},
 	{
 		_id: 'lesson4' as Id<'lessons'>,
 		name: 'JavaScript Arrays and Objects',
 		level: 'hard',
+		status: 'public',
 	},
 	{
 		_id: 'lesson5' as Id<'lessons'>,
 		name: 'JavaScript DOM Manipulation',
 		level: 'medium',
+		status: 'public',
 	},
 	{
 		_id: 'lesson6' as Id<'lessons'>,
 		name: 'JavaScript Events and Event Handling',
 		level: 'hard',
+		status: 'private',
 	},
 	{
 		_id: 'lesson7' as Id<'lessons'>,
 		name: 'JavaScript Promises and Async/Await',
 		level: 'easy',
+		status: 'public',
 	},
 	{
 		_id: 'lesson8' as Id<'lessons'>,
 		name: 'JavaScript Error Handling and Debugging',
 		level: 'medium',
+		status: 'public',
 	},
 	{
 		_id: 'lesson9' as Id<'lessons'>,
 		name: 'JavaScript ES6 Features',
 		level: 'hard',
+		status: 'private',
 	},
 	{
 		_id: 'lesson10' as Id<'lessons'>,
 		name: 'JavaScript APIs and AJAX',
 		level: 'easy',
+		status: 'public',
 	},
 	{
 		_id: 'lesson11' as Id<'lessons'>,
 		name: 'JavaScript Frameworks and Libraries',
 		level: 'medium',
+		status: 'public',
 	},
 	{
 		_id: 'lesson12' as Id<'lessons'>,
 		name: 'JavaScript Testing and Debugging',
 		level: 'hard',
+		status: 'private',
 	},
 	{
 		_id: 'lesson13' as Id<'lessons'>,
 		name: 'JavaScript Best Practices',
 		level: 'easy',
+		status: 'public',
 	},
 	{
 		_id: 'lesson14' as Id<'lessons'>,
 		name: 'JavaScript Performance Optimization',
 		level: 'medium',
+		status: 'public',
 	},
 	{
 		_id: 'lesson15' as Id<'lessons'>,
 		name: 'JavaScript Security',
 		level: 'hard',
+		status: 'private',
 	},
 ];
 

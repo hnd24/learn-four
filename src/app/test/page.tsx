@@ -1,11 +1,9 @@
-"use client";
-
-import TestC from "./components/testC";
+import TestUpload from './components/TestUpload';
 
 export default function page() {
 	return (
 		<div className=" grid place-items-center ">
-			<TestC />
+			<TestUpload />
 		</div>
 	);
 }

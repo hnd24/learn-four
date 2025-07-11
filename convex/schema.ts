@@ -128,10 +128,11 @@ export default defineSchema({
 	/************************************************** */
 	courses: defineTable({
 		logo: v.string(),
+		name: v.string(),
 		description: v.string(),
 		banner: v.string(),
 		learner: v.number(),
-		content: v.string(),
+		document: v.string(),
 		authorId: v.string(),
 		status: CourseStateType,
 		language: v.id('languages'),

@@ -28,7 +28,14 @@ export type LessonType = {
 	_creationTime?: number;
 	name: string;
 	level: LEVEL_LESSON;
+	status: STATUS_LESSON;
 	state?: 'completed' | 'progress' | 'unsolved';
+};
+
+export type lessonsCourseType = {
+	courseId: Id<'courses'>;
+	status: STATUS_LESSON;
+	lessons: LessonType[];
 };
 
 export type UserLessonType = {

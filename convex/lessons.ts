@@ -94,15 +94,15 @@ export const getLessonInCourse = query({
 		if (!course) {
 			throw new ConvexError('Course not found');
 		}
-		const language = await ctx.db.get(course.language);
 		const lessons = await ctx.db
 			.query('lessons')
 			.withIndex('by_courseId', q => q.eq('courseId', args.courseId))
 			.collect();
-		return lessons.map(lesson => ({
-			...lesson,
-			language,
-		}));
+		return {
+			courseId: course._id,
+			status: course.status,
+			lessons: lessons,
+		};
 	},
 });
 

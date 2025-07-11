@@ -1,12 +1,12 @@
 import {Id} from '../../convex/_generated/dataModel';
-import {LessonType} from './lesson';
 
 export type STATUS_COURSE = 'public' | 'private' | 'pending';
 
 export type CourseStateType = {
 	_id: Id<'courses'>;
 	_creationTime: number;
-	content: string;
+	document: string;
+	name: string;
 	status: STATUS_COURSE;
 	authorId: string;
 	logo: string;
@@ -20,7 +20,8 @@ export type CourseStateType = {
 export type CourseDetailType = {
 	_id: Id<'courses'>;
 	_creationTime: number;
-	content: string;
+	document: string;
+	name: string;
 	status: STATUS_COURSE;
 	logo: string;
 	description: string;
@@ -30,5 +31,5 @@ export type CourseDetailType = {
 	authorId: string;
 	authorName: string;
 	authorImage: string;
-	lessons: LessonType[];
+	lessons: number;
 };

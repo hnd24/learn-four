@@ -19,6 +19,7 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import {Textarea} from '@/components/ui/textarea';
 import {useGetDetailCourse} from '@/hook/data/course';
 import {cn} from '@/lib/utils';
 import {CourseDetailType} from '@/types';
@@ -36,7 +37,7 @@ type Props = {
 
 export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 	const {isPending, data} = useGetDetailCourse(idCourse);
-	const [course, setCourse] = useState<CourseDetailType | undefined>(undefined);
+	const [course, setCourse] = useState<CourseDetailType>();
 	const router = useRouter();
 	const disabled = isPending || !idCourse || !course;
 	useEffect(() => {
@@ -44,7 +45,7 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 			setCourse(data);
 		}
 	}, [idCourse, data, isPending]);
-	if (disabled) {
+	if (!course && disabled) {
 		return (
 			<Dialog open={isOpen} onOpenChange={onClose}>
 				<DialogContent>
@@ -84,14 +85,20 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 									height={28}
 									className="size-7"
 								/>
-
-								<h2 className="text-2xl leading-6 font-bold">
-									{course.language} Course
-								</h2>
+								<div>
+									<h2 className="text-2xl leading-6 font-bold">{course.name}</h2>
+								</div>
 							</div>
-							<p className="text-sm text-muted-foreground truncate-3line">
-								{course.description}
-							</p>
+							<Textarea
+								onChange={e => {
+									setCourse({
+										...course,
+										description: e.target.value,
+									});
+								}}
+								value={course.description}
+								className="size-full text-sm text-muted-foreground truncate-3line"
+							/>
 						</div>
 						<div className=" absolute bottom-0 left-0 border rounded-lg w-fit p-2	pr-3 py-1 flex items-end gap-2 text-sm text-muted-foreground">
 							<PersonStanding /> <p>{course.learner} learners</p>
