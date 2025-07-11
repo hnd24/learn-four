@@ -1,4 +1,5 @@
 import {Id} from '../../convex/_generated/dataModel';
+import {LanguageType} from './language';
 
 export type STATUS_COURSE = 'public' | 'private' | 'pending';
 
@@ -13,8 +14,6 @@ export type CourseStateType = {
 	description: string;
 	banner: string;
 	learner: number;
-	language: string;
-	lessons: number;
 };
 
 export type CourseDetailType = {
@@ -27,9 +26,28 @@ export type CourseDetailType = {
 	description: string;
 	banner: string;
 	learner: number;
-	language: string;
+	language: LanguageType;
 	authorId: string;
 	authorName: string;
 	authorImage: string;
-	lessons: number;
+};
+
+export type AddCourseArgs = {
+	description: string;
+	banner: string;
+	learner: number;
+	name: string;
+	document: string;
+	authorId: string;
+	status: STATUS_COURSE;
+	logo: string;
+	languageId: Id<'languages'>;
+};
+
+export type UpdateCourseArgs = {
+	status: STATUS_COURSE;
+	name: string;
+	description: string;
+	banner: string;
+	logo: string;
 };

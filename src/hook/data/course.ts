@@ -1,48 +1,34 @@
-import {CourseDetailType, CourseStateType, STATUS_COURSE} from '@/types';
-import {useCallback, useState} from 'react';
+import {convexQuery, useConvexMutation} from '@convex-dev/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {api} from '../../../convex/_generated/api';
 import {Id} from '../../../convex/_generated/dataModel';
-import {courseData, CourseDetailData} from '../../data';
 
 export const useGetCourses = () => {
-	const [isPending, setIsPending] = useState(false);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: CourseStateType[] | undefined = courseData;
+	return useQuery(convexQuery(api.courses.getCourses, {}));
+};
 
-	return {data, isPending};
+export const useGetPublicCourses = () => {
+	return useQuery(convexQuery(api.courses.useGetPublicCourses, {}));
 };
 
 export const useGetDetailCourse = (id: Id<'courses'>) => {
-	const [isPending, setIsPending] = useState(false);
-
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: CourseDetailType | undefined = CourseDetailData;
-	return {data, isPending};
+	return useQuery(convexQuery(api.courses.getCourseById, {courseId: id}));
 };
 
-type UpdateCourseArgs = {
-	status: STATUS_COURSE;
-	name: string;
-	description: string;
-	banner: string;
-	logo: string;
+export const useAddCourse = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.courses.createCourse),
+	});
 };
 
 export const useUpdateCourse = () => {
-	const [isPending, setIsPending] = useState(false);
+	return useMutation({
+		mutationFn: useConvexMutation(api.courses.updateCourse),
+	});
+};
 
-	const updateCourse = useCallback(
-		async (id: Id<'courses'>, args: Partial<UpdateCourseArgs>): Promise<void> => {
-			setIsPending(true);
-			setTimeout(() => {
-				setIsPending(false);
-			}, 2000);
-		},
-		[],
-	);
-
-	return {updateCourse, isPending};
+export const useDeleteCourse = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.courses.deleteCourse),
+	});
 };

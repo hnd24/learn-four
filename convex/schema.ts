@@ -135,7 +135,7 @@ export default defineSchema({
 		document: v.string(),
 		authorId: v.string(),
 		status: CourseStateType,
-		language: v.id('languages'),
+		languageId: v.id('languages'),
 	}),
 	/************************************************** */
 
@@ -152,7 +152,7 @@ export default defineSchema({
 		}),
 		testcase: TestcaseType,
 		status: StatusType,
-		language: v.id('languages'),
+		languageId: v.id('languages'),
 	}).index('by_courseId', ['courseId']),
 
 	/************************************************** */

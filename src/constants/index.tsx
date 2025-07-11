@@ -37,3 +37,7 @@ export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
 	54: 54, // C++ (GCC 14.1.0)
 	51: 51, // C# (Mono
 };
+
+export const DEFAULT_BANNER_URL =
+	'https://jxavqwzcp5avqdlx.public.blob.vercel-storage.com/1-xKQoIdSoTTEa98cExqAsy.jpeg';
+export const DEFAULT_LOGO_URL = 'https://github.com/shadcn.png';

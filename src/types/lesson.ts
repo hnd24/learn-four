@@ -46,3 +46,19 @@ export type UserLessonType = {
 	state: 'completed' | 'progress';
 	lessonId: Id<'lessons'>;
 };
+
+export type AddLessonArgs = {
+	courseId: Id<'courses'>;
+	name: string;
+	level: LEVEL_LESSON;
+	content: string;
+	answer: string;
+	template: {
+		head: string;
+		body: string;
+		tail: string;
+	};
+	testcase: TestcaseType[];
+	status: STATUS_LESSON;
+	languageId: Id<'languages'>;
+};

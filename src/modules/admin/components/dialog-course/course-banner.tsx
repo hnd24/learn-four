@@ -1,5 +1,6 @@
 'use client';
 
+import {DEFAULT_BANNER_URL} from '@/constants';
 import {deleteFile} from '@/lib/delete-file';
 import {uploadFile} from '@/lib/upload-file';
 import {cn} from '@/lib/utils';
@@ -34,7 +35,7 @@ export default function CourseBanner({course, onChange}: Props) {
 	};
 
 	return (
-		<div className="ml-auto">
+		<>
 			<input
 				type="file"
 				id="change-course-banner"
@@ -53,8 +54,8 @@ export default function CourseBanner({course, onChange}: Props) {
 				className="cursor-pointer group">
 				{course.banner ? (
 					<Image
-						alt={`banner ${course.language}`}
-						src={course.banner}
+						alt={`banner ${course.name}`}
+						src={course.banner || DEFAULT_BANNER_URL}
 						width={256}
 						height={160}
 						className={cn(
@@ -73,6 +74,6 @@ export default function CourseBanner({course, onChange}: Props) {
 					</div>
 				)}
 			</button>
-		</div>
+		</>
 	);
 }

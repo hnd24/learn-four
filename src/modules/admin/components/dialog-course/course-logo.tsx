@@ -1,11 +1,11 @@
 'use client';
 
+import {DEFAULT_LOGO_URL} from '@/constants';
 import {deleteFile} from '@/lib/delete-file';
 import {uploadFile} from '@/lib/upload-file';
 import {cn} from '@/lib/utils';
 import {CourseDetailType} from '@/types';
 import {Plus} from 'lucide-react';
-import Image from 'next/image';
 import {useState} from 'react';
 import {toast} from 'sonner';
 
@@ -24,6 +24,7 @@ export default function CourseLogo({course, onChange}: Props) {
 			return;
 		}
 		const url = await uploadFile(file);
+		console.log('🚀 ~ handleChange ~ url:', url);
 		if (course.logo) {
 			await deleteFile(course.logo);
 		}
@@ -53,9 +54,9 @@ export default function CourseLogo({course, onChange}: Props) {
 				onClick={() => document.getElementById('change-course-logo')?.click()}
 				className="cursor-pointer group">
 				{course.logo ? (
-					<Image
-						alt={`icon ${course.language}`}
-						src={course.logo}
+					<img
+						alt={`icon ${course.name}`}
+						src={course.logo || DEFAULT_LOGO_URL}
 						width={28}
 						height={28}
 						className={cn(

@@ -57,6 +57,6 @@ export const deleteLanguage = mutation({
 export const getLanguages = query({
 	async handler(ctx) {
 		const languages = await ctx.db.query('languages').collect();
-		return languages.map(language => language);
+		return languages;
 	},
 });

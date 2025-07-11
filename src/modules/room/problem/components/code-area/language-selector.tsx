@@ -36,7 +36,7 @@ export default function LanguageSelector() {
 	}, [LANGUAGES]);
 
 	const onChange = (value: string) => {
-		const selectedLanguage = LANGUAGES.find(lang => lang.value === value);
+		const selectedLanguage = LANGUAGES?.find(lang => lang.value === value);
 
 		if (!selectedLanguage) {
 			toast.error('Unsupported language selected.');
@@ -47,7 +47,7 @@ export default function LanguageSelector() {
 	};
 
 	// if (languages.length === 0 || isPending) {
-	if (isPending) {
+	if (isPending || !LANGUAGES || LANGUAGES.length === 0) {
 		return (
 			<Select disabled>
 				<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">

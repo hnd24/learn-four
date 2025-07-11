@@ -8,7 +8,7 @@ import {CourseStateType} from './schema';
 export async function getCourse(ctx: QueryCtx, courseId: Id<'courses'>) {
 	const course = await ctx.db.get(courseId);
 	if (!course) {
-		throw new ConvexError('expected course to be defined');
+		return null;
 	}
 	return course;
 }
@@ -25,6 +25,7 @@ export async function removeCourse(ctx: MutationCtx, courseId: Id<'courses'>) {
 			}),
 		);
 	}
+
 	await ctx.db.delete(courseId);
 }
 
@@ -36,27 +37,23 @@ export const deleteCourse = mutation({
 });
 
 export const getCourses = query({
-	args: {},
-	async handler(ctx, args) {
+	async handler(ctx) {
 		const courses = await ctx.db.query('courses').collect();
 		if (courses.length === 0) {
 			return [];
 		}
-		return Promise.all(
-			courses.map(async course => {
-				const lessons = await ctx.db
-					.query('lessons')
-					.withIndex('by_courseId', q => q.eq('courseId', course._id))
-					.collect();
-				const language = await ctx.db.get(course.language);
-				const lessonCount = lessons.length;
-				return {
-					...course,
-					language: language?.name,
-					lessons: lessonCount,
-				};
-			}),
-		);
+		return courses;
+	},
+});
+
+export const useGetPublicCourses = query({
+	async handler(ctx) {
+		const rawCourses = await ctx.db.query('courses').collect();
+		const courses = rawCourses.filter(course => course.status === 'public');
+		if (courses.length === 0) {
+			return [];
+		}
+		return courses;
 	},
 });
 
@@ -65,28 +62,22 @@ export const getCourseById = query({
 	async handler(ctx, args) {
 		const course = await getCourse(ctx, args.courseId);
 		if (!course) {
-			throw new ConvexError('Course not found');
+			return null;
 		}
-		const lessons = await ctx.db
-			.query('lessons')
-			.withIndex('by_courseId', q => q.eq('courseId', course._id))
-			.collect();
-		const language = await ctx.db.get(course.language);
 		const author = await ctx.db
 			.query('users')
 			.withIndex('by_userId', q => q.eq('userId', course.authorId))
 			.unique();
+		const language = await ctx.db.get(course.languageId);
+		if (!language) {
+			throw new ConvexError('Language not found');
+		}
 		return {
 			...course,
-			language: language?.name,
-			lessons: lessons.map(lesson => ({
-				_id: lesson._id,
-				name: lesson.name,
-				level: lesson.level,
-			})),
-			authorId: author?._id,
-			authorName: author?.name,
-			authorImage: author?.image,
+			language: language,
+			authorId: author?.userId || '',
+			authorName: author?.name || '',
+			authorImage: author?.image || '',
 		};
 	},
 });
@@ -94,7 +85,6 @@ export const getCourseById = query({
 export const createCourse = mutation({
 	args: {
 		description: v.string(),
-		background: v.string(),
 		banner: v.string(),
 		learner: v.number(),
 		name: v.string(),
@@ -102,7 +92,7 @@ export const createCourse = mutation({
 		authorId: v.string(),
 		status: CourseStateType,
 		logo: v.string(),
-		language: v.id('languages'),
+		languageId: v.id('languages'),
 	},
 	async handler(ctx, args) {
 		await ctx.db.insert('courses', {
@@ -117,13 +107,12 @@ export const updateCourse = mutation({
 		courseId: v.id('courses'),
 		name: v.optional(v.string()),
 		description: v.optional(v.string()),
-		background: v.optional(v.string()),
 		banner: v.optional(v.string()),
 		learner: v.optional(v.number()),
 		logo: v.optional(v.string()),
 		document: v.optional(v.string()),
 		status: v.optional(CourseStateType),
-		language: v.optional(v.id('languages')),
+		languageId: v.optional(v.id('languages')),
 	},
 	async handler(ctx, args) {
 		const course = await getCourse(ctx, args.courseId);

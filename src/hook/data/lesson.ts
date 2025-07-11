@@ -1,15 +1,12 @@
-import {lessonsCourseData, listLessonData} from '@/data';
-import {
-	LessonDetailType,
-	lessonsCourseType,
-	LessonType,
-	LEVEL_LESSON,
-	STATUS_LESSON,
-	TestcaseType,
-	UserLessonType,
-} from '@/types';
+import {listLessonData} from '@/data';
+import {LessonDetailType, LessonType, UserLessonType} from '@/types';
+
 import {useState} from 'react';
+import {api} from '../../../convex/_generated/api';
 import {Id} from '../../../convex/_generated/dataModel';
+
+import {convexQuery, useConvexMutation} from '@convex-dev/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 
 export const useGetDetailLesson = (language: string) => {
 	const [isPending, setIsPending] = useState(false);
@@ -22,13 +19,7 @@ export const useGetDetailLesson = (language: string) => {
 };
 
 export const useGetLessonsByCourseId = (courseId: Id<'courses'>) => {
-	const [isPending, setIsPending] = useState(false);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: lessonsCourseType = lessonsCourseData;
-
-	return {data, isPending};
+	return useQuery(convexQuery(api.lessons.getLessonInCourse, {courseId}));
 };
 
 export const useGetLessonById = (id: Id<'lessons'>) => {
@@ -52,44 +43,8 @@ export const useGetUserLesson = () => {
 	return {data, isPending};
 };
 
-type LessonArgs = {
-	courseId: Id<'courses'>;
-	name: string;
-	level: LEVEL_LESSON;
-	content: string;
-	answer: string;
-	template: {
-		head: string;
-		body: string;
-		tail: string;
-	};
-	testcase: TestcaseType[];
-	status: STATUS_LESSON;
-};
-
-export const useAddLesson = () => {
-	const [isPending, setIsPending] = useState(false);
-
-	const addLesson = async (courseId: Id<'courses'>): Promise<void> => {
-		const defaultArgs: LessonArgs = {
-			courseId,
-			name: '',
-			level: 'easy',
-			content: '',
-			answer: '',
-			template: {
-				head: '',
-				body: '',
-				tail: '',
-			},
-			testcase: [],
-			status: 'private',
-		};
-		setIsPending(true);
-		setTimeout(() => {
-			setIsPending(false);
-		}, 2000);
-	};
-
-	return {addLesson, isPending};
+export const useAddLesson = (courseId: Id<'courses'>) => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.lessons.createLesson),
+	});
 };

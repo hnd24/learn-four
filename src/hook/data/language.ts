@@ -1,12 +1,7 @@
-import {LanguageData} from '@/data';
-import {LanguageType} from '@/types';
-import {useState} from 'react';
+import {convexQuery} from '@convex-dev/react-query';
+import {useQuery} from '@tanstack/react-query';
+import {api} from '../../../convex/_generated/api';
 
 export const useGetLanguages = () => {
-	const [isPending, setIsPending] = useState(false);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: LanguageType[] | undefined = LanguageData;
-	return {data, isPending};
+	return useQuery(convexQuery(api.languages.getLanguages, {}));
 };

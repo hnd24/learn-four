@@ -18,7 +18,7 @@ export default function CourseName({course, onChange}: Props) {
 			<Input
 				className="w-full rounded border bg-transparent px-2 py-1 text-sm font-semibold focus:border-blue-500 focus:outline-none"
 				type="text"
-				value={course.name || ''}
+				value={course.name}
 				onChange={e =>
 					onChange({
 						...course,
@@ -44,7 +44,9 @@ export default function CourseName({course, onChange}: Props) {
 
 	return (
 		<div className="flex h-full  gap-x-2">
-			<h2 className=" self-end text-2xl leading-6 font-bold">{course.name}</h2>
+			<h2 className=" self-end text-lg md:text-2xl leading-6 font-bold truncate">
+				{course.name || 'Name Course'}
+			</h2>
 			{!isEditing && (
 				<SquarePen
 					className=" self-center text-muted-foreground size-4 shrink-0 cursor-pointer hover:text-white"

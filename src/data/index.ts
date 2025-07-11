@@ -16,7 +16,6 @@ import {Id} from '../../convex/_generated/dataModel';
 export const courseData: CourseStateType[] = [
 	{
 		_id: '123' as Id<'courses'>,
-		language: 'JavaScript',
 		name: 'JavaScript Course',
 		description:
 			'JavaScript is the programming language of the Web. JavaScript is easy to learn.',
@@ -24,14 +23,12 @@ export const courseData: CourseStateType[] = [
 		authorId: '123456',
 		learner: 200,
 		status: 'public',
-		lessons: 15,
 		_creationTime: 0,
 		document: 'hello world',
 		logo: '/icon/default/javascript.svg',
 	},
 	{
 		_id: '345' as Id<'courses'>,
-		language: 'TypeScript',
 		name: 'TypeScript Course',
 		description:
 			'TypeScript is a strict syntactical superset of JavaScript and adds optional static typing to the language.',
@@ -39,21 +36,18 @@ export const courseData: CourseStateType[] = [
 		authorId: '234567',
 		learner: 150,
 		status: 'public',
-		lessons: 10,
 		_creationTime: 0,
 		document: '',
 		logo: '/icon/default/typescript.svg',
 	},
 	{
 		_id: '456' as Id<'courses'>,
-		language: 'Java',
 		name: 'Java Course',
 		description: 'Java is a high-level, class-based, object-oriented programming language.',
 		banner: '/images/banner-java.png',
 		authorId: '789012',
 		learner: 300,
 		status: 'public',
-		lessons: 12,
 		_creationTime: 0,
 		document: '',
 		logo: '/icon/default/java.svg',
@@ -61,21 +55,18 @@ export const courseData: CourseStateType[] = [
 
 	{
 		_id: '789' as Id<'courses'>,
-		language: 'Python',
 		name: 'Python Course',
 		description: 'Python is powerful... and fast.',
 		banner: '/images/banner-python.png',
 		authorId: '345678',
 		learner: 250,
 		status: 'public',
-		lessons: 15,
 		_creationTime: 0,
 		document: '',
 		logo: '/icon/default/python.svg',
 	},
 	{
 		_id: '101112' as Id<'courses'>,
-		language: 'C++',
 		name: 'C++ Course',
 		description:
 			'C++ supports multiple programming paradigms and low-level memory manipulation.',
@@ -83,21 +74,18 @@ export const courseData: CourseStateType[] = [
 		authorId: '901234',
 		learner: 180,
 		status: 'public',
-		lessons: 11,
 		_creationTime: 0,
 		document: '',
 		logo: '/icon/default/cpp.svg',
 	},
 	{
 		_id: '131415' as Id<'courses'>,
-		language: 'C#',
 		name: 'C# Course',
 		description: 'C# is a modern, object-oriented language for .NET applications.',
 		banner: '/images/banner-csharp.png',
 		authorId: '161718',
 		learner: 220,
 		status: 'public',
-		lessons: 13,
 		_creationTime: 0,
 		document: '',
 		logo: '/icon/default/csharp.svg',
@@ -334,7 +322,6 @@ export const problemData: ProblemStateType[] = [
 
 export const CourseDetailData: CourseDetailType = {
 	_id: '123' as Id<'courses'>,
-	language: 'JavaScript',
 	name: 'JavaScript Course',
 	description: 'JavaScript is the programming language of the Web. JavaScript is easy to learn.',
 	banner: '/images/banner-Javascript.png',
@@ -346,7 +333,6 @@ export const CourseDetailData: CourseDetailType = {
 	logo: '/icon/default/javascript.svg',
 	authorName: 'Anonymous',
 	authorImage: 'https://github.com/shadcn.png',
-	lessons: 15,
 };
 
 export const listLessonData: LessonType[] = [

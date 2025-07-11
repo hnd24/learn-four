@@ -49,7 +49,7 @@ export const createLesson = mutation({
 		}),
 		testcase: TestcaseType,
 		status: StatusType,
-		language: v.id('languages'),
+		languageId: v.id('languages'),
 	},
 	async handler(ctx, args) {
 		await ctx.db.insert('lessons', {
@@ -75,7 +75,7 @@ export const updateLesson = mutation({
 		),
 		testcase: v.optional(TestcaseType),
 		status: v.optional(StatusType),
-		language: v.optional(v.id('languages')),
+		languageId: v.optional(v.id('languages')),
 	},
 	async handler(ctx, args) {
 		const {lessonId, ...updateFields} = args;
@@ -113,10 +113,7 @@ export const getDetailLessonById = query({
 		if (!lesson) {
 			throw new ConvexError('Lesson not found');
 		}
-		const language = await ctx.db
-			.query('languages')
-			.withIndex('by_id', q => q.eq('_id', lesson.language))
-			.unique();
+		const language = await ctx.db.get(lesson.languageId);
 		return {
 			...lesson,
 			language,
