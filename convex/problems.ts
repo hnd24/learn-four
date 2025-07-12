@@ -50,7 +50,7 @@ export const updateProblem = mutation({
 		name: v.optional(v.string()),
 		level: v.optional(levelType),
 		topicId: v.optional(v.id('topics')),
-		content: v.optional(v.string()),
+		document: v.optional(v.string()),
 		answer: v.optional(AnswerType),
 		template: v.optional(TemplateType),
 		testcase: v.optional(TestcaseType),
@@ -72,8 +72,7 @@ export const createProblem = mutation({
 	args: {
 		name: v.string(),
 		level: levelType,
-		topicId: v.id('topics'),
-		content: v.string(),
+		document: v.string(),
 		answer: AnswerType,
 		template: TemplateType,
 		testcase: TestcaseType,
@@ -97,10 +96,19 @@ export const getDetailProblemById = query({
 	async handler(ctx, args) {
 		const {testcase, template, ...problem} = await getProblem(ctx, args.problemId);
 		const user = await getUser(ctx, problem.authorId);
-		const topic = await ctx.db.get(problem.topicId);
+		if (problem.topicId) {
+			const topic = await ctx.db.get(problem.topicId);
+			return {
+				...problem,
+				topic,
+				authorId: problem.authorId,
+				authorName: user.name,
+				authorImage: user.image,
+			};
+		}
 		return {
 			...problem,
-			topic,
+			topic: null,
 			authorId: problem.authorId,
 			authorName: user.name,
 			authorImage: user.image,
@@ -119,47 +127,60 @@ export const queryProblems = query({
 	async handler(ctx, args) {
 		const {name, level, topicId, status, paginationOpts} = args;
 		const identity = await ctx.auth.getUserIdentity();
+
 		const preIndexQuery = ctx.db.query('problems');
 		const baseQuery = name
 			? preIndexQuery.withSearchIndex('by_name', q => q.search('name', name))
 			: preIndexQuery;
 
 		const filteredQuery = filter(baseQuery, problem => {
-			if (level && problem.level !== level) {
-				return false;
-			}
-			if (topicId && problem.topicId !== topicId) {
-				return false;
-			}
-			if (status && problem.status !== status) {
-				return false;
-			}
+			if (level && problem.level !== level) return false;
+			if (topicId && problem.topicId !== topicId) return false;
+			if (status && problem.status !== status) return false;
 			return true;
 		});
 
 		const rawResults = await filteredQuery.paginate(paginationOpts);
+		const topics = await ctx.db.query('topics').collect();
 		if (!identity) {
-			return rawResults;
+			return {
+				...rawResults,
+				page: rawResults.page.map(problem => ({
+					_id: problem._id,
+					name: problem.name,
+					level: problem.level,
+					status: problem.status,
+					topic: topics.find(t => t._id === problem.topicId) || null,
+				})),
+			};
 		}
 		const user = await getUser(ctx, identity.subject);
-		const topics = await ctx.db.query('topics').collect();
-		return await Promise.all(
+
+		const enrichedPage = await Promise.all(
 			rawResults.page.map(async problem => {
 				const state = await ctx.db
 					.query('user_problem')
 					.withIndex('by_userId_problemId', q =>
-						q.eq('userId', user.userId).eq('problemId', problem._id),
+						q.eq('userId', user._id).eq('problemId', problem._id),
 					)
 					.unique();
+
 				return {
 					_id: problem._id,
 					name: problem.name,
 					level: problem.level,
+					status: problem.status,
 					topic: topics.find(t => t._id === problem.topicId) || null,
-					state: state ? state.state : 'unsolved',
+					state: state?.state ?? 'unsolved',
 				};
 			}),
 		);
+
+		// ✅ Trả về đúng PaginationResult<T>
+		return {
+			...rawResults,
+			page: enrichedPage,
+		};
 	},
 });
 

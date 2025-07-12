@@ -1,61 +1,25 @@
-import {topicData} from '@/data';
-import {TopicType} from '@/types/topic';
-import {useCallback, useState} from 'react';
-import {Id} from '../../../convex/_generated/dataModel';
+import {convexQuery, useConvexMutation} from '@convex-dev/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {api} from '../../../convex/_generated/api';
 
 export const useGetTopics = () => {
-	const [loading, setLoading] = useState(false);
-	setTimeout(() => {
-		setLoading(false);
-	}, 2000);
-	const data: TopicType[] | null = topicData;
-
-	return {data, loading};
+	return useQuery(convexQuery(api.topic.getTopics, {}));
 };
 
 export const useAddTopic = () => {
-	const [loading, setLoading] = useState(false);
-
-	const addTopic = useCallback(async (name: string): Promise<Id<'topics'>> => {
-		const data = {
-			name,
-			status: 'public',
-		};
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-		return 'new-topic-id' as Id<'topics'>; // Simulate a new topic ID
-	}, []);
-
-	return {addTopic, loading};
+	return useMutation({
+		mutationFn: useConvexMutation(api.topic.createTopic),
+	});
 };
 
 export const useDeleteTopic = () => {
-	const [loading, setLoading] = useState(false);
-
-	const deleteTopic = useCallback(
-		async (id: Id<'topics'>, topic: Partial<Omit<TopicType, 'id'>>): Promise<void> => {
-			setLoading(true);
-			setTimeout(() => {
-				setLoading(false);
-			}, 2000);
-		},
-		[],
-	);
-
-	return {deleteTopic, loading};
+	return useMutation({
+		mutationFn: useConvexMutation(api.topic.deleteTopic),
+	});
 };
 
 export const useUpdateTopic = () => {
-	const [loading, setLoading] = useState(false);
-
-	const updateTopic = useCallback(async (topic: Partial<TopicType>): Promise<void> => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-	}, []);
-
-	return {updateTopic, loading};
+	return useMutation({
+		mutationFn: useConvexMutation(api.topic.updateTopic),
+	});
 };

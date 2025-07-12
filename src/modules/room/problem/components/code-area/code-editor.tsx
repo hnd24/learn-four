@@ -1,6 +1,7 @@
 'use client';
 
 import {useMounted} from '@/hook/use-mounted';
+import {cn} from '@/lib/utils';
 import {Editor, OnMount} from '@monaco-editor/react';
 import {useAtom, useAtomValue} from 'jotai';
 import {AlignLeft, Loader2} from 'lucide-react';
@@ -9,20 +10,18 @@ import {useRef} from 'react';
 import {ActionSelector} from '../../../../../components/action-selector';
 import {codeAtom} from '../../atom/code';
 import {languagesAtom} from '../../atom/language';
+import {statusProblemAtom} from '../../atom/status';
 import CreateTemplateBtn from './create-template-btn';
 import LanguageSelector from './language-selector';
 import {ResetCodeButton} from './reset-code';
 import RunCodeBtn from './run-code-btn';
 
-type Props = {
-	isPrivate: boolean;
-};
-
-export const CodeEditor = ({isPrivate}: Props) => {
+export const CodeEditor = () => {
 	const mounted = useMounted();
 	const language = useAtomValue(languagesAtom);
 	const [code, setCode] = useAtom(codeAtom);
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+	const status = useAtomValue(statusProblemAtom);
 	if (!mounted) {
 		return (
 			<div className="bg-border flex size-full items-center justify-center rounded-b-md border border-t-0">
@@ -57,7 +56,9 @@ export const CodeEditor = ({isPrivate}: Props) => {
 					</ActionSelector>
 					<ResetCodeButton />
 					<RunCodeBtn />
-					<CreateTemplateBtn />
+					<div className={cn('hidden', {'flex': status === 'private'})}>
+						<CreateTemplateBtn />
+					</div>
 				</div>
 			</div>
 			<div className="h-full overflow-hidden">

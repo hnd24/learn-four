@@ -12,6 +12,7 @@ import {useUpdateProblem} from '@/hook/data/problem';
 import {STATUS_PROBLEM} from '@/types';
 import {CloudUpload, PencilLine} from 'lucide-react';
 import {useState} from 'react';
+import {toast} from 'sonner';
 import {Id} from '../../../../../../convex/_generated/dataModel';
 import FormPublishProblem from './form-public';
 
@@ -21,12 +22,23 @@ type Props = {
 };
 
 export const PublishButton = ({problemId, status}: Props) => {
-	const {updateProblem, isPending} = useUpdateProblem();
+	const {mutate: updateProblem, isPending} = useUpdateProblem();
 	const [open, setOpen] = useState(false);
 
 	const onClick = () => {
 		// IMPORTANT
-		updateProblem(problemId, {status: 'private'});
+		updateProblem(
+			{problemId, status: 'private'},
+			{
+				onSuccess: () => {
+					toast.success('Problem status updated to private');
+				},
+				onError: error => {
+					toast.error(`Failed to update problem status`);
+					console.log('⚙️ Error updating problem status:', error);
+				},
+			},
+		);
 	};
 
 	if (status === 'public') {

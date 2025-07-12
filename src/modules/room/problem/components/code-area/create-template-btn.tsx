@@ -37,30 +37,26 @@ import {codeAtom} from '../../atom/code';
 import {languagesAtom} from '../../atom/language';
 import {useProblemId} from '../../hook/use-problem-id';
 
-type TemplateType = {
-	[lang: string]: {
-		head: string;
-		body: string;
-		tail: string;
-	};
-};
-
 export default function CreateTemplateBtn() {
 	const problemId = useProblemId();
-	const {
-		data: {template: currentTemplate},
-	} = useGetProblemTemplate(problemId);
+	const {data} = useGetProblemTemplate(problemId);
+	const currentTemplate = data?.template;
 	const language = useAtomValue(languagesAtom);
 	const code = useAtomValue(codeAtom);
 
 	const {data: LANGUAGES, isPending: loading} = useGetLanguages();
 
-	const {updateProblem, isPending} = useUpdateProblem();
+	const {mutate: updateProblem, isPending} = useUpdateProblem();
 
 	const [open, setOpen] = useState(false);
-	const [selectLang, setSelectLang] = useState<LanguageType>(language || LANGUAGES?.[0]);
+	const [selectLang, setSelectLang] = useState<LanguageType>();
 
 	const [formData, setFormData] = useState<TemplateType>({});
+
+	useEffect(() => {
+		setSelectLang(language || LANGUAGES?.[0]);
+	}, [language, LANGUAGES]);
+
 	useEffect(() => {
 		setFormData(currentTemplate || {});
 	}, [currentTemplate]);
@@ -68,7 +64,7 @@ export default function CreateTemplateBtn() {
 		(Object.keys(code)
 			.map(lang => {
 				if (code[lang].trim()) {
-					return LANGUAGES.find(l => l.value === lang);
+					return LANGUAGES?.find(l => l.value === lang);
 				}
 			})
 			.filter(Boolean) as LanguageType[]) || [];
@@ -86,13 +82,25 @@ export default function CreateTemplateBtn() {
 
 	const onSubmit = () => {
 		// IMPORTANT
-		updateProblem(problemId, {
-			template: formData,
-		});
+		updateProblem(
+			{
+				problemId,
+				template: formData,
+			},
+			{
+				onSuccess: () => {
+					toast.success('Template created successfully!');
+				},
+				onError: error => {
+					toast.error(`Failed to create template`);
+					console.error('⚙️ Error creating template:', error);
+				},
+			},
+		);
 		console.log('🚀 ~ CreateTemplate :', formData);
 	};
 
-	if (loading) {
+	if (loading || !selectLang) {
 		return (
 			<ActionSelector title="Loading..." disabled={true}>
 				<Loader2 className="animate-spin" />
@@ -156,7 +164,7 @@ export default function CreateTemplateBtn() {
 								<AccordionTrigger>Head Section</AccordionTrigger>
 								<AccordionContent>
 									<Textarea
-										value={formData[selectLang.value]?.head || ''}
+										value={formData[selectLang?.value]?.head || ''}
 										onChange={value =>
 											setFormData(draft => ({
 												...draft,

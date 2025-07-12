@@ -1,8 +1,8 @@
 export type TemplateType = {
 	[language: string]: {
-		head: string;
-		body: string;
-		tail: string;
+		head?: string;
+		body?: string;
+		tail?: string;
 	};
 };
 

@@ -11,6 +11,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {LoaderCircle} from 'lucide-react';
 import {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
+import {toast} from 'sonner';
 import {Id} from '../../../../../../convex/_generated/dataModel';
 import {problemSchema, ProblemValues} from '../../schema/problem';
 import LevelSelection from './level-selection';
@@ -22,7 +23,7 @@ type Props = {
 
 export default function FormPublishProblem({problemId, onClose}: Props) {
 	const {data, isPending: loading} = useGetProblemById(problemId);
-	const {updateProblem, isPending} = useUpdateProblem();
+	const {mutate: updateProblem, isPending} = useUpdateProblem();
 	const form = useForm<ProblemValues>({
 		resolver: zodResolver(problemSchema),
 		defaultValues: {
@@ -43,12 +44,24 @@ export default function FormPublishProblem({problemId, onClose}: Props) {
 
 	const onSubmit = (data: ProblemValues) => {
 		// IMPORTANT
-		updateProblem(problemId, {
-			name: data.name,
-			level: data.level,
-			topicId: data.topicId as Id<'topics'>,
-			status: 'public',
-		});
+		updateProblem(
+			{
+				problemId,
+				name: data.name,
+				level: data.level,
+				topicId: data.topicId as Id<'topics'>,
+				status: 'public',
+			},
+			{
+				onSuccess: () => {
+					toast.success('Problem published successfully');
+				},
+				onError: error => {
+					toast.error(`Failed to publish problem`);
+					console.log('⚙️ Error publishing problem:', error);
+				},
+			},
+		);
 		onClose();
 	};
 

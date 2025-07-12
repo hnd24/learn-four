@@ -1,105 +1,65 @@
 'use client';
 
+import {ITEM_PER_PAGE} from '@/constants';
 import {useFilter} from '@/modules/admin/hook/use-filters';
-import {
-	AnswerType,
-	LEVEL_PROBLEM,
-	ProblemDetailType,
-	ProblemStateType,
-	ProblemTemplateType,
-	ProblemTestcaseType,
-	STATUS_PROBLEM,
-	TemplateType,
-	TestcaseType,
-} from '@/types';
-import {useCallback, useState} from 'react';
+import {STATUS_PROBLEM} from '@/types';
+import {convexQuery, useConvexMutation} from '@convex-dev/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
+import {usePaginatedQuery} from 'convex/react';
+import {useEffect} from 'react';
+import {api} from '../../../convex/_generated/api';
 import {Id} from '../../../convex/_generated/dataModel';
-import {problemData, ProblemDetailData, ProblemTemplateData, ProblemTestcaseData} from '../../data';
 
-export const useGetProblemById = (id: Id<'problems'>) => {
-	const [isPending, setIsPending] = useState(false);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: ProblemDetailType | undefined = ProblemDetailData;
-	return {data, isPending};
+export const useGetProblemById = (problemId: Id<'problems'>) => {
+	return useQuery(convexQuery(api.problems.getDetailProblemById, {problemId}));
 };
 
 export const useGetProblemTestcase = (problemId: Id<'problems'>) => {
-	const [isPending, setIsPending] = useState(false);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: ProblemTestcaseType | undefined = ProblemTestcaseData;
-	return {data, isPending};
+	return useQuery(convexQuery(api.problems.getTestcaseByProblemId, {problemId}));
 };
 
 export const useGetProblemTemplate = (problemId: Id<'problems'>) => {
-	const [isPending, setIsPending] = useState(false);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data: ProblemTemplateType | undefined = ProblemTemplateData;
-	return {data, isPending};
+	return useQuery(convexQuery(api.problems.getTemplateByProblemId, {problemId}));
 };
 
 export const useQueryProblem = () => {
 	const {filter} = useFilter();
 	const params = {
-		...(filter.name === '' ? {} : {name: filter.name}),
-		...(filter.topic === 'all' ? {} : {topic: filter.topic}),
-		...(filter.level === 'all' ? {} : {level: filter.level}),
-		...(filter.status === 'all' ? {} : {status: filter.status}),
+		...{name: filter.name === '' ? undefined : filter.name},
+		...{topicId: filter.topic === 'all' ? undefined : (filter.topic as Id<'topics'>)},
+		...{level: filter.level === 'all' ? undefined : filter.level},
+		...{status: filter.status === 'all' ? undefined : (filter.status as STATUS_PROBLEM)},
 	};
-	console.log('🚀 ~ handleSearch ~ params:', params);
-	const [isPending, setIsPending] = useState(false);
 
-	const data: ProblemStateType[] | undefined = problemData;
-	const loadMore = () => {
-		setIsPending(true);
-		setTimeout(() => {
-			setIsPending(false);
-		}, 2000);
-	};
-	const status = 'CanLoadMore';
+	const {results, isLoading, loadMore, status} = usePaginatedQuery(
+		api.problems.queryProblems,
+		params,
+		{initialNumItems: ITEM_PER_PAGE},
+	);
 
-	return {data, isPending, loadMore, status};
-};
+	useEffect(() => {
+		if (isLoading) return;
 
-type UpdateProblemArgs = {
-	name: string;
-	level: LEVEL_PROBLEM;
-	topicId: Id<'topics'>;
-	content: string;
-	answer: AnswerType;
-	template: TemplateType;
-	testcase: TestcaseType[];
-	status: STATUS_PROBLEM;
-	authorId: string;
+		if (results.length < ITEM_PER_PAGE && status === 'CanLoadMore') {
+			loadMore(ITEM_PER_PAGE - results.length);
+		}
+	}, [isLoading, results.length, status, loadMore]);
+
+	return {results, isLoading, loadMore, status};
 };
 
 export const useUpdateProblem = () => {
-	const [isPending, setIsPending] = useState(false);
-
-	const updateProblem = useCallback(
-		async (problemId: Id<'problems'>, args: Partial<UpdateProblemArgs>): Promise<void> => {
-			setIsPending(true);
-			setTimeout(() => {
-				setIsPending(false);
-			}, 2000);
-		},
-		[],
-	);
-
-	return {updateProblem, isPending};
+	return useMutation({
+		mutationFn: useConvexMutation(api.problems.updateProblem),
+	});
 };
 
-export const useGetStatusProblem = () => {
-	const [isPending, setIsPending] = useState(false);
-	setIsPending(true);
-	setTimeout(() => {
-		setIsPending(false);
-	}, 2000);
-	const data = 'private';
-	return {data, isPending};
+export const useGetStatusProblem = (problemId: Id<'problems'>) => {
+	return useQuery(convexQuery(api.problems.getStatusProblemById, {problemId}));
+};
+
+export const useAddProblem = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.problems.createProblem),
+	});
 };

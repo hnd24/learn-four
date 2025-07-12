@@ -4,7 +4,7 @@ import {Input} from '@/components/ui/input';
 import {useDebounce} from '@/hook/use-debounce';
 import {Search} from 'lucide-react';
 import {useEffect, useState} from 'react';
-import {useFilter} from '../hook/use-filters';
+import {useFilter} from '../../hook/use-filters';
 
 export default function SearchName() {
 	const {

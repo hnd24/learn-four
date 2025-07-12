@@ -432,7 +432,7 @@ export const ProblemDetailData: ProblemDetailType = {
 	_id: 'prob123456' as Id<'problems'>,
 	_creationTime: Date.now(),
 	name: 'Sum of Two Numbers',
-	content: 'Write a function that takes two numbers and returns their sum.',
+	document: 'Write a function that takes two numbers and returns their sum.',
 	level: 'easy',
 	answer: {
 		javascript: 'function sum(a, b) {\n  return a + b;\n}',

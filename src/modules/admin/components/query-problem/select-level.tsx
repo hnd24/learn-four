@@ -8,7 +8,7 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import {AllLevelIcon, EasyLevelIcon, HardLevelIcon, MediumLevelIcon} from '@/icon/difficuly-icon';
-import {useFilter} from '../hook/use-filters';
+import {useFilter} from '../../hook/use-filters';
 
 export default function SelectLevel() {
 	const {

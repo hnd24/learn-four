@@ -10,11 +10,7 @@ import {TabValue} from '../../types';
 import TestcaseArea from '../testcase-area';
 import {CodeEditor} from './code-editor';
 
-type Props = {
-	isPrivate: boolean;
-};
-
-export default function CodeArea({isPrivate}: Props) {
+export default function CodeArea() {
 	const [activeTab, setActiveTab] = useState<TabValue>(TabValue.Editor);
 	return (
 		<Tabs
@@ -39,7 +35,7 @@ export default function CodeArea({isPrivate}: Props) {
 				className="h-full p-0 data-[state=active]:flex data-[state=active]:flex-col">
 				<ResizablePanelGroup direction="vertical">
 					<ResizablePanel defaultSize={60} minSize={20}>
-						<CodeEditor isPrivate={isPrivate} />
+						<CodeEditor />
 					</ResizablePanel>
 
 					<ResizableHandle withHandle className="my-2" />

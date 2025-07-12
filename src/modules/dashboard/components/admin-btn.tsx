@@ -10,18 +10,10 @@ export default function AdminBtn() {
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
 	const router = useRouter();
 	const {isSignedIn, user} = useUser();
-	const {loading, checkAdmin} = useCheckAdmin();
+	const {isPending, data: result} = useCheckAdmin();
 	useEffect(() => {
-		const check = async () => {
-			if (isSignedIn) {
-				const result = await checkAdmin(user?.id || '');
-				setIsAdmin(result || false);
-			} else {
-				setIsAdmin(false);
-			}
-		};
-		check();
-	}, [checkAdmin, loading, isSignedIn, user?.id]);
+		setIsAdmin(result || false);
+	}, [result, isPending, isSignedIn, user?.id]);
 	return (
 		<>
 			{isAdmin && (

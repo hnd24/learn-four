@@ -1,15 +1,6 @@
-import {useCallback, useState} from 'react';
-
+import {convexQuery} from '@convex-dev/react-query';
+import {useQuery} from '@tanstack/react-query';
+import {api} from '../../../convex/_generated/api';
 export const useCheckAdmin = () => {
-	const [loading, setLoading] = useState(false);
-
-	const checkAdmin = useCallback(async (userId: string): Promise<boolean> => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-		}, 2000);
-		return true;
-	}, []);
-
-	return {checkAdmin, loading};
+	return useQuery(convexQuery(api.admin.confirmAdmin, {}));
 };

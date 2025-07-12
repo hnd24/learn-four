@@ -25,11 +25,11 @@ type Props = {
 };
 
 export default function TopicSelection({value, onChange}: Props) {
-	const {data: topics, loading} = useGetTopics();
+	const {data: topics, isPending} = useGetTopics();
 	const [open, setOpen] = useState(false);
 	const [creating, setCreating] = useState(false);
 
-	if (loading) {
+	if (isPending) {
 		return <Input disabled value="Loading topics..." className="w-full" />;
 	}
 	if (!topics || topics.length === 0 || creating) {

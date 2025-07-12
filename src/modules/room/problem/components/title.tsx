@@ -1,10 +1,12 @@
 'use client';
 
 import {useUpdateProblem} from '@/hook/data/problem';
+import {useAtomValue} from 'jotai';
 import {SquarePen} from 'lucide-react';
 import {useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
+import {statusProblemAtom} from '../atom/status';
 
 type Props = {
 	problemId: Id<'problems'>;
@@ -14,11 +16,24 @@ type Props = {
 export default function Title({problemId, title}: Props) {
 	const [value, setValue] = useState<string>(title || '');
 	const [isEditing, setIsEditing] = useState<boolean>(false);
-	const {updateProblem, isPending} = useUpdateProblem();
+	const {mutate: updateProblem, isPending} = useUpdateProblem();
+	const status = useAtomValue(statusProblemAtom);
 
 	const onSubmit = () => {
 		const updateTitle = async () => {
-			await updateProblem(problemId, {name: value});
+			await updateProblem(
+				{problemId, name: value},
+				{
+					onSuccess: () => {
+						toast.success('Problem title updated successfully');
+						setIsEditing(false);
+					},
+					onError: error => {
+						toast.error(`Failed to update problem title`);
+						console.error('⚙️ Error updating problem title:', error);
+					},
+				},
+			);
 		};
 		if (title === value || !value.trim()) {
 			toast.error('Title cannot be empty or unchanged');
@@ -69,7 +84,7 @@ export default function Title({problemId, title}: Props) {
 	return (
 		<div className="flex h-full items-center justify-center gap-x-2">
 			<h1 className="truncate font-semibold capitalize">{title}</h1>
-			{!isEditing && (
+			{!isEditing && status === 'private' && (
 				<SquarePen
 					className="text-muted-foreground size-4 shrink-0 cursor-pointer hover:text-white"
 					onClick={() => setIsEditing(true)}

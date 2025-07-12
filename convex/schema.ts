@@ -24,9 +24,9 @@ export const AnswerType = v.record(v.string(), v.string());
 export const TemplateType = v.record(
 	v.string(),
 	v.object({
-		head: v.string(),
-		body: v.string(),
-		tail: v.string(),
+		head: v.optional(v.string()),
+		body: v.optional(v.string()),
+		tail: v.optional(v.string()),
 	}),
 );
 
@@ -99,8 +99,8 @@ export default defineSchema({
 	problems: defineTable({
 		name: v.string(),
 		level: levelType,
-		topicId: v.id('topics'),
-		content: v.string(),
+		topicId: v.optional(v.id('topics')),
+		document: v.string(),
 		answer: AnswerType,
 		template: TemplateType,
 		testcase: TestcaseType,

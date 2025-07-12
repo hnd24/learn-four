@@ -1,5 +1,5 @@
 import ListProblem from '@/modules/admin/components/list-problem';
-import SelectTypeProblem from '@/modules/admin/components/select-type-problem';
+import SelectTypeProblem from '@/modules/admin/components/query-problem/select-type-problem';
 import {Suspense} from 'react';
 
 export default function ProblemPage() {

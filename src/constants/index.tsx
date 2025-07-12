@@ -26,6 +26,8 @@ export const INITIAL_TEST_CASE: TestcaseType = {
 	expected: '',
 };
 
+export const ITEM_PER_PAGE = 10;
+
 export const MAX_RETRIES = 10;
 export const RETRY_DELAY_MS = 1000;
 

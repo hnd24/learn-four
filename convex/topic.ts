@@ -14,14 +14,11 @@ export async function getTopic(ctx: QueryCtx | MutationCtx, topicId: Id<'topics'
 export const createTopic = mutation({
 	args: {
 		name: v.string(),
-		value: v.string(),
 		status: StatusType,
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert('topics', {
-			name: args.name,
-			status: args.status,
-		});
+		const id = await ctx.db.insert('topics', args);
+		return id;
 	},
 });
 

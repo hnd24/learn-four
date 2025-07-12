@@ -153,12 +153,16 @@ export const createUserLesson = mutation({
 });
 
 export const getUserLesson = query({
-	args: {lessonId: v.id('lessons'), userId: v.id('users')},
+	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			return null;
+		}
 		const userLesson = await ctx.db
 			.query('user_lesson')
 			.withIndex('by_userId_lessonId', q =>
-				q.eq('userId', args.userId).eq('lessonId', args.lessonId),
+				q.eq('userId', identity.subject).eq('lessonId', args.lessonId),
 			)
 			.unique();
 		if (!userLesson) {

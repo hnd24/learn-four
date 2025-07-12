@@ -1,21 +1,19 @@
 'use client';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
-import {ProblemDetailData} from '@/data';
 import {useMediaQuery} from '@/hook/use-media-query';
-import {ProblemDetailType} from '@/types';
+import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {api} from '../../../../../convex/_generated/api';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
 import {useProblemId} from '../hook/use-problem-id';
 import CodeArea from './code-area';
 
 type Props = {
-	preloadedProblem: ProblemDetailType;
+	preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
 };
 
 export default function ProblemContent({preloadedProblem}: Props) {
-	// IMPORTANT
-	// const problem = usePreloadedQuery(preloadedProblem);
-	const problem = ProblemDetailData;
+	const problem = usePreloadedQuery(preloadedProblem);
 	const isMobile = useMediaQuery('(max-width: 767px)');
 	const problemId = useProblemId();
 
@@ -37,7 +35,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 				</ResizablePanel>
 				<ResizableHandle withHandle className="mx-2" />
 				<ResizablePanel defaultSize={50} minSize={30}>
-					<CodeArea isPrivate={true} />
+					<CodeArea />
 				</ResizablePanel>
 			</ResizablePanelGroup>
 		</div>

@@ -1,20 +1,27 @@
+'use client';
+
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
 import {Button} from '@/components/ui/button';
-import {ProblemDetailData} from '@/data';
-import {ProblemDetailType} from '@/types';
+import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {useSetAtom} from 'jotai';
 import {Bell} from 'lucide-react';
+import {useEffect} from 'react';
+import {api} from '../../../../../convex/_generated/api';
+import {statusProblemAtom} from '../atom/status';
 import {PublishButton} from './public-action/publish-btn';
 import Title from './title';
 
 type Props = {
-	preloadedProblem: ProblemDetailType;
+	preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
 };
 
 export default function Header({preloadedProblem}: Props) {
-	// IMPORTANT
-	// const problem = usePreloadedQuery(preloadedProblem);
-	const problem = ProblemDetailData;
+	const problem = usePreloadedQuery(preloadedProblem);
+	const setStatus = useSetAtom(statusProblemAtom);
+	useEffect(() => {
+		setStatus(problem?.status);
+	}, [problem, setStatus]);
 
 	if (!problem) {
 		return (

@@ -12,17 +12,26 @@ type Props = {
 	onChange: (value: Id<'topics'>) => void;
 };
 export default function CreateTopicBtn({onClose, onChange}: Props) {
-	const {addTopic, loading} = useAddTopic();
+	const {mutate: addTopic, isPending} = useAddTopic();
 	const [value, setValue] = useState('');
 
-	const onSubmit = async () => {
-		const id = await addTopic(value.trim());
-		if (!id) {
-			return;
-		}
-		onChange(id);
-		setValue('');
-		onClose();
+	const onSubmit = () => {
+		addTopic(
+			{name: value, status: 'public'},
+			{
+				onSuccess: data => {
+					if (!data) return;
+					onChange(data as Id<'topics'>);
+					setValue('');
+					onClose();
+					return;
+				},
+				onError: error => {
+					console.error('⚙️ Error creating topic:', error);
+				},
+			},
+		);
+
 		return;
 	};
 
@@ -48,7 +57,7 @@ export default function CreateTopicBtn({onClose, onChange}: Props) {
 					onKeyDown={onKeyDown}
 					placeholder="Enter new category name"
 				/>
-				<Button onClick={onSubmit} disabled={loading || !value.trim()} type="button">
+				<Button onClick={onSubmit} disabled={isPending || !value.trim()} type="button">
 					<Plus />
 				</Button>
 			</div>

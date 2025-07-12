@@ -19,6 +19,7 @@ export default function RunCodeBtn() {
 	const {data, isPending} = useGetProblemTemplate(problemId);
 	const isDisabled = isRunning || isPending;
 	const onClick = async () => {
+		if (!data) return;
 		const {template} = data;
 		const lang = language?.value || 'javascript';
 		let sourceCode = code[lang];

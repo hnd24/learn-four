@@ -58,9 +58,9 @@ export default function LanguageSelector() {
 	}
 
 	return (
-		<Select defaultValue={language?.value || LANGUAGES?.[0].value} onValueChange={onChange}>
+		<Select defaultValue={LANGUAGES[0].value} onValueChange={onChange}>
 			<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">
-				<SelectValue />
+				<SelectValue placeholder="Language" />
 			</SelectTrigger>
 			<SelectContent>
 				{LANGUAGES.map(lang => (
