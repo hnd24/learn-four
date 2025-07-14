@@ -17,7 +17,7 @@ export default function SelectLevel() {
 	} = useFilter();
 	return (
 		<Select defaultValue={level} onValueChange={value => setFilter({level: value})}>
-			<SelectTrigger className="w-fit md:min-w-24 xl:md:min-w-64">
+			<SelectTrigger className=" min-w-24 xl:md:min-w-64">
 				<SelectValue placeholder="Level" />
 			</SelectTrigger>
 			<SelectContent>

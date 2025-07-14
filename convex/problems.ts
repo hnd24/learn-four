@@ -171,12 +171,11 @@ export const queryProblems = query({
 					level: problem.level,
 					status: problem.status,
 					topic: topics.find(t => t._id === problem.topicId) || null,
-					state: state?.state ?? 'unsolved',
+					state: state?.state ?? 'not-started',
 				};
 			}),
 		);
 
-		// ✅ Trả về đúng PaginationResult<T>
 		return {
 			...rawResults,
 			page: enrichedPage,

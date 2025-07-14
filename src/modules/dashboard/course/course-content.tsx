@@ -24,7 +24,7 @@ export default function CourseContent({courseId}: Props) {
 	}
 	return (
 		<div className="min-h-[calc(100vh-60px)] w-screen flex justify-between">
-			<div className="mx-6 md:mx-auto bg-background w-full md:max-w-4xl lg:max-w-6xl p-6">
+			<div className=" md:mx-auto bg-background w-full md:max-w-4xl lg:max-w-6xl p-6">
 				<header className=" grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
 					<section className="relative flex flex-col gap-4">
 						<div className="flex flex-col gap-2">
@@ -78,11 +78,7 @@ export default function CourseContent({courseId}: Props) {
 						<p className="text-muted-foreground">{course.document}</p>
 					</div>
 
-					{/* Lessons */}
-					<div>
-						<h3 className="text-xl  font-semibold mb-2">Lessons</h3>
-						<LessonTable idCourse={courseId} />
-					</div>
+					<LessonTable idCourse={courseId} />
 				</section>
 			</div>
 		</div>

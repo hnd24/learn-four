@@ -1,4 +1,4 @@
-import Header from '@/modules/dashboard/course/header';
+import Header from '@/modules/dashboard/components/header';
 import type {Metadata} from 'next';
 
 export const metadata: Metadata = {

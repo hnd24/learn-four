@@ -4,7 +4,7 @@ import {TopicType} from './topic';
 
 export type STATUS_PROBLEM = 'public' | 'private';
 
-export type USER_PROBLEM_STATE = 'completed' | 'progress' | 'unsolved';
+export type USER_PROBLEM_STATE = 'completed' | 'progress' | 'not-started';
 
 export type LEVEL_PROBLEM = 'easy' | 'medium' | 'hard';
 
@@ -14,6 +14,7 @@ export type ProblemStateType = {
 	level: 'easy' | 'medium' | 'hard';
 	topic: TopicType | null;
 	status: STATUS_PROBLEM;
+	state?: USER_PROBLEM_STATE;
 };
 
 export type ProblemDetailType = {

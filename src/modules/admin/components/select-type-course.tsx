@@ -1,7 +1,7 @@
 'use client';
 
+import {useFilter} from '../../../hook/search/use-filters';
 import {STATUS_COURSE_ITEMS} from '../constants';
-import {useFilter} from '../hook/use-filters';
 import {SidebarItem} from './sidebar-item';
 
 export default function SelectTypeCourse() {

@@ -8,7 +8,7 @@ import {Loader2, Plus} from 'lucide-react';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
-import {useFilter} from '../../hook/use-filters';
+import {useFilter} from '../../../../hook/search/use-filters';
 import DialogCourse from '../dialog-course';
 import {CardSkeleton} from './card-seketon';
 import CourseCard from './course-card';

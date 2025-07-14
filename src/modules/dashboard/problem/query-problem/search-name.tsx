@@ -20,7 +20,7 @@ export default function SearchName() {
 	}, [debouncedValue, setFilter]);
 
 	return (
-		<div className="relative w-full lg:w-64">
+		<div className="md:min-w-80 relative w-full lg:w-64">
 			<Input
 				value={inputValue}
 				placeholder="Search title..."

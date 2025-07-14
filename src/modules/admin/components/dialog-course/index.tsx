@@ -151,7 +151,7 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 							onClick={handleUpdate}
 							className="w-fit flex self-end gap-2">
 							{pendingUpdate && <Loader2 className=" animate-spin" />}
-							Save content
+							Save change
 						</Button>
 					</section>
 

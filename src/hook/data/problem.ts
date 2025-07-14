@@ -1,7 +1,7 @@
 'use client';
 
 import {ITEM_PER_PAGE} from '@/constants';
-import {useFilter} from '@/modules/admin/hook/use-filters';
+import {useFilter} from '@/hook/search/use-filters';
 import {STATUS_PROBLEM} from '@/types';
 import {convexQuery, useConvexMutation} from '@convex-dev/react-query';
 import {useMutation, useQuery} from '@tanstack/react-query';
@@ -29,6 +29,32 @@ export const useQueryProblem = () => {
 		...{topicId: filter.topic === 'all' ? undefined : (filter.topic as Id<'topics'>)},
 		...{level: filter.level === 'all' ? undefined : filter.level},
 		...{status: filter.status === 'all' ? undefined : (filter.status as STATUS_PROBLEM)},
+	};
+
+	const {results, isLoading, loadMore, status} = usePaginatedQuery(
+		api.problems.queryProblems,
+		params,
+		{initialNumItems: ITEM_PER_PAGE},
+	);
+
+	useEffect(() => {
+		if (isLoading) return;
+
+		if (results.length < ITEM_PER_PAGE && status === 'CanLoadMore') {
+			loadMore(ITEM_PER_PAGE - results.length);
+		}
+	}, [isLoading, results.length, status, loadMore]);
+
+	return {results, isLoading, loadMore, status};
+};
+
+export const useQueryUserProblem = () => {
+	const {filter} = useFilter();
+	const params = {
+		...{name: filter.name === '' ? undefined : filter.name},
+		...{topicId: filter.topic === 'all' ? undefined : (filter.topic as Id<'topics'>)},
+		...{level: filter.level === 'all' ? undefined : filter.level},
+		...{status: 'public' as STATUS_PROBLEM},
 	};
 
 	const {results, isLoading, loadMore, status} = usePaginatedQuery(
