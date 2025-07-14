@@ -185,7 +185,7 @@ export const getLessonInCourse = query({
 	},
 });
 
-export const getDetailLessonById = query({
+export const getLessonById = query({
 	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
 		const {testcase, template, ...lesson} = await getLesson(ctx, args.lessonId);
@@ -285,12 +285,18 @@ export const createUserLesson = mutation({
 });
 
 export const getUserLesson = query({
-	args: {lessonId: v.id('lessons'), userId: v.string()},
+	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
-		const {userId, lessonId} = args;
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const {lessonId} = args;
 		const userLesson = await ctx.db
 			.query('user_lesson')
-			.withIndex('by_userId_lessonId', q => q.eq('userId', userId).eq('lessonId', lessonId))
+			.withIndex('by_userId_lessonId', q =>
+				q.eq('userId', identity.subject).eq('lessonId', lessonId),
+			)
 			.unique();
 		if (!userLesson) {
 			throw new ConvexError('User lesson not found');

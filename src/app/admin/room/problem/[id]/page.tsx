@@ -34,8 +34,6 @@ export default async function ProblemDetailPage({params}: {params: Params}) {
 		);
 	}
 
-	// const preloadedProblem = ProblemDetailData;
-
 	return (
 		<div className="flex h-screen flex-col overflow-hidden">
 			<Header preloadedProblem={preloadedProblem} />

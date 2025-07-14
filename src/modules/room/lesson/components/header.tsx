@@ -8,36 +8,35 @@ import {useSetAtom} from 'jotai';
 import {Bell} from 'lucide-react';
 import {useEffect} from 'react';
 import {api} from '../../../../../convex/_generated/api';
-import {statusProblemAtom} from '../atom/status';
-import {PublishButton} from './public-action/publish-btn';
+import {statusLessonAtom} from '../atom/status';
+import PublishButton from './public-action/publish-btn';
 import Title from './title';
 
 type Props = {
-	preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
+	preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
 };
 
-export default function Header({preloadedProblem}: Props) {
-	const problem = usePreloadedQuery(preloadedProblem);
-	const setStatus = useSetAtom(statusProblemAtom);
+export default function Header({preloadedLesson}: Props) {
+	const lesson = usePreloadedQuery(preloadedLesson);
+	const setStatus = useSetAtom(statusLessonAtom);
 	useEffect(() => {
-		setStatus(problem?.status);
-	}, [problem, setStatus]);
+		setStatus(lesson?.status);
+	}, [lesson, setStatus]);
 
-	if (!problem) {
+	if (!lesson) {
 		return (
 			<header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
-				<Logo className="hidden lg:block" link="/admin/problem" />
+				<Logo className="hidden lg:block" link="/admin" />
 			</header>
 		);
 	}
-
 	return (
 		<header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
 			<div className="flex size-full items-center justify-between px-4 py-3">
-				<Logo className="hidden lg:block" link="/admin/problem" />
+				<Logo className="hidden lg:block" link="/admin" />
 
 				<div className="w-1/3 px-4">
-					<Title problemId={problem._id} title={problem.name} />
+					<Title lessonId={lesson._id} title={lesson.name} />
 				</div>
 
 				<div className="flex items-center gap-x-3">
@@ -45,7 +44,7 @@ export default function Header({preloadedProblem}: Props) {
 					<div className="hidden md:block"></div>
 
 					<div className="flex gap-2">
-						<PublishButton problemId={problem._id} />
+						<PublishButton lessonId={lesson._id} />
 						<Hint label="coming soon">
 							<Button
 								variant="secondary"

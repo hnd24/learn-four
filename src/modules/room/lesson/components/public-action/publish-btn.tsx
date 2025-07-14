@@ -1,4 +1,5 @@
 'use client';
+
 import {Button} from '@/components/ui/button';
 import {
 	Dialog,
@@ -8,26 +9,26 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from '@/components/ui/dialog';
-import {useUpdateProblem} from '@/hook/data/problem';
+import {useUpdateLesson} from '@/hook/data/lesson';
 import {useAtomValue} from 'jotai';
 import {CloudUpload, PencilLine} from 'lucide-react';
 import {useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../../convex/_generated/dataModel';
-import {statusProblemAtom} from '../../atom/status';
-import FormPublishProblem from './form-public';
+import {statusLessonAtom} from '../../atom/status';
+import FormPublishLesson from './form-public';
 
 type Props = {
-	problemId: Id<'problems'>;
+	lessonId: Id<'lessons'>;
 };
 
-export const PublishButton = ({problemId}: Props) => {
-	const {mutate: updateProblem, isPending} = useUpdateProblem();
+export default function PublishButton({lessonId}: Props) {
+	const {mutate: updateLesson, isPending} = useUpdateLesson();
 	const [open, setOpen] = useState(false);
-	const status = useAtomValue(statusProblemAtom);
+	const status = useAtomValue(statusLessonAtom);
 	const onClick = () => {
-		updateProblem(
-			{problemId, status: 'private'},
+		updateLesson(
+			{lessonId, status: 'private'},
 			{
 				onSuccess: () => {
 					toast.success('Problem status updated to private');
@@ -39,7 +40,6 @@ export const PublishButton = ({problemId}: Props) => {
 			},
 		);
 	};
-
 	if (status === 'public') {
 		return (
 			<Button onClick={onClick} disabled={isPending}>
@@ -48,7 +48,6 @@ export const PublishButton = ({problemId}: Props) => {
 			</Button>
 		);
 	}
-
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
@@ -59,14 +58,14 @@ export const PublishButton = ({problemId}: Props) => {
 			</DialogTrigger>
 			<DialogContent onEscapeKeyDown={e => e.preventDefault()}>
 				<DialogHeader>
-					<DialogTitle>Publish Problem</DialogTitle>
+					<DialogTitle>Publish Lesson</DialogTitle>
 					<DialogDescription>
-						Configure problem settings before publishing.
+						Configure lesson settings before publishing.
 					</DialogDescription>
 				</DialogHeader>
 
-				<FormPublishProblem problemId={problemId} onClose={() => setOpen(false)} />
+				<FormPublishLesson lessonId={lessonId} onClose={() => setOpen(false)} />
 			</DialogContent>
 		</Dialog>
 	);
-};
+}

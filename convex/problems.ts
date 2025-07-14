@@ -288,13 +288,17 @@ export const updateUserProblem = mutation({
 });
 
 export const getUserProblem = query({
-	args: {problemId: v.id('problems'), userId: v.string()},
+	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
-		const {problemId, userId} = args;
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const {problemId} = args;
 		const userProblem = await ctx.db
 			.query('user_problem')
 			.withIndex('by_userId_problemId', q =>
-				q.eq('userId', userId).eq('problemId', problemId),
+				q.eq('userId', identity.subject).eq('problemId', problemId),
 			)
 			.unique();
 		if (!userProblem) {
