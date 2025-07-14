@@ -62,7 +62,7 @@ export const getCourseById = query({
 	async handler(ctx, args) {
 		const course = await getCourse(ctx, args.courseId);
 		if (!course) {
-			return null;
+			throw new ConvexError('Course not found');
 		}
 		const author = await ctx.db
 			.query('users')

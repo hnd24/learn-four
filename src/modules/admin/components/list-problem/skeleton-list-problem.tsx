@@ -6,21 +6,22 @@ type Props = {
 
 export default function SkeletonListProblem({number = 5}: Props) {
 	return (
-		<div className="mx-auto flex max-w-7xl flex-col gap-6">
-			<div className="flex flex-col md:flex-row gap-2">
+		<div className="mx-auto flex max-w-7xl flex-col gap-6 size-full">
+			{/* <div className="flex flex-col md:flex-row gap-2">
 				<Skeleton className="w-full lg:w-64 h-8" />
 				<div className="flex gap-2">
 					<Skeleton className="h-8 w-full md:min-w-40 xl:md:min-w-64" />
 					<Skeleton className="h-8 w-20 md:min-w-24 xl:md:min-w-64" />
 				</div>
-			</div>
+			</div> */}
 
 			<div className="mx-auto w-full flex flex-col gap-4">
-				<Skeleton className="h-8 w-full rounded-md" />
+				<Skeleton className="h-12 w-full rounded-md" />
 				<SkeletonTable number={number} />
 			</div>
-			<div className="w-full gird place-items-center">
+			<div className="w-full gird place-items-center flex flex-col gap-4">
 				<Skeleton className="h-10 w-32" />
+				<Skeleton className="h-5 w-60" />
 			</div>
 		</div>
 	);

@@ -2,36 +2,17 @@
 
 import {LevelIcon} from '@/components/level-icon';
 import {Badge} from '@/components/ui/badge';
-import {Button} from '@/components/ui/button';
 import {Card, CardContent} from '@/components/ui/card';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableFooter,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from '@/components/ui/table';
-import {useAddLesson, useGetLessonsByCourseId} from '@/hook/data/lesson';
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
+import {useGetUserLessonInCourse} from '@/hook/data/lesson';
 import {cn} from '@/lib/utils';
-import {AddLessonArgs, LessonType} from '@/types';
-import {
-	BookOpen,
-	ChevronRight,
-	CircleCheckBig,
-	Eye,
-	EyeOff,
-	Loader2,
-	Lock,
-	Plus,
-} from 'lucide-react';
+import {LessonType} from '@/types';
+import {BookOpen, ChevronRight, CircleCheckBig, Loader2, Lock, Trophy} from 'lucide-react';
 import {useRouter} from 'next/navigation';
-import {toast} from 'sonner';
-import {Id} from '../../../../../convex/_generated/dataModel';
+import {Id} from '../../../../convex/_generated/dataModel';
+
 type Props = {
 	idCourse: Id<'courses'>;
-	languageId: Id<'languages'>;
 };
 
 const getLevelColor = (level: string) => {
@@ -58,70 +39,59 @@ const getStatusColor = (status: string) => {
 	}
 };
 
-export default function CourseLessonList({idCourse, languageId}: Props) {
-	const {isPending: loadingLessons, data: lessonsData} = useGetLessonsByCourseId(idCourse);
-	const {isPending: pendingAdd, mutate: addLesson} = useAddLesson();
-	const disabled = loadingLessons || pendingAdd;
+export default function LessonTable({idCourse}: Props) {
+	const {isPending: loadingLessons, data: lessonsData} = useGetUserLessonInCourse(idCourse);
 	const lessons: LessonType[] = lessonsData?.lessons ?? [];
 	const router = useRouter();
-
-	const defaultArgs: AddLessonArgs = {
-		courseId: idCourse,
-		name: 'New Lesson',
-		level: 'easy',
-		content: '',
-		answer: '',
-		languageId,
-		template: {
-			head: '',
-			body: '',
-			tail: '',
-		},
-		testcase: [],
-		status: 'private',
-	};
-
-	const handleAdd = () => {
-		addLesson(defaultArgs, {
-			onSuccess: () => {
-				toast.success('Lesson added successfully.');
-			},
-			onError: error => {
-				console.error('⚙️ Failed to add lesson:', error);
-				toast.error(`Failed to add lesson: ${error.message}`);
-			},
-		});
-	};
-
 	const handleLessonClick = (lessonId: string) => {
-		router.push(`/admin/room/lesson/${lessonId}`);
+		router.push(`/room/lesson/${lessonId}`);
 	};
 
-	const privateLessons = lessons.filter(lesson => lesson.status === 'private').length;
+	const completedLessons = lessons.filter(
+		lesson => 'state' in lesson && lesson.state === 'completed',
+	).length;
 	const totalLessons = lessons.length;
-
 	return (
 		<div className="space-y-4">
+			{' '}
 			{/* Header with Progress */}
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
 					<h3 className="text-xl font-semibold">Lessons</h3>
 					<p className="text-sm text-muted-foreground">
 						{totalLessons > 0
-							? `${privateLessons}/${totalLessons} private`
+							? `${completedLessons}/${totalLessons} completed`
 							: 'No lessons yet'}
 					</p>
 				</div>
+				{totalLessons > 0 && (
+					<div className="flex items-center gap-2">
+						<Trophy className="h-4 w-4 text-yellow-500" />
+						<div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+							<div
+								className="h-full bg-green-500 transition-all duration-300"
+								style={{
+									width: `${totalLessons > 0 ? (completedLessons / totalLessons) * 100 : 0}%`,
+								}}
+							/>
+						</div>
+						<span className="text-sm font-medium">
+							{totalLessons > 0
+								? Math.round((completedLessons / totalLessons) * 100)
+								: 0}
+							%
+						</span>
+					</div>
+				)}
 			</div>
-
 			{/* Desktop Table View */}
 			<div className="hidden md:block">
 				<Table className="overflow-hidden">
 					<TableHeader>
 						<TableRow>
+							<TableHead className="w-12">Status</TableHead>
 							<TableHead className="w-16 text-center">Level</TableHead>
 							<TableHead>Name</TableHead>
-							<TableHead className="w-20">Visibility</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
@@ -131,9 +101,6 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 									<div className="flex flex-col items-center gap-2 text-muted-foreground">
 										<BookOpen className="h-8 w-8" />
 										<p>No lessons found</p>
-										<p className="text-sm">
-											Add your first lesson to get started
-										</p>
 									</div>
 								</TableCell>
 							</TableRow>
@@ -153,6 +120,11 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 								key={lesson._id}
 								className={cn('cursor-pointer hover:bg-muted/50 transition-colors')}
 								onClick={() => handleLessonClick(lesson._id)}>
+								<TableCell className="w-12">
+									{'state' in lesson && lesson.state === 'completed' && (
+										<CircleCheckBig className="h-5 w-5 text-green-500" />
+									)}
+								</TableCell>
 								<TableCell className="w-16">
 									<div className="flex items-center justify-center">
 										<LevelIcon level={lesson.level} />
@@ -163,50 +135,11 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 										<span className="font-medium truncate">{lesson.name}</span>
 									</div>
 								</TableCell>
-								<TableCell className="w-20">
-									<Badge
-										variant="secondary"
-										className={`text-xs ${getStatusColor(lesson.status)}`}>
-										{lesson.status === 'private' ? (
-											<EyeOff className="h-3 w-3 mr-1" />
-										) : (
-											<Eye className="h-3 w-3 mr-1" />
-										)}
-										{lesson.status}
-									</Badge>
-								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
-					<TableFooter>
-						<TableRow className="hover:bg-transparent">
-							<TableCell colSpan={4} className="p-0">
-								<Button
-									variant="ghost"
-									disabled={disabled}
-									onClick={handleAdd}
-									className={cn(
-										'w-full h-12 bg-blue-50 hover:bg-blue-100 border-2 border-dashed border-blue-200 hover:border-blue-300 transition-all duration-200',
-										disabled && 'opacity-50 cursor-not-allowed',
-									)}>
-									{pendingAdd ? (
-										<div className="flex items-center gap-2">
-											<Loader2 className="h-4 w-4 animate-spin" />
-											<span>Adding lesson...</span>
-										</div>
-									) : (
-										<div className="flex items-center gap-2 text-blue-600">
-											<Plus className="h-4 w-4" />
-											<span>Add New Lesson</span>
-										</div>
-									)}
-								</Button>
-							</TableCell>
-						</TableRow>
-					</TableFooter>
 				</Table>
 			</div>
-
 			{/* Mobile Card View */}
 			<div className="md:hidden space-y-3">
 				{lessons.length === 0 && !loadingLessons && (
@@ -215,7 +148,6 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 							<div className="flex flex-col items-center gap-3 text-muted-foreground">
 								<BookOpen className="h-12 w-12" />
 								<p className="text-lg font-medium">No lessons found</p>
-								<p className="text-sm">Add your first lesson to get started</p>
 							</div>
 						</CardContent>
 					</Card>
@@ -255,16 +187,7 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 												className={`text-xs ${getLevelColor(lesson.level)}`}>
 												{lesson.level}
 											</Badge>
-											<Badge
-												variant="secondary"
-												className={`text-xs ${getStatusColor(lesson.status)}`}>
-												{lesson.status === 'private' ? (
-													<EyeOff className="h-3 w-3 mr-1" />
-												) : (
-													<Eye className="h-3 w-3 mr-1" />
-												)}
-												{lesson.status}
-											</Badge>
+
 											{'state' in lesson && lesson.state === 'completed' && (
 												<Badge
 													variant="secondary"
@@ -281,29 +204,6 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 						</CardContent>
 					</Card>
 				))}
-
-				{/* Mobile Add Button */}
-				<Card className="border-dashed border-2 border-blue-200">
-					<CardContent className="p-4">
-						<Button
-							variant="ghost"
-							disabled={disabled}
-							onClick={handleAdd}
-							className="w-full h-12 text-blue-600 hover:bg-blue-50">
-							{pendingAdd ? (
-								<div className="flex items-center gap-2">
-									<Loader2 className="h-4 w-4 animate-spin" />
-									<span>Adding lesson...</span>
-								</div>
-							) : (
-								<div className="flex items-center gap-2">
-									<Plus className="h-4 w-4" />
-									<span>Add New Lesson</span>
-								</div>
-							)}
-						</Button>
-					</CardContent>
-				</Card>
 			</div>
 		</div>
 	);

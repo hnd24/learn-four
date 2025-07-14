@@ -87,6 +87,49 @@ export const updateLesson = mutation({
 	},
 });
 
+export const getUserLessonInCourse = query({
+	args: {courseId: v.id('courses')},
+	async handler(ctx, args) {
+		const course = await ctx.db.get(args.courseId);
+		if (!course) {
+			throw new ConvexError('Course not found');
+		}
+		const lessons = await ctx.db
+			.query('lessons')
+			.withIndex('by_courseId', q => q.eq('courseId', args.courseId))
+			.filter(q => q.eq(q.field('status'), 'public'))
+			.collect();
+		if (course.status !== 'public') throw new ConvexError('Course is not public');
+		// Check if user is authenticated
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) throw new ConvexError('User not authenticated');
+		// Fetch user lessons for each lesson in the course
+		const userLessons = await Promise.all(
+			lessons.map(async lesson => {
+				const user_lessons = await ctx.db
+					.query('user_lesson')
+					.withIndex('by_userId_lessonId', q =>
+						q.eq('userId', identity.subject ?? '').eq('lessonId', lesson._id),
+					)
+					.unique();
+				return {
+					_id: lesson._id,
+					_creationTime: lesson._creationTime,
+					name: lesson.name,
+					level: lesson.level,
+					status: lesson.status,
+					state: user_lessons?.state ?? 'not-started',
+				};
+			}),
+		);
+		return {
+			courseId: course._id,
+			status: course.status,
+			lessons: userLessons,
+		};
+	},
+});
+
 export const getLessonInCourse = query({
 	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
@@ -98,11 +141,47 @@ export const getLessonInCourse = query({
 			.query('lessons')
 			.withIndex('by_courseId', q => q.eq('courseId', args.courseId))
 			.collect();
-		return {
-			courseId: course._id,
-			status: course.status,
-			lessons: lessons,
-		};
+		if (course.status === 'public') {
+			const identity = await ctx.auth.getUserIdentity();
+			if (!identity) {
+				throw new ConvexError('User not authenticated');
+			}
+			const userLessons = await Promise.all(
+				lessons.map(async lesson => {
+					const user_lessons = await ctx.db
+						.query('user_lesson')
+						.withIndex('by_userId_lessonId', q =>
+							q.eq('userId', identity.subject ?? '').eq('lessonId', lesson._id),
+						)
+						.unique();
+					return {
+						_id: lesson._id,
+						_creationTime: lesson._creationTime,
+						name: lesson.name,
+						level: lesson.level,
+						status: lesson.status,
+						state: user_lessons?.state ?? 'not-started',
+					};
+				}),
+			);
+			return {
+				courseId: course._id,
+				status: course.status,
+				lessons: userLessons,
+			};
+		} else {
+			return {
+				courseId: course._id,
+				status: course.status,
+				lessons: lessons.map(lesson => ({
+					_id: lesson._id,
+					_creationTime: lesson._creationTime,
+					name: lesson.name,
+					level: lesson.level,
+					status: lesson.status,
+				})),
+			};
+		}
 	},
 });
 

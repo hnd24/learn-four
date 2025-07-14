@@ -16,11 +16,9 @@ export default function NotFoundPage() {
 				height={300}
 				className="bg-black rounded-full w-80 h-[300px] dark:bg-transparent"
 			/>
-			<div className="text-2xl dark:text-white/90 text-center">Not Found!!!</div>
+			<div className="text-2xl  text-center">Not Found!!!</div>
 			<Link href="/">
-				<Button className="bg-deepBlue hover:bg-darkDeepBlue  rounded-xl w-32 ">
-					Return Home
-				</Button>
+				<Button className=" rounded-xl w-32 ">Return Home</Button>
 			</Link>
 		</div>
 	);

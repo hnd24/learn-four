@@ -80,7 +80,7 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 	return (
 		<>
 			<Dialog open={isOpen} onOpenChange={onClose}>
-				<DialogContent className="w-3d md:min-w-4xl lg:min-w-6xl max-h-[calc(100vh-48px)] overflow-y-auto my-auto p-6">
+				<DialogContent className=" md:min-w-4xl lg:min-w-6xl max-h-[calc(100vh-48px)] overflow-y-auto my-auto p-6">
 					<DialogHeader>
 						<DialogTitle />
 					</DialogHeader>
@@ -159,7 +159,9 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 						{/* Course Content */}
 						<div>
 							<h3 className="text-xl font-semibold ">Content</h3>
-							<p className="text-muted-foreground">{course.document}</p>
+							<p className="text-muted-foreground w-full  ">
+								{/* {course.document} */}
+							</p>
 						</div>
 
 						{/* Lessons */}

@@ -250,6 +250,10 @@ export const getTestcaseByProblemId = query({
 export const getTemplateByProblemId = query({
 	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			return null;
+		}
 		const {problemId} = args;
 		const problem = await getProblem(ctx, problemId);
 		if (!problem) {
@@ -257,16 +261,29 @@ export const getTemplateByProblemId = query({
 		}
 		const isPublic = problem.status === 'public';
 		const code: {[lang: string]: string} = {};
-		Object.keys(problem.template).forEach(lang => {
-			if (!problem.template[lang]) {
-				const {head, body, tail} = problem.template[lang];
-				if (isPublic) {
-					code[lang] = `${body}`;
-					return;
-				}
-				code[lang] = `${head}\n\n${body}\n\n${tail}`;
+		if (isPublic) {
+			const user_problem = await ctx.db
+				.query('user_problem')
+				.withIndex('by_userId_problemId', q =>
+					q.eq('userId', identity.subject).eq('problemId', problem._id),
+				)
+				.unique();
+			if (!user_problem) {
+				return;
 			}
-		});
+			Object.keys(problem.template).forEach(lang => {
+				if (!problem.template[lang]) {
+					code[lang] = user_problem?.code?.[lang] ?? '';
+				}
+			});
+		} else {
+			Object.keys(problem.template).forEach(lang => {
+				if (!problem.template[lang]) {
+					const {head, body, tail} = problem.template[lang];
+					code[lang] = `${head}\n\n${body}\n\n${tail}`;
+				}
+			});
+		}
 		return {
 			isPublic,
 			code: code,

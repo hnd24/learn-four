@@ -8,6 +8,10 @@ export const useGetDetailLesson = (lessonId: Id<'lessons'>) => {
 	return useQuery(convexQuery(api.lessons.getDetailLessonById, {lessonId}));
 };
 
+export const useGetUserLessonInCourse = (courseId: Id<'courses'>) => {
+	return useQuery(convexQuery(api.lessons.getUserLessonInCourse, {courseId}));
+};
+
 export const useGetLessonsByCourseId = (courseId: Id<'courses'>) => {
 	return useQuery(convexQuery(api.lessons.getLessonInCourse, {courseId}));
 };

@@ -3,6 +3,8 @@ import {TestcaseType} from './common';
 
 export type STATUS_LESSON = 'public' | 'private';
 
+export type STATE_LESSON = 'completed' | 'progress' | 'not-started';
+
 export type LEVEL_LESSON = 'easy' | 'medium' | 'hard';
 
 export type LessonDetailType = {
@@ -25,26 +27,25 @@ export type LessonDetailType = {
 
 export type LessonType = {
 	_id: Id<'lessons'>;
-	_creationTime?: number;
+	_creationTime: number;
 	name: string;
 	level: LEVEL_LESSON;
 	status: STATUS_LESSON;
-	state?: 'completed' | 'progress' | 'unsolved';
+};
+
+export type UserLessonType = {
+	_id: Id<'lessons'>;
+	_creationTime: number;
+	name: string;
+	level: LEVEL_LESSON;
+	status: STATUS_LESSON;
+	state: STATE_LESSON;
 };
 
 export type lessonsCourseType = {
 	courseId: Id<'courses'>;
 	status: STATUS_LESSON;
 	lessons: LessonType[];
-};
-
-export type UserLessonType = {
-	_id: Id<'user_lesson'>;
-	_creationTime: number;
-	code?: string | undefined;
-	userId: string;
-	state: 'completed' | 'progress';
-	lessonId: Id<'lessons'>;
 };
 
 export type AddLessonArgs = {
