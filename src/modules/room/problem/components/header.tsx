@@ -26,7 +26,7 @@ export default function Header({preloadedProblem}: Props) {
 	if (!problem) {
 		return (
 			<header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
-				<Logo className="hidden lg:block" link="/admin" />
+				<Logo className="hidden lg:block" link="/admin/problem" />
 			</header>
 		);
 	}
@@ -34,7 +34,7 @@ export default function Header({preloadedProblem}: Props) {
 	return (
 		<header className="bg-primary-foreground fixed inset-x-0 top-0 z-50 h-16 border-b shadow-md">
 			<div className="flex size-full items-center justify-between px-4 py-3">
-				<Logo className="hidden lg:block" link="/admin" />
+				<Logo className="hidden lg:block" link="/admin/problem" />
 
 				<div className="w-1/3 px-4">
 					<Title problemId={problem._id} title={problem.name} />
