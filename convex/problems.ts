@@ -4,7 +4,7 @@ import {ConvexError, v} from 'convex/values';
 import {Id} from './_generated/dataModel';
 import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
 import {removeComment} from './comment';
-import {AnswerType, levelType, StatusType, TemplateType, TestcaseType} from './schema';
+import {AnswerType, levelType, StateType, StatusType, TemplateType, TestcaseType} from './schema';
 import {getUser} from './users';
 
 export async function getProblem(ctx: QueryCtx | MutationCtx, problemId: Id<'problems'>) {
@@ -126,7 +126,6 @@ export const queryProblems = query({
 	},
 	async handler(ctx, args) {
 		const {name, level, topicId, status, paginationOpts} = args;
-		const identity = await ctx.auth.getUserIdentity();
 
 		const preIndexQuery = ctx.db.query('problems');
 		const baseQuery = name
@@ -137,6 +136,44 @@ export const queryProblems = query({
 			if (level && problem.level !== level) return false;
 			if (topicId && problem.topicId !== topicId) return false;
 			if (status && problem.status !== status) return false;
+			return true;
+		});
+
+		const rawResults = await filteredQuery.paginate(paginationOpts);
+		const topics = await ctx.db.query('topics').collect();
+		return {
+			...rawResults,
+			page: rawResults.page.map(problem => ({
+				_id: problem._id,
+				name: problem.name,
+				level: problem.level,
+				status: problem.status,
+				topic: topics.find(t => t._id === problem.topicId) || null,
+			})),
+		};
+	},
+});
+
+export const queryUserProblems = query({
+	args: {
+		name: v.optional(v.string()),
+		level: v.optional(v.string()),
+		topicId: v.optional(v.id('topics')),
+		paginationOpts: paginationOptsValidator,
+	},
+	async handler(ctx, args) {
+		const {name, level, topicId, paginationOpts} = args;
+		const identity = await ctx.auth.getUserIdentity();
+
+		const preIndexQuery = ctx.db.query('problems');
+		const baseQuery = name
+			? preIndexQuery.withSearchIndex('by_name', q => q.search('name', name))
+			: preIndexQuery;
+
+		const filteredQuery = filter(baseQuery, problem => {
+			if (level && problem.level !== level) return false;
+			if (topicId && problem.topicId !== topicId) return false;
+			if (problem.status !== 'public') return false;
 			return true;
 		});
 
@@ -158,6 +195,15 @@ export const queryProblems = query({
 
 		const enrichedPage = await Promise.all(
 			rawResults.page.map(async problem => {
+				if (problem.status === 'private') {
+					return {
+						_id: problem._id,
+						name: problem.name,
+						level: problem.level,
+						status: problem.status,
+						topic: topics.find(t => t._id === problem.topicId) || null,
+					};
+				}
 				const state = await ctx.db
 					.query('user_problem')
 					.withIndex('by_userId_problemId', q =>
@@ -201,14 +247,43 @@ export const checkUserProblem = query({
 });
 
 export const createUserProblem = mutation({
-	args: {problemId: v.id('problems'), userId: v.string()},
+	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
-		const {problemId, userId} = args;
-		await ctx.db.insert('user_problem', {
-			userId: userId,
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const {problemId} = args;
+		return await ctx.db.insert('user_problem', {
+			userId: identity.subject,
 			problemId: problemId,
 			state: 'progress',
 		});
+	},
+});
+
+export const updateUserProblem = mutation({
+	args: {
+		problemId: v.id('problems'),
+		state: StateType,
+		code: v.optional(AnswerType),
+	},
+	async handler(ctx, args) {
+		const {problemId, state, code} = args;
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const userProblem = await ctx.db
+			.query('user_problem')
+			.withIndex('by_userId_problemId', q =>
+				q.eq('userId', identity.subject).eq('problemId', problemId),
+			)
+			.unique();
+		if (!userProblem) {
+			throw new ConvexError('User problem not found');
+		}
+		await ctx.db.patch(userProblem._id, {state, code});
 	},
 });
 
@@ -223,7 +298,7 @@ export const getUserProblem = query({
 			)
 			.unique();
 		if (!userProblem) {
-			return null;
+			throw new ConvexError('User problem not found');
 		}
 		return userProblem;
 	},
@@ -235,7 +310,7 @@ export const getTestcaseByProblemId = query({
 		const {problemId} = args;
 		const problem = await getProblem(ctx, problemId);
 		if (!problem) {
-			return null;
+			throw new ConvexError('Problem not found');
 		}
 		const isPublic = problem.status === 'public';
 		return {
@@ -251,12 +326,12 @@ export const getTemplateByProblemId = query({
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
-			return null;
+			throw new ConvexError('User not authenticated');
 		}
 		const {problemId} = args;
 		const problem = await getProblem(ctx, problemId);
 		if (!problem) {
-			return null;
+			throw new ConvexError('Problem not found');
 		}
 		const isPublic = problem.status === 'public';
 		const code: {[lang: string]: string} = {};
@@ -267,18 +342,17 @@ export const getTemplateByProblemId = query({
 					q.eq('userId', identity.subject).eq('problemId', problem._id),
 				)
 				.unique();
-			if (!user_problem) {
-				return;
+			if (user_problem) {
+				Object.keys(problem.template).forEach(lang => {
+					if (!problem.template[lang]) {
+						code[lang] = user_problem?.code?.[lang] ?? '';
+					}
+				});
 			}
-			Object.keys(problem.template).forEach(lang => {
-				if (!problem.template[lang]) {
-					code[lang] = user_problem?.code?.[lang] ?? '';
-				}
-			});
 		} else {
 			Object.keys(problem.template).forEach(lang => {
 				if (!problem.template[lang]) {
-					const {head, body, tail} = problem.template[lang];
+					const {head = '', body = '', tail = ''} = problem.template[lang];
 					code[lang] = `${head}\n\n${body}\n\n${tail}`;
 				}
 			});

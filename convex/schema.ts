@@ -146,9 +146,9 @@ export default defineSchema({
 		content: v.string(),
 		answer: v.string(),
 		template: v.object({
-			head: v.string(),
-			body: v.string(),
-			tail: v.string(),
+			head: v.optional(v.string()),
+			body: v.optional(v.string()),
+			tail: v.optional(v.string()),
 		}),
 		testcase: TestcaseType,
 		status: StatusType,

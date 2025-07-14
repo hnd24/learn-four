@@ -54,11 +54,10 @@ export const useQueryUserProblem = () => {
 		...{name: filter.name === '' ? undefined : filter.name},
 		...{topicId: filter.topic === 'all' ? undefined : (filter.topic as Id<'topics'>)},
 		...{level: filter.level === 'all' ? undefined : filter.level},
-		...{status: 'public' as STATUS_PROBLEM},
 	};
 
 	const {results, isLoading, loadMore, status} = usePaginatedQuery(
-		api.problems.queryProblems,
+		api.problems.queryUserProblems,
 		params,
 		{initialNumItems: ITEM_PER_PAGE},
 	);

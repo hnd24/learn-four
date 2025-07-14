@@ -68,9 +68,9 @@ export const updateLesson = mutation({
 		answer: v.optional(v.string()),
 		template: v.optional(
 			v.object({
-				head: v.string(),
-				body: v.string(),
-				tail: v.string(),
+				head: v.optional(v.string()),
+				body: v.optional(v.string()),
+				tail: v.optional(v.string()),
 			}),
 		),
 		testcase: v.optional(TestcaseType),
@@ -188,14 +188,63 @@ export const getLessonInCourse = query({
 export const getDetailLessonById = query({
 	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
-		const lesson = await getLesson(ctx, args.lessonId);
-		if (!lesson) {
-			throw new ConvexError('Lesson not found');
-		}
+		const {testcase, template, ...lesson} = await getLesson(ctx, args.lessonId);
 		const language = await ctx.db.get(lesson.languageId);
 		return {
 			...lesson,
 			language,
+		};
+	},
+});
+
+export const getTestcaseByLessonId = query({
+	args: {lessonId: v.id('lessons')},
+	async handler(ctx, args) {
+		const lesson = await getLesson(ctx, args.lessonId);
+		if (!lesson.testcase) {
+			throw new ConvexError('Testcase not found for this lesson');
+		}
+		const isPublic = lesson.status === 'public';
+		return {
+			isPublic,
+			testcase: lesson.testcase,
+			lessonId: lesson._id,
+		};
+	},
+});
+
+export const getTemplateByLessonId = query({
+	args: {lessonId: v.id('lessons')},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const {lessonId} = args;
+		const lesson = await getLesson(ctx, lessonId);
+		if (!lesson) {
+			throw new ConvexError('Lesson not found');
+		}
+		const isPublic = lesson.status === 'public';
+		let code: string = '';
+		if (isPublic) {
+			const user_problem = await ctx.db
+				.query('user_lesson')
+				.withIndex('by_userId_lessonId', q =>
+					q.eq('userId', identity.subject).eq('lessonId', lesson._id),
+				)
+				.unique();
+			if (user_problem) {
+				code = user_problem.code ?? '';
+			}
+		} else {
+			const {head = '', body = '', tail = ''} = lesson.template;
+			code = `${head}\n\n${body}\n\n${tail}`;
+		}
+		return {
+			isPublic,
+			code: code,
+			template: lesson.template,
 		};
 	},
 });
@@ -218,35 +267,62 @@ export const checkUserLesson = query({
 
 export const createUserLesson = mutation({
 	args: {
-		userId: v.string(),
 		lessonId: v.id('lessons'),
 		state: StateType,
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert('user_lesson', {
-			userId: args.userId,
-			lessonId: args.lessonId,
-			state: args.state,
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const {lessonId, state} = args;
+		return await ctx.db.insert('user_lesson', {
+			userId: identity.subject,
+			lessonId: lessonId,
+			state: state,
 		});
 	},
 });
 
 export const getUserLesson = query({
-	args: {lessonId: v.id('lessons')},
+	args: {lessonId: v.id('lessons'), userId: v.string()},
+	async handler(ctx, args) {
+		const {userId, lessonId} = args;
+		const userLesson = await ctx.db
+			.query('user_lesson')
+			.withIndex('by_userId_lessonId', q => q.eq('userId', userId).eq('lessonId', lessonId))
+			.unique();
+		if (!userLesson) {
+			throw new ConvexError('User lesson not found');
+		}
+		return userLesson;
+	},
+});
+
+export const updateUserLesson = mutation({
+	args: {
+		lessonId: v.id('lessons'),
+		state: StateType,
+		code: v.optional(v.string()),
+	},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
-			return null;
+			throw new ConvexError('User not authenticated');
 		}
+		const {lessonId, state, code} = args;
 		const userLesson = await ctx.db
 			.query('user_lesson')
 			.withIndex('by_userId_lessonId', q =>
-				q.eq('userId', identity.subject).eq('lessonId', args.lessonId),
+				q.eq('userId', identity.subject).eq('lessonId', lessonId),
 			)
 			.unique();
 		if (!userLesson) {
-			return null;
+			throw new ConvexError('User lesson not found');
 		}
-		return userLesson;
+		await ctx.db.patch(userLesson._id, {
+			state,
+			code: code ?? userLesson.code,
+		});
 	},
 });
