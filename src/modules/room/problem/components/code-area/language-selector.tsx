@@ -7,33 +7,37 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import {useGetLanguages} from '@/hook/data/language';
-import {useAtom} from 'jotai';
-import {useEffect} from 'react';
+import {LanguageType} from '@/types';
+import {useAtomValue, useSetAtom} from 'jotai';
+import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {languagesAtom} from '../../atom/language';
+import {statusProblemAtom} from '../../atom/status';
+import {templateAtom} from '../../atom/template';
 
 export default function LanguageSelector() {
 	const {data: LANGUAGES, isPending} = useGetLanguages();
-	const [language, setLanguage] = useAtom(languagesAtom);
+	const [languages, setLanguages] = useState<LanguageType[]>([]);
+	const status = useAtomValue(statusProblemAtom);
+	const template = useAtomValue(templateAtom);
+	const setLanguage = useSetAtom(languagesAtom);
 
-	// IMPORTANT:set up for user mode
-	// const code = useAtomValue(codeFromDB);
 	// Filter languages based on the code object
-	// const [languages, setLanguages] = useState<LanguageType[]>([]);
-	// useEffect(() => {
-	// 	if (!LANGUAGES || LANGUAGES.length === 0) return;
-	// 	const languages = Object.keys(code).map(l => {
-	// 		if (code[l].trim()) {
-	// 			return LANGUAGES.find(lang => lang.value === l);
-	// 		}
-	// 	});
-	// 	setLanguages(languages.filter(Boolean) as LanguageType[]);
-	// }, [code, LANGUAGES]);
-
 	useEffect(() => {
-		if (LANGUAGES?.length === 0) return;
-		setLanguage(LANGUAGES?.[0]);
-	}, [LANGUAGES]);
+		if (!LANGUAGES || LANGUAGES.length === 0) return;
+		if (status === 'private') {
+			setLanguages(LANGUAGES ?? []);
+			setLanguage(languages?.[0]);
+			return;
+		}
+		const filterLanguages = Object.keys(template).map(l => {
+			if (template[l]) {
+				return LANGUAGES.find(lang => lang.value === l);
+			}
+		});
+		setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
+		setLanguage(languages?.[0]);
+	}, [template, LANGUAGES, status]);
 
 	const onChange = (value: string) => {
 		const selectedLanguage = LANGUAGES?.find(lang => lang.value === value);
@@ -46,8 +50,7 @@ export default function LanguageSelector() {
 		setLanguage(selectedLanguage);
 	};
 
-	// if (languages.length === 0 || isPending) {
-	if (isPending || !LANGUAGES || LANGUAGES.length === 0) {
+	if (isPending) {
 		return (
 			<Select disabled>
 				<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">
@@ -58,12 +61,12 @@ export default function LanguageSelector() {
 	}
 
 	return (
-		<Select defaultValue={LANGUAGES[0].value} onValueChange={onChange}>
+		<Select defaultValue={languages[0]?.value} onValueChange={onChange}>
 			<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">
 				<SelectValue placeholder="Language" />
 			</SelectTrigger>
 			<SelectContent>
-				{LANGUAGES.map(lang => (
+				{languages.map(lang => (
 					<SelectItem key={lang.value} value={lang.value}>
 						{lang.name}
 					</SelectItem>
