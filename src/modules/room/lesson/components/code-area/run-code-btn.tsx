@@ -2,64 +2,57 @@
 
 import {Hint} from '@/components/hint';
 import {Button} from '@/components/ui/button';
-import {useGetProblemTemplate, useUpdateUserProblem} from '@/hook/data/problem';
+import {useGetLessonTemplate, useUpdateUserLesson} from '@/hook/data/lesson';
 import {getOverallStatus} from '@/modules/room/lib/utils';
 import {StatusResult} from '@/types';
 import {useAtomValue, useSetAtom} from 'jotai';
 import {Loader, Play} from 'lucide-react';
 import {toast} from 'sonner';
-import {codeAtom, codeFromDB} from '../../atom/code';
-import {languagesAtom} from '../../atom/language';
+import {codeAtom} from '../../atom/code';
 import {resultsAtom} from '../../atom/result';
 import {executeCodeAtom, executingAtom} from '../../atom/result/execution';
-import {statusProblemAtom} from '../../atom/status';
-import {useProblemId} from '../../hook/use-problem-id';
+import {statusLessonAtom} from '../../atom/status';
+import {useLessonId} from '../../hook/use-lesson-id';
 
 export default function RunCodeBtn() {
 	const executeCode = useSetAtom(executeCodeAtom);
 	const isRunning = useAtomValue(executingAtom);
 	const code = useAtomValue(codeAtom);
-	const codeDB = useAtomValue(codeFromDB);
-	const language = useAtomValue(languagesAtom);
-	const problemId = useProblemId();
-	const {data, isPending} = useGetProblemTemplate(problemId);
-	const {mutate: addUserProblem, isPending: pendingAdd} = useUpdateUserProblem();
+	const lessonId = useLessonId();
+	const {data, isPending} = useGetLessonTemplate(lessonId);
+	const {mutate: addUserLesson, isPending: pendingAdd} = useUpdateUserLesson();
 	const isDisabled = isRunning || isPending || pendingAdd;
 	const results = useAtomValue(resultsAtom);
 	const statusResult = getOverallStatus(results);
-	const status = useAtomValue(statusProblemAtom);
+	const status = useAtomValue(statusLessonAtom);
 
 	const onClick = async () => {
 		if (!data) return;
 		const {template} = data;
-		const lang = language?.value || 'javascript';
-		let sourceCode = code[lang];
+		let sourceCode = code;
 		if (data.isPublic) {
-			sourceCode = `${template[lang].head}\n${code[lang]}\n${template[lang].tail}`;
+			sourceCode = `${template.head}\n${code}\n${template.tail}`;
 		}
 		await executeCode(sourceCode);
 		if (statusResult === StatusResult.Accepted && status === 'public') {
-			addUserProblem(
+			addUserLesson(
 				{
-					problemId,
+					lessonId,
 					state: 'completed',
-					code: {
-						...codeDB,
-						[lang]: code[lang],
-					},
+					code,
 				},
 				{
 					onSuccess: () => {
-						toast.success(`Your ${language?.name} code has been saved!`);
+						toast.success(`Your code has been saved!`);
 					},
 					onError: error => {
-						toast.error(`Failed to save your code`);
 						console.error('Error updating user problem:', error);
 					},
 				},
 			);
 		}
 	};
+
 	return (
 		<Hint label="Run">
 			<Button

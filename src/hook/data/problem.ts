@@ -88,3 +88,9 @@ export const useAddProblem = () => {
 		mutationFn: useConvexMutation(api.problems.createProblem),
 	});
 };
+
+export const useUpdateUserProblem = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.problems.updateUserProblem),
+	});
+};

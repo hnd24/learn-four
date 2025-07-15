@@ -1,6 +1,7 @@
 import NotFoundState from '@/components/not-found-state';
 import {getAuthToken} from '@/modules/auth/lib/auth';
 import Header from '@/modules/room/lesson/components/header';
+import LessonContent from '@/modules/room/lesson/components/lesson-content';
 import CostumeLoadingPage from '@/page/costume-loading-page';
 import {preloadQuery} from 'convex/nextjs';
 import {Preloaded} from 'convex/react';
@@ -28,7 +29,7 @@ export default async function LessonPage({params}: {params: Params}) {
 	} catch (error) {
 		return (
 			<div className="h-screen w-screen flex items-center justify-center">
-				<NotFoundState link="/admin/problem" />;
+				<NotFoundState link="/admin" />;
 			</div>
 		);
 	}
@@ -37,7 +38,7 @@ export default async function LessonPage({params}: {params: Params}) {
 			<Header preloadedLesson={preloadedLesson} />
 			<main className="mt-16 flex size-full">
 				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-					{/* <ProblemContent preloadedLesson={preloadedLesson} /> */}
+					<LessonContent preloadedLesson={preloadedLesson} />
 				</div>
 			</main>
 		</div>

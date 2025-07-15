@@ -1,4 +1,5 @@
 'use client';
+
 import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
@@ -6,19 +7,19 @@ import {Preloaded} from 'convex/react';
 import {api} from '../../../../../convex/_generated/api';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
-import {useProblemId} from '../hook/use-problem-id';
+import {useLessonId} from '../hook/use-lesson-id';
 import CodeArea from './code-area';
 
 type Props = {
-	preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
+	preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
 };
 
-export default function ProblemContent({preloadedProblem}: Props) {
+export default function LessonContent({preloadedLesson}: Props) {
 	const isMobile = useMediaQuery('(max-width: 767px)');
-	const problemId = useProblemId();
+	const lessonId = useLessonId();
 	const isPending = false;
-	useHydrateTestCases(problemId);
-	useHydrateTemplate(problemId);
+	useHydrateTestCases(lessonId);
+	useHydrateTemplate(lessonId);
 
 	if (isMobile) {
 		return (

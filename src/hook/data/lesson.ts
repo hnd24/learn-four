@@ -9,6 +9,14 @@ export const useGetLessonById = (lessonId: Id<'lessons'>) => {
 	return useQuery(convexQuery(api.lessons.getLessonById, {lessonId}));
 };
 
+export const useGetLessonTemplate = (lessonId: Id<'lessons'>) => {
+	return useQuery(convexQuery(api.lessons.getTemplateByLessonId, {lessonId}));
+};
+
+export const useGetLessonTestcase = (lessonId: Id<'lessons'>) => {
+	return useQuery(convexQuery(api.lessons.getTestcaseByLessonId, {lessonId}));
+};
+
 export const useGetUserLessonInCourse = (courseId: Id<'courses'>) => {
 	return useQuery(convexQuery(api.lessons.getUserLessonInCourse, {courseId}));
 };
@@ -25,6 +33,12 @@ export const useGetUserLesson = (lessonId: Id<'lessons'>) => {
 export const useAddLesson = () => {
 	return useMutation({
 		mutationFn: useConvexMutation(api.lessons.createLesson),
+	});
+};
+
+export const useUpdateUserLesson = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.lessons.updateUserLesson),
 	});
 };
 

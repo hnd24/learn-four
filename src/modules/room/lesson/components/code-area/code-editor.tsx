@@ -1,5 +1,6 @@
 'use client';
 
+import {ActionSelector} from '@/components/action-selector';
 import LoadingState from '@/components/loading-state';
 import {useMounted} from '@/hook/use-mounted';
 import {cn} from '@/lib/utils';
@@ -8,21 +9,18 @@ import {useAtom, useAtomValue} from 'jotai';
 import {AlignLeft} from 'lucide-react';
 import {editor} from 'monaco-editor';
 import {useRef} from 'react';
-import {ActionSelector} from '../../../../../components/action-selector';
 import {codeAtom} from '../../atom/code';
 import {languagesAtom} from '../../atom/language';
-import {statusProblemAtom} from '../../atom/status';
+import {statusLessonAtom} from '../../atom/status';
 import CreateTemplateBtn from './create-template-btn';
-import LanguageSelector from './language-selector';
-import {ResetCodeButton} from './reset-code';
+import {ResetCodeButton} from './reset-code-btn';
 import RunCodeBtn from './run-code-btn';
-
-export const CodeEditor = () => {
+export default function CodeEditor() {
 	const mounted = useMounted();
 	const language = useAtomValue(languagesAtom);
 	const [code, setCode] = useAtom(codeAtom);
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
-	const status = useAtomValue(statusProblemAtom);
+	const status = useAtomValue(statusLessonAtom);
 	if (!mounted) {
 		return <LoadingState />;
 	}
@@ -32,9 +30,7 @@ export const CodeEditor = () => {
 	};
 
 	const onChange = (value?: string) => {
-		setCode(draft => {
-			draft[language?.value || 'javascript'] = value || '';
-		});
+		setCode(value || '');
 	};
 
 	const onFormatCode = () => {
@@ -42,11 +38,12 @@ export const CodeEditor = () => {
 			editorRef.current.trigger('source', 'editor.action.formatDocument', {});
 		}
 	};
-
 	return (
 		<div className="bg-border flex h-full flex-col overflow-hidden rounded-b-md border">
 			<div className="flex items-center justify-between p-1 pr-3">
-				<LanguageSelector />
+				<div className="px-2 py-1 text-sm border shadow rounded-md ">
+					<p>{language?.name}</p>
+				</div>
 				<div className="flex items-center gap-2">
 					<ActionSelector title="Format Code" onClick={onFormatCode}>
 						<AlignLeft />
@@ -63,7 +60,7 @@ export const CodeEditor = () => {
 					height="100%"
 					onMount={onMount}
 					language={language?.value}
-					value={code[language?.value || 'javascript'] || ''}
+					value={code || ''}
 					onChange={onChange}
 					theme="vs-dark"
 					options={{
@@ -93,4 +90,4 @@ export const CodeEditor = () => {
 			</div>
 		</div>
 	);
-};
+}

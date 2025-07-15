@@ -76,7 +76,6 @@ function highlightRecursive(outputData: any, expectedData: any, isOutput: boolea
 
 export function highlightDiff(output: string, expected: string) {
 	if (output === expected) return {output, expected};
-
 	try {
 		const outputParsed = JSON.parse(output);
 		const expectedParsed = JSON.parse(expected);
@@ -86,7 +85,7 @@ export function highlightDiff(output: string, expected: string) {
 
 		return {outputHighlighted, expectedHighlighted};
 	} catch (err) {
-		console.log('Invalid JSON input');
+		console.log('⚙️ Invalid JSON input');
 		return {output, expected};
 	}
 }

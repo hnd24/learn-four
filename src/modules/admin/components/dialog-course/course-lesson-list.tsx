@@ -26,6 +26,7 @@ import {
 	Lock,
 	Plus,
 } from 'lucide-react';
+import {nanoid} from 'nanoid';
 import {useRouter} from 'next/navigation';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
@@ -64,12 +65,12 @@ export default function CourseLessonList({idCourse, languageId}: Props) {
 	const disabled = loadingLessons || pendingAdd;
 	const lessons: LessonType[] = lessonsData?.lessons ?? [];
 	const router = useRouter();
-
+	const document = nanoid(60);
 	const defaultArgs: AddLessonArgs = {
 		courseId: idCourse,
 		name: 'New Lesson',
 		level: 'easy',
-		content: '',
+		document,
 		answer: '',
 		languageId,
 		template: {

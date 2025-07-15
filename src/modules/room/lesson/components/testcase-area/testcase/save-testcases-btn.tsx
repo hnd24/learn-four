@@ -2,18 +2,19 @@
 
 import {Hint} from '@/components/hint';
 import {Button} from '@/components/ui/button';
-import {useUpdateProblem} from '@/hook/data/problem';
 import {useAtomValue} from 'jotai';
 import {Loader2, Save} from 'lucide-react';
 import {toast} from 'sonner';
-import {statusProblemAtom} from '../../../atom/status';
+
+import {useUpdateLesson} from '@/hook/data/lesson';
+import {statusLessonAtom} from '../../../atom/status';
 import {testCasesAtoms} from '../../../atom/testcase';
-import {useProblemId} from '../../../hook/use-problem-id';
+import {useLessonId} from '../../../hook/use-lesson-id';
 
 export default function SaveTestcasesBtn() {
-	const problemId = useProblemId();
-	const status = useAtomValue(statusProblemAtom);
-	const {mutate: updateProblem, isPending} = useUpdateProblem();
+	const lessonId = useLessonId();
+	const status = useAtomValue(statusLessonAtom);
+	const {mutate: updateLesson, isPending} = useUpdateLesson();
 	const testCases = useAtomValue(testCasesAtoms);
 
 	if (status === 'public') {
@@ -21,9 +22,9 @@ export default function SaveTestcasesBtn() {
 	}
 
 	const onClick = () => {
-		updateProblem(
+		updateLesson(
 			{
-				problemId,
+				lessonId,
 				testcase: testCases,
 			},
 			{

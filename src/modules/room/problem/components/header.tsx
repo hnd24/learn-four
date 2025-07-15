@@ -22,7 +22,6 @@ export default function Header({preloadedProblem}: Props) {
 	useEffect(() => {
 		setStatus(problem?.status);
 	}, [problem, setStatus]);
-	console.log('🚀 ~ useEffect ~ problem:', problem);
 
 	if (!problem) {
 		return (

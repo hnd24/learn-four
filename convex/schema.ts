@@ -143,7 +143,7 @@ export default defineSchema({
 		courseId: v.id('courses'),
 		name: v.string(),
 		level: levelType,
-		content: v.string(),
+		document: v.string(),
 		answer: v.string(),
 		template: v.object({
 			head: v.optional(v.string()),

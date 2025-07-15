@@ -281,7 +281,13 @@ export const updateUserProblem = mutation({
 			)
 			.unique();
 		if (!userProblem) {
-			throw new ConvexError('User problem not found');
+			await ctx.db.insert('user_problem', {
+				userId: identity.subject,
+				problemId,
+				state,
+				code: code || {},
+			});
+			return;
 		}
 		await ctx.db.patch(userProblem._id, {state, code});
 	},
@@ -346,18 +352,18 @@ export const getTemplateByProblemId = query({
 					q.eq('userId', identity.subject).eq('problemId', problem._id),
 				)
 				.unique();
-			if (user_problem) {
-				Object.keys(problem.template).forEach(lang => {
-					if (!problem.template[lang]) {
-						code[lang] = user_problem?.code?.[lang] ?? '';
-					}
-				});
-			}
+			Object.keys(problem.template).forEach(lang => {
+				if (problem.template[lang]) {
+					const {body = ''} = problem.template[lang];
+					code[lang] = user_problem?.code?.[lang] || body;
+				}
+			});
 		} else {
 			Object.keys(problem.template).forEach(lang => {
-				if (!problem.template[lang]) {
-					const {head = '', body = '', tail = ''} = problem.template[lang];
-					code[lang] = `${head}\n\n${body}\n\n${tail}`;
+				if (problem.template[lang]) {
+					const {head = '', tail = ''} = problem.template[lang];
+					const answer = problem.answer[lang] || '';
+					code[lang] = `${head && head + '\n\n'}${answer && answer + '\n\n'}${tail}`;
 				}
 			});
 		}
@@ -365,6 +371,7 @@ export const getTemplateByProblemId = query({
 			isPublic,
 			code: code,
 			template: problem.template,
+			answer: problem.answer,
 		};
 	},
 });

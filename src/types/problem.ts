@@ -44,6 +44,7 @@ export type ProblemTemplateType = {
 		[language: string]: string;
 	};
 	template: TemplateType;
+	answer: AnswerType;
 };
 
 export type UserProblemType = {

@@ -25,12 +25,12 @@ export default function Title({lessonId, title}: Props) {
 				{lessonId, name: value},
 				{
 					onSuccess: () => {
-						toast.success('Problem title updated successfully');
+						toast.success('Lesson title updated successfully');
 						setIsEditing(false);
 					},
 					onError: error => {
-						toast.error(`Failed to update problem title`);
-						console.error('⚙️ Error updating problem title:', error);
+						toast.error(`Failed to update Lesson title`);
+						console.error('⚙️ Error updating Lesson title:', error);
 					},
 				},
 			);

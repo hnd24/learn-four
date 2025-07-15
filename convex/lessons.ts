@@ -40,7 +40,7 @@ export const createLesson = mutation({
 		courseId: v.id('courses'),
 		name: v.string(),
 		level: levelType,
-		content: v.string(),
+		document: v.string(),
 		answer: v.string(),
 		template: v.object({
 			head: v.string(),
@@ -64,7 +64,7 @@ export const updateLesson = mutation({
 		courseId: v.optional(v.id('courses')),
 		name: v.optional(v.string()),
 		level: v.optional(levelType),
-		content: v.optional(v.string()),
+		document: v.optional(v.string()),
 		answer: v.optional(v.string()),
 		template: v.optional(
 			v.object({
@@ -234,16 +234,17 @@ export const getTemplateByLessonId = query({
 					q.eq('userId', identity.subject).eq('lessonId', lesson._id),
 				)
 				.unique();
-			if (user_problem) {
-				code = user_problem.code ?? '';
-			}
+			const {body = ''} = lesson.template;
+			code = user_problem?.code ?? body;
 		} else {
-			const {head = '', body = '', tail = ''} = lesson.template;
-			code = `${head}\n\n${body}\n\n${tail}`;
+			const {head = '', tail = ''} = lesson.template;
+			const answer = lesson.answer || '';
+			code = `${head && head + '\n\n'}${answer && answer + '\n\n'}${tail}`;
 		}
 		return {
 			isPublic,
 			code,
+			answer: lesson.answer,
 			template: lesson.template,
 		};
 	},
@@ -324,11 +325,17 @@ export const updateUserLesson = mutation({
 			)
 			.unique();
 		if (!userLesson) {
-			throw new ConvexError('User lesson not found');
+			await ctx.db.insert('user_lesson', {
+				userId: identity.subject,
+				lessonId,
+				state,
+				code: code || '',
+			});
+			return;
 		}
 		await ctx.db.patch(userLesson._id, {
 			state,
-			code: code ?? userLesson.code,
+			code,
 		});
 	},
 });

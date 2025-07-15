@@ -11,7 +11,7 @@ export type LessonDetailType = {
 	_id: Id<'lessons'>;
 	_creationTime?: number;
 	name: string;
-	content: string;
+	document: string;
 	courseId: string;
 	level: 'easy' | 'medium' | 'hard';
 	answer: string;
@@ -33,26 +33,34 @@ export type LessonType = {
 	status: STATUS_LESSON;
 };
 
-export type UserLessonType = {
-	_id: Id<'lessons'>;
-	_creationTime: number;
-	name: string;
-	level: LEVEL_LESSON;
-	status: STATUS_LESSON;
-	state: STATE_LESSON;
-};
-
 export type lessonsCourseType = {
 	courseId: Id<'courses'>;
 	status: STATUS_LESSON;
 	lessons: LessonType[];
 };
 
+export type LessonTemplateType = {
+	isPublic: boolean;
+	code: string;
+	answer: string;
+	template: {
+		head?: string;
+		body?: string;
+		tail?: string;
+	};
+};
+
+export type LessonTestcaseType = {
+	isPublic: boolean;
+	testcase: TestcaseType[];
+	lessonId: Id<'lessons'>;
+};
+
 export type AddLessonArgs = {
 	courseId: Id<'courses'>;
 	name: string;
 	level: LEVEL_LESSON;
-	content: string;
+	document: string;
 	answer: string;
 	template: {
 		head: string;

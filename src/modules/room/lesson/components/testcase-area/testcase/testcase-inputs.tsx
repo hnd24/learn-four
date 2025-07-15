@@ -1,8 +1,10 @@
 'use client';
+
 import {Button} from '@/components/ui/button';
+import {useGetLessonById} from '@/hook/data/lesson';
 import {useAtomValue, useSetAtom} from 'jotai';
 import {Plus} from 'lucide-react';
-import {statusProblemAtom} from '../../../atom/status';
+import {statusLessonAtom} from '../../../atom/status';
 import {testCasesFamilyAtom} from '../../../atom/testcase';
 import {activeTestCaseIdAtom} from '../../../atom/testcase/active';
 import {
@@ -11,11 +13,11 @@ import {
 	updateExpectedInTestCase,
 	updateInputInTestCase,
 } from '../../../atom/testcase/input';
-import {useProblemId} from '../../../hook/use-problem-id';
+import {useLessonId} from '../../../hook/use-lesson-id';
 import {InputSection} from './input-section';
 
 export default function TestcaseInputs() {
-	const problemId = useProblemId();
+	const lessonId = useLessonId();
 	const activeTestCaseId = useAtomValue(activeTestCaseIdAtom);
 	const currentTestCase = useAtomValue(testCasesFamilyAtom(activeTestCaseId));
 
@@ -23,11 +25,13 @@ export default function TestcaseInputs() {
 	const remove = useSetAtom(removeInputFromTestCase);
 	const update = useSetAtom(updateInputInTestCase);
 	const updateExpected = useSetAtom(updateExpectedInTestCase);
-	const status = useAtomValue(statusProblemAtom);
+	const status = useAtomValue(statusLessonAtom);
 
-	if (!currentTestCase || !status) {
+	const {data: lesson, isPending} = useGetLessonById(lessonId);
+	if (!currentTestCase || !lesson || isPending) {
 		return null;
 	}
+
 	return (
 		<div className="space-y-3" key={activeTestCaseId}>
 			{currentTestCase.inputs.map(input => (

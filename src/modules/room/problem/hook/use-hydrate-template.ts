@@ -2,18 +2,18 @@ import {useGetProblemTemplate} from '@/hook/data/problem';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {Id} from '../../../../../convex/_generated/dataModel';
+import {answerAtom} from '../atom/answer';
 import {codeDataAtom} from '../atom/code';
-import {templateAtom} from '../atom/template';
 
 export const useHydrateTemplate = (problemId: Id<'problems'>) => {
 	const {data} = useGetProblemTemplate(problemId);
-	const setTemplate = useSetAtom(templateAtom);
+	const setAnswer = useSetAtom(answerAtom);
 	const setCode = useSetAtom(codeDataAtom);
 
 	useEffect(() => {
 		if (!data) return;
-		const {code, template} = data;
+		const {code, answer} = data;
 		setCode(code);
-		setTemplate(template);
+		setAnswer(answer);
 	}, [data, setCode]);
 };

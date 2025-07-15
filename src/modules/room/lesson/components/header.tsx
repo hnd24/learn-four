@@ -8,6 +8,7 @@ import {useSetAtom} from 'jotai';
 import {Bell} from 'lucide-react';
 import {useEffect} from 'react';
 import {api} from '../../../../../convex/_generated/api';
+import {languageDataAtom} from '../atom/language';
 import {statusLessonAtom} from '../atom/status';
 import PublishButton from './public-action/publish-btn';
 import Title from './title';
@@ -18,10 +19,14 @@ type Props = {
 
 export default function Header({preloadedLesson}: Props) {
 	const lesson = usePreloadedQuery(preloadedLesson);
+	const setLanguage = useSetAtom(languageDataAtom);
 	const setStatus = useSetAtom(statusLessonAtom);
 	useEffect(() => {
 		setStatus(lesson?.status);
-	}, [lesson, setStatus]);
+		if (lesson?.language) {
+			setLanguage(lesson.language);
+		}
+	}, [lesson, setStatus, setLanguage]);
 
 	if (!lesson) {
 		return (
