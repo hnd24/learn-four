@@ -1,10 +1,10 @@
 'use client';
 
-import {Button} from '@/components/ui/button';
 import {cn} from '@/lib/utils';
 import {StaticImport} from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
 import Link from 'next/link';
+import {Button} from './ui/button';
 
 type Props = {
 	className?: string;
@@ -14,12 +14,12 @@ type Props = {
 	imageSrc?: StaticImport | string;
 };
 
-export default function NotFoundState({
+export default function NotAccessState({
 	className,
 	children,
-	label = 'Not Found',
+	label = 'Access Denied',
 	link = '/',
-	imageSrc = '/images/not-found.svg',
+	imageSrc = '/images/not-access.svg',
 }: Props) {
 	return (
 		<div className={cn('size-full flex flex-col gap-3 items-center justify-center', className)}>

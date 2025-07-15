@@ -34,6 +34,7 @@ export default function RunCodeBtn() {
 			sourceCode = `${template.head}\n${code}\n${template.tail}`;
 		}
 		await executeCode(sourceCode);
+
 		if (statusResult === StatusResult.Accepted && status === 'public') {
 			addUserLesson(
 				{

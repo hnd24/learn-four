@@ -7,7 +7,15 @@ import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/c
 import {useGetUserLessonInCourse} from '@/hook/data/lesson';
 import {cn} from '@/lib/utils';
 import {LessonType} from '@/types';
-import {BookOpen, ChevronRight, CircleCheckBig, Loader2, Lock, Trophy} from 'lucide-react';
+import {
+	BookOpen,
+	CheckCircle,
+	ChevronRight,
+	CircleCheckBig,
+	Loader2,
+	Lock,
+	Trophy,
+} from 'lucide-react';
 import {useRouter} from 'next/navigation';
 import {Id} from '../../../../convex/_generated/dataModel';
 
@@ -89,7 +97,7 @@ export default function LessonTable({idCourse}: Props) {
 				<Table className="overflow-hidden">
 					<TableHeader>
 						<TableRow>
-							<TableHead className="w-12">Status</TableHead>
+							<TableHead className="w-8" />
 							<TableHead className="w-16 text-center">Level</TableHead>
 							<TableHead>Name</TableHead>
 						</TableRow>
@@ -120,9 +128,9 @@ export default function LessonTable({idCourse}: Props) {
 								key={lesson._id}
 								className={cn('cursor-pointer hover:bg-muted/50 transition-colors')}
 								onClick={() => handleLessonClick(lesson._id)}>
-								<TableCell className="w-12">
+								<TableCell className="w-8 flex items-center justify-center">
 									{'state' in lesson && lesson.state === 'completed' && (
-										<CircleCheckBig className="h-5 w-5 text-green-500" />
+										<CheckCircle className="size-4 text-green-800" />
 									)}
 								</TableCell>
 								<TableCell className="w-16">

@@ -191,7 +191,6 @@ export const queryUserProblems = query({
 				})),
 			};
 		}
-		const user = await getUser(ctx, identity.subject);
 
 		const enrichedPage = await Promise.all(
 			rawResults.page.map(async problem => {
@@ -207,10 +206,12 @@ export const queryUserProblems = query({
 				const state = await ctx.db
 					.query('user_problem')
 					.withIndex('by_userId_problemId', q =>
-						q.eq('userId', user._id).eq('problemId', problem._id),
+						q.eq('userId', identity.subject).eq('problemId', problem._id),
 					)
 					.unique();
-
+				console.log('🚀 ~ enrichedPage ~ problem:', problem._id);
+				console.log('🚀 ~ enrichedPage ~ user:', identity.subject);
+				console.log('🚀 ~ handler ~ state:', state);
 				return {
 					_id: problem._id,
 					name: problem.name,

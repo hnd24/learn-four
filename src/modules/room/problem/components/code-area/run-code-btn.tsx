@@ -38,6 +38,7 @@ export default function RunCodeBtn() {
 			sourceCode = `${template[lang].head}\n${code[lang]}\n${template[lang].tail}`;
 		}
 		await executeCode(sourceCode);
+
 		if (statusResult === StatusResult.Accepted && status === 'public') {
 			addUserProblem(
 				{

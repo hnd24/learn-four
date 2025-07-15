@@ -50,6 +50,7 @@ const getLevelColor = (level: string) => {
 
 export default function ProblemTable() {
 	const {results, isLoading, loadMore, status} = useQueryUserProblem();
+	console.log('🚀 ~ ProblemTable ~ results:', results);
 	const [problems, setProblems] = useState<ProblemStateType[]>([]);
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);
@@ -98,7 +99,7 @@ export default function ProblemTable() {
 					</TableCaption>
 					<TableHeader>
 						<TableRow>
-							<TableHead className="w-16 text-center">Status</TableHead>
+							<TableHead className="w-8" />
 							<TableHead className="w-16 text-center">Level</TableHead>
 							<TableHead>Name</TableHead>
 						</TableRow>
@@ -119,16 +120,9 @@ export default function ProblemTable() {
 								key={problem._id}
 								className="cursor-pointer hover:bg-muted/50 transition-colors"
 								onClick={() => handleProblemClick(problem._id)}>
-								<TableCell>
+								<TableCell className="w-8 flex items-center justify-center">
 									{problem?.state === 'completed' && (
-										<Badge
-											variant="secondary"
-											className={
-												'bg-green-100 text-green-800 hover:bg-green-100 flex items-center gap-1'
-											}>
-											<CheckCircle />
-											Completed
-										</Badge>
+										<CheckCircle className="size-4 text-green-800" />
 									)}
 								</TableCell>
 								<TableCell className="w-16">

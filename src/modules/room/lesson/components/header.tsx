@@ -40,7 +40,7 @@ export default function Header({preloadedLesson}: Props) {
 			<div className="flex size-full items-center justify-between px-4 py-3">
 				<Logo className="hidden lg:block" link="/admin" />
 
-				<div className="w-1/3 px-4">
+				<div className="w-3/5 sm:w-1/3 px-4">
 					<Title lessonId={lesson._id} title={lesson.name} />
 				</div>
 
