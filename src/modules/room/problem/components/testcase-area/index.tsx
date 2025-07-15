@@ -2,8 +2,8 @@
 import {Separator} from '@/components/ui/separator';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 
+import {TestCaseTab} from '@/types';
 import {FlaskConical, Terminal} from 'lucide-react';
-import {TestCaseTab} from '../../types';
 
 import {useAtom, useAtomValue} from 'jotai';
 import {Loader2} from 'lucide-react';
@@ -32,7 +32,7 @@ export default function TestcaseArea() {
 				value={activeTab}
 				onValueChange={value => setActiveTab(value as TestCaseTab)}
 				className="bg-border flex h-full flex-col rounded-md border">
-				<div className="bg-accent flex h-10 items-center justify-between rounded-t-md border-b px-2">
+				<div className="bg-accent flex h-10 items-center justify-between rounded-md border-b px-2">
 					<TabsList>
 						<TabsTrigger value="testcase">
 							<FlaskConical className="text-amber-500" />
