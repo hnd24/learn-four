@@ -243,7 +243,7 @@ export const getTemplateByLessonId = query({
 		}
 		return {
 			isPublic,
-			code: code,
+			code,
 			template: lesson.template,
 		};
 	},

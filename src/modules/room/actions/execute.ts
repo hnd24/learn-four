@@ -1,8 +1,8 @@
 'use server';
 
 import {JUDGE0_LANGUAGE_ID_MAP, MAX_RETRIES, RETRY_DELAY_MS} from '@/constants';
+import {ApiResponse, BatchedApiResponse} from '@/types';
 import {wait} from '../lib/utils';
-import {ApiResponse, BatchedApiResponse} from '../problem/types';
 
 type Props = {
 	languageIdJudge0: number;

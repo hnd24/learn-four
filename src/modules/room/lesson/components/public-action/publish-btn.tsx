@@ -31,11 +31,11 @@ export default function PublishButton({lessonId}: Props) {
 			{lessonId, status: 'private'},
 			{
 				onSuccess: () => {
-					toast.success('Problem status updated to private');
+					toast.success('Lesson status updated to private');
 				},
 				onError: error => {
-					toast.error(`Failed to update problem status`);
-					console.log('⚙️ Error updating problem status:', error);
+					toast.error(`Failed to update Lesson status`);
+					console.log('⚙️ Error updating Lesson status:', error);
 				},
 			},
 		);

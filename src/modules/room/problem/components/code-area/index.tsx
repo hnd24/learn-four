@@ -4,9 +4,9 @@ import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components
 import {Separator} from '@/components/ui/separator';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 
+import {TabValue} from '@/types';
 import {CodeXml, Palette} from 'lucide-react';
 import {useState} from 'react';
-import {TabValue} from '../../types';
 import TestcaseArea from '../testcase-area';
 import {CodeEditor} from './code-editor';
 

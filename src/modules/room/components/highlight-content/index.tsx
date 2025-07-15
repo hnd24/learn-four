@@ -1,6 +1,6 @@
 import {firaCode} from '@/lib/font';
 import {cn} from '@/lib/utils';
-import {DiffValue} from '../../problem/types';
+import {DiffValue} from '@/types';
 import {JSONContent} from './json-content';
 
 type Props = {
