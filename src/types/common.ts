@@ -1,4 +1,5 @@
 import {highlightDiff} from '@/modules/room/lib/utils';
+import {useEditor} from 'novel';
 
 export type TemplateType = {
 	[language: string]: {
@@ -55,3 +56,5 @@ export type ApiResponse = {
 export type BatchedApiResponse = {
 	submissions: ApiResponse[];
 };
+
+export type TextEditor = ReturnType<typeof useEditor>['editor'];

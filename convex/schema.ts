@@ -52,8 +52,12 @@ export default defineSchema({
 		image: v.optional(v.string()),
 		links: v.optional(LinkType),
 		introduce: v.optional(v.string()),
-		role: v.optional(RoleType),
 		locked: v.optional(v.boolean()),
+	}).index('by_userId', ['userId']),
+	/************************************************** */
+	roles: defineTable({
+		userId: v.string(),
+		role: RoleType,
 	})
 		.index('by_userId', ['userId'])
 		.index('by_role', ['role']),

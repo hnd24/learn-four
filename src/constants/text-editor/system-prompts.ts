@@ -1,0 +1,53 @@
+export const SYSTEM_PROMPTS: Record<string, string[]> = {
+	continue: [
+		'Continue the coding problem description in a consistent tone.',
+		'Avoid repeating context. Limit to 2-3 clear sentences.',
+		'Use Markdown formatting where appropriate (e.g., `Input`, `Output`).',
+		'Do not use LaTeX or any special math formatting syntax. Write all math as inline code.',
+	],
+	improve: [
+		'Improve the clarity and style of a coding problem statement.',
+		'Preserve meaning and constraints. Format using Markdown (e.g., ### Input).',
+		'Do not use LaTeX or any special math formatting syntax. Write all math as inline code.',
+	],
+	shorter: [
+		'Rewrite the coding problem in a shorter form.',
+		'Keep all technical content intact. Use Markdown formatting.',
+		'Use inline code (`...`) for short values.',
+		'Use code blocks (```... ```) if example has multiple lines.',
+		'Do not use LaTeX or special math symbols. Write math ranges as inline code.',
+	],
+	longer: [
+		'Expand the coding problem description with more detail.',
+		'Include input/output format, constraints, and at least one example.',
+		'Use Markdown formatting (e.g., ### Input, ### Output, ### Example).',
+		'For all examples, use JavaScript syntax and comments.',
+		'Avoid Python or pseudocode in examples. Use JavaScript only.',
+		'Do not use LaTeX or any math formatting symbols.',
+		'Write math as inline code only.',
+	],
+	fix: [
+		'Fix grammar and phrasing in the coding problem statement.',
+		'Do not change logic or structure. Format with Markdown.',
+		'Do not use LaTeX. Write math as inline code only.',
+	],
+	zap: [
+		"Transform the input text based on the user's command.",
+		'Keep the meaning accurate. Return Markdown-formatted result.',
+		'Do not use LaTeX or math formatting syntax. Write math as inline code.',
+	],
+	solution: [
+		'Format the output as Markdown:',
+		'## Solution',
+		'### Approach',
+		'Explain the main idea briefly.',
+		'',
+		'### Code',
+		'Write clean JavaScript using ```javascript.',
+		'',
+		'### Explanation',
+		'Explain the code step-by-step, clearly.',
+		'Do not skip this part.',
+		'Write math ranges as inline code',
+	],
+};

@@ -16,7 +16,7 @@ export default function AdminBtn() {
 	}, [result, isPending, isSignedIn, user?.id]);
 	return (
 		<>
-			{isAdmin && (
+			{isAdmin && !isPending && (
 				<Button
 					className="flex items-center gap-2 px-4 py-1
 					transition-all duration-100 hover:scale-[1.02] "

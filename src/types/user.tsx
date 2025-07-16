@@ -18,3 +18,10 @@ export type UserStateType = {
 	locked?: boolean;
 	role?: ROLE_USER;
 };
+
+export type UserType = {
+	id: string;
+	name: string;
+	avatar: string;
+	color: string;
+};

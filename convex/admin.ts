@@ -1,6 +1,7 @@
 import {v} from 'convex/values';
 import stc from 'string-to-color';
 import {mutation, query} from './_generated/server';
+import {RoleType} from './schema';
 export const confirmAdmin = query({
 	async handler(ctx) {
 		const identity = await ctx.auth.getUserIdentity();
@@ -9,38 +10,46 @@ export const confirmAdmin = query({
 			return false;
 		}
 
-		const user = await ctx.db
-			.query('users')
+		const admin = await ctx.db
+			.query('roles')
 			.withIndex('by_userId', q => q.eq('userId', identity.subject))
-			.first();
-		const isAdmin = user?.role && (user.role === 'admin' || user.role === 'super_admin');
-		if (isAdmin) {
+			.unique();
+		if (admin && (admin.role === 'admin' || admin.role === 'super_admin')) {
 			return true;
 		}
 		return false;
 	},
 });
 
-export const addAdmin = mutation({
-	args: {userId: v.string()},
-	async handler(ctx, args) {
-		const user = await ctx.db
-			.query('users')
-			.withIndex('by_userId', q => q.eq('userId', args.userId))
-			.first();
-		if (!user) {
-			throw new Error('User not found');
+export const changeRole = mutation({
+	args: {userId: v.string(), role: RoleType},
+	async handler(ctx, {userId, role}) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new Error('Unauthorized');
 		}
-		if (user?.role === 'admin') {
-			throw new Error('User is already an admin');
+		const yourRole = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.unique();
+		if (yourRole?.role !== 'super_admin') {
+			throw new Error('Only super admins can change roles');
 		}
-		if (user?.locked) {
-			throw new Error('User is locked');
-		}
-
-		if (user) {
-			await ctx.db.patch(user._id, {
-				role: 'admin',
+		const userRole = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', userId))
+			.unique();
+		if (userRole) {
+			if (userRole?.role === role) {
+				throw new Error(`User is already an ${role}`);
+			}
+			await ctx.db.patch(userRole._id, {
+				role,
+			});
+		} else {
+			await ctx.db.insert('roles', {
+				userId,
+				role,
 			});
 		}
 	},
@@ -49,17 +58,34 @@ export const addAdmin = mutation({
 export const lockUser = mutation({
 	args: {userId: v.string()},
 	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new Error('Unauthorized');
+		}
+
+		const yourRole = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.unique();
+
 		const user = await ctx.db
 			.query('users')
 			.withIndex('by_userId', q => q.eq('userId', args.userId))
-			.first();
+			.unique();
 		if (!user) {
 			throw new Error('User not found');
 		}
 		if (user?.locked) {
 			throw new Error('User is already locked');
 		}
-		if (user?.role === 'admin') {
+		const userRole = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', args.userId))
+			.unique();
+		if (userRole?.role === 'super_admin') {
+			throw new Error('Cannot lock a super admin');
+		}
+		if (yourRole?.role === 'admin' && userRole?.role === 'admin') {
 			throw new Error('User is admin');
 		}
 
@@ -71,49 +97,25 @@ export const lockUser = mutation({
 	},
 });
 
-export const removeAdmin = mutation({
-	args: {userId: v.string()},
-	async handler(ctx, args) {
-		const user = await ctx.db
-			.query('users')
-			.withIndex('by_userId', q => q.eq('userId', args.userId))
-			.first();
-		if (user) {
-			await ctx.db.patch(user._id, {
-				role: 'user',
-			});
-		}
-	},
-});
-
 export const getAdmins = query({
 	async handler(ctx) {
-		const rawAdmins = await ctx.db
-			.query('users')
-			.withIndex('by_role', q => q.eq('role', 'admin'))
-			.collect();
-		const rawSuperAdmins = await ctx.db
-			.query('users')
-			.withIndex('by_role', q => q.eq('role', 'super_admin'))
-			.collect();
-		const admins = rawAdmins.map(admin => {
-			const color = stc(`light-${admin.userId}`);
-			return {
-				id: admin._id,
-				name: admin.name,
-				color,
-				avatar: admin.image || '/images/default-avatar.svg',
-			};
-		});
-		const superAdmins = rawSuperAdmins.map(admin => {
-			const color = stc(`light-${admin.userId}`);
-			return {
-				id: admin._id,
-				name: admin.name,
-				color,
-				avatar: admin.image || '/images/default-avatar.svg',
-			};
-		});
-		return [...admins, ...superAdmins];
+		const rawAdmins = await ctx.db.query('roles').collect();
+		const admins = await Promise.all(
+			rawAdmins.map(async admin => {
+				const color = stc(`light-${admin.userId}`);
+				const user = await ctx.db
+					.query('users')
+					.withIndex('by_userId', q => q.eq('userId', admin.userId))
+					.unique();
+				if (user?.locked) return;
+				return {
+					id: admin.userId,
+					name: user?.name || 'Unknown',
+					color,
+					avatar: user?.image || '/images/default-avatar.svg',
+				};
+			}),
+		);
+		return admins;
 	},
 });
