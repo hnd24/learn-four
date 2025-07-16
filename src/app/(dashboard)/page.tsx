@@ -1,4 +1,5 @@
 import {Logo} from '@/components/logo';
+import SwitchTheme from '@/components/switch-theme';
 import AdminBtn from '@/modules/dashboard/components/admin-btn';
 import ListCourseCard from '@/modules/dashboard/components/list-course-card';
 import {Navbar} from '@/modules/dashboard/components/navbar';
@@ -16,8 +17,9 @@ export default function HomePage() {
 					</div>
 					<Navbar />
 					{/* TODO: switch admin mode */}
-					<div className="flex flex-1 items-center justify-end space-x-2 gap-2">
+					<div className="flex flex-1 items-center justify-end space-x-1">
 						<AdminBtn />
+						<SwitchTheme className="size-9 rounded-full border-2" />
 						<SignInBtn />
 					</div>
 				</div>

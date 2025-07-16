@@ -52,7 +52,7 @@ export default function Header({preloadedProblem}: Props) {
 								className="hidden md:flex group">
 								<Bell className=" group-hover:scale-105" />
 							</Button> */}
-							<SwitchTheme className="size-9 rounded-full border-2 dark:border-white" />
+							<SwitchTheme className="size-9 rounded-full " />
 						</Hint>
 					</div>
 				</div>

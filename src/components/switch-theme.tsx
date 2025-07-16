@@ -20,6 +20,7 @@ export default function SwitchTheme({className, word = false, size = 16}: Props)
 			<Hint label="switch theme">
 				<Button
 					className={cn(
+						'border-2 dark:border-gray-300',
 						'!text-white font-semibold w-full',
 						'dark:bg-indigo-900 dark:hover:bg-indigo-950',
 						'bg-sunsetCoral hover:bg-darkSunsetCoral ',
