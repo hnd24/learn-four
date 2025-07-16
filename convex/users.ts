@@ -1,16 +1,16 @@
-import {ConvexError, v} from "convex/values";
-import {MutationCtx, QueryCtx, internalMutation, mutation, query} from "./_generated/server";
-import {removeComment} from "./comment";
-import {LinkType} from "./schema";
+import {ConvexError, v} from 'convex/values';
+import {MutationCtx, QueryCtx, internalMutation, mutation, query} from './_generated/server';
+import {removeComment} from './comment';
+import {LinkType} from './schema';
 
 export async function getUser(ctx: QueryCtx | MutationCtx, tokenIdentifier: string) {
 	const user = await ctx.db
-		.query("users")
-		.withIndex("by_userId", q => q.eq("userId", tokenIdentifier))
+		.query('users')
+		.withIndex('by_userId', q => q.eq('userId', tokenIdentifier))
 		.first();
 
 	if (!user) {
-		throw new ConvexError("User not found");
+		throw new ConvexError('User not found');
 	}
 
 	return user;
@@ -23,8 +23,8 @@ export async function removeUser(ctx: MutationCtx, userId: string) {
 	// Delete the user
 	//  Delete user_course
 	const userCourses = await ctx.db
-		.query("user_course")
-		.withIndex("by_userId", q => q.eq("userId", user.userId))
+		.query('user_course')
+		.withIndex('by_userId', q => q.eq('userId', user.userId))
 		.collect();
 	if (userCourses.length > 0) {
 		await Promise.all(
@@ -35,8 +35,8 @@ export async function removeUser(ctx: MutationCtx, userId: string) {
 	}
 	//  Delete user_lesson
 	const userLessons = await ctx.db
-		.query("user_lesson")
-		.withIndex("by_userId", q => q.eq("userId", user.userId))
+		.query('user_lesson')
+		.withIndex('by_userId', q => q.eq('userId', user.userId))
 		.collect();
 	if (userLessons.length > 0) {
 		await Promise.all(
@@ -47,8 +47,8 @@ export async function removeUser(ctx: MutationCtx, userId: string) {
 	}
 	//  Delete user_problem
 	const userProblems = await ctx.db
-		.query("user_problem")
-		.withIndex("by_userId", q => q.eq("userId", user.userId))
+		.query('user_problem')
+		.withIndex('by_userId', q => q.eq('userId', user.userId))
 		.collect();
 	if (userProblems.length > 0) {
 		await Promise.all(
@@ -60,8 +60,8 @@ export async function removeUser(ctx: MutationCtx, userId: string) {
 
 	// Delete comments made by the user
 	const comments = await ctx.db
-		.query("comments")
-		.withIndex("by_userId", q => q.eq("userId", user.userId))
+		.query('comments')
+		.withIndex('by_userId', q => q.eq('userId', user.userId))
 		.collect();
 	if (comments.length > 0) {
 		await Promise.all(
@@ -77,7 +77,7 @@ export async function removeUser(ctx: MutationCtx, userId: string) {
 export const createUser = internalMutation({
 	args: {userId: v.string(), name: v.string(), image: v.string(), email: v.string()},
 	async handler(ctx, args) {
-		await ctx.db.insert("users", {
+		await ctx.db.insert('users', {
 			userId: args.userId,
 			name: args.name,
 			image: args.image,
@@ -150,23 +150,23 @@ export const getMe = query({
 });
 /************************************************** */
 export const userJoinCourse = mutation({
-	args: {courseId: v.id("courses")},
+	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
 			return null;
 		}
 		const user = await getUser(ctx, identity.subject);
-		await ctx.db.insert("user_course", {
-			userId: user.userId,
-			courseId: args.courseId,
-			state: "progress",
-		});
+		// await ctx.db.insert('user_course', {
+		// 	userId: user.userId,
+		// 	courseId: args.courseId,
+		// 	state: 'progress',
+		// });
 	},
 });
 
 export const userCompleteCourse = mutation({
-	args: {courseId: v.id("courses")},
+	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -174,41 +174,41 @@ export const userCompleteCourse = mutation({
 		}
 		const user = await getUser(ctx, identity.subject);
 		const userCourse = await ctx.db
-			.query("user_course")
-			.withIndex("by_userId_courseId", q =>
-				q.eq("userId", user.userId).eq("courseId", args.courseId),
+			.query('user_course')
+			.withIndex('by_userId_courseId', q =>
+				q.eq('userId', user.userId).eq('courseId', args.courseId),
 			)
 			.first();
 		if (!userCourse) {
-			throw new ConvexError("User course not found");
+			throw new ConvexError('User course not found');
 		}
-		if (userCourse.state === "completed") {
-			throw new ConvexError("Course already completed");
-		}
-		await ctx.db.patch(userCourse._id, {
-			state: "completed",
-		});
+		// if (userCourse.state === "completed") {
+		// 	throw new ConvexError("Course already completed");
+		// }
+		// await ctx.db.patch(userCourse._id, {
+		// 	state: "completed",
+		// });
 	},
 });
 /************************************************** */
 export const userJoinLesson = mutation({
-	args: {lessonId: v.id("lessons")},
+	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
 			return null;
 		}
 		const user = await getUser(ctx, identity.subject);
-		await ctx.db.insert("user_lesson", {
+		await ctx.db.insert('user_lesson', {
 			userId: user.userId,
 			lessonId: args.lessonId,
-			state: "progress",
+			state: 'progress',
 		});
 	},
 });
 
 export const userChangeCodeLesson = mutation({
-	args: {lessonId: v.id("lessons"), code: v.optional(v.string())},
+	args: {lessonId: v.id('lessons'), code: v.optional(v.string())},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -216,13 +216,13 @@ export const userChangeCodeLesson = mutation({
 		}
 		const user = await getUser(ctx, identity.subject);
 		const userLesson = await ctx.db
-			.query("user_lesson")
-			.withIndex("by_userId_lessonId", q =>
-				q.eq("userId", user.userId).eq("lessonId", args.lessonId),
+			.query('user_lesson')
+			.withIndex('by_userId_lessonId', q =>
+				q.eq('userId', user.userId).eq('lessonId', args.lessonId),
 			)
 			.first();
 		if (!userLesson) {
-			throw new ConvexError("User lesson not found");
+			throw new ConvexError('User lesson not found');
 		}
 		await ctx.db.patch(userLesson._id, {
 			code: args.code,
@@ -231,7 +231,7 @@ export const userChangeCodeLesson = mutation({
 });
 
 export const userCompleteLesson = mutation({
-	args: {lessonId: v.id("lessons"), code: v.optional(v.string())},
+	args: {lessonId: v.id('lessons'), code: v.optional(v.string())},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -239,38 +239,38 @@ export const userCompleteLesson = mutation({
 		}
 		const user = await getUser(ctx, identity.subject);
 		const userLesson = await ctx.db
-			.query("user_lesson")
-			.withIndex("by_userId_lessonId", q =>
-				q.eq("userId", user.userId).eq("lessonId", args.lessonId),
+			.query('user_lesson')
+			.withIndex('by_userId_lessonId', q =>
+				q.eq('userId', user.userId).eq('lessonId', args.lessonId),
 			)
 			.first();
 		if (!userLesson) {
-			throw new ConvexError("User lesson not found");
+			throw new ConvexError('User lesson not found');
 		}
 		await ctx.db.patch(userLesson._id, {
-			state: "completed",
+			state: 'completed',
 			code: args.code,
 		});
 	},
 });
 /************************************************** */
 export const userJoinProblem = mutation({
-	args: {problemId: v.id("problems")},
+	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
 			return null;
 		}
 		const user = await getUser(ctx, identity.subject);
-		await ctx.db.insert("user_problem", {
+		await ctx.db.insert('user_problem', {
 			userId: user.userId,
 			problemId: args.problemId,
-			state: "progress",
+			state: 'progress',
 		});
 	},
 });
 export const userChangeCodeProblem = mutation({
-	args: {problemId: v.id("problems"), code: v.optional(v.record(v.string(), v.string()))},
+	args: {problemId: v.id('problems'), code: v.optional(v.record(v.string(), v.string()))},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -278,13 +278,13 @@ export const userChangeCodeProblem = mutation({
 		}
 		const user = await getUser(ctx, identity.subject);
 		const userProblem = await ctx.db
-			.query("user_problem")
-			.withIndex("by_userId_problemId", q =>
-				q.eq("userId", user.userId).eq("problemId", args.problemId),
+			.query('user_problem')
+			.withIndex('by_userId_problemId', q =>
+				q.eq('userId', user.userId).eq('problemId', args.problemId),
 			)
 			.first();
 		if (!userProblem) {
-			throw new ConvexError("User problem not found");
+			throw new ConvexError('User problem not found');
 		}
 		await ctx.db.patch(userProblem._id, {
 			code: args.code,
@@ -293,7 +293,7 @@ export const userChangeCodeProblem = mutation({
 });
 
 export const userCompleteProblem = mutation({
-	args: {problemId: v.id("problems"), code: v.optional(v.record(v.string(), v.string()))},
+	args: {problemId: v.id('problems'), code: v.optional(v.record(v.string(), v.string()))},
 	async handler(ctx, args) {
 		const identity = await ctx.auth.getUserIdentity();
 		if (!identity) {
@@ -301,17 +301,17 @@ export const userCompleteProblem = mutation({
 		}
 		const user = await getUser(ctx, identity.subject);
 		const userProblem = await ctx.db
-			.query("user_problem")
-			.withIndex("by_userId_problemId", q =>
-				q.eq("userId", user.userId).eq("problemId", args.problemId),
+			.query('user_problem')
+			.withIndex('by_userId_problemId', q =>
+				q.eq('userId', user.userId).eq('problemId', args.problemId),
 			)
 			.first();
 		if (!userProblem) {
-			throw new ConvexError("User problem not found");
+			throw new ConvexError('User problem not found');
 		}
 
 		await ctx.db.patch(userProblem._id, {
-			state: "completed",
+			state: 'completed',
 			code: args.code,
 		});
 	},

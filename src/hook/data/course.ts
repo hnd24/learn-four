@@ -32,3 +32,13 @@ export const useDeleteCourse = () => {
 		mutationFn: useConvexMutation(api.courses.deleteCourse),
 	});
 };
+
+export const useJoinCourse = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.courses.createUserCourse),
+	});
+};
+
+export const useGetUserCourse = (courseId: Id<'courses'>) => {
+	return useQuery(convexQuery(api.courses.getUserCourse, {courseId}));
+};

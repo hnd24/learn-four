@@ -72,7 +72,6 @@ export default defineSchema({
 	user_course: defineTable({
 		userId: v.string(),
 		courseId: v.id('courses'),
-		state: StateType,
 	})
 		.index('by_userId_courseId', ['userId', 'courseId'])
 		.index('by_userId', ['userId']),

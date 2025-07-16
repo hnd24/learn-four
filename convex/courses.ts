@@ -128,3 +128,34 @@ export const updateCourse = mutation({
 		await ctx.db.patch(course._id, updateFields);
 	},
 });
+
+export const getUserCourse = query({
+	args: {courseId: v.id('courses')},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		const userCourse = await ctx.db
+			.query('user_course')
+			.withIndex('by_userId_courseId', q =>
+				q.eq('userId', identity.subject).eq('courseId', args.courseId),
+			)
+			.unique();
+		return userCourse;
+	},
+});
+
+export const createUserCourse = mutation({
+	args: {courseId: v.id('courses')},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User not authenticated');
+		}
+		await ctx.db.insert('user_course', {
+			userId: identity.subject,
+			courseId: args.courseId,
+		});
+	},
+});

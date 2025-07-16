@@ -8,10 +8,13 @@ import {useUser} from '@clerk/nextjs';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
+import JoinCourseDialog from './join-course-dialog';
 
 export default function ListCourseCard() {
 	const {isSignedIn} = useUser();
 	const [courses, setCourses] = useState<CourseStateType[]>([]);
+	const [selectedCourse, setSelectedCourse] = useState<CourseStateType>();
+	const [open, setOpen] = useState<boolean>(false);
 	const {data, isPending, error} = useGetPublicCourses();
 	const router = useRouter();
 	useEffect(() => {
@@ -37,40 +40,52 @@ export default function ListCourseCard() {
 	}
 
 	return (
-		<div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-			{courses.map(courses => (
-				<Hint
-					key={courses._id}
-					label={
-						isSignedIn
-							? 'Click to view course details'
-							: 'Sign in to view course details'
-					}>
-					<Card
-						onClick={() => {
-							isSignedIn && router.push(`/course/${courses._id}`);
-						}}
-						className="relative overflow-hidden cursor-pointer shadow-leafyGreen hover:scale-[1.01] hover:shadow-md transition-transform">
-						<CardHeader>
-							<div className="flex items-center space-x-2">
-								<img
-									alt={`icon ${courses.name}`}
-									src={courses.logo}
-									width={28}
-									height={28}
-									className="size-7"
-								/>
+		<>
+			<div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+				{courses.map(courses => (
+					<Hint
+						key={courses._id}
+						label={
+							isSignedIn
+								? 'Join this course to start learning'
+								: 'Sign in to view course details'
+						}>
+						<Card
+							onClick={() => {
+								if (!isSignedIn) return;
+								setSelectedCourse(courses);
+								setOpen(true);
+							}}
+							className="relative overflow-hidden cursor-pointer shadow-leafyGreen hover:scale-[1.01] hover:shadow-md transition-transform">
+							<CardHeader>
+								<div className="flex items-center space-x-2">
+									<img
+										alt={`icon ${courses.name}`}
+										src={courses.logo}
+										width={28}
+										height={28}
+										className="size-7"
+									/>
 
-								<CardTitle>{courses.name}</CardTitle>
-							</div>
-						</CardHeader>
-						<CardContent>
-							<CardDescription>{courses.description}</CardDescription>
-						</CardContent>
-					</Card>
-				</Hint>
-			))}
-		</div>
+									<CardTitle>{courses.name}</CardTitle>
+								</div>
+							</CardHeader>
+							<CardContent>
+								<CardDescription>{courses.description}</CardDescription>
+							</CardContent>
+						</Card>
+					</Hint>
+				))}
+			</div>
+			{selectedCourse && (
+				<JoinCourseDialog
+					courseId={selectedCourse?._id}
+					open={open}
+					setOpen={setOpen}
+					course={selectedCourse || ({} as CourseStateType)}
+				/>
+			)}
+		</>
 	);
 }
 
