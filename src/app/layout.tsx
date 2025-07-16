@@ -5,7 +5,9 @@ import {ThemeProvider} from '@/providers/theme-provider';
 import {ClerkProvider} from '@clerk/nextjs';
 import {Provider as JotaiProvider} from 'jotai';
 import {NuqsAdapter} from 'nuqs/adapters/next/app';
-import './globals.css';
+import '../style/globals.css';
+import '../styles/prosemirror.css';
+import '../styles/text-editor.css';
 
 export default function RootLayout({
 	children,

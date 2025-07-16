@@ -2,8 +2,9 @@
 import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
-import {Preloaded} from 'convex/react';
+import {Preloaded, usePreloadedQuery} from 'convex/react';
 import {api} from '../../../../../convex/_generated/api';
+import TextEditor from '../../components/text-editor';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
 import {useProblemId} from '../hook/use-problem-id';
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default function ProblemContent({preloadedProblem}: Props) {
+	const problem = usePreloadedQuery(preloadedProblem);
 	const isMobile = useMediaQuery('(max-width: 767px)');
 	const problemId = useProblemId();
 	const isPending = false;
@@ -36,8 +38,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 				<div className="flex-1 overflow-hidden">
 					<ResizablePanelGroup direction="horizontal">
 						<ResizablePanel defaultSize={50} minSize={30}>
-							{/* TODO: TextEditor */}
-							{/* <TextEditor/> */}
+							<TextEditor isPublished={problem.status === 'public'} />
 						</ResizablePanel>
 						<ResizableHandle withHandle className="mx-2" />
 						<ResizablePanel defaultSize={50} minSize={30}>
