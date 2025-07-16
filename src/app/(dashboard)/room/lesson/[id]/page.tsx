@@ -2,6 +2,7 @@ import NotFoundState from '@/components/not-found-state';
 import {getAuthToken} from '@/modules/auth/lib/auth';
 import Header from '@/modules/dashboard/room/lesson/header';
 import LessonContent from '@/modules/dashboard/room/lesson/lesson-content';
+import {Provider} from '@/modules/room/components/liveblock/provider';
 import CostumeLoadingPage from '@/page/costume-loading-page';
 import {preloadQuery} from 'convex/nextjs';
 import {Preloaded} from 'convex/react';
@@ -34,13 +35,15 @@ export default async function LessonRoomPage({params}: {params: Params}) {
 		);
 	}
 	return (
-		<div className="flex h-screen flex-col overflow-hidden">
-			<Header preloadedLesson={preloadedLesson} />
-			<main className="mt-16 flex size-full">
-				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-					<LessonContent preloadedLesson={preloadedLesson} />
-				</div>
-			</main>
-		</div>
+		<Provider lessonId={id}>
+			<div className="flex h-screen flex-col overflow-hidden">
+				<Header preloadedLesson={preloadedLesson} />
+				<main className="mt-16 flex size-full">
+					<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
+						<LessonContent preloadedLesson={preloadedLesson} />
+					</div>
+				</main>
+			</div>
+		</Provider>
 	);
 }

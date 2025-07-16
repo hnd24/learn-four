@@ -1,6 +1,6 @@
 import {v} from 'convex/values';
+import stc from 'string-to-color';
 import {mutation, query} from './_generated/server';
-
 export const confirmAdmin = query({
 	async handler(ctx) {
 		const identity = await ctx.auth.getUserIdentity();
@@ -83,5 +83,37 @@ export const removeAdmin = mutation({
 				role: 'user',
 			});
 		}
+	},
+});
+
+export const getAdmins = query({
+	async handler(ctx) {
+		const rawAdmins = await ctx.db
+			.query('users')
+			.withIndex('by_role', q => q.eq('role', 'admin'))
+			.collect();
+		const rawSuperAdmins = await ctx.db
+			.query('users')
+			.withIndex('by_role', q => q.eq('role', 'super_admin'))
+			.collect();
+		const admins = rawAdmins.map(admin => {
+			const color = stc(`light-${admin.userId}`);
+			return {
+				id: admin._id,
+				name: admin.name,
+				color,
+				avatar: admin.image || '/images/default-avatar.svg',
+			};
+		});
+		const superAdmins = rawSuperAdmins.map(admin => {
+			const color = stc(`light-${admin.userId}`);
+			return {
+				id: admin._id,
+				name: admin.name,
+				color,
+				avatar: admin.image || '/images/default-avatar.svg',
+			};
+		});
+		return [...admins, ...superAdmins];
 	},
 });

@@ -38,7 +38,7 @@ export default function AddBtn() {
 			disabled={isPending}
 			onClick={handleAdd}
 			className={cn(
-				'w-full h-12 bg-blue-50 hover:bg-blue-100 border-2 border-dashed border-blue-200 hover:border-blue-300 transition-all duration-200',
+				'w-full h-12 bg-blue-50 hover:bg-blue-100 dark:hover:bg-blue-50/20 dark:bg-blue-50/0 border-2 border-dashed border-blue-200 hover:border-blue-300 transition-all duration-200',
 				isPending && 'opacity-50 cursor-not-allowed',
 			)}>
 			{isPending ? (

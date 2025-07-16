@@ -4,6 +4,7 @@ import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components
 import {Separator} from '@/components/ui/separator';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 
+import Canvas from '@/modules/room/components/canvas';
 import {TabValue} from '@/types';
 import {useAtomValue} from 'jotai';
 import {CodeXml, Palette} from 'lucide-react';
@@ -15,36 +16,7 @@ import {CodeEditor} from './code-editor';
 export default function CodeArea() {
 	const [activeTab, setActiveTab] = useState<TabValue>(TabValue.Editor);
 	const status = useAtomValue(statusProblemAtom);
-	if (status === 'public') {
-		return (
-			<Tabs value={'editor'} className="h-full gap-0 overflow-hidden rounded-md">
-				<div className="bg-accent flex h-10 shrink-0 items-center justify-between rounded-t-md border border-b-0 px-2">
-					<TabsList>
-						<TabsTrigger value={TabValue.Editor}>
-							<CodeXml className="text-green-500" />
-							Code
-						</TabsTrigger>
-					</TabsList>
-				</div>
-				<TabsContent
-					value={TabValue.Editor}
-					className="h-full p-0 data-[state=active]:flex data-[state=active]:flex-col">
-					<ResizablePanelGroup direction="vertical">
-						<ResizablePanel defaultSize={60} minSize={20}>
-							<CodeEditor />
-						</ResizablePanel>
-
-						<ResizableHandle withHandle className="my-2" />
-
-						<ResizablePanel defaultSize={40} minSize={20}>
-							<TestcaseArea />
-						</ResizablePanel>
-					</ResizablePanelGroup>
-				</TabsContent>
-			</Tabs>
-		);
-	}
-
+	const isPublished = status === 'public';
 	return (
 		<Tabs
 			value={activeTab}
@@ -79,7 +51,7 @@ export default function CodeArea() {
 				</ResizablePanelGroup>
 			</TabsContent>
 			<TabsContent value={TabValue.Canvas}>
-				{/* <Canvas isPrivate={isPrivate} /> */}
+				<Canvas isPublished={isPublished} />
 			</TabsContent>
 		</Tabs>
 	);

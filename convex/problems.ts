@@ -1,4 +1,5 @@
 import {filter} from 'convex-helpers/server/filter';
+import {getAllOrThrow} from 'convex-helpers/server/relationships';
 import {paginationOptsValidator} from 'convex/server';
 import {ConvexError, v} from 'convex/values';
 import {Id} from './_generated/dataModel';
@@ -383,5 +384,18 @@ export const getStatusProblemById = query({
 		const {problemId} = args;
 		const problem = await getProblem(ctx, problemId);
 		return problem.status;
+	},
+});
+
+export const getMany = query({
+	args: {
+		problemIds: v.array(v.id('problems')),
+	},
+	async handler(ctx, args) {
+		const problems = await getAllOrThrow(ctx.db, args.problemIds);
+		return problems.map(problem => ({
+			id: problem._id,
+			name: problem.name,
+		}));
 	},
 });

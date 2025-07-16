@@ -3,6 +3,7 @@ import {getAuthToken} from '@/modules/auth/lib/auth';
 
 import Header from '@/modules/dashboard/room/problem/header';
 import ProblemContent from '@/modules/dashboard/room/problem/problem-content';
+import {Provider} from '@/modules/room/components/liveblock/provider';
 import CostumeLoadingPage from '@/page/costume-loading-page';
 import {preloadQuery} from 'convex/nextjs';
 import {Preloaded} from 'convex/react';
@@ -35,13 +36,15 @@ export default async function ProblemRoomPage({params}: {params: Params}) {
 		);
 	}
 	return (
-		<div className="flex h-screen flex-col overflow-hidden">
-			<Header preloadedProblem={preloadedProblem} />
-			<main className="mt-16 flex size-full">
-				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-					<ProblemContent preloadedProblem={preloadedProblem} />
-				</div>
-			</main>
-		</div>
+		<Provider problemId={id}>
+			<div className="flex h-screen flex-col overflow-hidden">
+				<Header preloadedProblem={preloadedProblem} />
+				<main className="mt-16 flex size-full">
+					<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
+						<ProblemContent preloadedProblem={preloadedProblem} />
+					</div>
+				</main>
+			</div>
+		</Provider>
 	);
 }

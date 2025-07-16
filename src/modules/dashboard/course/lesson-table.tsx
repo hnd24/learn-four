@@ -61,7 +61,6 @@ export default function LessonTable({idCourse}: Props) {
 	const totalLessons = lessons.length;
 	return (
 		<div className="space-y-4">
-			{' '}
 			{/* Header with Progress */}
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>

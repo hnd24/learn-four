@@ -18,10 +18,11 @@ export default function RootLayout({
 				<body className={`${inter.className} antialiased`}>
 					<ThemeProvider
 						attribute="class"
-						defaultTheme="light"
-						enableSystem
+						// enableSystem
+						defaultTheme="dark"
 						disableTransitionOnChange
-						forcedTheme="light">
+						// forcedTheme="dark"
+					>
 						<ConvexClientProvider>
 							<NuqsAdapter>
 								<JotaiProvider>

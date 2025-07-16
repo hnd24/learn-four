@@ -2,10 +2,9 @@
 
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
-import {Button} from '@/components/ui/button';
+import SwitchTheme from '@/components/switch-theme';
 import {Preloaded, usePreloadedQuery} from 'convex/react';
 import {useSetAtom} from 'jotai';
-import {Bell} from 'lucide-react';
 import {useEffect} from 'react';
 import {api} from '../../../../../convex/_generated/api';
 import {statusProblemAtom} from '../atom/status';
@@ -47,12 +46,13 @@ export default function Header({preloadedProblem}: Props) {
 					<div className="flex gap-2">
 						<PublishButton problemId={problem._id} />
 						<Hint label="coming soon">
-							<Button
+							{/* <Button
 								variant="secondary"
 								size="icon"
 								className="hidden md:flex group">
 								<Bell className=" group-hover:scale-105" />
-							</Button>
+							</Button> */}
+							<SwitchTheme className="size-9 rounded-full border-2 dark:border-white" />
 						</Hint>
 					</div>
 				</div>

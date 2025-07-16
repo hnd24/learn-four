@@ -1,5 +1,6 @@
 import NotFoundState from '@/components/not-found-state';
 import {getAuthToken} from '@/modules/auth/lib/auth';
+import {Provider} from '@/modules/room/components/liveblock/provider';
 import Header from '@/modules/room/problem/components/header';
 import ProblemContent from '@/modules/room/problem/components/problem-content';
 import CostumeLoadingPage from '@/page/costume-loading-page';
@@ -35,13 +36,15 @@ export default async function ProblemDetailPage({params}: {params: Params}) {
 	}
 
 	return (
-		<div className="flex h-screen flex-col overflow-hidden">
-			<Header preloadedProblem={preloadedProblem} />
-			<main className="mt-16 flex size-full">
-				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-					<ProblemContent preloadedProblem={preloadedProblem} />
-				</div>
-			</main>
-		</div>
+		<Provider problemId={id}>
+			<div className="flex h-screen flex-col overflow-hidden">
+				<Header preloadedProblem={preloadedProblem} />
+				<main className="mt-16 flex size-full">
+					<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
+						<ProblemContent preloadedProblem={preloadedProblem} />
+					</div>
+				</main>
+			</div>
+		</Provider>
 	);
 }

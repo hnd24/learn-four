@@ -2,12 +2,12 @@
 
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
-import {Button} from '@/components/ui/button';
+import SwitchTheme from '@/components/switch-theme';
 import {Preloaded, usePreloadedQuery} from 'convex/react';
 import {useSetAtom} from 'jotai';
-import {Bell} from 'lucide-react';
 import {useEffect} from 'react';
 import {api} from '../../../../../convex/_generated/api';
+import {AvatarStack} from '../../components/liveblock/avatar-stack';
 import {languageDataAtom} from '../atom/language';
 import {statusLessonAtom} from '../atom/status';
 import PublishButton from './public-action/publish-btn';
@@ -19,6 +19,7 @@ type Props = {
 
 export default function Header({preloadedLesson}: Props) {
 	const lesson = usePreloadedQuery(preloadedLesson);
+
 	const setLanguage = useSetAtom(languageDataAtom);
 	const setStatus = useSetAtom(statusLessonAtom);
 	useEffect(() => {
@@ -45,18 +46,13 @@ export default function Header({preloadedLesson}: Props) {
 				</div>
 
 				<div className="flex items-center gap-x-3">
-					{/* TODO: Avatar Stack */}
+					<AvatarStack />
 					<div className="hidden md:block"></div>
 
 					<div className="flex gap-2">
 						<PublishButton lessonId={lesson._id} />
 						<Hint label="coming soon">
-							<Button
-								variant="secondary"
-								size="icon"
-								className="hidden md:flex group">
-								<Bell className=" group-hover:scale-105" />
-							</Button>
+							<SwitchTheme className="size-9" />
 						</Hint>
 					</div>
 				</div>

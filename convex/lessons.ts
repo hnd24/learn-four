@@ -1,3 +1,4 @@
+import {getAllOrThrow} from 'convex-helpers/server/relationships';
 import {ConvexError, v} from 'convex/values';
 import {Id} from './_generated/dataModel';
 import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
@@ -337,5 +338,16 @@ export const updateUserLesson = mutation({
 			state,
 			code,
 		});
+	},
+});
+
+export const getMany = query({
+	args: {lessonIds: v.array(v.id('lessons'))},
+	async handler(ctx, args) {
+		const lessons = await getAllOrThrow(ctx.db, args.lessonIds);
+		return lessons.map(lesson => ({
+			id: lesson._id,
+			name: lesson.name,
+		}));
 	},
 });

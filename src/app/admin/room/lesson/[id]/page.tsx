@@ -1,5 +1,6 @@
 import NotFoundState from '@/components/not-found-state';
 import {getAuthToken} from '@/modules/auth/lib/auth';
+import {Provider} from '@/modules/room/components/liveblock/provider';
 import Header from '@/modules/room/lesson/components/header';
 import LessonContent from '@/modules/room/lesson/components/lesson-content';
 import CostumeLoadingPage from '@/page/costume-loading-page';
@@ -34,13 +35,15 @@ export default async function LessonPage({params}: {params: Params}) {
 		);
 	}
 	return (
-		<div className="flex h-screen flex-col overflow-hidden">
-			<Header preloadedLesson={preloadedLesson} />
-			<main className="mt-16 flex size-full">
-				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-					<LessonContent preloadedLesson={preloadedLesson} />
-				</div>
-			</main>
-		</div>
+		<Provider lessonId={id}>
+			<div className="flex h-screen flex-col overflow-hidden">
+				<Header preloadedLesson={preloadedLesson} />
+				<main className="mt-16 flex size-full">
+					<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
+						<LessonContent preloadedLesson={preloadedLesson} />
+					</div>
+				</main>
+			</div>
+		</Provider>
 	);
 }

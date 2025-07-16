@@ -54,7 +54,9 @@ export default defineSchema({
 		introduce: v.optional(v.string()),
 		role: v.optional(RoleType),
 		locked: v.optional(v.boolean()),
-	}).index('by_userId', ['userId']),
+	})
+		.index('by_userId', ['userId'])
+		.index('by_role', ['role']),
 	/************************************************** */
 	comments: defineTable({
 		content: v.string(),

@@ -1,9 +1,8 @@
 import {ClientOnly} from '@/components/client-only';
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
-import {Button} from '@/components/ui/button';
+import SwitchTheme from '@/components/switch-theme';
 import {UserButton} from '@clerk/nextjs';
-import {Bell} from 'lucide-react';
 import Navbar from './navbar';
 
 export default function Header() {
@@ -20,13 +19,8 @@ export default function Header() {
 						<ClientOnly>
 							<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
 						</ClientOnly>
-						<Hint label="coming soon">
-							<Button
-								variant="secondary"
-								size="icon"
-								className="hidden md:flex group">
-								<Bell className=" group-hover:scale-105" />
-							</Button>
+						<Hint label="switch theme">
+							<SwitchTheme className="size-9" />
 						</Hint>
 					</div>
 				</div>
