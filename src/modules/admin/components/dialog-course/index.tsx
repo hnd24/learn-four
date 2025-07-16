@@ -79,7 +79,7 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 	}
 	return (
 		<>
-			<Dialog open={isOpen} onOpenChange={onClose}>
+			<Dialog open={isOpen}>
 				<DialogContent className=" md:min-w-4xl lg:min-w-6xl max-h-[calc(100vh-48px)] overflow-y-auto my-auto p-6">
 					<DialogHeader>
 						<DialogTitle />
@@ -170,7 +170,9 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 
 					<DialogFooter className="mt-6">
 						<DialogClose asChild>
-							<Button variant="outline">Cancel</Button>
+							<Button variant="outline" onClick={onClose}>
+								Cancel
+							</Button>
 						</DialogClose>
 						<Button variant="destructive" onClick={() => setIsDelete(true)}>
 							<Trash2 /> Delete
