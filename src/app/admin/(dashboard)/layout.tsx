@@ -1,5 +1,6 @@
 import Header from '@/modules/admin/components/header';
 import SelectTypeCourse from '@/modules/admin/components/select-type-course';
+import TopicsManager from '@/modules/admin/components/topics-manager';
 import type {Metadata} from 'next';
 import {Suspense} from 'react';
 
@@ -19,8 +20,11 @@ export default function DashboardLayout({
 			<main className="flex flex-col w-screen min-h-[calc(100vh-64px)]">
 				<Suspense fallback={null}>
 					<aside className="bg-background fixed inset-y-0 top-16 left-0 hidden w-64 border-r lg:flex">
-						<div className="size-full p-2 pt-2  dark:bg-[#121215]">
+						<div className="size-full p-2 dark:bg-[#121215]">
 							<SelectTypeCourse />
+							<div className="w-full mt-4 flex flex-col gap-2">
+								<TopicsManager />
+							</div>
 						</div>
 					</aside>
 					{children}
