@@ -13,7 +13,6 @@ export default function Header() {
 					<Logo />
 				</div>
 				<div className="flex flex-1 px-6 items-center justify-between">
-					{/* TODO: navbar */}
 					<Navbar />
 					<div className="flex items-center gap-3">
 						<ClientOnly>

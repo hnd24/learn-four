@@ -87,8 +87,7 @@ export default function TopicsManager() {
 
 	const onSubmit = (values: TopicValues) => {
 		if (editingTopic) {
-			const oldTopic = topics?.find(t => t._id === editingTopic._id);
-			if (isEqual({name: oldTopic?.name, status: oldTopic?.status}, values)) {
+			if (isEqual({name: editingTopic?.name, status: editingTopic?.status}, values)) {
 				toast.error('No changes made to the topic');
 				return;
 			}
@@ -122,15 +121,6 @@ export default function TopicsManager() {
 		setEditingTopic(null);
 		form.reset();
 	};
-
-	if (loading) {
-		return (
-			<Button size="icon" className="w-full flex items-center gap-2" disabled>
-				<PanelLeft className="size-4" />
-				Loading...
-			</Button>
-		);
-	}
 
 	return (
 		<Dialog open={open}>

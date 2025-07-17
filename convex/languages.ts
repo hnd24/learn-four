@@ -35,7 +35,6 @@ export const updateLanguage = mutation({
 		}
 
 		const {languageId, ...fields} = args;
-		// Remove undefined fields before patching
 		const updateFields = Object.fromEntries(
 			Object.entries(fields).filter(([_, v]) => v !== undefined),
 		);

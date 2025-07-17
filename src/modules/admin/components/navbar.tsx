@@ -14,6 +14,8 @@ import {cn} from '@/lib/utils';
 import {Menu} from 'lucide-react';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
+import LanguagesManager from './languages-manager';
+import TopicsManager from './topics-manager';
 
 type PageType = {
 	label: string;
@@ -67,6 +69,8 @@ export default function Navbar() {
 									</span>
 								</Link>
 							))}
+							<TopicsManager />
+							<LanguagesManager />
 							<Link href={'/admin'} className="w-full">
 								<Button className="z-10 w-full">Return Admin Page</Button>
 							</Link>
