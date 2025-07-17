@@ -71,11 +71,13 @@ export default function CourseContent({courseId}: Props) {
 						className="rounded-md object-cover w-64 h-40 ml-auto hidden sm:flex"
 					/>
 				</header>
-				<section className="flex flex-col gap-6">
+				<section className="flex flex-col gap-6 w-full">
 					{/* Course Content */}
-					<div>
-						<h3 className="text-xl font-semibold ">Content</h3>
-						<p className="text-muted-foreground">{course.document}</p>
+					<div className="size-full flex flex-col gap-2">
+						<h3 className="text-xl font-semibold ">Document</h3>
+						<pre className="w-full h-fit text-base">
+							{course.document || 'No document available for this course.'}
+						</pre>
 					</div>
 
 					<LessonTable idCourse={courseId} />

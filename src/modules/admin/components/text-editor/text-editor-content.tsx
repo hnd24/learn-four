@@ -21,7 +21,7 @@ import {Separator} from '@/components/ui/separator';
 import {onPaste} from '@/lib/text-editor/content-paste';
 import {defaultExtensions} from '@/lib/text-editor/extensions';
 import {useSetAtom} from 'jotai';
-import {editorStateAtom} from '../../atom/editor-state';
+import {editorStateAtom} from '../../../room/atom/editor-state';
 import {uploadImageFn} from './actions/image-upload';
 import {GenerativeMenuSwitch} from './generative/generative-menu-switch';
 import {ColorSelector} from './selector/color-selector';

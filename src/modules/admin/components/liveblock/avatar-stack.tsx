@@ -25,7 +25,7 @@ export const Avatars = () => {
 					/>
 				))}
 				{users.length > MAX_AVATARS ? (
-					<div className="bg-accent h-8 w-8 rounded-full border border-spacing-1.5 text-xs font-medium -ml-2 relative ">
+					<div className="bg-accent border-2 size-8 rounded-full text-xs font-medium -ml-2 relative ">
 						<p
 							className={cn(
 								'absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-2/3 ',

@@ -6,8 +6,8 @@ import {Preloaded, usePreloadedQuery} from 'convex/react';
 import {useAtomValue} from 'jotai';
 import {FileText} from 'lucide-react';
 import {api} from '../../../../../convex/_generated/api';
+import TextEditor from '../../../admin/components/text-editor';
 import {editorStateAtom} from '../../atom/editor-state';
-import TextEditor from '../../components/text-editor';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
 import {useProblemId} from '../hook/use-problem-id';
@@ -29,8 +29,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 	if (isMobile) {
 		return (
 			<div className="flex w-screen overflow-hidden">
-				{/* TODO: TextEditor */}
-				{/* <TextEditor /> */}
+				<TextEditor isPublished={problem.status === 'public'} />
 			</div>
 		);
 	}

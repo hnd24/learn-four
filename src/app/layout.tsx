@@ -32,7 +32,7 @@ export default function RootLayout({
 							<NuqsAdapter>
 								<JotaiProvider>
 									{children}
-									<Toaster richColors />
+									<Toaster richColors duration={2000} />
 								</JotaiProvider>
 							</NuqsAdapter>
 						</ConvexClientProvider>

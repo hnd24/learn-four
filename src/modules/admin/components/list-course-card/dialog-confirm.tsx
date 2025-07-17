@@ -12,7 +12,6 @@ import {useAddCourse} from '@/hook/data/course';
 import {useGetLanguages} from '@/hook/data/language';
 import {AddCourseArgs} from '@/types';
 import {Blocks, Loader2} from 'lucide-react';
-import {nanoid} from 'nanoid';
 import {useEffect} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
@@ -29,13 +28,13 @@ export const DialogConfirm = ({open, setOpen, userId, setPending}: PropsDialogCo
 	const {data: languages, isPending: loadingLanguages} = useGetLanguages();
 	const JS = languages?.find(lang => lang.value === 'javascript');
 	const disable = isPending || loadingLanguages;
-	const document = nanoid(60);
+	// const document = nanoid(60);
 	const courseDefault: AddCourseArgs = {
 		description: '',
 		banner: '',
 		learner: 0,
 		name: '',
-		document,
+		document: '',
 		authorId: userId,
 		status: 'private',
 		logo: '',

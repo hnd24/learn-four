@@ -7,7 +7,7 @@ import {TabValue} from '@/types';
 import {useAtomValue} from 'jotai';
 import {CodeXml, Palette} from 'lucide-react';
 import {useState} from 'react';
-import Canvas from '../../../components/canvas';
+import Canvas from '../../../../admin/components/canvas';
 import {statusLessonAtom} from '../../atom/status';
 import TestcaseArea from '../testcase-area';
 import CodeEditor from './code-editor';

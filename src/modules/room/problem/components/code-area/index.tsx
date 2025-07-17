@@ -4,7 +4,7 @@ import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components
 import {Separator} from '@/components/ui/separator';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
 
-import Canvas from '@/modules/room/components/canvas';
+import Canvas from '@/modules/admin/components/canvas';
 import {TabValue} from '@/types';
 import {useAtomValue} from 'jotai';
 import {CodeXml, Palette} from 'lucide-react';

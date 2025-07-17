@@ -7,7 +7,7 @@ import {Preloaded, usePreloadedQuery} from 'convex/react';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {api} from '../../../../../convex/_generated/api';
-import {AvatarStack} from '../../components/liveblock/avatar-stack';
+import {AvatarStack} from '../../../admin/components/liveblock/avatar-stack';
 import {languageDataAtom} from '../atom/language';
 import {statusLessonAtom} from '../atom/status';
 import PublishButton from './public-action/publish-btn';
@@ -52,7 +52,7 @@ export default function Header({preloadedLesson}: Props) {
 					<div className="flex gap-2">
 						<PublishButton lessonId={lesson._id} />
 						<Hint label="coming soon">
-							<SwitchTheme className="size-9" />
+							<SwitchTheme className="size-9 rounded-full border-2" />
 						</Hint>
 					</div>
 				</div>

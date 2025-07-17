@@ -42,7 +42,7 @@ export default function SaveTestcasesBtn() {
 		<Hint label="Save testcases">
 			<Button
 				size="icon"
-				className=" size-8 rounded-sm"
+				className=" size-8 rounded-sm  bg-cyan-700 hover:bg-cyan-800 dark:hover:bg-cyan-600 text-white"
 				onClick={onClick}
 				disabled={isPending}>
 				{isPending ? <Loader2 className=" animate-spin" /> : <Save />}

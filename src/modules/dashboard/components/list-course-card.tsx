@@ -41,7 +41,7 @@ export default function ListCourseCard() {
 
 	return (
 		<>
-			<div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
+			<div className="w-full md:max-w-[64rem] mx-auto grid justify-center gap-4 grid-cols-1 sm:grid-cols-2  md:grid-cols-3 ">
 				{courses.map(courses => (
 					<Hint
 						key={courses._id}
@@ -50,30 +50,7 @@ export default function ListCourseCard() {
 								? 'Join this course to start learning'
 								: 'Sign in to view course details'
 						}>
-						<Card
-							onClick={() => {
-								if (!isSignedIn) return;
-								setSelectedCourse(courses);
-								setOpen(true);
-							}}
-							className="relative overflow-hidden cursor-pointer shadow-leafyGreen hover:scale-[1.01] hover:shadow-md transition-transform">
-							<CardHeader>
-								<div className="flex items-center space-x-2">
-									<img
-										alt={`icon ${courses.name}`}
-										src={courses.logo}
-										width={28}
-										height={28}
-										className="size-7"
-									/>
-
-									<CardTitle>{courses.name}</CardTitle>
-								</div>
-							</CardHeader>
-							<CardContent>
-								<CardDescription>{courses.description}</CardDescription>
-							</CardContent>
-						</Card>
+						<CourseCard course={courses} />
 					</Hint>
 				))}
 			</div>
@@ -86,6 +63,35 @@ export default function ListCourseCard() {
 				/>
 			)}
 		</>
+	);
+}
+
+function CourseCard({course}: {course: CourseStateType}) {
+	return (
+		<Card
+			key={course._id}
+			className="min-h-40 h-full relative overflow-hidden cursor-pointer shadow-leafyGreen hover:scale-[1.01] hover:shadow-md transition-transform">
+			<CardHeader>
+				<div className="flex items-center space-x-2">
+					{course.logo ? (
+						<img
+							alt={`icon ${course.name}`}
+							src={course.logo}
+							width={28}
+							height={28}
+							className="size-7"
+						/>
+					) : (
+						<div className="size-7 rounded-full bg-muted" />
+					)}
+
+					<CardTitle>{course.name || 'New Course'} </CardTitle>
+				</div>
+			</CardHeader>
+			<CardContent>
+				<CardDescription>{course.description || 'Description !!!'}</CardDescription>
+			</CardContent>
+		</Card>
 	);
 }
 

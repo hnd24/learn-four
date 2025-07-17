@@ -52,6 +52,18 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 			toast.error('No changes detected.');
 			return;
 		}
+		if (
+			(!course.name ||
+				!course.description ||
+				!course.banner ||
+				!course.logo ||
+				!course.language?._id ||
+				!course.document) &&
+			course.status === 'public'
+		) {
+			toast.error('Please fill in all required fields.');
+			return;
+		}
 		updateCourse(
 			{
 				courseId: idCourse,
@@ -61,6 +73,7 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 				banner: course.banner,
 				logo: course.logo,
 				languageId: course.language._id,
+				document: course.document,
 			},
 			{
 				onSuccess: () => {
@@ -84,7 +97,6 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 					<DialogHeader>
 						<DialogTitle />
 					</DialogHeader>
-
 					<section className="flex flex-col  gap-4">
 						<Tabs
 							value={course.status || 'private'}
@@ -99,8 +111,8 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 								<TabsTrigger value="private">Private</TabsTrigger>
 							</TabsList>
 						</Tabs>
-						<section className="flex flex-col gap-4">
-							<div className=" grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+						<section className="flex flex-col gap-4 md:gap-6">
+							<div className=" grid grid-cols-1 lg:grid-cols-2 gap-4 ">
 								<div className="flex flex-col justify-between gap-4">
 									<div className="flex flex-col gap-2">
 										<div className="flex items-end space-x-2">
@@ -144,7 +156,22 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 								</div>
 							</div>
 							<LanguageSelect course={course} onChange={setCourse} />
+							{/* Course Content */}
+							<div className="flex flex-col gap-2">
+								<h3 className="text-xl font-semibold ">Document</h3>
+								<Textarea
+									onChange={e => {
+										setCourse({
+											...course,
+											document: e.target.value,
+										});
+									}}
+									value={course.document}
+									className="w-full min-h-60 text-base"
+								/>
+							</div>
 						</section>
+
 						{/* CHANGE BUTTON */}
 						<Button
 							disabled={disabled || pendingUpdate}
@@ -155,18 +182,8 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 						</Button>
 					</section>
 
-					<section className="flex flex-col gap-6 ">
-						{/* Course Content */}
-						<div>
-							<h3 className="text-xl font-semibold ">Content</h3>
-							<p className="text-muted-foreground w-full  ">
-								{/* {course.document} */}
-							</p>
-						</div>
-
-						{/* Lessons */}
-						<CourseLessonList idCourse={idCourse} languageId={course.language._id} />
-					</section>
+					{/* Lessons */}
+					<CourseLessonList idCourse={idCourse} languageId={course.language._id} />
 
 					<DialogFooter className="mt-6">
 						<DialogClose asChild>

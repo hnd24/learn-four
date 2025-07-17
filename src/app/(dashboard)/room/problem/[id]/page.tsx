@@ -1,9 +1,9 @@
 import NotFoundState from '@/components/not-found-state';
 import {getAuthToken} from '@/modules/auth/lib/auth';
 
+import {Provider} from '@/modules/admin/components/liveblock/provider';
 import Header from '@/modules/dashboard/room/problem/header';
 import ProblemContent from '@/modules/dashboard/room/problem/problem-content';
-import {Provider} from '@/modules/room/components/liveblock/provider';
 import CostumeLoadingPage from '@/page/costume-loading-page';
 import {preloadQuery} from 'convex/nextjs';
 import {Preloaded} from 'convex/react';

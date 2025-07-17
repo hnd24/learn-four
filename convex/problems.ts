@@ -210,9 +210,7 @@ export const queryUserProblems = query({
 						q.eq('userId', identity.subject).eq('problemId', problem._id),
 					)
 					.unique();
-				console.log('🚀 ~ enrichedPage ~ problem:', problem._id);
-				console.log('🚀 ~ enrichedPage ~ user:', identity.subject);
-				console.log('🚀 ~ handler ~ state:', state);
+
 				return {
 					_id: problem._id,
 					name: problem.name,

@@ -3,7 +3,7 @@
 import {LiveMap} from '@liveblocks/client';
 import {LiveblocksProvider, RoomProvider} from '@liveblocks/react';
 import {ReactNode} from 'react';
-import {getAdmins} from '../../actions/get-admin';
+import {getAdmins} from '../../../room/actions/get-admin';
 type Props = {
 	children: ReactNode;
 	problemId?: string;

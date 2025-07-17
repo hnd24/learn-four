@@ -1,6 +1,6 @@
 import NotFoundState from '@/components/not-found-state';
+import {Provider} from '@/modules/admin/components/liveblock/provider';
 import {getAuthToken} from '@/modules/auth/lib/auth';
-import {Provider} from '@/modules/room/components/liveblock/provider';
 import Header from '@/modules/room/lesson/components/header';
 import LessonContent from '@/modules/room/lesson/components/lesson-content';
 import CostumeLoadingPage from '@/page/costume-loading-page';

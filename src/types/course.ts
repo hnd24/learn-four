@@ -1,7 +1,7 @@
 import {Id} from '../../convex/_generated/dataModel';
 import {LanguageType} from './language';
 
-export type STATUS_COURSE = 'public' | 'private' | 'pending';
+export type STATUS_COURSE = 'public' | 'private';
 
 export type CourseStateType = {
 	_id: Id<'courses'>;

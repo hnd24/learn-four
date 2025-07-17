@@ -20,7 +20,7 @@ export default function Header() {
 							<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
 						</ClientOnly>
 						<Hint label="switch theme">
-							<SwitchTheme className="size-9" />
+							<SwitchTheme className="size-9 rounded-full border-2" />
 						</Hint>
 					</div>
 				</div>
