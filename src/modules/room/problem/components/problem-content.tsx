@@ -3,8 +3,10 @@ import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
 import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {useAtomValue} from 'jotai';
 import {FileText} from 'lucide-react';
 import {api} from '../../../../../convex/_generated/api';
+import {editorStateAtom} from '../../atom/editor-state';
 import TextEditor from '../../components/text-editor';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
@@ -22,6 +24,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 	const isPending = false;
 	useHydrateTestCases(problemId);
 	useHydrateTemplate(problemId);
+	const state = useAtomValue(editorStateAtom);
 
 	if (isMobile) {
 		return (
@@ -40,15 +43,13 @@ export default function ProblemContent({preloadedProblem}: Props) {
 					<ResizablePanelGroup direction="horizontal">
 						<ResizablePanel defaultSize={50} minSize={30}>
 							<div className="bg-border flex h-full w-full flex-col overflow-hidden rounded-md border">
-								<div className="bg-accent relative flex h-10 w-full shrink-0 items-center rounded-t-md border-b px-4">
-									<div className="flex items-center justify-self-start gap-1.5 space-x-2 text-sm select-none">
+								<div className="bg-accent relative flex h-10 w-full shrink-0 items-center justify-between rounded-t-md border-b px-4">
+									<div className="flex items-center  gap-1.5 space-x-2 text-sm select-none">
 										<FileText className="size-4 text-blue-500" />
 										Document
 									</div>
 
-									{/* <p className="text-muted-foreground text-sm">
-										{syncStatus === "synchronizing" ? "Unsaved" : "Saved"}
-                						</p> */}
+									<p className="text-muted-foreground text-sm">{state}</p>
 								</div>
 								<TextEditor isPublished={problem.status === 'public'} />
 							</div>

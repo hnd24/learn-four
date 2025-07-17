@@ -17,10 +17,16 @@ import {useEffect, useState} from 'react';
 
 import {slashCommand, suggestionItems} from './slash-command';
 
+import {Separator} from '@/components/ui/separator';
 import {onPaste} from '@/lib/text-editor/content-paste';
 import {defaultExtensions} from '@/lib/text-editor/extensions';
-import {toast} from 'sonner';
+import {useSetAtom} from 'jotai';
+import {editorStateAtom} from '../../atom/editor-state';
 import {uploadImageFn} from './actions/image-upload';
+import {GenerativeMenuSwitch} from './generative/generative-menu-switch';
+import {ColorSelector} from './selector/color-selector';
+import {LinkSelector} from './selector/link-selector';
+import {StyleSelector} from './selector/style-selector';
 
 type Props = {
 	isPublished: boolean;
@@ -32,16 +38,16 @@ export default function TextEditorContent({isPublished}: Props) {
 	const extensions = [...defaultExtensions, slashCommand, liveblocks];
 
 	const [openAI, setOpenAI] = useState(false);
-	const [openStyle, setOpenStyle] = useState(false);
 
 	const syncStatus = useSyncStatus({smooth: true});
-
+	const setLoading = useSetAtom(editorStateAtom);
 	useEffect(() => {
-		!(syncStatus === 'synchronizing') &&
-			toast.info('Document saved', {
-				duration: 1000,
-				position: 'top-left',
-			});
+		// !(syncStatus === 'synchronizing') &&
+		// 	toast.info('Document saved', {
+		// 		duration: 1000,
+		// 		position: 'top-left',
+		// 	});
+		setLoading(syncStatus === 'synchronizing' ? 'Unsaved' : 'Saved');
 	}, [syncStatus]);
 	return (
 		<div className="flex-1 overflow-hidden">
@@ -96,21 +102,14 @@ export default function TextEditorContent({isPublished}: Props) {
 								))}
 							</EditorCommandList>
 						</EditorCommand>
-
-						{/* <GenerativeMenuSwitch
-                                open={openAI}
-                                onOpenChange={setOpenAI}
-                            >
-                                <Separator orientation="vertical" />
-                                <LinkSelector />
-                                <Separator orientation="vertical" />
-                                <StyleSelector
-                                    open={openStyle}
-                                    onOpenChange={setOpenStyle}
-                                />
-                                <Separator orientation="vertical" />
-                                <ColorSelector />
-                            </GenerativeMenuSwitch> */}
+						<GenerativeMenuSwitch open={openAI} onOpenChange={setOpenAI}>
+							<Separator orientation="vertical" />
+							<StyleSelector />
+							<Separator orientation="vertical" />
+							<ColorSelector />
+							<Separator orientation="vertical" />
+							<LinkSelector />
+						</GenerativeMenuSwitch>
 					</EditorContent>
 				</EditorRoot>
 			</ScrollArea>

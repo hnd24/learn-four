@@ -6,39 +6,39 @@ export type BubbleColorMenuItem = {
 export const TEXT_COLORS: BubbleColorMenuItem[] = [
 	{
 		name: 'Default',
-		color: 'var(--novel-black)',
+		color: '#000000', // Black
 	},
 	{
 		name: 'Purple',
-		color: '#9333EA',
+		color: '#8B5CF6', // Tailwind purple-500
 	},
 	{
 		name: 'Red',
-		color: '#E00000',
+		color: '#EF4444', // Tailwind red-500
 	},
 	{
 		name: 'Yellow',
-		color: '#EAB308',
+		color: '#F59E42', // Tailwind yellow-500
 	},
 	{
 		name: 'Blue',
-		color: '#2563EB',
+		color: '#3B82F6', // Tailwind blue-500
 	},
 	{
 		name: 'Green',
-		color: '#008A00',
+		color: '#22C55E', // Tailwind green-500
 	},
 	{
 		name: 'Orange',
-		color: '#FFA500',
+		color: '#F97316', // Tailwind orange-500
 	},
 	{
 		name: 'Pink',
-		color: '#BA4081',
+		color: '#EC4899', // Tailwind pink-500
 	},
 	{
 		name: 'Gray',
-		color: '#A8A29E',
+		color: '#6B7280', // Tailwind gray-500
 	},
 ];
 
