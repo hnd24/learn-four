@@ -1,9 +1,9 @@
-import TestUpload from './components/TestUpload';
+import TestFn from './components/testFn';
 
-export default function page() {
+export default function TestPage() {
 	return (
-		<div className=" grid place-items-center ">
-			<TestUpload />
+		<div>
+			<TestFn />
 		</div>
 	);
 }

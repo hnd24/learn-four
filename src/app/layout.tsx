@@ -3,11 +3,14 @@ import {inter} from '@/lib/font';
 import {ConvexClientProvider} from '@/providers/convex-client-provider';
 import {ThemeProvider} from '@/providers/theme-provider';
 import {ClerkProvider} from '@clerk/nextjs';
+import '@liveblocks/react-tiptap/styles.css';
+import '@liveblocks/react-ui/styles.css';
+import '@liveblocks/react-ui/styles/dark/attributes.css';
 import {Provider as JotaiProvider} from 'jotai';
 import {NuqsAdapter} from 'nuqs/adapters/next/app';
 import '../style/globals.css';
-import '../styles/prosemirror.css';
-import '../styles/text-editor.css';
+import '../style/prosemirror.css';
+import '../style/text-editor.css';
 
 export default function RootLayout({
 	children,
@@ -21,7 +24,7 @@ export default function RootLayout({
 					<ThemeProvider
 						attribute="class"
 						// enableSystem
-						defaultTheme="dark"
+						defaultTheme="light"
 						disableTransitionOnChange
 						// forcedTheme="dark"
 					>

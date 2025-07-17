@@ -7,6 +7,7 @@ import {Preloaded, usePreloadedQuery} from 'convex/react';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {api} from '../../../../../convex/_generated/api';
+import {AvatarStack} from '../../components/liveblock/avatar-stack';
 import {statusProblemAtom} from '../atom/status';
 import {PublishButton} from './public-action/publish-btn';
 import Title from './title';
@@ -40,8 +41,9 @@ export default function Header({preloadedProblem}: Props) {
 				</div>
 
 				<div className="flex items-center gap-x-3">
-					{/* TODO: Avatar Stack */}
-					<div className="hidden md:block"></div>
+					<div className="hidden md:block">
+						<AvatarStack />
+					</div>
 
 					<div className="flex gap-2">
 						<PublishButton problemId={problem._id} />

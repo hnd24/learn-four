@@ -3,6 +3,7 @@ import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
 import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {FileText} from 'lucide-react';
 import {api} from '../../../../../convex/_generated/api';
 import TextEditor from '../../components/text-editor';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
@@ -38,7 +39,19 @@ export default function ProblemContent({preloadedProblem}: Props) {
 				<div className="flex-1 overflow-hidden">
 					<ResizablePanelGroup direction="horizontal">
 						<ResizablePanel defaultSize={50} minSize={30}>
-							<TextEditor isPublished={problem.status === 'public'} />
+							<div className="bg-border flex h-full w-full flex-col overflow-hidden rounded-md border">
+								<div className="bg-accent relative flex h-10 w-full shrink-0 items-center rounded-t-md border-b px-4">
+									<div className="flex items-center justify-self-start gap-1.5 space-x-2 text-sm select-none">
+										<FileText className="size-4 text-blue-500" />
+										Document
+									</div>
+
+									{/* <p className="text-muted-foreground text-sm">
+										{syncStatus === "synchronizing" ? "Unsaved" : "Saved"}
+                						</p> */}
+								</div>
+								<TextEditor isPublished={problem.status === 'public'} />
+							</div>
 						</ResizablePanel>
 						<ResizableHandle withHandle className="mx-2" />
 						<ResizablePanel defaultSize={50} minSize={30}>

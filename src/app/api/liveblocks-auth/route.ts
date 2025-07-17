@@ -19,7 +19,7 @@ export async function POST(request: Request) {
 	const {id, ...userInfo} = getUserInfo(user);
 	const session = liveblocks.prepareSession(`user-${user.id}`, {userInfo});
 
-	let statusRoom: 'public' | 'private' = 'public';
+	let statusRoom: 'public' | 'private' = 'private';
 	const roomId = (problemId || lessonId || 'default-room') as string;
 
 	if (problemId) {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 		statusRoom = lesson.status;
 	}
 
-	if (statusRoom === 'public') {
+	if (statusRoom === 'private') {
 		session.allow(roomId, session.FULL_ACCESS);
 	} else {
 		session.allow(roomId, session.READ_ACCESS);
