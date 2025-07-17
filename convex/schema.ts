@@ -2,11 +2,7 @@ import {defineSchema, defineTable} from 'convex/server';
 import {v} from 'convex/values';
 
 export const StatusType = v.union(v.literal('private'), v.literal('public'));
-export const CourseStateType = v.union(
-	v.literal('public'),
-	v.literal('pending'),
-	v.literal('private'),
-);
+export const CourseStateType = v.union(v.literal('public'), v.literal('private'));
 export const StateType = v.union(v.literal('completed'), v.literal('progress'));
 export const RoleType = v.union(v.literal('super_admin'), v.literal('admin'), v.literal('user'));
 export const levelType = v.union(v.literal('easy'), v.literal('medium'), v.literal('hard'));

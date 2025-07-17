@@ -1,7 +1,7 @@
 'use client';
 
 import {Button} from '@/components/ui/button';
-import {useCheckAdmin} from '@/hook/data/user';
+import {useCheckAdmin} from '@/hook/data/admin';
 import {useUser} from '@clerk/nextjs';
 import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
