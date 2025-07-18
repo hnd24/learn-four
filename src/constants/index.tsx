@@ -1,4 +1,5 @@
 import {InputTestCaseType, TestcaseType} from '@/types';
+import {Facebook, Github, Linkedin, LucideIcon, Phone, Youtube} from 'lucide-react';
 import {nanoid} from 'nanoid';
 type LevelType = {
 	label: string;
@@ -43,3 +44,33 @@ export const JUDGE0_LANGUAGE_ID_MAP: Record<string, number> = {
 export const DEFAULT_BANNER_URL =
 	'https://jxavqwzcp5avqdlx.public.blob.vercel-storage.com/1-xKQoIdSoTTEa98cExqAsy.jpeg';
 export const DEFAULT_LOGO_URL = 'https://github.com/shadcn.png';
+
+type LinkType = {
+	[key: string]: {
+		icon: LucideIcon;
+		label: string;
+	};
+};
+
+export const LIST_LINK: LinkType = {
+	Facebook: {
+		icon: Facebook,
+		label: 'Facebook',
+	},
+	LinkedIn: {
+		icon: Linkedin,
+		label: 'LinkedIn',
+	},
+	GitHub: {
+		icon: Github,
+		label: 'GitHub',
+	},
+	Youtube: {
+		icon: Youtube,
+		label: 'YouTube',
+	},
+	Phone: {
+		icon: Phone,
+		label: 'Phone',
+	},
+};

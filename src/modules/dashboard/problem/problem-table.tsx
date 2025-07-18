@@ -50,7 +50,6 @@ const getLevelColor = (level: string) => {
 
 export default function ProblemTable() {
 	const {results, isLoading, loadMore, status} = useQueryUserProblem();
-	console.log('🚀 ~ ProblemTable ~ results:', results);
 	const [problems, setProblems] = useState<ProblemStateType[]>([]);
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);

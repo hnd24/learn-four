@@ -243,6 +243,7 @@ export default function TopicsManager() {
 								<DialogClose asChild>
 									<Button
 										variant="outline"
+										disabled={disabled}
 										onClick={() => {
 											handleOpenChange(false);
 										}}>

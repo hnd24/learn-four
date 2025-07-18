@@ -48,8 +48,11 @@ export default defineSchema({
 		image: v.optional(v.string()),
 		links: v.optional(LinkType),
 		introduce: v.optional(v.string()),
-		locked: v.optional(v.boolean()),
-	}).index('by_userId', ['userId']),
+	})
+		.index('by_userId', ['userId'])
+		.searchIndex('by_name', {
+			searchField: 'name',
+		}),
 	/************************************************** */
 	roles: defineTable({
 		userId: v.string(),
@@ -57,6 +60,10 @@ export default defineSchema({
 	})
 		.index('by_userId', ['userId'])
 		.index('by_role', ['role']),
+	/************************************************** */
+	locked_users: defineTable({
+		userId: v.string(),
+	}).index('by_userId', ['userId']),
 	/************************************************** */
 	comments: defineTable({
 		content: v.string(),

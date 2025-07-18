@@ -1,3 +1,5 @@
+import {filter} from 'convex-helpers/server/filter';
+import {paginationOptsValidator} from 'convex/server';
 import {v} from 'convex/values';
 import stc from 'string-to-color';
 import {mutation, query} from './_generated/server';
@@ -15,6 +17,25 @@ export const confirmAdmin = query({
 			.withIndex('by_userId', q => q.eq('userId', identity.subject))
 			.unique();
 		if (admin && (admin.role === 'admin' || admin.role === 'super_admin')) {
+			return true;
+		}
+		return false;
+	},
+});
+
+export const confirmSuperAdmin = query({
+	async handler(ctx) {
+		const identity = await ctx.auth.getUserIdentity();
+
+		if (!identity) {
+			return false;
+		}
+
+		const admin = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.unique();
+		if (admin && admin.role === 'super_admin') {
 			return true;
 		}
 		return false;
@@ -40,6 +61,11 @@ export const changeRole = mutation({
 			.withIndex('by_userId', q => q.eq('userId', userId))
 			.unique();
 		if (userRole) {
+			if (role === 'user') {
+				await ctx.db.delete(userRole._id);
+				return;
+			}
+
 			if (userRole?.role === role) {
 				throw new Error(`User is already an ${role}`);
 			}
@@ -62,38 +88,57 @@ export const lockUser = mutation({
 		if (!identity) {
 			throw new Error('Unauthorized');
 		}
-
 		const yourRole = await ctx.db
 			.query('roles')
 			.withIndex('by_userId', q => q.eq('userId', identity.subject))
 			.unique();
+		if (yourRole?.role !== 'super_admin') {
+			throw new Error('Only super admins can lock users');
+		}
 
-		const user = await ctx.db
-			.query('users')
+		const isLocked = await ctx.db
+			.query('locked_users')
 			.withIndex('by_userId', q => q.eq('userId', args.userId))
 			.unique();
-		if (!user) {
-			throw new Error('User not found');
-		}
-		if (user?.locked) {
+		if (isLocked) {
 			throw new Error('User is already locked');
 		}
 		const userRole = await ctx.db
 			.query('roles')
 			.withIndex('by_userId', q => q.eq('userId', args.userId))
 			.unique();
-		if (userRole?.role === 'super_admin') {
-			throw new Error('Cannot lock a super admin');
+		if (userRole?.role) {
+			throw new Error(`Cannot lock a ${userRole.role}`);
 		}
-		if (yourRole?.role === 'admin' && userRole?.role === 'admin') {
-			throw new Error('User is admin');
+		await ctx.db.insert('locked_users', {
+			userId: args.userId,
+		});
+	},
+});
+
+export const unlockUser = mutation({
+	args: {userId: v.string()},
+	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new Error('Unauthorized');
+		}
+		const yourRole = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.unique();
+		if (yourRole?.role !== 'super_admin') {
+			throw new Error('Only super admins can unlock users');
 		}
 
-		if (user) {
-			await ctx.db.patch(user._id, {
-				locked: true,
-			});
+		const isLocked = await ctx.db
+			.query('locked_users')
+			.withIndex('by_userId', q => q.eq('userId', args.userId))
+			.unique();
+		if (!isLocked) {
+			throw new Error('User is not locked');
 		}
+		await ctx.db.delete(isLocked._id);
 	},
 });
 
@@ -107,7 +152,11 @@ export const getAdmins = query({
 					.query('users')
 					.withIndex('by_userId', q => q.eq('userId', admin.userId))
 					.unique();
-				if (user?.locked) return;
+				const isLocked = await ctx.db
+					.query('locked_users')
+					.withIndex('by_userId', q => q.eq('userId', admin.userId))
+					.unique();
+				if (isLocked) return;
 				return {
 					id: admin.userId,
 					name: user?.name || 'Unknown',
@@ -117,5 +166,51 @@ export const getAdmins = query({
 			}),
 		);
 		return admins;
+	},
+});
+
+export const queryUsers = query({
+	args: {
+		name: v.optional(v.string()),
+		role: v.optional(RoleType),
+		locked: v.optional(v.union(v.literal('locked'), v.literal('unlocked'))),
+		paginationOpts: paginationOptsValidator,
+	},
+	async handler(ctx, {name, paginationOpts, role, locked}) {
+		const listAdminId = await ctx.db.query('roles').collect();
+		const listLockedUsers = await ctx.db.query('locked_users').collect();
+		const preIndexQuery = ctx.db.query('users');
+		const baseQuery = name
+			? preIndexQuery.withSearchIndex('by_name', q => q.search('name', name))
+			: preIndexQuery;
+		const filteredQuery = filter(baseQuery, user => {
+			const roleUser =
+				listAdminId.find(admin => admin.userId === user.userId)?.role || 'user';
+			if (role && roleUser !== role) return false;
+			if (locked) {
+				const isLocked = listLockedUsers.find(
+					lockedUser => lockedUser.userId === user.userId,
+				);
+				if (locked === 'locked' && !isLocked) return false;
+				if (locked === 'unlocked' && isLocked) return false;
+			}
+			return true;
+		});
+		const rawResults = await filteredQuery.paginate(paginationOpts);
+		return {
+			...rawResults,
+			page: rawResults.page.map(user => {
+				const roleUser =
+					listAdminId.find(admin => admin.userId === user.userId)?.role || 'user';
+				const isLocked = listLockedUsers.find(
+					lockedUser => lockedUser.userId === user.userId,
+				);
+				return {
+					...user,
+					locked: !!isLocked,
+					role: roleUser,
+				};
+			}),
+		};
 	},
 });

@@ -127,14 +127,14 @@ export default function LanguagesManager() {
 	};
 
 	return (
-		<Dialog open={open} onOpenChange={handleOpenChange}>
+		<Dialog open={open}>
 			<DialogTrigger asChild>
 				<Button
 					disabled={loading}
 					size="icon"
 					className="w-full flex items-center gap-2"
 					onClick={() => {
-						setOpen(true);
+						handleOpenChange(true);
 					}}>
 					<MessagesSquare /> Language
 				</Button>
@@ -266,7 +266,10 @@ export default function LanguagesManager() {
 
 							<DialogFooter className="mt-6">
 								<DialogClose asChild>
-									<Button variant="outline" disabled={disabled}>
+									<Button
+										variant="outline"
+										disabled={disabled}
+										onClick={() => handleOpenChange(false)}>
 										Cancel
 									</Button>
 								</DialogClose>

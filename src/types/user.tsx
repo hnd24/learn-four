@@ -1,3 +1,5 @@
+import {Id} from '../../convex/_generated/dataModel';
+
 export type ROLE_USER = 'admin' | 'super_admin' | 'user';
 
 export type LinkType = {
@@ -9,12 +11,14 @@ export type LinkType = {
 };
 
 export type UserStateType = {
+	_id: Id<'users'>;
+	_creationTime?: number;
 	userId: string;
 	name: string;
 	email: string;
-	image: string;
-	link?: Partial<LinkType>;
-	introduction?: string;
+	image?: string;
+	links?: Partial<LinkType>;
+	introduce?: string;
 	locked?: boolean;
 	role?: ROLE_USER;
 };

@@ -7,10 +7,19 @@ import '@liveblocks/react-tiptap/styles.css';
 import '@liveblocks/react-ui/styles.css';
 import '@liveblocks/react-ui/styles/dark/attributes.css';
 import {Provider as JotaiProvider} from 'jotai';
+import {Metadata} from 'next';
 import {NuqsAdapter} from 'nuqs/adapters/next/app';
 import '../style/globals.css';
 import '../style/prosemirror.css';
 import '../style/text-editor.css';
+
+export const metadata: Metadata = {
+	title: {
+		template: '%s | Learn Four',
+		default: 'Learn Four',
+	},
+	description: 'Learn Four is a platform for learning and practicing programming concepts.',
+};
 
 export default function RootLayout({
 	children,
