@@ -316,3 +316,17 @@ export const userCompleteProblem = mutation({
 		});
 	},
 });
+
+export const checkLockedUser = query({
+	async handler(ctx) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			return false;
+		}
+		const lockedUser = await ctx.db
+			.query('locked_users')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.first();
+		return !!lockedUser;
+	},
+});
