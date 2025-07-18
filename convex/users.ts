@@ -127,13 +127,7 @@ export const updateUserProfile = mutation({
 			return null;
 		}
 		const user = await getUser(ctx, identity.subject);
-		await ctx.db.patch(user._id, {
-			name: args.name,
-			image: args.image,
-			links: args.links,
-			introduce: args.introduce,
-		});
-		return await getUser(ctx, identity.subject);
+		await ctx.db.patch(user._id, args);
 	},
 });
 
@@ -144,8 +138,21 @@ export const getMe = query({
 		if (!identity) {
 			return null;
 		}
-
-		return await getUser(ctx, identity.subject);
+		const isLocked = await ctx.db
+			.query('locked_users')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.unique();
+		const roleUser = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.unique();
+		const role = roleUser ? roleUser.role : 'user';
+		const user = await getUser(ctx, identity.subject);
+		return {
+			...user,
+			role,
+			locked: !!isLocked,
+		};
 	},
 });
 /************************************************** */

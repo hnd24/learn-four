@@ -19,8 +19,8 @@ export default function HomePage() {
 					{/* TODO: switch admin mode */}
 					<div className="flex flex-1 items-center justify-end space-x-1">
 						<AdminBtn />
-						<SwitchTheme className="size-9 rounded-full border-2" />
 						<SignInBtn />
+						<SwitchTheme className="size-9 rounded-full border-2" />
 					</div>
 				</div>
 			</header>

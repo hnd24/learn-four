@@ -18,7 +18,6 @@ export default function HomeLayout({
 		return null;
 	}
 	const {data: isLocked, isPending} = useCheckLocked();
-	console.log('🚀 ~ isLocked:', isLocked);
 	if (isPending) {
 		return <CostumeLoadingPage />;
 	}

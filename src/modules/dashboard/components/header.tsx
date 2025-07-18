@@ -1,8 +1,7 @@
 'use client';
 
-import {ClientOnly} from '@/components/client-only';
+import CustomUserBtn from '@/components/custom-user-btn';
 import {Logo} from '@/components/logo';
-import {UserButton} from '@clerk/nextjs';
 
 export default function Header() {
 	return (
@@ -10,9 +9,10 @@ export default function Header() {
 			<div className="flex h-full w-full items-center justify-between px-4">
 				<Logo />
 				<div className="flex items-center gap-3">
-					<ClientOnly>
+					{/* <ClientOnly>
 						<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
-					</ClientOnly>
+					</ClientOnly> */}
+					<CustomUserBtn />
 				</div>
 			</div>
 		</header>

@@ -1,8 +1,7 @@
-import {ClientOnly} from '@/components/client-only';
+import CusTomUserBtn from '@/components/custom-user-btn';
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
 import SwitchTheme from '@/components/switch-theme';
-import {UserButton} from '@clerk/nextjs';
 import Navbar from './navbar';
 
 export default function Header() {
@@ -15,9 +14,7 @@ export default function Header() {
 				<div className="flex flex-1 px-6 items-center justify-between">
 					<Navbar />
 					<div className="flex items-center gap-3">
-						<ClientOnly>
-							<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
-						</ClientOnly>
+						<CusTomUserBtn />
 						<Hint label="switch theme">
 							<SwitchTheme className="size-9 rounded-full border-2" />
 						</Hint>

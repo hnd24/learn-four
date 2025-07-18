@@ -42,7 +42,7 @@ const getLinkIcon = (key: keyof LinkType) => {
 export default function UserDialog({user, open, setOpen}: Props) {
 	return (
 		<Dialog open={open} onOpenChange={setOpen}>
-			<DialogContent className="sm:max-w-[425px] md:max-w-[500px]">
+			<DialogContent>
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
 						<Avatar className="h-10 w-10">

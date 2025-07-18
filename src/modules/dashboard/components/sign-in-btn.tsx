@@ -1,5 +1,6 @@
-import {Button} from "@/components/ui/button";
-import {SignInButton, SignedIn, SignedOut, UserButton} from "@clerk/nextjs";
+import CustomUserBtn from '@/components/custom-user-btn';
+import {Button} from '@/components/ui/button';
+import {SignInButton, SignedIn, SignedOut} from '@clerk/nextjs';
 
 export const SignInBtn = () => {
 	return (
@@ -10,7 +11,8 @@ export const SignInBtn = () => {
 				</SignInButton>
 			</SignedOut>
 			<SignedIn>
-				<UserButton />
+				{/* <UserButton /> */}
+				<CustomUserBtn />
 			</SignedIn>
 		</>
 	);
