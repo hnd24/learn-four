@@ -13,7 +13,7 @@ export default function Header() {
 				</div>
 				<div className="flex flex-1 px-6 items-center justify-between">
 					<Navbar />
-					<div className="flex items-center gap-3">
+					<div className="flex items-center gap-2">
 						<CusTomUserBtn />
 						<Hint label="switch theme">
 							<SwitchTheme className="size-9 rounded-full border-2" />

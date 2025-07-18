@@ -25,7 +25,7 @@ export type ProblemDetailType = {
 	level: LEVEL_PROBLEM;
 	answer: AnswerType;
 	status: STATUS_PROBLEM;
-	topic: TopicType;
+	topic: TopicType | null;
 	authorId: string;
 	authorName?: string;
 	authorImage?: string;

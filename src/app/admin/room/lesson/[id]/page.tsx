@@ -1,12 +1,6 @@
-import NotFoundState from '@/components/not-found-state';
 import {Provider} from '@/modules/admin/components/liveblock/provider';
-import {getAuthToken} from '@/modules/auth/lib/auth';
-import Header from '@/modules/room/lesson/components/header';
-import LessonContent from '@/modules/room/lesson/components/lesson-content';
+import LessonWrapper from '@/modules/room/lesson/components/lesson-wapper';
 import CostumeLoadingPage from '@/page/costume-loading-page';
-import {preloadQuery} from 'convex/nextjs';
-import {Preloaded} from 'convex/react';
-import {api} from '../../../../../../convex/_generated/api';
 import {Id} from '../../../../../../convex/_generated/dataModel';
 type Params = Promise<{id: string}>;
 
@@ -15,35 +9,28 @@ export default async function LessonPage({params}: {params: Params}) {
 	if (!id) {
 		return <CostumeLoadingPage />;
 	}
-	const token = await getAuthToken();
-	let preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
-	try {
-		preloadedLesson = await preloadQuery(
-			api.lessons.getLessonById,
-			{
-				lessonId: id as Id<'lessons'>,
-			},
-			{
-				token,
-			},
-		);
-	} catch (error) {
-		return (
-			<div className="h-screen w-screen flex items-center justify-center">
-				<NotFoundState link="/admin" />;
-			</div>
-		);
-	}
+	// const token = await getAuthToken();
+	// let preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
+	// try {
+	// 	preloadedLesson = await preloadQuery(
+	// 		api.lessons.getLessonById,
+	// 		{
+	// 			lessonId: id as Id<'lessons'>,
+	// 		},
+	// 		{
+	// 			token,
+	// 		},
+	// 	);
+	// } catch (error) {
+	// 	return (
+	// 		<div className="h-screen w-screen flex items-center justify-center">
+	// 			<NotFoundState link="/admin" />;
+	// 		</div>
+	// 	);
+	// }
 	return (
 		<Provider lessonId={id}>
-			<div className="flex h-screen flex-col overflow-hidden">
-				<Header preloadedLesson={preloadedLesson} />
-				<main className="mt-16 flex size-full">
-					<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
-						<LessonContent preloadedLesson={preloadedLesson} />
-					</div>
-				</main>
-			</div>
+			<LessonWrapper lessonId={id as Id<'lessons'>} />
 		</Provider>
 	);
 }

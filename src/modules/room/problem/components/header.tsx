@@ -3,21 +3,21 @@
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
 import SwitchTheme from '@/components/switch-theme';
-import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {ProblemDetailType} from '@/types';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
-import {api} from '../../../../../convex/_generated/api';
 import {AvatarStack} from '../../../admin/components/liveblock/avatar-stack';
 import {statusProblemAtom} from '../atom/status';
 import {PublishButton} from './public-action/publish-btn';
+import RemoveProblemBtn from './remove-btn';
 import Title from './title';
 
 type Props = {
-	preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
+	// preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
+	problem: ProblemDetailType;
 };
 
-export default function Header({preloadedProblem}: Props) {
-	const problem = usePreloadedQuery(preloadedProblem);
+export default function Header({problem}: Props) {
 	const setStatus = useSetAtom(statusProblemAtom);
 	useEffect(() => {
 		setStatus(problem?.status);
@@ -47,7 +47,8 @@ export default function Header({preloadedProblem}: Props) {
 
 					<div className="flex gap-2">
 						<PublishButton problemId={problem._id} />
-						<Hint label="coming soon">
+						<RemoveProblemBtn problemId={problem._id} status={problem.status} />
+						<Hint label="switch theme">
 							{/* <Button
 								variant="secondary"
 								size="icon"

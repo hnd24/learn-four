@@ -1,5 +1,6 @@
 'use client';
 import {Hint} from '@/components/hint';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {Button} from '@/components/ui/button';
 import {
 	Dialog,
@@ -15,7 +16,6 @@ import {useGetDetailCourse, useUpdateCourse} from '@/hook/data/course';
 import {CourseDetailType, STATUS_COURSE} from '@/types';
 import {isEqual} from 'lodash';
 import {Loader2, PersonStanding, Trash2} from 'lucide-react';
-import Image from 'next/image';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
@@ -136,18 +136,21 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 										{/* Author */}
 										<div className="flex items-center gap-2">
 											<Hint label={`Author: ${course.authorName}`}>
-												<Image
-													width={28}
-													height={28}
-													alt={course.authorName}
-													src={course.authorImage}
-													className="size-7 rounded-full object-cover"
-												/>
+												<Avatar>
+													<AvatarImage
+														src={course.authorImage}
+														alt={course.authorName}
+													/>
+													<AvatarFallback>
+														{course.authorName?.charAt(0).toUpperCase()}
+													</AvatarFallback>
+												</Avatar>
 											</Hint>
 										</div>
 										{/* number of learners who joined the course */}
-										<div className="border rounded-lg w-fit p-2 pr-3 py-1 flex items-end gap-2 text-sm text-muted-foreground">
-											<PersonStanding /> <p>{course.learner} learners</p>
+										<div className="border rounded-lg w-fit p-2 pr-3 py-1 flex items-center gap-2 text-sm text-muted-foreground">
+											<PersonStanding className="size-4" />{' '}
+											<p>{course.learner} learners</p>
 										</div>
 									</div>
 								</div>

@@ -1,5 +1,6 @@
 import {Id} from '../../convex/_generated/dataModel';
 import {TestcaseType} from './common';
+import {LanguageType} from './language';
 
 export type STATUS_LESSON = 'public' | 'private';
 
@@ -9,20 +10,14 @@ export type LEVEL_LESSON = 'easy' | 'medium' | 'hard';
 
 export type LessonDetailType = {
 	_id: Id<'lessons'>;
-	_creationTime?: number;
+	_creationTime: number;
 	name: string;
-	document: string;
-	courseId: string;
+	courseId: Id<'courses'>;
 	level: 'easy' | 'medium' | 'hard';
 	answer: string;
-	template: {
-		head: string;
-		body: string;
-		tail: string;
-	};
-	testcase: TestcaseType[];
 	status: 'private' | 'public';
-	language: string;
+	document: string;
+	language: LanguageType | null;
 };
 
 export type LessonType = {

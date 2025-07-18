@@ -47,3 +47,9 @@ export const useUpdateLesson = () => {
 		mutationFn: useConvexMutation(api.lessons.updateLesson),
 	});
 };
+
+export const useDeleteLesson = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.lessons.deleteLesson),
+	});
+};

@@ -94,3 +94,9 @@ export const useUpdateUserProblem = () => {
 		mutationFn: useConvexMutation(api.problems.updateUserProblem),
 	});
 };
+
+export const useDeleteProblem = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.problems.deleteProblem),
+	});
+};

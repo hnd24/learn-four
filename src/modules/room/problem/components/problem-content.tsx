@@ -2,10 +2,9 @@
 import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
-import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {ProblemDetailType} from '@/types';
 import {useAtomValue} from 'jotai';
 import {FileText} from 'lucide-react';
-import {api} from '../../../../../convex/_generated/api';
 import TextEditor from '../../../admin/components/text-editor';
 import {editorStateAtom} from '../../atom/editor-state';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
@@ -14,11 +13,11 @@ import {useProblemId} from '../hook/use-problem-id';
 import CodeArea from './code-area';
 
 type Props = {
-	preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
+	// preloadedProblem: Preloaded<typeof api.problems.getDetailProblemById>;
+	problem: ProblemDetailType;
 };
 
-export default function ProblemContent({preloadedProblem}: Props) {
-	const problem = usePreloadedQuery(preloadedProblem);
+export default function ProblemContent({problem}: Props) {
 	const isMobile = useMediaQuery('(max-width: 767px)');
 	const problemId = useProblemId();
 	const isPending = false;

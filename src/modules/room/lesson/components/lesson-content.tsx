@@ -3,10 +3,9 @@
 import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
-import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {LessonDetailType} from '@/types';
 import {useAtomValue} from 'jotai';
 import {FileText} from 'lucide-react';
-import {api} from '../../../../../convex/_generated/api';
 import TextEditor from '../../../admin/components/text-editor';
 import {editorStateAtom} from '../../atom/editor-state';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
@@ -15,11 +14,12 @@ import {useLessonId} from '../hook/use-lesson-id';
 import CodeArea from './code-area';
 
 type Props = {
-	preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
+	// preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
+	lesson: LessonDetailType;
 };
 
-export default function LessonContent({preloadedLesson}: Props) {
-	const lesson = usePreloadedQuery(preloadedLesson);
+export default function LessonContent({lesson}: Props) {
+	// const lesson = usePreloadedQuery(preloadedLesson);
 	const isMobile = useMediaQuery('(max-width: 767px)');
 	const lessonId = useLessonId();
 	const isPending = false;

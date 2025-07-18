@@ -3,22 +3,23 @@
 import {Hint} from '@/components/hint';
 import {Logo} from '@/components/logo';
 import SwitchTheme from '@/components/switch-theme';
-import {Preloaded, usePreloadedQuery} from 'convex/react';
+import {LessonDetailType} from '@/types';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
-import {api} from '../../../../../convex/_generated/api';
 import {AvatarStack} from '../../../admin/components/liveblock/avatar-stack';
 import {languageDataAtom} from '../atom/language';
 import {statusLessonAtom} from '../atom/status';
 import PublishButton from './public-action/publish-btn';
+import RemoveLessonBtn from './remove-btn';
 import Title from './title';
 
 type Props = {
-	preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
+	// preloadedLesson: Preloaded<typeof api.lessons.getLessonById>;
+	lesson: LessonDetailType;
 };
 
-export default function Header({preloadedLesson}: Props) {
-	const lesson = usePreloadedQuery(preloadedLesson);
+export default function Header({lesson}: Props) {
+	// const lesson = usePreloadedQuery(preloadedLesson);
 
 	const setLanguage = useSetAtom(languageDataAtom);
 	const setStatus = useSetAtom(statusLessonAtom);
@@ -51,7 +52,8 @@ export default function Header({preloadedLesson}: Props) {
 
 					<div className="flex gap-2">
 						<PublishButton lessonId={lesson._id} />
-						<Hint label="coming soon">
+						<RemoveLessonBtn lessonId={lesson._id} status={lesson.status} />
+						<Hint label="switch theme">
 							<SwitchTheme className="size-9 rounded-full border-2" />
 						</Hint>
 					</div>
