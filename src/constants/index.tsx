@@ -28,7 +28,7 @@ export const INITIAL_TEST_CASE: TestcaseType = {
 };
 
 export const ITEM_PER_PAGE = 10;
-export const NUMBER_COMMENTS_PER_LOAD = 20;
+export const NUMBER_COMMENTS_PER_LOAD = 10;
 export const MAX_RETRIES = 10;
 export const RETRY_DELAY_MS = 1000;
 

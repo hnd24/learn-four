@@ -1,6 +1,5 @@
 'use client';
 import Comment from '@/components/comment';
-import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {Separator} from '@/components/ui/separator';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '@/components/ui/tabs';
@@ -37,21 +36,15 @@ export default function ProblemContent({problem}: Props) {
 		);
 	}
 	return (
-		<>
-			{isPending ? (
-				<LoadingState />
-			) : (
-				<ResizablePanelGroup direction="horizontal">
-					<ResizablePanel defaultSize={50} minSize={32}>
-						<TabDisplay state={state} status={problem.status} />
-					</ResizablePanel>
-					<ResizableHandle withHandle className="mx-2" />
-					<ResizablePanel defaultSize={50}>
-						<CodeArea />
-					</ResizablePanel>
-				</ResizablePanelGroup>
-			)}
-		</>
+		<ResizablePanelGroup direction="horizontal">
+			<ResizablePanel defaultSize={50} minSize={32}>
+				<TabDisplay state={state} status={problem.status} />
+			</ResizablePanel>
+			<ResizableHandle withHandle className="mx-2" />
+			<ResizablePanel defaultSize={50}>
+				<CodeArea />
+			</ResizablePanel>
+		</ResizablePanelGroup>
 	);
 }
 

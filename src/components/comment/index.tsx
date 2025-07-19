@@ -5,6 +5,7 @@ import {useCheckAdmin} from '@/hook/data/admin';
 import {useGetCommentsByPlaceId} from '@/hook/data/comment';
 import {useUser} from '@clerk/nextjs';
 import {Button} from '../ui/button';
+import {Skeleton} from '../ui/skeleton';
 import CommentForm from './comment-form';
 import CommentItem from './comment-item';
 
@@ -19,15 +20,14 @@ export default function Comment({placeId}: Props) {
 
 	const isLoadMore = status === 'CanLoadMore';
 	if (!isSignedIn || !user || loading) {
-		return <div className="size-full">loading...</div>;
+		return <CommentsSkeleton />;
 	}
+	const range = Array.from({length: NUMBER_COMMENTS_PER_LOAD}, (_, i) => i);
 	return (
 		<div className="h-[calc(100vh-110px)] overflow-y-auto">
 			<ScrollArea className="overflow-y-auto size-full p-4 flex flex-col items-center justify-start ">
 				<CommentForm placeId={placeId} />
-				{isLoading && comments.length === 0 && (
-					<div className="text-center text-gray-500">Loading comments...</div>
-				)}
+
 				<div className="space-y-4">
 					{comments.map(comment => (
 						<CommentItem
@@ -39,6 +39,7 @@ export default function Comment({placeId}: Props) {
 						/>
 					))}
 				</div>
+				{isLoading && range.map(i => <CommentSkeleton key={i} />)}
 				{isLoadMore && (
 					<Button
 						variant="link"
@@ -47,10 +48,32 @@ export default function Comment({placeId}: Props) {
 						}}
 						className="mt-2"
 						disabled={isLoading}>
-						{isLoading ? 'Loading...' : `Load more`}
+						{isLoading ? 'Loading...' : `Load More...`}
 					</Button>
 				)}
 			</ScrollArea>
+		</div>
+	);
+}
+
+function CommentsSkeleton() {
+	const range = Array.from({length: 5}, (_, i) => i);
+	return (
+		<ScrollArea className="h-[calc(100vh-110px)] w-full  flex flex-col overflow-y-auto p-4">
+			<Skeleton className="h-32 rounded-md w-full mb-4" />
+			<Skeleton className="ml-auto h-10 w-22  mb-4" />
+			{range.map(i => (
+				<CommentSkeleton key={i} />
+			))}
+		</ScrollArea>
+	);
+}
+
+function CommentSkeleton() {
+	return (
+		<div className="w-full flex items-start mb-4 gap-3">
+			<Skeleton className="size-10 rounded-full" />
+			<Skeleton className=" flex-1 h-20 rounded-md" />
 		</div>
 	);
 }
