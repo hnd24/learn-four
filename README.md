@@ -102,8 +102,8 @@ This will start the **Learn Four** application locally on your machine. You can 
 
 If you have any contributions or questions, feel free to reach out to me via my social media channels:
 
-- **Facebook**: [Duy Huynh]([https://www.facebook.com/huynh.nhut.duy.249](https://www.facebook.com/huynh.nhut.duy.249))
-- **Instagram**: [@duynhut](https://www.instagram.com/duynhut.366/](https://www.instagram.com/duynhut.366/))
+- **Facebook**: [Duy Huynh]([https://www.facebook.com/huynh.nhut.duy.249])
+- **Instagram**: [@duynhut](https://www.instagram.com/duynhut.366/])
 
 I am happy to assist you with any inquiries or feedback you may have! 😊
 
