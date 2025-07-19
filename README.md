@@ -1,6 +1,6 @@
 # Learn Four - Online Programming Learning Platform
 
-![Learn Four Logo](./public/logo.svg)
+![Learn Four Logo](./public/logo.icon)
 
 **Learn Four** is an online platform designed to help learners master programming languages through coding challenges and structured courses. The platform offers interactive programming quizzes and provides courses on various programming languages to help learners deepen their understanding of the language they are pursuing.
 
