@@ -3,6 +3,7 @@ import LoadingState from '@/components/loading-state';
 import NotAccessState from '@/components/not-access';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {useMediaQuery} from '@/hook/use-media-query';
+import TextEditor from '@/modules/admin/components/text-editor';
 import CodeArea from '@/modules/room/problem/components/code-area';
 import {useHydrateTemplate} from '@/modules/room/problem/hook/use-hydrate-template';
 import {useHydrateTestCases} from '@/modules/room/problem/hook/use-hydrate-testcases';
@@ -21,7 +22,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 	const isPending = false;
 	useHydrateTestCases(problemId);
 	useHydrateTemplate(problemId);
-
+	const isPublished = problem.status === 'public';
 	if (problem?.status === 'private') {
 		return <NotAccessState link="/problem" />;
 	}
@@ -30,7 +31,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 		return (
 			<div className="flex w-screen overflow-hidden">
 				{/* TODO: TextEditor */}
-				{/* <TextEditor /> */}
+				<TextEditor isPublished={isPublished} />
 			</div>
 		);
 	}
@@ -42,8 +43,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 				<div className="flex-1 overflow-hidden">
 					<ResizablePanelGroup direction="horizontal">
 						<ResizablePanel defaultSize={50} minSize={30}>
-							{/* TODO: TextEditor */}
-							{/* <TextEditor/> */}
+							<TextEditor isPublished={isPublished} />
 						</ResizablePanel>
 						<ResizableHandle withHandle className="mx-2" />
 						<ResizablePanel defaultSize={50} minSize={30}>

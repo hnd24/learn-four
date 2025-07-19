@@ -30,6 +30,11 @@ export enum TabValue {
 	Canvas = 'canvas',
 }
 
+export enum TabSelect {
+	Document = 'document',
+	Comment = 'comment',
+}
+
 export enum TestCaseTab {
 	TestCase = 'testcase',
 	Result = 'result',

@@ -1,3 +1,4 @@
+export * from './comment';
 export * from './common';
 export * from './course';
 export * from './language';
