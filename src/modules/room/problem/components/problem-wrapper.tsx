@@ -29,10 +29,10 @@ export default function ProblemWrapper({problemId}: Props) {
 	}
 
 	return (
-		<div className="flex h-screen flex-col overflow-hidden">
+		<div className="flex h-screen flex-col ">
 			<Header problem={problem} />
 			<main className="mt-16 flex size-full">
-				<div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden p-2.5">
+				<div className="flex h-[calc(100vh-4rem)] w-full p-2.5">
 					<ProblemContent problem={problem} />
 				</div>
 			</main>

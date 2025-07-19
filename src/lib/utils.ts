@@ -1,10 +1,17 @@
 import {User} from '@clerk/nextjs/server';
 import {clsx, type ClassValue} from 'clsx';
+import {format} from 'date-fns';
 import {marked} from 'marked';
 import stc from 'string-to-color';
 import {twMerge} from 'tailwind-merge';
+
 export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
+}
+
+export function formatDate(value: number) {
+	const formattedDate = format(new Date(value), 'MM/dd/yyyy');
+	return formattedDate;
 }
 
 export function formatTime(value: number) {

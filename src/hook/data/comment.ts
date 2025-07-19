@@ -4,30 +4,11 @@ import {useMutation} from '@tanstack/react-query';
 import {usePaginatedQuery} from 'convex/react';
 import {useEffect} from 'react';
 import {api} from '../../../convex/_generated/api';
-import {Id} from '../../../convex/_generated/dataModel';
 export const useGetCommentsByPlaceId = (placeId: string) => {
 	const {results, isLoading, loadMore, status} = usePaginatedQuery(
 		api.comment.getCommentsByPlace,
 		{
 			placeId,
-		},
-		{initialNumItems: NUMBER_COMMENTS_PER_LOAD},
-	);
-	useEffect(() => {
-		if (isLoading) return;
-
-		if (results.length < NUMBER_COMMENTS_PER_LOAD && status === 'CanLoadMore') {
-			loadMore(NUMBER_COMMENTS_PER_LOAD - results.length);
-		}
-	}, [isLoading, results.length, status, loadMore]);
-	return {results, isLoading, loadMore, status};
-};
-
-export const useGetCommentsByParent = (parentId: Id<'comments'>) => {
-	const {results, isLoading, loadMore, status} = usePaginatedQuery(
-		api.comment.getCommentsByParent,
-		{
-			parentId,
 		},
 		{initialNumItems: NUMBER_COMMENTS_PER_LOAD},
 	);
@@ -59,8 +40,19 @@ export const useUpdateComment = () => {
 	});
 };
 
-export const replyToComment = () => {
+export const useReplyToComment = () => {
 	return useMutation({
 		mutationFn: useConvexMutation(api.comment.replyToComment),
+	});
+};
+
+export const useToggleLike = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.comment.toggleLike),
+	});
+};
+export const useToggleDislike = () => {
+	return useMutation({
+		mutationFn: useConvexMutation(api.comment.toggleDislike),
 	});
 };

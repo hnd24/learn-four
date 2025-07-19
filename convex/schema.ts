@@ -67,14 +67,12 @@ export default defineSchema({
 	/************************************************** */
 	comments: defineTable({
 		content: v.string(),
-		likes: v.optional(v.number()),
-		dislikes: v.optional(v.number()),
 		userId: v.string(),
-		parent: v.optional(v.string()),
+		likes: v.optional(v.array(v.string())),
+		dislikes: v.optional(v.array(v.string())),
 		placeId: v.string(),
 		reply: v.boolean(),
 	})
-		.index('by_parent', ['parent'])
 		.index('by_userId', ['userId'])
 		.index('by_placeId', ['placeId']),
 	/************************************************** */

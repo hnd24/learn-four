@@ -1,4 +1,5 @@
 'use client';
+import Comment from '@/components/comment';
 import LoadingState from '@/components/loading-state';
 import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from '@/components/ui/resizable';
 import {Separator} from '@/components/ui/separator';
@@ -30,7 +31,7 @@ export default function ProblemContent({problem}: Props) {
 
 	if (isMobile) {
 		return (
-			<div className="flex w-screen overflow-hidden">
+			<div className="flex w-screen ">
 				<TextEditor isPublished={problem.status === 'public'} />
 			</div>
 		);
@@ -40,17 +41,15 @@ export default function ProblemContent({problem}: Props) {
 			{isPending ? (
 				<LoadingState />
 			) : (
-				<div className="flex-1 overflow-hidden">
-					<ResizablePanelGroup direction="horizontal">
-						<ResizablePanel defaultSize={50} minSize={32}>
-							<TabDisplay state={state} status={problem.status} />
-						</ResizablePanel>
-						<ResizableHandle withHandle className="mx-2" />
-						<ResizablePanel defaultSize={50} minSize={32}>
-							<CodeArea />
-						</ResizablePanel>
-					</ResizablePanelGroup>
-				</div>
+				<ResizablePanelGroup direction="horizontal">
+					<ResizablePanel defaultSize={50} minSize={32}>
+						<TabDisplay state={state} status={problem.status} />
+					</ResizablePanel>
+					<ResizableHandle withHandle className="mx-2" />
+					<ResizablePanel defaultSize={50}>
+						<CodeArea />
+					</ResizablePanel>
+				</ResizablePanelGroup>
 			)}
 		</>
 	);
@@ -64,11 +63,12 @@ type TabSelectProps = {
 function TabDisplay({state, status}: TabSelectProps) {
 	const [activeTab, setActiveTab] = useState<TabSelect>(TabSelect.Document);
 	const isPublished = status === 'public';
+	const problemId = useProblemId();
 	return (
 		<Tabs
 			value={activeTab}
 			onValueChange={value => setActiveTab(value as TabSelect)}
-			className="h-full gap-0 overflow-hidden rounded-md">
+			className="size-full gap-0  rounded-md">
 			<div className="bg-accent flex h-10 shrink-0 items-center justify-between rounded-t-md border border-b-0 px-2">
 				<TabsList>
 					<TabsTrigger value={TabSelect.Document}>
@@ -89,18 +89,20 @@ function TabDisplay({state, status}: TabSelectProps) {
 					{state}
 				</p>
 			</div>
-			<div className="bg-border h-full w-full flex-col overflow-hidden border">
-				<TabsContent
-					value={TabSelect.Document}
-					className="h-full p-0 data-[state=active]:flex data-[state=active]:flex-col">
-					<ResizablePanelGroup direction="vertical">
-						<div className="bg-border h-full w-full flex-col overflow-hidden border">
-							<TextEditor isPublished={isPublished} />
-						</div>
-					</ResizablePanelGroup>
-				</TabsContent>
-				<TabsContent value={TabSelect.Comment}>{/* <CommentSection /> */}</TabsContent>
-			</div>
+			<TabsContent
+				value={TabSelect.Document}
+				className="h-full p-0 data-[state=active]:flex data-[state=active]:flex-col">
+				<ResizablePanelGroup direction="vertical">
+					<div className="bg-border h-full w-full flex-col overflow-hidden border">
+						<TextEditor isPublished={isPublished} />
+					</div>
+				</ResizablePanelGroup>
+			</TabsContent>
+			<TabsContent value={TabSelect.Comment}>
+				<div className="size-full  flex-col border">
+					<Comment placeId={problemId} />
+				</div>
+			</TabsContent>
 		</Tabs>
 	);
 }
