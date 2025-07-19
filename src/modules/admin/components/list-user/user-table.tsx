@@ -109,6 +109,7 @@ export default function UserTable() {
 										<TableCell className="flex justify-center">
 											<Avatar className="size-8">
 												<AvatarImage
+													className="object-cover"
 													src={user.image || '/placeholder.svg'}
 													alt={user.name}
 												/>

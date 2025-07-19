@@ -42,7 +42,6 @@ type Props = {
 	loadMore: (numItems: number) => void;
 	isLoading: boolean;
 	status: 'CanLoadMore' | 'LoadingMore' | 'Exhausted';
-	setNumber: (num: number) => void;
 };
 
 const getLevelColor = (level: string) => {
@@ -58,7 +57,7 @@ const getLevelColor = (level: string) => {
 	}
 };
 
-export default function ProblemTable({problems, loadMore, isLoading, status, setNumber}: Props) {
+export default function ProblemTable({problems, loadMore, isLoading, status}: Props) {
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(5);
@@ -76,7 +75,6 @@ export default function ProblemTable({problems, loadMore, isLoading, status, set
 	const handleProblemClick = (problemId: string) => {
 		router.push(`/admin/room/problem/${problemId}`);
 	};
-	setNumber(pageSize);
 
 	return (
 		<div className="mx-auto w-full flex flex-col gap-4">

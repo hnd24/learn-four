@@ -44,7 +44,11 @@ export default function CustomUserBtn() {
 						<Skeleton className="size-9 rounded-full" />
 					) : (
 						<Avatar className="border-2 cursor-pointer size-9">
-							<AvatarImage src={user?.image || '/placeholder.svg'} alt={user.name} />
+							<AvatarImage
+								className="object-cover"
+								src={user?.image || '/placeholder.svg'}
+								alt={user.name}
+							/>
 							<AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
 						</Avatar>
 					)}
@@ -154,6 +158,7 @@ function UserDialog({user, open, setOpen}: PropsUserDialog) {
 									disabled && 'grayscale ',
 								)}>
 								<AvatarImage
+									className="object-cover"
 									src={user?.image || '/placeholder.svg'}
 									alt={user.name}
 								/>

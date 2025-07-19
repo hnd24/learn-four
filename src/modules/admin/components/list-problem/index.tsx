@@ -13,7 +13,6 @@ export default function ListProblem() {
 	const [problems, setProblems] = useState<ProblemStateType[]>([]);
 
 	const {results, isLoading, loadMore, status} = useQueryProblem();
-	const [number, setNumber] = useState<number>(5);
 	useEffect(() => {
 		if (results) {
 			setProblems(results || []);
@@ -30,10 +29,9 @@ export default function ListProblem() {
 				</div>
 			</div>
 			{isLoading || status === 'LoadingFirstPage' ? (
-				<SkeletonListProblem number={number} />
+				<SkeletonListProblem />
 			) : (
 				<ProblemTable
-					setNumber={setNumber}
 					problems={problems}
 					loadMore={loadMore}
 					isLoading={isLoading}

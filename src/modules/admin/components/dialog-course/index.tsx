@@ -138,6 +138,7 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 											<Hint label={`Author: ${course.authorName}`}>
 												<Avatar>
 													<AvatarImage
+														className="object-cover"
 														src={course.authorImage}
 														alt={course.authorName}
 													/>

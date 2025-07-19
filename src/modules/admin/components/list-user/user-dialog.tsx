@@ -46,7 +46,11 @@ export default function UserDialog({user, open, setOpen}: Props) {
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-2">
 						<Avatar className="h-10 w-10">
-							<AvatarImage src={user.image || '/placeholder.svg'} alt={user.name} />
+							<AvatarImage
+								className="object-cover"
+								src={user.image || '/placeholder.svg'}
+								alt={user.name}
+							/>
 							<AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
 						</Avatar>
 						{user.name}
