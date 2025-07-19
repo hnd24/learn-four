@@ -1,37 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Learn Four - Online Programming Learning Platform
 
-## Getting Started
+![Learn Four Logo](./public/logo.svg)
 
-First, run the development server:
+**Learn Four** is an online platform designed to help learners master programming languages through coding challenges and structured courses. The platform offers interactive programming quizzes and provides courses on various programming languages to help learners deepen their understanding of the language they are pursuing.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Project Purpose
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Learn Four** aims to provide an interactive and engaging learning environment for aspiring programmers. It offers:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Programming Challenges** to improve problem-solving skills.
+- **Courses** on different programming languages like Java, Python, JavaScript, C++, and C#.
+- **Real-time code execution** and feedback to enhance learning.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## ⚙️ Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend**:
+  - **[Next.js](https://nextjs.org/)**: A React framework for building the web app.
+  - **[Shadcn](https://shadcn.dev/)**: UI component library.
+  - **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for building custom designs.
+  - **[Jotai](https://github.com/pmndrs/jotai)**: A state management library for React.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Backend**:
+  - **[Convex](https://www.convex.dev/)**: Backend platform for handling data and database management.
+  - **[Monaco Editor](https://microsoft.github.io/monaco-editor/)**: A powerful code editor integrated into the platform.
+  - **[Novel (Tiptap)](https://tiptap.dev/)**: A text editor used for creating and editing lessons.
+  
+- **Realtime**:
+  - **[YJS](https://yjs.dev/)** (LiveBlock): For real-time collaboration and updates.
+  
+- **Code Execution**:
+  - **[Jude0](https://www.jude0.com/)**: A service to run code directly in the browser, supporting languages like Java, C#, C++, Python, and JavaScript.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# learn-four
+---
