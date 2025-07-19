@@ -1,47 +1,60 @@
 # Learn Four - Online Programming Learning Platform 🚀
 
-**Learn Four** is an innovative online platform designed to help learners master programming languages through interactive **coding challenges** and comprehensive **courses**. It’s also a community hub where learners can **share knowledge** and engage with others passionate about programming.
-
-## 🚀 Project Goals
-
-- **Learn through challenges**: Solve programming problems and get instant feedback.
-- **Learn through courses**: Take structured courses in various programming languages to deepen your understanding.
-- **Community learning**: Share insights, collaborate, and learn with others.
-- **Real-time collaboration**: Work together on code using **YJS** and **LiveBlocks** for synchronized editing.
-- **Run code online**: Execute your code on **Jude0**, supporting languages such as Java, C#, C++, Python, and JavaScript.
-- **File and image storage**: Store files and images using **Vercel Blob** for seamless integration.
+Welcome to **Learn Four**, an online platform designed to help learners master programming languages through coding challenges and dedicated courses. Whether you're just starting out or looking to deepen your knowledge, Learn Four offers an interactive space for users to learn, share, and grow together! 💡
 
 ## 🛠️ Technologies Used
 
-### Frontend:
-- **Next.js**: The powerful React framework for building fast, SEO-friendly web applications.
-- **Shadcn**: A sleek UI component library for clean and modern designs.
-- **Tailwind CSS**: A utility-first CSS framework for styling our platform with ease.
-- **Jotai**: A state management solution for handling global state.
-- **Monaco Editor**: The code editor that powers the editing experience in the platform.
-- **Novel (Tiptap)**: A rich text editor used for writing and editing text-based content.
-- **Tldraw**: An interactive whiteboard for diagramming and visual collaboration.
+- **Frontend**:  
+  - **Next.js** for server-side rendering and React framework  
+  - **Shadcn** for component library  
+  - **Tailwind CSS** for utility-first styling  
+  - **Jotai** for state management  
 
-### Backend:
-- **Convex**: A serverless backend for data processing and database management.
-- **YJS**: Real-time synchronization for collaborative editing across multiple users.
-- **LiveBlock**: For enabling **real-time collaboration** on shared projects.
+- **Backend**:  
+  - **Convex** for handling data processing and database management  
 
-### Code Execution:
-- **Jude0**: A cloud-based service that allows users to run their code online. It currently supports **Java**, **C#**, **C++**, **Python**, and **JavaScript**.
+- **Code Editing and Execution**:  
+  - **Monaco Editor** for a powerful, customizable code editor  
+  - **Novel (Tiptap)** for text editing experience  
+  - **Tldraw** for interactive whiteboard  
 
-### File Storage:
-- **Vercel Blob**: A reliable solution for storing files and images for users and projects.
+- **Realtime Features**:  
+  - **YJS** (LiveBlock) for collaborative real-time interactions  
+
+- **Code Execution**:  
+  - **Judge0** for executing code in multiple languages (Java, C#, C++, Python, JavaScript)  
+
+- **File and Image Storage**:  
+  - **Vercel Blob** for file and image storage  
+
+- **Authentication**:  
+  - **Clerk** for OAuth2 authentication  
 
 ## 👥 User Roles
 
-- **User (Learner)**: Participates in the platform by solving challenges and taking courses.
-- **Admin**: Manages the platform by creating programming challenges and courses.
-- **Super Admin**: Oversees the system, managing users, admins, and maintaining platform integrity.
+There are three user groups in **Learn Four**:
 
-## 🚀 Installation & Running the Project
+- **Users** (Learners):  
+  Users who participate in programming challenges and courses to improve their coding skills.
 
-1. **Clone the repository**:
+- **Admins** (Admin & Super Admin):  
+  Admins manage the platform and are responsible for creating challenges and courses.  
+  Super Admins have additional permissions to manage Users and Admins.
+
+## 🚀 Setup Instructions
+
+To run the platform locally, follow the steps below:
+
+### 🛠️ Requirements
+
+- **Docker** is required on your machine (or use an Ubuntu 22.04 virtual machine) for optimal **Judge0** operation.
+  
+### 🔧 Setup Instructions
+
+1. **Initialize the Server**  
+   Follow the instructions in the `README` file located in the `server-execute-code` folder to set up the server.
+
+2. **Install Dependencies**  
+   Run the following command to install the necessary packages:
    ```bash
-   git clone https://github.com/your-repo/learn-four.git
-   cd learn-four
+   npm install
