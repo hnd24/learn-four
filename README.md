@@ -3,7 +3,7 @@
 Welcome to **Learn Four**, an online platform designed to help learners master programming languages through coding challenges and dedicated courses. Whether you're just starting out or looking to deepen your knowledge, Learn Four offers an interactive space for users to learn, share, and grow together! 💡
 
 <p align="center">
-  <img src="/public/homepage.png" alt="Learn Four Homepage" width="600" />
+  <img src="/public/homepage.png" alt="Learn Four Homepage" style="width:100%; max-width:1000px;" />
 </p>
 
 <div align="center">
