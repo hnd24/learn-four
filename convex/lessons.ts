@@ -1,7 +1,8 @@
 import {getAllOrThrow} from 'convex-helpers/server/relationships';
 import {ConvexError, v} from 'convex/values';
+import {internal} from './_generated/api';
 import {Id} from './_generated/dataModel';
-import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
+import {internalAction, mutation, MutationCtx, query, QueryCtx} from './_generated/server';
 import {removeComment} from './comment';
 import {levelType, StateType, StatusType, TestcaseType} from './schema';
 
@@ -29,10 +30,28 @@ export async function removeLesson(ctx: MutationCtx, lessonId: Id<'lessons'>) {
 	await ctx.db.delete(lessonId);
 }
 
+// This action deletes the Liveblocks room associated with the lesson.
+export const deleteRoom = internalAction({
+	args: {id: v.id('lessons')},
+	handler: async (_, {id}) => {
+		const result = await fetch(`https://api.liveblocks.io/v2/rooms/${id.toString()}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET_KEY!}`,
+			},
+		});
+
+		if (!result.ok) {
+			throw new ConvexError('Failed to delete Liveblocks room');
+		}
+	},
+});
+
 export const deleteLesson = mutation({
 	args: {lessonId: v.id('lessons')},
 	async handler(ctx, args) {
 		await removeLesson(ctx, args.lessonId);
+		ctx.scheduler.runAfter(0, internal.lessons.deleteRoom, {id: args.lessonId});
 	},
 });
 

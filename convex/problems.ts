@@ -2,8 +2,9 @@ import {filter} from 'convex-helpers/server/filter';
 import {getAllOrThrow} from 'convex-helpers/server/relationships';
 import {paginationOptsValidator} from 'convex/server';
 import {ConvexError, v} from 'convex/values';
+import {internal} from './_generated/api';
 import {Id} from './_generated/dataModel';
-import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
+import {internalAction, mutation, MutationCtx, query, QueryCtx} from './_generated/server';
 import {removeComment} from './comment';
 import {AnswerType, levelType, StateType, StatusType, TemplateType, TestcaseType} from './schema';
 import {getUser} from './users';
@@ -38,10 +39,28 @@ export async function removeProblem(ctx: MutationCtx, problemId: Id<'problems'>)
 	await ctx.db.delete(problem._id);
 }
 
+// This action deletes the Liveblocks room associated with the problem.
+export const deleteRoom = internalAction({
+	args: {id: v.id('problems')},
+	handler: async (_, {id}) => {
+		const result = await fetch(`https://api.liveblocks.io/v2/rooms/${id.toString()}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${process.env.LIVEBLOCKS_SECRET_KEY!}`,
+			},
+		});
+
+		if (!result.ok) {
+			throw new ConvexError('Failed to delete Liveblocks room');
+		}
+	},
+});
+
 export const deleteProblem = mutation({
 	args: {problemId: v.id('problems')},
 	async handler(ctx, args) {
 		await removeProblem(ctx, args.problemId);
+		ctx.scheduler.runAfter(0, internal.problems.deleteRoom, {id: args.problemId});
 	},
 });
 
