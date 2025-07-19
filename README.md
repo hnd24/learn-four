@@ -62,6 +62,7 @@ To run the platform locally, follow the steps below:
 ### 🛠️ Requirements
 
 - **Docker** is required on your machine (or use an Ubuntu 22.04 virtual machine) for optimal **Judge0** operation.
+- **Node.js version 22 or higher** is required.
 
 ### 🔧 Setup Instructions
 
@@ -73,3 +74,42 @@ To run the platform locally, follow the steps below:
     ```bash
     npm install
     ```
+## 3. 🔑 Environment Variables
+
+Before starting the application, make sure you configure the environment variables. 
+
+- Copy the `.env.example` file to `.env`.
+- Then, fill in the following keys:
+  - **BLOB_READ_WRITE_TOKEN**: Token for Vercel Blob storage access.
+  - **CLERK_ISSUER_DOMAIN_CONVEX**: Clerk OAuth2 configuration.
+  - **CLERK_WEBHOOK_SECRET**: Clerk Webhook Secret for webhook security.
+  - **LIVEBLOCKS_SECRET_KEY**: Key for accessing Liveblocks API.
+
+**Note**: Make sure to store the keys in **Convex** for proper integration.
+
+## 4. 🚀 Start the Application
+
+Once all dependencies are installed and environment variables are configured, you can start the application by running one of the following commands in the terminal:
+
+```bash
+npm run dev
+# OR
+pnpm dev
+```
+This will start the **Learn Four** application locally on your machine. You can visit the platform at [http://localhost:3000](http://localhost:3000) to begin using it.
+## 🤝 Support
+
+
+If you have any contributions or questions, feel free to reach out to me via my social media channels:
+
+- **Facebook**: [Duy Huynh]([https://www.facebook.com/huynh.nhut.duy.249](https://www.facebook.com/huynh.nhut.duy.249))
+- **Instagram**: [@duynhut](https://www.instagram.com/duynhut.366/](https://www.instagram.com/duynhut.366/))
+
+I am happy to assist you with any inquiries or feedback you may have! 😊
+
+---
+
+## 🙏 Thank You!
+
+Thank you for checking out my project! I appreciate your time and interest in **Learn Four**. Let's continue to grow and build a vibrant learning community together! 🚀
+
