@@ -1,25 +1,25 @@
-import {paginationOptsValidator} from "convex/server";
-import {ConvexError, v} from "convex/values";
-import {Id} from "./_generated/dataModel";
-import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
+import {paginationOptsValidator} from 'convex/server';
+import {ConvexError, v} from 'convex/values';
+import {Id} from './_generated/dataModel';
+import {mutation, MutationCtx, query, QueryCtx} from './_generated/server';
 
-export async function getComment(ctx: MutationCtx | QueryCtx, commentId: Id<"comments">) {
+export async function getComment(ctx: MutationCtx | QueryCtx, commentId: Id<'comments'>) {
 	const comment = await ctx.db.get(commentId);
 	if (!comment) {
-		throw new ConvexError("Comment not found");
+		throw new ConvexError('Comment not found');
 	}
 	return comment;
 }
 
-export async function removeComment(ctx: MutationCtx, commentId: Id<"comments">) {
+export async function removeComment(ctx: MutationCtx, commentId: Id<'comments'>) {
 	const comment = await getComment(ctx, commentId);
 	if (!comment) {
 		return;
 	}
 	// Recursively delete all replies to this comment
 	const replies = await ctx.db
-		.query("comments")
-		.withIndex("by_parent", q => q.eq("parent", comment._id))
+		.query('comments')
+		.withIndex('by_parent', q => q.eq('parent', comment._id))
 		.collect();
 	if (replies.length > 0) {
 		await Promise.all(
@@ -39,7 +39,7 @@ export const createComment = mutation({
 		placeId: v.string(),
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert("comments", {
+		await ctx.db.insert('comments', {
 			content: args.content,
 			userId: args.userId,
 			placeId: args.placeId,
@@ -50,7 +50,7 @@ export const createComment = mutation({
 
 export const updateComment = mutation({
 	args: {
-		commentId: v.id("comments"),
+		commentId: v.id('comments'),
 		content: v.optional(v.string()),
 		likes: v.optional(v.number()),
 		dislikes: v.optional(v.number()),
@@ -70,11 +70,11 @@ export const replyToComment = mutation({
 	args: {
 		content: v.string(),
 		userId: v.string(),
-		parent: v.id("comments"),
+		parent: v.id('comments'),
 		placeId: v.string(),
 	},
 	async handler(ctx, args) {
-		await ctx.db.insert("comments", {
+		await ctx.db.insert('comments', {
 			content: args.content,
 			userId: args.userId,
 			parent: args.parent,
@@ -89,40 +89,76 @@ export const replyToComment = mutation({
 
 export const getCommentsByPlace = query({
 	args: {
-		placeId: v.id("places"),
+		placeId: v.string(),
 		paginationOpts: paginationOptsValidator,
 	},
 
 	async handler(ctx, args) {
 		const comments = await ctx.db
-			.query("comments")
-			.withIndex("by_placeId", q => q.eq("placeId", args.placeId))
-			.order("desc")
+			.query('comments')
+			.withIndex('by_placeId', q => q.eq('placeId', args.placeId))
+			.order('desc')
 			.paginate(args.paginationOpts);
 
-		if (parent.length === 0) {
-			return [];
-		}
-		return comments;
+		const listUserIds = Array.from(new Set(comments.page.map(comment => comment.userId)));
+		const listUsers = await Promise.all(
+			listUserIds.map(async userId => {
+				return await ctx.db
+					.query('users')
+					.withIndex('by_userId', q => q.eq('userId', userId))
+					.unique();
+			}),
+		);
+		return {
+			...comments,
+			page: comments.page.map(comment => {
+				const user = listUsers.find(user => user?.userId === comment.userId);
+				const {userId, ...data} = comment;
+				return {
+					...data,
+					user: user ? {id: user._id, ...user} : null, // Include user details
+				};
+			}),
+		};
 	},
 });
 
 export const getCommentsByParent = query({
 	args: {
-		parent: v.id("comments"),
+		parentId: v.id('comments'),
 		paginationOpts: paginationOptsValidator,
 	},
 	async handler(ctx, args) {
-		return await ctx.db
-			.query("comments")
-			.withIndex("by_parent", q => q.eq("parent", args.parent))
-			.order("desc")
+		const comments = await ctx.db
+			.query('comments')
+			.withIndex('by_parent', q => q.eq('parent', args.parentId))
+			.order('desc')
 			.paginate(args.paginationOpts);
+		const listUserIds = Array.from(new Set(comments.page.map(comment => comment.userId)));
+		const listUsers = await Promise.all(
+			listUserIds.map(async userId => {
+				return await ctx.db
+					.query('users')
+					.withIndex('by_userId', q => q.eq('userId', userId))
+					.unique();
+			}),
+		);
+		return {
+			...comments,
+			page: comments.page.map(comment => {
+				const user = listUsers.find(user => user?.userId === comment.userId);
+				const {userId, ...data} = comment;
+				return {
+					...data,
+					user: user ? {id: user._id, ...user} : null, // Include user details
+				};
+			}),
+		};
 	},
 });
 
 export const deleteComment = mutation({
-	args: {commentId: v.id("comments")},
+	args: {commentId: v.id('comments')},
 	async handler(ctx, args) {
 		await removeComment(ctx, args.commentId);
 	},
