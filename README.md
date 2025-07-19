@@ -76,16 +76,16 @@ To run the platform locally, follow the steps below:
     ```
 ## 3. 🔑 Environment Variables
 
-Before starting the application, make sure you configure the environment variables. 
+Before starting the application, make sure you have prepared all the necessary keys as outlined in the `.env.example` file. The application will not work without these keys.
 
-- Copy the `.env.example` file to `.env`.
-- Then, fill in the following keys:
-  - **BLOB_READ_WRITE_TOKEN**: Token for Vercel Blob storage access.
-  - **CLERK_ISSUER_DOMAIN_CONVEX**: Clerk OAuth2 configuration.
-  - **CLERK_WEBHOOK_SECRET**: Clerk Webhook Secret for webhook security.
-  - **LIVEBLOCKS_SECRET_KEY**: Key for accessing Liveblocks API.
+**Note**: Ensure that the keys 
+- **BLOB_READ_WRITE_TOKEN**: Token for Vercel Blob storage access.
+- **CLERK_ISSUER_DOMAIN_CONVEX**: Clerk OAuth2 configuration.
+- **CLERK_WEBHOOK_SECRET**: Clerk Webhook Secret for webhook security.
+- **LIVEBLOCKS_SECRET_KEY**: Key for accessing Liveblocks API.
 
-**Note**: Make sure to store the keys in **Convex** for proper integration.
+are added to the environment variables in **Convex** for proper integration.
+
 
 ## 4. 🚀 Start the Application
 
