@@ -1,38 +1,47 @@
-# Learn Four - Online Programming Learning Platform
+# Learn Four - Online Programming Learning Platform 🚀
 
-![Learn Four Logo](./public/logo.icon)
+**Learn Four** is an innovative online platform designed to help learners master programming languages through interactive **coding challenges** and comprehensive **courses**. It’s also a community hub where learners can **share knowledge** and engage with others passionate about programming.
 
-**Learn Four** is an online platform designed to help learners master programming languages through coding challenges and structured courses. The platform offers interactive programming quizzes and provides courses on various programming languages to help learners deepen their understanding of the language they are pursuing.
+## 🚀 Project Goals
 
----
+- **Learn through challenges**: Solve programming problems and get instant feedback.
+- **Learn through courses**: Take structured courses in various programming languages to deepen your understanding.
+- **Community learning**: Share insights, collaborate, and learn with others.
+- **Real-time collaboration**: Work together on code using **YJS** and **LiveBlocks** for synchronized editing.
+- **Run code online**: Execute your code on **Jude0**, supporting languages such as Java, C#, C++, Python, and JavaScript.
+- **File and image storage**: Store files and images using **Vercel Blob** for seamless integration.
 
-## 🚀 Project Purpose
+## 🛠️ Technologies Used
 
-**Learn Four** aims to provide an interactive and engaging learning environment for aspiring programmers. It offers:
+### Frontend:
+- **Next.js**: The powerful React framework for building fast, SEO-friendly web applications.
+- **Shadcn**: A sleek UI component library for clean and modern designs.
+- **Tailwind CSS**: A utility-first CSS framework for styling our platform with ease.
+- **Jotai**: A state management solution for handling global state.
+- **Monaco Editor**: The code editor that powers the editing experience in the platform.
+- **Novel (Tiptap)**: A rich text editor used for writing and editing text-based content.
+- **Tldraw**: An interactive whiteboard for diagramming and visual collaboration.
 
-- **Programming Challenges** to improve problem-solving skills.
-- **Courses** on different programming languages like Java, Python, JavaScript, C++, and C#.
-- **Real-time code execution** and feedback to enhance learning.
+### Backend:
+- **Convex**: A serverless backend for data processing and database management.
+- **YJS**: Real-time synchronization for collaborative editing across multiple users.
+- **LiveBlock**: For enabling **real-time collaboration** on shared projects.
 
----
+### Code Execution:
+- **Jude0**: A cloud-based service that allows users to run their code online. It currently supports **Java**, **C#**, **C++**, **Python**, and **JavaScript**.
 
-## ⚙️ Technologies Used
+### File Storage:
+- **Vercel Blob**: A reliable solution for storing files and images for users and projects.
 
-- **Frontend**:
-  - **[Next.js](https://nextjs.org/)**: A React framework for building the web app.
-  - **[Shadcn](https://shadcn.dev/)**: UI component library.
-  - **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework for building custom designs.
-  - **[Jotai](https://github.com/pmndrs/jotai)**: A state management library for React.
+## 👥 User Roles
 
-- **Backend**:
-  - **[Convex](https://www.convex.dev/)**: Backend platform for handling data and database management.
-  - **[Monaco Editor](https://microsoft.github.io/monaco-editor/)**: A powerful code editor integrated into the platform.
-  - **[Novel (Tiptap)](https://tiptap.dev/)**: A text editor used for creating and editing lessons.
-  
-- **Realtime**:
-  - **[YJS](https://yjs.dev/)** (LiveBlock): For real-time collaboration and updates.
-  
-- **Code Execution**:
-  - **[Jude0](https://www.jude0.com/)**: A service to run code directly in the browser, supporting languages like Java, C#, C++, Python, and JavaScript.
+- **User (Learner)**: Participates in the platform by solving challenges and taking courses.
+- **Admin**: Manages the platform by creating programming challenges and courses.
+- **Super Admin**: Oversees the system, managing users, admins, and maintaining platform integrity.
 
----
+## 🚀 Installation & Running the Project
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-repo/learn-four.git
+   cd learn-four
