@@ -1,7 +1,6 @@
 'use client';
-import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {Button} from '@/components/ui/button';
-import {DEFAULT_LOGO_URL, NUMBER_COMMENTS_PER_LOAD} from '@/constants';
+import {NUMBER_COMMENTS_PER_LOAD} from '@/constants';
 import {
 	useDeleteComment,
 	useGetCommentsByPlaceId,
@@ -15,6 +14,7 @@ import {useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../convex/_generated/dataModel';
 import CommentForm from './comment-form';
+import UserDialog from './user-dialog';
 
 type Props = {
 	comment: CommentType;
@@ -78,13 +78,14 @@ export default function CommentItem({comment, currentUserId, placeId, isAdmin = 
 
 	return (
 		<div className="flex items-start space-x-3 mb-4">
-			<Avatar className="w-9 h-9">
+			{/* <Avatar className="w-9 h-9">
 				<AvatarImage
 					className="object-cover"
 					src={`${userComment.image || DEFAULT_LOGO_URL}`}
 				/>
 				<AvatarFallback>{userComment.name.charAt(0).toUpperCase() || 'H'}</AvatarFallback>
-			</Avatar>
+			</Avatar> */}
+			<UserDialog user={userComment} />
 			<div className="flex-1">
 				<div className="bg-muted rounded-xl px-3 py-2 ">
 					<div className="font-semibold text-sm">{userComment.name}</div>
