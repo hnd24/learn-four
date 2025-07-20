@@ -97,8 +97,26 @@ npm run dev
 pnpm dev
 ```
 This will start the **Learn Four** application locally on your machine. You can visit the platform at [http://localhost:3000](http://localhost:3000) to begin using it.
-## 🤝 Support
 
+## 5. 🖥️ Option to Run Code Using Judge0 Locally or via Rapid API
+
+You have the option to run code either using **Judge0** locally or using **Rapid API** for a more up-to-date environment. 
+
+- **Judge0 Locally**: If you choose to run the code locally, you'll be using older versions of programming language environments. This is done by running **Judge0** on your local machine.
+  
+- **Rapid API**: If you prefer to use a more modern, updated environment for programming languages, you can switch to **Rapid API**. Rapid offers more up-to-date language environments, which may be more suitable for certain cases.
+
+To use **Rapid API**, you will need the following keys:
+  - **RAPIDAPI_HOST**: The host for the Rapid API.
+  - **RAPIDAPI_KEY**: Your personal key for accessing Rapid API services.
+
+### Steps for Integration:
+- The default environment in this project is set to run code locally using Judge0. However, you can change this to use Rapid by following these steps:
+  - In the two files responsible for executing code (`executeCodeAtom`), you need to modify the function `runBatchedCode` (which runs locally) and switch it to `runBatchedCodeWithJudge0` (which runs using Rapid).
+
+This will allow you to choose the environment that best suits your needs for code execution.
+
+## 🤝 Support
 
 If you have any contributions or questions, feel free to reach out to me via my social media channels:
 
