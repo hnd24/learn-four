@@ -18,10 +18,7 @@ type Props = {
 };
 
 export default function Header({problem}: Props) {
-	const setStatus = useSetAtom(statusProblemAtom);
-	useEffect(() => {
-		setStatus(problem?.status);
-	}, [problem, setStatus]);
+
 
 	if (!problem) {
 		return (

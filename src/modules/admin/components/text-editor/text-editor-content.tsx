@@ -50,10 +50,11 @@ export default function TextEditorContent({isPublished}: Props) {
 		setLoading(syncStatus === 'synchronizing' ? 'Unsaved' : 'Saved');
 	}, [syncStatus]);
 	return (
-		<div className="flex-1 overflow-hidden">
+		<div className="h-[calc(100vh-110px)] overflow-hidden">
 			<ScrollArea className="h-full" data-type="editor">
 				<EditorRoot>
 					<EditorContent
+						key={isPublished ? 'published' : 'unpublished'}
 						extensions={extensions}
 						editable={!isPublished}
 						className="w-full px-4 py-6 text-justify lg:px-6 lg:py-12"

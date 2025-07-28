@@ -13,6 +13,7 @@ import {useGetUserCourse, useJoinCourse, useUpdateCourse} from '@/hook/data/cour
 import {CourseStateType} from '@/types';
 import {Loader2, Pencil, ShieldMinus} from 'lucide-react';
 import {useRouter} from 'next/navigation';
+import {useState} from 'react';
 import {Id} from '../../../../convex/_generated/dataModel';
 
 type Props = {
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export default function JoinCourseDialog({courseId, open, setOpen, course}: Props) {
+	const [onClick, setOnClick] = useState<boolean>(false);
 	const {data: userCourse, isPending: loading} = useGetUserCourse(courseId);
 	const {mutate: updateCourse, isPending: pendingUpdate} = useUpdateCourse();
 	const {mutate: joinCourse, isPending} = useJoinCourse();
@@ -83,8 +85,13 @@ export default function JoinCourseDialog({courseId, open, setOpen, course}: Prop
 						<DialogClose asChild>
 							<Button variant="outline">Cancel</Button>
 						</DialogClose>
-						<Button disabled={disabled} onClick={handleJoinCourse}>
-							{disabled ? <Loader2 className=" animate-spin" /> : <Pencil />}
+						<Button
+							disabled={disabled}
+							onClick={() => {
+								handleJoinCourse();
+								setOnClick(true);
+							}}>
+							{onClick ? <Loader2 className=" animate-spin" /> : <Pencil />}
 							Join
 						</Button>
 					</DialogFooter>

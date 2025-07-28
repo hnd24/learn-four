@@ -11,6 +11,7 @@ import {AppWindow, FileText} from 'lucide-react';
 import {useState} from 'react';
 import TextEditor from '../../../admin/components/text-editor';
 import {editorStateAtom} from '../../atom/editor-state';
+import {statusProblemAtom} from '../atom/status';
 import {useHydrateTemplate} from '../hook/use-hydrate-template';
 import {useHydrateTestCases} from '../hook/use-hydrate-testcases';
 import {useProblemId} from '../hook/use-problem-id';
@@ -23,7 +24,6 @@ type Props = {
 export default function ProblemContent({problem}: Props) {
 	const isMobile = useMediaQuery('(max-width: 767px)');
 	const problemId = useProblemId();
-	const isPending = false;
 	useHydrateTestCases(problemId);
 	useHydrateTemplate(problemId);
 	const state = useAtomValue(editorStateAtom);
@@ -38,7 +38,7 @@ export default function ProblemContent({problem}: Props) {
 	return (
 		<ResizablePanelGroup direction="horizontal">
 			<ResizablePanel defaultSize={50} minSize={32}>
-				<TabDisplay state={state} status={problem.status} />
+				<TabDisplay state={state} />
 			</ResizablePanel>
 			<ResizableHandle withHandle className="mx-2" />
 			<ResizablePanel defaultSize={50}>
@@ -50,11 +50,11 @@ export default function ProblemContent({problem}: Props) {
 
 type TabSelectProps = {
 	state: 'Unsaved' | 'Saved';
-	status: 'public' | 'private';
 };
 
-function TabDisplay({state, status}: TabSelectProps) {
+function TabDisplay({state}: TabSelectProps) {
 	const [activeTab, setActiveTab] = useState<TabSelect>(TabSelect.Document);
+	const status = useAtomValue(statusProblemAtom);
 	const isPublished = status === 'public';
 	const problemId = useProblemId();
 	return (

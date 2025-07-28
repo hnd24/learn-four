@@ -3,7 +3,10 @@
 import NotFoundState from '@/components/not-found-state';
 import {useGetLessonById} from '@/hook/data/lesson';
 import CostumeLoadingPage from '@/page/costume-loading-page';
+import {useSetAtom} from 'jotai';
+import {useEffect} from 'react';
 import {Id} from '../../../../../convex/_generated/dataModel';
+import {statusLessonAtom} from '../atom/status';
 import Header from './header';
 import LessonContent from './lesson-content';
 
@@ -12,8 +15,12 @@ type Props = {
 };
 
 export default function LessonWrapper({lessonId}: Props) {
+	const setStatus = useSetAtom(statusLessonAtom);
+
 	const {data: lesson, isLoading, error} = useGetLessonById(lessonId);
-	console.log('🚀 ~ LessonWrapper ~ error:', error);
+	useEffect(() => {
+		setStatus(lesson?.status);
+	}, [lesson, setStatus]);
 	if (error) {
 		return (
 			<div className="h-screen w-screen">

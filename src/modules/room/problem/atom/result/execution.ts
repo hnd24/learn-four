@@ -21,13 +21,14 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
 	try {
 		set(executingAtom, true);
 		set(activeTabAtom, TestCaseTab.Result);
-
-		const submissions = testCases.map(testCase => ({
-			languageIdJudge0: language?.idJude0,
-			sourceCode: code,
-			stdin: generateStdinFromInputs(testCase.inputs),
-			expectedOutput: testCase.expected,
-		}));
+		const submissions = testCases.map(testCase => {
+			return {
+				languageIdJudge0: language?.idJude0,
+				sourceCode: code,
+				stdin: generateStdinFromInputs(testCase.inputs),
+				expectedOutput: testCase.expected,
+			};
+		});
 		// IMPORTANT
 		const batchedResults = await runBatchedCode(submissions);
 

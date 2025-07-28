@@ -5,7 +5,6 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {useGetPublicCourses} from '@/hook/data/course';
 import {CourseStateType} from '@/types';
 import {useUser} from '@clerk/nextjs';
-import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import JoinCourseDialog from './join-course-dialog';
@@ -16,7 +15,6 @@ export default function ListCourseCard() {
 	const [selectedCourse, setSelectedCourse] = useState<CourseStateType>();
 	const [open, setOpen] = useState<boolean>(false);
 	const {data, isPending, error} = useGetPublicCourses();
-	const router = useRouter();
 	useEffect(() => {
 		setCourses(data || []);
 	}, [isPending, data]);
@@ -50,7 +48,13 @@ export default function ListCourseCard() {
 								? 'Join this course to start learning'
 								: 'Sign in to view course details'
 						}>
-						<CourseCard course={courses} />
+						<div
+							onClick={() => {
+								setSelectedCourse(courses);
+								setOpen(true);
+							}}>
+							<CourseCard course={courses} />
+						</div>
 					</Hint>
 				))}
 			</div>

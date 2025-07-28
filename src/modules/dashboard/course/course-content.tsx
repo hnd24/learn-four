@@ -3,6 +3,7 @@
 import {Hint} from '@/components/hint';
 import LoadingState from '@/components/loading-state';
 import NotFoundState from '@/components/not-found-state';
+import {Avatar, AvatarFallback, AvatarImage} from '@/components/ui/avatar';
 import {useGetDetailCourse} from '@/hook/data/course';
 import {PersonStanding} from 'lucide-react';
 import Image from 'next/image';
@@ -48,13 +49,16 @@ export default function CourseContent({courseId}: Props) {
 							{/* Author */}
 							<div className="flex items-center gap-2">
 								<Hint label={`Author: ${course.authorName}`}>
-									<Image
-										width={28}
-										height={28}
-										alt={course.authorName}
-										src={course.authorImage}
-										className="size-7 rounded-full object-cover"
-									/>
+									<Avatar>
+										<AvatarImage
+											className="object-cover"
+											src={course.authorImage}
+											alt={course.authorName}
+										/>
+										<AvatarFallback>
+											{course.authorName?.charAt(0).toUpperCase()}
+										</AvatarFallback>
+									</Avatar>
 								</Hint>
 							</div>
 							{/* number of learners who joined the course */}
@@ -75,7 +79,7 @@ export default function CourseContent({courseId}: Props) {
 					{/* Course Content */}
 					<div className="size-full flex flex-col gap-2">
 						<h3 className="text-xl font-semibold ">Document</h3>
-						<pre className="w-full h-fit text-base">
+						<pre className="w-full h-auto text-base overflow-x-auto whitespace-pre-wrap">
 							{course.document || 'No document available for this course.'}
 						</pre>
 					</div>

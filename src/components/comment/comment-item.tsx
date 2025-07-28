@@ -9,7 +9,7 @@ import {
 } from '@/hook/data/comment';
 import {cn, formatDate} from '@/lib/utils';
 import {CommentType} from '@/types';
-import {Trash2} from 'lucide-react';
+import {Loader2, Trash2} from 'lucide-react';
 import {useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../convex/_generated/dataModel';
@@ -129,7 +129,11 @@ export default function CommentItem({comment, currentUserId, placeId, isAdmin = 
 								onClick={handleDelete}
 								disabled={isDeleting}
 								className="p-0 h-auto  hover:text-red-400 ">
-								<Trash2 className="h-3 w-3" />
+								{isDeleting ? (
+									<Loader2 className="size-3 animate-spin" />
+								) : (
+									<Trash2 className="h-3 w-3" />
+								)}
 							</Button>
 						</div>
 					)}

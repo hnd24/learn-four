@@ -26,7 +26,7 @@ export default function LanguageSelector() {
 	useEffect(() => {
 		if (status === 'private') {
 			setLanguages(LANGUAGES ?? []);
-			setLanguage(languages?.[0]);
+			setLanguage(LANGUAGES?.[0]);
 			return;
 		}
 		const filterLanguages = Object.keys(answer).map(l => {
