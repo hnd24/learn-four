@@ -86,8 +86,14 @@ Before starting the application, make sure you have prepared all the necessary k
 
 are added to the environment variables in **Convex** for proper integration.
 
+## 4. 📙 Setup convex
+To start the development environment, run:
+```bash
+npx convex dev
+```
+Follow the instructions to complete the setup.
 
-## 4. 🚀 Start the Application
+## 5. 🚀 Start the Application
 
 Once all dependencies are installed and environment variables are configured, you can start the application by running one of the following commands in the terminal:
 
