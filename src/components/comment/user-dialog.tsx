@@ -89,7 +89,12 @@ export default function UserDialog({user}: Props) {
 							)}
 						</span>
 					</div>
-
+					<div className="grid grid-cols-4 items-center gap-4">
+						<span className="text-sm font-medium text-muted-foreground">Role:</span>
+						<span className="col-span-2">
+							<Badge>{user.role || 'User'}</Badge>
+						</span>
+					</div>
 					{user.introduce && (
 						<>
 							<Separator />
