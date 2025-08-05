@@ -49,7 +49,7 @@ export default function TopicsManager() {
 		resolver: zodResolver(topicSchema),
 		defaultValues: {
 			name: '',
-			status: 'private',
+			status: editingTopic?.status || 'public',
 		},
 	});
 
@@ -199,7 +199,7 @@ export default function TopicsManager() {
 					<h3 className="text-lg font-semibold mt-4">
 						{editingTopic ? 'Edit Topic Details' : 'Add New Topic'}
 					</h3>
-					<Form {...form}>
+					<Form {...form} key={editingTopic?._id || 'default'}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 							<div className="flex items-start gap-2">
 								<FormField
