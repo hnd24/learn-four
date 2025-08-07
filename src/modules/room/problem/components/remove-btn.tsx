@@ -31,12 +31,13 @@ export default function RemoveProblemBtn({problemId, status}: Props) {
 	const {mutate: deleteProblem, isPending} = useDeleteProblem();
 	const router = useRouter();
 	const roleUser = useAtomValue(roleUserAtom);
-	const isSuperAdmin = roleUser === 'super_admin';
+	const allowed = roleUser === 'super_admin' || status === 'private';
+	const [onClick, setOnClick] = useState(false);
 	const handleDelete = () => {
-		if (status === 'public') {
-			toast.error('You cannot delete a public problem.');
-			return;
-		}
+		// if (status === 'public') {
+		// 	toast.error('You cannot delete a public problem.');
+		// 	return;
+		// }
 		deleteProblem(
 			{problemId},
 			{
@@ -59,7 +60,7 @@ export default function RemoveProblemBtn({problemId, status}: Props) {
 					size="icon"
 					className={cn(
 						' place-items-center bg-red-500 hover:bg-red-600 dark:hover:bg-red-400 ',
-						isSuperAdmin ? 'grid' : 'hidden',
+						allowed ? 'grid' : 'hidden',
 					)}
 					variant="outline"
 					disabled={isPending}
@@ -77,16 +78,19 @@ export default function RemoveProblemBtn({problemId, status}: Props) {
 
 				<DialogFooter>
 					<DialogClose asChild>
-						<Button variant="outline" onClick={() => setOpen(false)}>
+						<Button variant="outline" disabled={onClick} onClick={() => setOpen(false)}>
 							Cancel
 						</Button>
 					</DialogClose>
 					<Button
-						onClick={handleDelete}
+						onClick={() => {
+							setOnClick(true);
+							handleDelete();
+						}}
 						variant="destructive"
 						className="flex gap-2 items-center"
 						disabled={isPending}>
-						{isPending ? (
+						{isPending || onClick ? (
 							<Loader2 className="size-4 animate-spin" />
 						) : (
 							<Trash2 className="size-4" />
