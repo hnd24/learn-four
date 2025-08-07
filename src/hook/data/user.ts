@@ -15,3 +15,7 @@ export const useUpdateProfile = () => {
 		mutationFn: useConvexMutation(api.users.updateUserProfile),
 	});
 };
+
+export const useGetRole = () => {
+	return useQuery(convexQuery(api.users.getRole, {}));
+};

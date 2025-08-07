@@ -10,20 +10,21 @@ import {
 } from '@/components/ui/dialog';
 import {useAddCourse} from '@/hook/data/course';
 import {useGetLanguages} from '@/hook/data/language';
+import {cn} from '@/lib/utils';
 import {AddCourseArgs} from '@/types';
-import {Blocks, Loader2} from 'lucide-react';
-import {useEffect} from 'react';
+import {DialogTrigger} from '@radix-ui/react-dialog';
+import {Blocks, Loader2, Plus} from 'lucide-react';
+import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
 
 type PropsDialogConfirm = {
-	open: boolean;
 	userId: string;
-	setOpen: (value: boolean) => void;
 	setPending: (value: boolean) => void;
 };
 
-export const DialogConfirm = ({open, setOpen, userId, setPending}: PropsDialogConfirm) => {
+export const AddCourseBtn = ({userId, setPending}: PropsDialogConfirm) => {
+	const [open, setOpen] = useState(false);
 	const {mutate: addCourse, isPending} = useAddCourse();
 	const {data: languages, isPending: loadingLanguages} = useGetLanguages();
 	const JS = languages?.find(lang => lang.value === 'javascript');
@@ -44,7 +45,23 @@ export const DialogConfirm = ({open, setOpen, userId, setPending}: PropsDialogCo
 		setPending(isPending);
 	}, [setPending]);
 	return (
-		<Dialog open={open}>
+		<Dialog open={open} onOpenChange={setOpen}>
+			<DialogTrigger asChild>
+				<Button
+					variant="outline"
+					size="icon"
+					className={cn(
+						'size-full min-h-40 cursor-pointer shadow-leafyGreen bg-darkOceanBlue/20 group',
+						'hover:scale-[1.01] hover:bg-darkOceanBlue/30 hover:shadow-md transition-transform',
+						isPending && 'grayscale opacity-60',
+					)}>
+					{isPending ? (
+						<Loader2 className="size-16 animate-spin " />
+					) : (
+						<Plus className="size-16 group-hover:scale-110 transition-transform text-leafyGreen " />
+					)}
+				</Button>
+			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Confirm Action</DialogTitle>

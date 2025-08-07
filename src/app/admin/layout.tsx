@@ -1,27 +1,27 @@
 'use client';
 
 import NotAccessState from '@/components/not-access';
-import {useCheckAdmin} from '@/hook/data/admin';
+import {useGetRole} from '@/hook/data/user';
+import {roleUserAtom} from '@/modules/admin/atom/role-user';
 import CostumeLoadingPage from '@/page/costume-loading-page';
-import {useUser} from '@clerk/nextjs';
-import {useRouter} from 'next/navigation';
+import {useSetAtom} from 'jotai';
 
 export default function AdminLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const {user, isSignedIn} = useUser();
-	const router = useRouter();
-	if (isSignedIn && !user) {
-		router.replace('/not-found');
-		return null;
+	const {data: role, isPending: pendingRole} = useGetRole();
+	const allowed = role === 'admin' || role === 'super_admin';
+	const setRole = useSetAtom(roleUserAtom);
+
+	if (role) {
+		setRole(role);
 	}
-	const {data: isAdmin, isPending} = useCheckAdmin();
-	if (isPending) {
+	if (pendingRole) {
 		return <CostumeLoadingPage />;
 	}
-	if (!isAdmin) {
+	if (!allowed) {
 		return <NotAccessState className="h-screen w-screen" />;
 	}
 	return <>{children}</>;

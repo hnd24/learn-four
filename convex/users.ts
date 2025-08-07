@@ -337,3 +337,17 @@ export const checkLockedUser = query({
 		return !!lockedUser;
 	},
 });
+
+export const getRole = query({
+	async handler(ctx) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			return 'user';
+		}
+		const roleUser = await ctx.db
+			.query('roles')
+			.withIndex('by_userId', q => q.eq('userId', identity.subject))
+			.first();
+		return roleUser ? roleUser.role : 'user';
+	},
+});

@@ -14,11 +14,13 @@ import {Tabs, TabsList, TabsTrigger} from '@/components/ui/tabs';
 import {Textarea} from '@/components/ui/textarea';
 import {useGetDetailCourse, useUpdateCourse} from '@/hook/data/course';
 import {CourseDetailType, STATUS_COURSE} from '@/types';
+import {useAtomValue} from 'jotai';
 import {isEqual} from 'lodash';
 import {Loader2, PersonStanding, Trash2} from 'lucide-react';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
+import {roleUserAtom} from '../../atom/role-user';
 import {DialogConfirm} from './confirm-dialog';
 import CourseBanner from './course-banner';
 import CourseLessonList from './course-lesson-list';
@@ -31,15 +33,18 @@ type Props = {
 	isOpen: boolean;
 	onClose: () => void;
 	idCourse: Id<'courses'>;
+	userId: string;
 };
 
-export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
+export default function DialogCourse({isOpen, onClose, idCourse, userId}: Props) {
 	const {isPending: loadingCourse, data: courseData} = useGetDetailCourse(idCourse);
 	const {isPending: pendingUpdate, mutate: updateCourse} = useUpdateCourse();
 	const [course, setCourse] = useState<CourseDetailType>();
 	const [isDelete, setIsDelete] = useState<boolean>(false);
 	const disabled = loadingCourse || !idCourse || !course;
+	const roleUser = useAtomValue(roleUserAtom);
 
+	const allowedDelete = roleUser === 'super_admin' || course?.authorId === userId;
 	useEffect(() => {
 		if (courseData) {
 			setCourse(courseData);
@@ -195,9 +200,11 @@ export default function DialogCourse({isOpen, onClose, idCourse}: Props) {
 								Cancel
 							</Button>
 						</DialogClose>
-						<Button variant="destructive" onClick={() => setIsDelete(true)}>
-							<Trash2 /> Delete
-						</Button>
+						{allowedDelete && (
+							<Button variant="destructive" onClick={() => setIsDelete(true)}>
+								<Trash2 /> Delete
+							</Button>
+						)}
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>

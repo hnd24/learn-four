@@ -11,7 +11,10 @@ import {
 	DialogTrigger,
 } from '@/components/ui/dialog';
 import {useDeleteProblem} from '@/hook/data/problem';
+import {cn} from '@/lib/utils';
+import {roleUserAtom} from '@/modules/admin/atom/role-user';
 import {STATUS_PROBLEM} from '@/types';
+import {useAtomValue} from 'jotai';
 import {Loader2, Trash2} from 'lucide-react';
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
@@ -27,6 +30,8 @@ export default function RemoveProblemBtn({problemId, status}: Props) {
 	const [open, setOpen] = useState(false);
 	const {mutate: deleteProblem, isPending} = useDeleteProblem();
 	const router = useRouter();
+	const roleUser = useAtomValue(roleUserAtom);
+	const isSuperAdmin = roleUser === 'super_admin';
 	const handleDelete = () => {
 		if (status === 'public') {
 			toast.error('You cannot delete a public problem.');
@@ -52,7 +57,10 @@ export default function RemoveProblemBtn({problemId, status}: Props) {
 			<DialogTrigger asChild>
 				<Button
 					size="icon"
-					className="grid place-items-center bg-red-500 hover:bg-red-600 dark:hover:bg-red-400 "
+					className={cn(
+						' place-items-center bg-red-500 hover:bg-red-600 dark:hover:bg-red-400 ',
+						isSuperAdmin ? 'grid' : 'hidden',
+					)}
 					variant="outline"
 					disabled={isPending}
 					onClick={() => setOpen(true)}>

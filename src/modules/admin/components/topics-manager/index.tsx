@@ -49,7 +49,7 @@ export default function TopicsManager() {
 		resolver: zodResolver(topicSchema),
 		defaultValues: {
 			name: '',
-			status: editingTopic?.status || 'public',
+			status: editingTopic?.status ?? 'public',
 		},
 	});
 
@@ -62,7 +62,7 @@ export default function TopicsManager() {
 		} else {
 			form.reset({
 				name: '',
-				status: 'private',
+				status: 'public',
 			});
 		}
 	}, [editingTopic, form]);

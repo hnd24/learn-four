@@ -1,18 +1,18 @@
 'use client';
-import {Button} from '@/components/ui/button';
 import {useGetCourses} from '@/hook/data/course';
 import {cn} from '@/lib/utils';
 import {CourseStateType} from '@/types';
 import {useUser} from '@clerk/nextjs';
-import {Loader2, Plus} from 'lucide-react';
+import {useAtomValue} from 'jotai';
 import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
 import {useFilter} from '../../../../hook/search/use-filters';
+import {roleUserAtom} from '../../atom/role-user';
 import DialogCourse from '../dialog-course';
+import {AddCourseBtn} from './add-course-btn';
 import {CardSkeleton} from './card-seketon';
 import CourseCard from './course-card';
-import {DialogConfirm} from './dialog-confirm';
 
 export default function ListCourseCard() {
 	const {data, isPending: loading, error} = useGetCourses();
@@ -24,11 +24,11 @@ export default function ListCourseCard() {
 	const [courses, setCourses] = useState<CourseStateType[]>([]);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const [isPending, setIsPending] = useState<boolean>(false);
-	const [isAdd, setIsAdd] = useState<boolean>(false);
 	const [idCourse, setIdCourse] = useState<Id<'courses'>>();
 	const isDisabled = isPending || loading;
 	const {user} = useUser();
-
+	const roleUser = useAtomValue(roleUserAtom);
+	const isSuperAdmin = roleUser === 'super_admin';
 	useEffect(() => {
 		setRawCourses(data || []);
 		setCourses(data || []);
@@ -78,24 +78,7 @@ export default function ListCourseCard() {
 					<CourseCard course={course} />
 				</button>
 			))}
-			{/* add course */}
-			<Button
-				variant="outline"
-				size="icon"
-				onClick={() => {
-					setIsAdd(true);
-				}}
-				className={cn(
-					'size-full min-h-40 cursor-pointer shadow-leafyGreen bg-darkOceanBlue/20 group',
-					'hover:scale-[1.01] hover:bg-darkOceanBlue/30 hover:shadow-md transition-transform',
-					isPending && 'grayscale opacity-60',
-				)}>
-				{isPending ? (
-					<Loader2 className="size-16 animate-spin " />
-				) : (
-					<Plus className="size-16 group-hover:scale-110 transition-transform text-leafyGreen " />
-				)}
-			</Button>
+			{isSuperAdmin && <AddCourseBtn userId={user?.id || ''} setPending={setIsPending} />}
 			{idCourse && (
 				<DialogCourse
 					isOpen={isOpen}
@@ -103,14 +86,9 @@ export default function ListCourseCard() {
 						setIsOpen(false);
 					}}
 					idCourse={idCourse}
+					userId={user.id}
 				/>
 			)}
-			<DialogConfirm
-				userId={user?.id || ''}
-				open={isAdd}
-				setOpen={setIsAdd}
-				setPending={setIsPending}
-			/>
 		</div>
 	);
 }
