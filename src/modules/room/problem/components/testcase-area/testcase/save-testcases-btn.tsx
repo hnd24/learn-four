@@ -7,14 +7,18 @@ import {useAtomValue} from 'jotai';
 import {Loader2, Save} from 'lucide-react';
 import {toast} from 'sonner';
 import {statusProblemAtom} from '../../../atom/status';
-import {testCasesAtoms} from '../../../atom/testcase';
+import {rawTestCaseAtoms, testCasesAtoms} from '../../../atom/testcase';
 import {useProblemId} from '../../../hook/use-problem-id';
 
 export default function SaveTestcasesBtn() {
 	const problemId = useProblemId();
 	const status = useAtomValue(statusProblemAtom);
 	const {mutate: updateProblem, isPending} = useUpdateProblem();
-	const testCases = useAtomValue(testCasesAtoms);
+	const publicTestCases = useAtomValue(testCasesAtoms);
+	const rawTestCases = useAtomValue(rawTestCaseAtoms);
+	const testCases = [...publicTestCases, ...rawTestCases].filter(
+		(tc, idx, arr) => arr.findIndex(t => t.id === tc.id) === idx,
+	);
 
 	if (status === 'public') {
 		return null;

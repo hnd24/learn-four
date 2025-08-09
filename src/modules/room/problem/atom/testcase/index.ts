@@ -1,4 +1,4 @@
-import {INITIAL_TEST_CASE} from '@/constants';
+import {INITIAL_TEST_CASE, MAX_LENGTH_PUBLIC_TESTCASE} from '@/constants';
 import {TestcaseType} from '@/types';
 import {atom} from 'jotai';
 import {atomWithImmer} from 'jotai-immer';
@@ -7,8 +7,12 @@ import {nanoid} from 'nanoid';
 import {activeTestCaseIdAtom} from './active';
 
 export const testCasesAtoms = atomWithImmer<TestcaseType[]>([INITIAL_TEST_CASE]);
-
+export const rawTestCaseAtoms = atomWithImmer<TestcaseType[]>([INITIAL_TEST_CASE]);
 export const testCaseDataAtom = atom(null, (_, set, data: TestcaseType[]) => {
+	set(testCasesAtoms, () => (data.length > 0 ? data : [INITIAL_TEST_CASE]));
+	set(rawTestCaseAtoms, () =>
+		data.length > 0 ? data.splice(0, MAX_LENGTH_PUBLIC_TESTCASE) : [INITIAL_TEST_CASE],
+	);
 	set(testCasesAtoms, () => (data.length > 0 ? data : [INITIAL_TEST_CASE]));
 });
 

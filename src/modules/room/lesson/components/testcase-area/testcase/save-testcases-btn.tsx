@@ -8,15 +8,18 @@ import {toast} from 'sonner';
 
 import {useUpdateLesson} from '@/hook/data/lesson';
 import {statusLessonAtom} from '../../../atom/status';
-import {testCasesAtoms} from '../../../atom/testcase';
+import {rawTestCaseAtoms, testCasesAtoms} from '../../../atom/testcase';
 import {useLessonId} from '../../../hook/use-lesson-id';
 
 export default function SaveTestcasesBtn() {
 	const lessonId = useLessonId();
 	const status = useAtomValue(statusLessonAtom);
 	const {mutate: updateLesson, isPending} = useUpdateLesson();
-	const testCases = useAtomValue(testCasesAtoms);
-
+	const publicTestCases = useAtomValue(testCasesAtoms);
+	const rawTestCases = useAtomValue(rawTestCaseAtoms);
+	const testCases = [...publicTestCases, ...rawTestCases].filter(
+		(tc, idx, arr) => arr.findIndex(t => t.id === tc.id) === idx,
+	);
 	if (status === 'public') {
 		return null;
 	}

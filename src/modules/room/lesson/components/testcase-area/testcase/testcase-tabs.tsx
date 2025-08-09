@@ -3,7 +3,6 @@ import {Hint} from '@/components/hint';
 import {Button} from '@/components/ui/button';
 import {useAtomValue, useSetAtom} from 'jotai';
 import {Plus} from 'lucide-react';
-import {statusLessonAtom} from '../../../atom/status';
 import {cloneTestCaseAtom, testCaseIdsAtom} from '../../../atom/testcase';
 import {activeTestCaseIdAtom} from '../../../atom/testcase/active';
 import {TestCaseTab} from './testcase-tab';
@@ -12,12 +11,10 @@ export default function TestcaseTabs() {
 	const testCaseIds = useAtomValue(testCaseIdsAtom);
 	const cloneTestCase = useSetAtom(cloneTestCaseAtom);
 	const activeId = useAtomValue(activeTestCaseIdAtom);
-	const status = useAtomValue(statusLessonAtom);
-	const displayedTestCaseIds = status === 'public' ? testCaseIds.slice(0, 3) : testCaseIds;
 	return (
 		<div className="flex-1 shrink-0">
 			<div className="flex flex-wrap items-center gap-x-2 gap-y-4">
-				{displayedTestCaseIds.map((id, index) => (
+				{testCaseIds.map((id, index) => (
 					<TestCaseTab
 						key={index}
 						id={id}

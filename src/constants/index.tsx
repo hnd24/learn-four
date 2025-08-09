@@ -74,3 +74,5 @@ export const LIST_LINK: LinkType = {
 		label: 'Phone',
 	},
 };
+
+export const MAX_LENGTH_PUBLIC_TESTCASE = 3;
