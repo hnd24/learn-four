@@ -49,6 +49,13 @@ export const deleteLanguage = mutation({
 		if (!language) {
 			return;
 		}
+		const course = await ctx.db
+			.query('courses')
+			.withIndex('by_languageId', q => q.eq('languageId', language._id))
+			.first();
+		if (course) {
+			throw new ConvexError('Cannot delete language');
+		}
 		await ctx.db.delete(language._id);
 	},
 });

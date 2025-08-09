@@ -142,7 +142,7 @@ export default defineSchema({
 		authorId: v.string(),
 		status: CourseStateType,
 		languageId: v.id('languages'),
-	}),
+	}).index('by_languageId', ['languageId']),
 	/************************************************** */
 
 	lessons: defineTable({

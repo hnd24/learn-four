@@ -76,12 +76,19 @@ export const deleteTopic = mutation({
 			return;
 		}
 		// Delete the topic
-		await ctx.db.delete(topic._id);
-		// Delete all problems associated with this topic
-		const problems = await ctx.db
+		const problem = await ctx.db
 			.query('problems')
 			.withIndex('by_topicId', q => q.eq('topicId', topic._id))
-			.collect();
-		Promise.all(problems.map(problem => ctx.db.delete(problem._id)));
+			.first();
+		if (problem) {
+			throw new ConvexError('Cannot delete topic with associated problems');
+		}
+		await ctx.db.delete(topic._id);
+		// Delete all problems associated with this topic
+		// const problems = await ctx.db
+		// 	.query('problems')
+		// 	.withIndex('by_topicId', q => q.eq('topicId', topic._id))
+		// 	.collect();
+		// Promise.all(problems.map(problem => ctx.db.delete(problem._id)));
 	},
 });
