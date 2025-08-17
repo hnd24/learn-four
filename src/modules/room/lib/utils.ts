@@ -81,7 +81,7 @@ export function highlightDiff(output: string, expected: string) {
 		const expectedParsed = JSON.parse(expected);
 
 		const outputHighlighted = highlightRecursive(outputParsed, expectedParsed, true);
-		const expectedHighlighted = highlightRecursive(expectedParsed, outputParsed, false);
+		const expectedHighlighted = highlightRecursive(outputParsed, expectedParsed, false);
 
 		return {outputHighlighted, expectedHighlighted};
 	} catch (err) {

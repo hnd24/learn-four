@@ -2,6 +2,7 @@
 
 import CustomUserBtn from '@/components/custom-user-btn';
 import {Logo} from '@/components/logo';
+import SwitchTheme from '@/components/switch-theme';
 
 export default function Header() {
 	return (
@@ -13,6 +14,7 @@ export default function Header() {
 						<UserButton appearance={{elements: {avatarBox: '!size-8'}}} />
 					</ClientOnly> */}
 					<CustomUserBtn />
+					<SwitchTheme className="size-9 rounded-full border-2" />
 				</div>
 			</div>
 		</header>

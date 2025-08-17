@@ -7,6 +7,7 @@ import {getOverallStatus} from '@/modules/room/lib/utils';
 import {StatusResult} from '@/types';
 import {useAtomValue, useSetAtom} from 'jotai';
 import {Loader, Play} from 'lucide-react';
+import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {codeAtom, codeFromDB} from '../../atom/code';
 import {languagesAtom} from '../../atom/language';
@@ -28,18 +29,11 @@ export default function RunCodeBtn() {
 	const results = useAtomValue(resultsAtom);
 	const statusResult = getOverallStatus(results);
 	const status = useAtomValue(statusProblemAtom);
+	const [onClick, setOnClick] = useState<boolean>(false);
 
-	const onClick = async () => {
-		if (!data) return;
-		const {template} = data;
-		const lang = language?.value || 'javascript';
-		let sourceCode = code[lang];
-		if (data.isPublic) {
-			sourceCode = `${template[lang].head}\n${code[lang]}\n${template[lang].tail}`;
-		}
-		await executeCode(sourceCode);
-
+	useEffect(() => {
 		if (statusResult === StatusResult.Accepted && status === 'public') {
+			const lang = language?.value || 'javascript';
 			addUserProblem(
 				{
 					problemId,
@@ -59,7 +53,24 @@ export default function RunCodeBtn() {
 					},
 				},
 			);
+			setOnClick(false);
 		}
+	}, [onClick]);
+
+	const handleClick = async () => {
+		if (!data) return;
+		const {template} = data;
+		if (!language) {
+			toast.error('Please select a language before running the code.');
+			return;
+		}
+		const lang = language?.value || 'javascript';
+		let sourceCode = code[lang];
+		if (data.isPublic) {
+			sourceCode = `${template[lang].head}\n${code[lang]}\n${template[lang].tail}`;
+		}
+		await executeCode(sourceCode);
+		setOnClick(true);
 	};
 	return (
 		<Hint label="Run">
@@ -67,7 +78,7 @@ export default function RunCodeBtn() {
 				size="icon"
 				variant="ghost"
 				className="dark:hover:bg-input/50 size-8 rounded-sm"
-				onClick={onClick}
+				onClick={handleClick}
 				disabled={isDisabled}>
 				{isDisabled ? <Loader /> : <Play />}
 			</Button>

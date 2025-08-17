@@ -290,6 +290,7 @@ export const updateUserProblem = mutation({
 	async handler(ctx, args) {
 		const {problemId, state, code} = args;
 		const identity = await ctx.auth.getUserIdentity();
+		console.log('🚀 ~ handler ~ identity:', identity?.subject);
 		if (!identity) {
 			throw new ConvexError('User not authenticated');
 		}

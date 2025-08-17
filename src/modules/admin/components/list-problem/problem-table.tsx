@@ -58,6 +58,7 @@ const getLevelColor = (level: string) => {
 };
 
 export default function ProblemTable({problems, loadMore, isLoading, status}: Props) {
+	console.log('🚀 ~ ProblemTable ~ status:', status);
 	const router = useRouter();
 	const [currentPage, setCurrentPage] = useState(1);
 	const [pageSize, setPageSize] = useState(5);

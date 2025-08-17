@@ -6,6 +6,8 @@ import CostumeLoadingPage from '@/page/costume-loading-page';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {Id} from '../../../../../convex/_generated/dataModel';
+import {answerAtom} from '../../problem/atom/answer';
+import {codeAtom} from '../atom/code';
 import {statusLessonAtom} from '../atom/status';
 import Header from './header';
 import LessonContent from './lesson-content';
@@ -18,6 +20,13 @@ export default function LessonWrapper({lessonId}: Props) {
 	const setStatus = useSetAtom(statusLessonAtom);
 
 	const {data: lesson, isLoading, error} = useGetLessonById(lessonId);
+	const setCode = useSetAtom(codeAtom);
+	const setAnswer = useSetAtom(answerAtom);
+	useEffect(() => {
+		setCode('');
+		setAnswer({});
+	}, [lessonId]);
+
 	useEffect(() => {
 		setStatus(lesson?.status);
 	}, [lesson, setStatus]);

@@ -16,6 +16,7 @@ import {Input} from '@/components/ui/input';
 import {ScrollArea} from '@/components/ui/scroll-area';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {useAddLanguage, useGetLanguages, useUpdateLanguage} from '@/hook/data/language';
+import {cn} from '@/lib/utils';
 import {LanguageType} from '@/types';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {isEqual} from 'lodash';
@@ -127,7 +128,7 @@ export default function LanguagesManager() {
 	};
 
 	return (
-		<Dialog open={open}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>
 				<Button
 					disabled={loading}
@@ -150,9 +151,15 @@ export default function LanguagesManager() {
 				<div className="grid gap-4 py-4 flex-1 overflow-hidden">
 					<div className="flex justify-between items-center mb-2">
 						<h3 className="text-lg font-semibold">Existing Languages</h3>
-						<Button variant="outline" size="sm" onClick={handleAddNew}>
-							<PlusCircle className="mr-2 h-4 w-4" /> New Language
-						</Button>
+						<div>
+							<Button
+								className={cn(editingLanguage ? '' : 'hidden')}
+								variant="outline"
+								size="sm"
+								onClick={handleAddNew}>
+								<PlusCircle className="mr-2 h-4 w-4" /> New Language
+							</Button>
+						</div>
 					</div>
 					<ScrollArea className="h-48 w-full rounded-md border">
 						<Table>

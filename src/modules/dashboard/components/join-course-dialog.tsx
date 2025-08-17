@@ -31,14 +31,13 @@ export default function JoinCourseDialog({courseId, open, setOpen, course}: Prop
 	const disabled = loading || isPending || pendingUpdate;
 	const router = useRouter();
 	const handleJoinCourse = () => {
-		if (!userCourse) {
+		if (!userCourse || Object.keys(userCourse).length === 0) {
 			joinCourse({courseId});
 			updateCourse({
 				courseId,
 				learner: course.learner + 1,
 			});
 		}
-
 		router.push(`/course/${courseId}`);
 	};
 

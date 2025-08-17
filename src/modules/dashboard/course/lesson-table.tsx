@@ -49,6 +49,7 @@ const getStatusColor = (status: string) => {
 
 export default function LessonTable({idCourse}: Props) {
 	const {isPending: loadingLessons, data: lessonsData} = useGetUserLessonInCourse(idCourse);
+	console.log('🚀 ~ LessonTable ~ lessonsData:', lessonsData);
 	const lessons: LessonType[] = lessonsData?.lessons ?? [];
 	const router = useRouter();
 	const handleLessonClick = (lessonId: string) => {

@@ -37,7 +37,7 @@ export default function ProblemContent({problem}: Props) {
 	}
 	return (
 		<ResizablePanelGroup direction="horizontal">
-			<ResizablePanel defaultSize={50} minSize={32}>
+			<ResizablePanel defaultSize={50}>
 				<TabDisplay state={state} />
 			</ResizablePanel>
 			<ResizableHandle withHandle className="mx-2" />

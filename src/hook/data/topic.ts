@@ -6,6 +6,10 @@ export const useGetTopics = () => {
 	return useQuery(convexQuery(api.topic.getTopics, {}));
 };
 
+export const useGetAllTopics = () => {
+	return useQuery(convexQuery(api.topic.getAllTopics, {}));
+};
+
 export const useAddTopic = () => {
 	return useMutation({
 		mutationFn: useConvexMutation(api.topic.createTopic),

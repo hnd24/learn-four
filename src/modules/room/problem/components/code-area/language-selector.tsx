@@ -21,7 +21,7 @@ export default function LanguageSelector() {
 	const status = useAtomValue(statusProblemAtom);
 	const answer = useAtomValue(answerAtom);
 	const setLanguage = useSetAtom(languagesAtom);
-
+	const language = useAtomValue(languagesAtom);
 	// Filter languages based on the code object
 	useEffect(() => {
 		if (status === 'private') {
@@ -29,14 +29,19 @@ export default function LanguageSelector() {
 			setLanguage(LANGUAGES?.[0]);
 			return;
 		}
-		const filterLanguages = Object.keys(answer).map(l => {
-			if (answer[l]) {
-				return LANGUAGES?.find(lang => lang.value === l);
-			}
-		});
-		setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
-		setLanguage(filterLanguages?.[0]);
-	}, [answer, LANGUAGES, status]);
+	}, [LANGUAGES, status]);
+
+	useEffect(() => {
+		if (answer && status === 'public') {
+			const filterLanguages = Object.keys(answer).map(l => {
+				if (answer[l]) {
+					return LANGUAGES?.find(lang => lang.value === l);
+				}
+			});
+			setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
+			setLanguage(filterLanguages?.[0]);
+		}
+	}, [answer, status]);
 
 	const onChange = (value: string) => {
 		const selectedLanguage = LANGUAGES?.find(lang => lang.value === value);
@@ -62,7 +67,10 @@ export default function LanguageSelector() {
 	return (
 		<>
 			{languages[0]?.value && (
-				<Select defaultValue={languages[0]?.value} onValueChange={onChange}>
+				<Select
+					key={language?._id}
+					defaultValue={language?.value || languages[0]?.value}
+					onValueChange={onChange}>
 					<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">
 						<SelectValue placeholder="Language" />
 					</SelectTrigger>

@@ -9,11 +9,9 @@ import {activeTestCaseIdAtom} from './active';
 export const testCasesAtoms = atomWithImmer<TestcaseType[]>([INITIAL_TEST_CASE]);
 export const rawTestCaseAtoms = atomWithImmer<TestcaseType[]>([INITIAL_TEST_CASE]);
 export const testCaseDataAtom = atom(null, (_, set, data: TestcaseType[]) => {
-	set(testCasesAtoms, () => (data.length > 0 ? data : [INITIAL_TEST_CASE]));
-	set(rawTestCaseAtoms, () =>
-		data.length > 0 ? data.splice(0, MAX_LENGTH_PUBLIC_TESTCASE) : [INITIAL_TEST_CASE],
-	);
-	set(testCasesAtoms, () => (data.length > 0 ? data : [INITIAL_TEST_CASE]));
+	const incoming = data?.length > 0 ? [...data] : [INITIAL_TEST_CASE];
+	set(testCasesAtoms, () => incoming);
+	set(rawTestCaseAtoms, () => incoming.slice(0, MAX_LENGTH_PUBLIC_TESTCASE));
 });
 
 export const testCasesFamilyAtom = atomFamily((id: string) =>

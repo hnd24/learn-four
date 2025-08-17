@@ -34,10 +34,12 @@ export default function TopicDelete({topicId, setDisabled}: Props) {
 			{
 				onSuccess: () => {
 					toast.success('Topic deleted successfully');
+					setDisabled(false);
 				},
 				onError: error => {
 					toast.error(`Failed to delete topic`);
 					console.error('⚙️ Error deleting topic:', error);
+					setDisabled(false);
 				},
 			},
 		);

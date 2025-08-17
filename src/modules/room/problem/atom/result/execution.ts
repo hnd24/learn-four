@@ -17,6 +17,7 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
 	const testCases = [...publicTestCases, ...rawTestCases].filter(
 		(tc, idx, arr) => arr.findIndex(t => t.id === tc.id) === idx,
 	);
+	console.log('🚀 ~ testCases:', testCases);
 	if (!language) {
 		toast.error('No language selected');
 		return;
@@ -35,7 +36,7 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
 		// IMPORTANT
 		const batchedResults = await runBatchedCode(submissions);
 
-		console.log('🚀 ~ executeCodeAtom ~ batchedResults:', batchedResults);
+		// console.log('🚀 ~ executeCodeAtom ~ batchedResults:', batchedResults);
 
 		const resultsData = batchedResults.map((result, index) => {
 			const testCase = testCases[index];
@@ -53,6 +54,7 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
 				runtime,
 			};
 		});
+		console.log('🚀 ~ resultsData:', resultsData);
 		set(resultsAtom, resultsData);
 	} catch (error) {
 		console.log('Error running code:', error);

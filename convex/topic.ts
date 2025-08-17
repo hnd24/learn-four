@@ -64,6 +64,12 @@ export const updateTopic = mutation({
 
 export const getTopics = query({
 	async handler(ctx) {
+		return (await ctx.db.query('topics').collect()).filter(topic => topic.status === 'public');
+	},
+});
+
+export const getAllTopics = query({
+	async handler(ctx) {
 		return await ctx.db.query('topics').collect();
 	},
 });

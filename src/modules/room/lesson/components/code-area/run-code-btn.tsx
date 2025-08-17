@@ -7,6 +7,7 @@ import {getOverallStatus} from '@/modules/room/lib/utils';
 import {StatusResult} from '@/types';
 import {useAtomValue, useSetAtom} from 'jotai';
 import {Loader, Play} from 'lucide-react';
+import {useEffect, useState} from 'react';
 import {toast} from 'sonner';
 import {codeAtom} from '../../atom/code';
 import {resultsAtom} from '../../atom/result';
@@ -25,33 +26,41 @@ export default function RunCodeBtn() {
 	const results = useAtomValue(resultsAtom);
 	const statusResult = getOverallStatus(results);
 	const status = useAtomValue(statusLessonAtom);
+	const [onClick, setOnClick] = useState<boolean>(false);
 
-	const onClick = async () => {
+	useEffect(() => {
+		if (onClick) {
+			if (statusResult === StatusResult.Accepted && status === 'public') {
+				addUserLesson(
+					{
+						lessonId,
+						state: 'completed',
+						code,
+					},
+					{
+						onSuccess: () => {
+							toast.success(`Your code has been saved!`);
+						},
+						onError: error => {
+							console.error('Error updating user problem:', error);
+						},
+					},
+				);
+			}
+			setOnClick(false);
+		}
+	}, [onClick]);
+
+	const handleClick = async () => {
 		if (!data) return;
 		const {template} = data;
 		let sourceCode = code;
 		if (data.isPublic) {
 			sourceCode = `${template.head}\n${code}\n${template.tail}`;
 		}
-		await executeCode(sourceCode);
 
-		if (statusResult === StatusResult.Accepted && status === 'public') {
-			addUserLesson(
-				{
-					lessonId,
-					state: 'completed',
-					code,
-				},
-				{
-					onSuccess: () => {
-						toast.success(`Your code has been saved!`);
-					},
-					onError: error => {
-						console.error('Error updating user problem:', error);
-					},
-				},
-			);
-		}
+		await executeCode(sourceCode);
+		setOnClick(true);
 	};
 
 	return (
@@ -60,7 +69,7 @@ export default function RunCodeBtn() {
 				size="icon"
 				variant="ghost"
 				className="dark:hover:bg-input/50 size-8 rounded-sm"
-				onClick={onClick}
+				onClick={handleClick}
 				disabled={isDisabled}>
 				{isDisabled ? <Loader /> : <Play />}
 			</Button>

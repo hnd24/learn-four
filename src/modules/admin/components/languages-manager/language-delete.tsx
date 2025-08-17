@@ -34,10 +34,12 @@ export default function LanguageDelete({languageId, setDisabled}: Props) {
 			{
 				onSuccess: () => {
 					toast.success('Language deleted successfully');
+					setDisabled(false);
 				},
 				onError: error => {
 					toast.error(`Failed to delete language`);
 					console.log('⚙️ Error deleting language:', error);
+					setDisabled(false);
 				},
 			},
 		);

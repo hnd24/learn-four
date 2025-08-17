@@ -3,10 +3,14 @@
 import NotFoundState from '@/components/not-found-state';
 import {useGetProblemById} from '@/hook/data/problem';
 import CostumeLoadingPage from '@/page/costume-loading-page';
+import {TestCaseTab} from '@/types';
 import {useSetAtom} from 'jotai';
 import {useEffect} from 'react';
 import {Id} from '../../../../../convex/_generated/dataModel';
+import {answerAtom} from '../atom/answer';
+import {codeAtom} from '../atom/code';
 import {statusProblemAtom} from '../atom/status';
+import {activeTabAtom} from '../atom/tab';
 import Header from './header';
 import ProblemContent from './problem-content';
 
@@ -17,6 +21,15 @@ type Props = {
 export default function ProblemWrapper({problemId}: Props) {
 	const setStatus = useSetAtom(statusProblemAtom);
 	const {data: problem, isPending, error} = useGetProblemById(problemId);
+	const setCode = useSetAtom(codeAtom);
+	const setAnswer = useSetAtom(answerAtom);
+	const setActiveTabAtom = useSetAtom(activeTabAtom);
+	useEffect(() => {
+		setCode({});
+		setAnswer({});
+		setActiveTabAtom(TestCaseTab.TestCase);
+	}, [problemId]);
+
 	useEffect(() => {
 		setStatus(problem?.status);
 	}, [problem, setStatus]);

@@ -22,7 +22,8 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
-import {useAddTopic, useGetTopics, useUpdateTopic} from '@/hook/data/topic';
+import {useAddTopic, useGetAllTopics, useUpdateTopic} from '@/hook/data/topic';
+import {cn} from '@/lib/utils';
 import {TopicType} from '@/types';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {isEqual} from 'lodash';
@@ -34,7 +35,7 @@ import {topicSchema, TopicValues} from './schema/topic';
 import TopicDelete from './topic-delete';
 
 export default function TopicsManager() {
-	const {data: topics, isPending: loading} = useGetTopics(); // Using mock useGetTopics
+	const {data: topics, isPending: loading} = useGetAllTopics(); // Using mock useGetTopics
 	const {mutate: addTopic, isPending: pendingAdd} = useAddTopic();
 	const {mutate: updateTopic, isPending: pendingUpdate} = useUpdateTopic();
 	const [open, setOpen] = useState(false);
@@ -49,7 +50,7 @@ export default function TopicsManager() {
 		resolver: zodResolver(topicSchema),
 		defaultValues: {
 			name: '',
-			status: editingTopic?.status ?? 'public',
+			status: 'public',
 		},
 	});
 
@@ -86,6 +87,11 @@ export default function TopicsManager() {
 	};
 
 	const onSubmit = (values: TopicValues) => {
+		console.log('🚀 ~ onSubmit ~ values:', values);
+		console.log('🚀 ~ onSubmit ~ editingTopic:', {
+			name: editingTopic?.name,
+			status: editingTopic?.status,
+		});
 		if (editingTopic) {
 			if (isEqual({name: editingTopic?.name, status: editingTopic?.status}, values)) {
 				toast.error('No changes made to the topic');
@@ -123,7 +129,7 @@ export default function TopicsManager() {
 	};
 
 	return (
-		<Dialog open={open}>
+		<Dialog open={open} onOpenChange={handleOpenChange}>
 			<DialogTrigger asChild>
 				<Button
 					disabled={loading}
@@ -147,9 +153,15 @@ export default function TopicsManager() {
 				<div className="grid gap-4 py-4 flex-1 overflow-hidden">
 					<div className="flex justify-between items-center mb-2">
 						<h3 className="text-lg font-semibold">Existing Topics</h3>
-						<Button variant="outline" size="sm" onClick={handleAddNew}>
-							<PlusCircle className="mr-2 h-4 w-4" /> New Topic
-						</Button>
+						<div>
+							<Button
+								className={cn(editingTopic ? '' : 'hidden')}
+								variant="outline"
+								size="sm"
+								onClick={handleAddNew}>
+								<PlusCircle className="mr-2 h-4 w-4" /> New Topic
+							</Button>
+						</div>
 					</div>
 					<ScrollArea className="h-48 w-full  border">
 						<Table>
@@ -218,25 +230,32 @@ export default function TopicsManager() {
 								<FormField
 									control={form.control}
 									name="status"
-									render={({field}) => (
-										<FormItem>
-											<FormLabel>Status</FormLabel>
-											<Select
-												onValueChange={field.onChange}
-												defaultValue={field.value}>
-												<FormControl>
-													<SelectTrigger>
-														<SelectValue placeholder="Select a status" />
-													</SelectTrigger>
-												</FormControl>
-												<SelectContent>
-													<SelectItem value="public">Public</SelectItem>
-													<SelectItem value="private">Private</SelectItem>
-												</SelectContent>
-											</Select>
-											<FormMessage />
-										</FormItem>
-									)}
+									render={({field}) => {
+										return (
+											<FormItem>
+												<FormLabel>Status</FormLabel>
+												<Select
+													key={field.value}
+													onValueChange={field.onChange}
+													defaultValue={field.value}>
+													<FormControl>
+														<SelectTrigger>
+															<SelectValue placeholder="Select a status" />
+														</SelectTrigger>
+													</FormControl>
+													<SelectContent>
+														<SelectItem value="public">
+															Public
+														</SelectItem>
+														<SelectItem value="private">
+															Private
+														</SelectItem>
+													</SelectContent>
+												</Select>
+												<FormMessage />
+											</FormItem>
+										);
+									}}
 								/>
 							</div>
 							<DialogFooter className="mt-6">

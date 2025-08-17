@@ -63,7 +63,7 @@ export const CodeEditor = () => {
 					height="100%"
 					onMount={onMount}
 					language={language?.value}
-					value={code[language?.value || 'javascript'] || ''}
+					value={code[language?.value || '']}
 					onChange={onChange}
 					theme="vs-dark"
 					options={{

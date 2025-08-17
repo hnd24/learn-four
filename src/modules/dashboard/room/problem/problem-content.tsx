@@ -46,7 +46,7 @@ export default function ProblemContent({preloadedProblem}: Props) {
 	return (
 		<div className="flex-1 overflow-hidden">
 			<ResizablePanelGroup direction="horizontal">
-				<ResizablePanel defaultSize={50} minSize={32}>
+				<ResizablePanel defaultSize={50}>
 					<TabDisplay state={state} status={problem.status} />
 				</ResizablePanel>
 				<ResizableHandle withHandle className="mx-2" />

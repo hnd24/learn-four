@@ -32,7 +32,15 @@ export async function removeCourse(ctx: MutationCtx, courseId: Id<'courses'>) {
 export const deleteCourse = mutation({
 	args: {courseId: v.id('courses')},
 	async handler(ctx, args) {
-		await removeCourse(ctx, args.courseId);
+		const lessons = await ctx.db
+			.query('lessons')
+			.withIndex('by_courseId', q => q.eq('courseId', args.courseId))
+			.first();
+		if (lessons) {
+			throw new ConvexError('Cannot delete course with existing lessons');
+		}
+		await ctx.db.delete(args.courseId);
+		// await removeCourse(ctx, args.courseId);
 	},
 });
 
