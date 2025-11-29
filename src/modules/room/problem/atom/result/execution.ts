@@ -1,4 +1,4 @@
-import {runBatchedCode} from '@/modules/room/actions/execute';
+import {runBatchedCodeWithJudge0} from '@/modules/room/actions/execute';
 import {generateStdinFromInputs} from '@/modules/room/lib/execute';
 import {TestCaseTab} from '@/types';
 import {atom} from 'jotai';
@@ -34,7 +34,7 @@ export const executeCodeAtom = atom(null, async (get, set, code: string) => {
 			};
 		});
 		// IMPORTANT
-		const batchedResults = await runBatchedCode(submissions);
+		const batchedResults = await runBatchedCodeWithJudge0(submissions);
 
 		// console.log('🚀 ~ executeCodeAtom ~ batchedResults:', batchedResults);
 
