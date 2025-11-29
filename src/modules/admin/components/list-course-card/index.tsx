@@ -78,7 +78,7 @@ export default function ListCourseCard() {
 					<CourseCard course={course} />
 				</button>
 			))}
-			{isSuperAdmin && <AddCourseBtn userId={user?.id || ''} setPending={setIsPending} />}
+			{isSuperAdmin && <AddCourseBtn setPending={setIsPending} />}
 			{idCourse && (
 				<DialogCourse
 					isOpen={isOpen}

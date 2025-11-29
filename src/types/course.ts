@@ -35,10 +35,8 @@ export type CourseDetailType = {
 export type AddCourseArgs = {
 	description: string;
 	banner: string;
-	learner: number;
 	name: string;
 	document: string;
-	authorId: string;
 	status: STATUS_COURSE;
 	logo: string;
 	languageId: Id<'languages'>;

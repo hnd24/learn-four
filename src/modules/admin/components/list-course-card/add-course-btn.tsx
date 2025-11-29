@@ -19,11 +19,10 @@ import {toast} from 'sonner';
 import {Id} from '../../../../../convex/_generated/dataModel';
 
 type PropsDialogConfirm = {
-	userId: string;
 	setPending: (value: boolean) => void;
 };
 
-export const AddCourseBtn = ({userId, setPending}: PropsDialogConfirm) => {
+export const AddCourseBtn = ({setPending}: PropsDialogConfirm) => {
 	const [open, setOpen] = useState(false);
 	const {mutate: addCourse, isPending} = useAddCourse();
 	const {data: languages, isPending: loadingLanguages} = useGetLanguages();
@@ -33,10 +32,8 @@ export const AddCourseBtn = ({userId, setPending}: PropsDialogConfirm) => {
 	const courseDefault: AddCourseArgs = {
 		description: '',
 		banner: '',
-		learner: 0,
 		name: '',
 		document: '',
-		authorId: userId,
 		status: 'private',
 		logo: '',
 		languageId: JS?._id || ('' as Id<'languages'>),

@@ -94,17 +94,21 @@ export const createCourse = mutation({
 	args: {
 		description: v.string(),
 		banner: v.string(),
-		learner: v.number(),
 		name: v.string(),
 		document: v.string(),
-		authorId: v.string(),
 		status: CourseStateType,
 		logo: v.string(),
 		languageId: v.id('languages'),
 	},
 	async handler(ctx, args) {
+		const identity = await ctx.auth.getUserIdentity();
+		if (!identity) {
+			throw new ConvexError('User must be logged in to create a course');
+		}
+
 		await ctx.db.insert('courses', {
 			...args,
+			authorId: identity.subject,
 			learner: 0,
 		});
 	},
