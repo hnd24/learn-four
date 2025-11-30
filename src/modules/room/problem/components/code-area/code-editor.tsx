@@ -46,7 +46,7 @@ export const CodeEditor = () => {
 		}
 	}, [LANGUAGES]);
 
-	if (!mounted || isPending || !LANGUAGES) {
+	if (!mounted || isPending || !finalLanguage) {
 		return <LoadingState />;
 	}
 
