@@ -14,7 +14,7 @@ import {toast} from 'sonner';
 import {answerAtom} from '../../atom/answer';
 import {languagesAtom} from '../../atom/language';
 import {statusProblemAtom} from '../../atom/status';
-fix
+
 export default function LanguageSelector() {
 	const {data: LANGUAGES, isPending} = useGetLanguages();
 	const [languages, setLanguages] = useState<LanguageType[]>([]);
