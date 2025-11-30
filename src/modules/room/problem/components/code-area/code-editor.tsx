@@ -1,14 +1,17 @@
 'use client';
 
 import LoadingState from '@/components/loading-state';
+import {useGetLanguages} from '@/hook/data/language';
 import {useMounted} from '@/hook/use-mounted';
 import {cn} from '@/lib/utils';
+import {LanguageType} from '@/types';
 import {Editor, OnMount} from '@monaco-editor/react';
 import {useAtom, useAtomValue} from 'jotai';
 import {AlignLeft} from 'lucide-react';
 import {editor} from 'monaco-editor';
-import {useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {ActionSelector} from '../../../../../components/action-selector';
+import {answerAtom} from '../../atom/answer';
 import {codeAtom} from '../../atom/code';
 import {languagesAtom} from '../../atom/language';
 import {statusProblemAtom} from '../../atom/status';
@@ -18,12 +21,32 @@ import {ResetCodeButton} from './reset-code';
 import RunCodeBtn from './run-code-btn';
 
 export const CodeEditor = () => {
+	const [selectedLanguage, setSelectedLanguage] = useState<LanguageType | undefined>(undefined);
+	const {data: LANGUAGES, isPending} = useGetLanguages();
+	const answer = useAtomValue(answerAtom);
 	const mounted = useMounted();
 	const language = useAtomValue(languagesAtom);
 	const [code, setCode] = useAtom(codeAtom);
 	const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
 	const status = useAtomValue(statusProblemAtom);
-	if (!mounted) {
+	const finalLanguage = selectedLanguage || language;
+
+	useEffect(() => {
+		if (status === 'private') {
+			if (LANGUAGES && LANGUAGES.length > 0) {
+				setSelectedLanguage(LANGUAGES[0]);
+			} else {
+				const filterLanguages = Object.keys(answer).map(l => {
+					if (answer[l]) {
+						return LANGUAGES?.find(lang => lang.value === l);
+					}
+				});
+				setSelectedLanguage(filterLanguages?.[0]);
+			}
+		}
+	}, [LANGUAGES]);
+
+	if (!mounted || isPending || !LANGUAGES) {
 		return <LoadingState />;
 	}
 
@@ -43,10 +66,6 @@ export const CodeEditor = () => {
 		}
 	};
 
-	if (!language?.value) {
-		return null;
-	}
-	console.log('language', language);
 	return (
 		<div className="bg-border flex h-full flex-col overflow-hidden rounded-b-md border">
 			<div className="flex items-center justify-between p-1 pr-3">
@@ -66,8 +85,8 @@ export const CodeEditor = () => {
 				<Editor
 					height="100%"
 					onMount={onMount}
-					language={language?.value}
-					value={code[language?.value || '']}
+					language={finalLanguage?.value}
+					value={code[finalLanguage?.value || '']}
 					onChange={onChange}
 					theme="vs-dark"
 					options={{

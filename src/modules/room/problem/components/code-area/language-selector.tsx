@@ -31,15 +31,13 @@ export default function LanguageSelector() {
 			setLanguage(LANGUAGES?.[0]);
 			return;
 		} else {
-			if (answer) {
-				const filterLanguages = Object.keys(answer).map(l => {
-					if (answer[l]) {
-						return LANGUAGES?.find(lang => lang.value === l);
-					}
-				});
-				setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
-				setLanguage(filterLanguages?.[0]);
-			}
+			const filterLanguages = Object.keys(answer).map(l => {
+				if (answer[l]) {
+					return LANGUAGES?.find(lang => lang.value === l);
+				}
+			});
+			setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
+			setLanguage(filterLanguages?.[0]);
 		}
 	}, [answer, LANGUAGES, status]);
 
