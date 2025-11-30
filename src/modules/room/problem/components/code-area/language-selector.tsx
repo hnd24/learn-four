@@ -63,24 +63,20 @@ export default function LanguageSelector() {
 	}
 
 	return (
-		<>
-			{languages[0]?.value && (
-				<Select
-					key={language?._id}
-					defaultValue={language?.value || languages[0]?.value}
-					onValueChange={onChange}>
-					<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">
-						<SelectValue placeholder="Language" />
-					</SelectTrigger>
-					<SelectContent>
-						{languages.map(lang => (
-							<SelectItem key={lang.value} value={lang.value}>
-								{lang.name}
-							</SelectItem>
-						))}
-					</SelectContent>
-				</Select>
-			)}
-		</>
+		<Select
+			key={language?._id}
+			defaultValue={language?.value || languages[0]?.value}
+			onValueChange={onChange}>
+			<SelectTrigger className="!h-8 rounded-sm border-none  dark:bg-transparent">
+				<SelectValue placeholder="Language" />
+			</SelectTrigger>
+			<SelectContent>
+				{languages.map(lang => (
+					<SelectItem key={lang.value} value={lang.value}>
+						{lang.name}
+					</SelectItem>
+				))}
+			</SelectContent>
+		</Select>
 	);
 }
