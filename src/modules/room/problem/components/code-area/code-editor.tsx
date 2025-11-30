@@ -46,7 +46,7 @@ export const CodeEditor = () => {
 	if (!language?.value) {
 		return null;
 	}
-
+	console.log('language', language);
 	return (
 		<div className="bg-border flex h-full flex-col overflow-hidden rounded-b-md border">
 			<div className="flex items-center justify-between p-1 pr-3">
