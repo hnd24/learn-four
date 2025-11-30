@@ -25,6 +25,7 @@ export default function LanguageSelector() {
 
 	useEffect(() => {
 		setLanguages(LANGUAGES ?? []);
+		setLanguage(LANGUAGES?.[0]);
 		if (status === 'private') {
 			setLanguages(LANGUAGES ?? []);
 			setLanguage(LANGUAGES?.[0]);
