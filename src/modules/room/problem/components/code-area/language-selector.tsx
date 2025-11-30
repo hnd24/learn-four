@@ -14,7 +14,7 @@ import {toast} from 'sonner';
 import {answerAtom} from '../../atom/answer';
 import {languagesAtom} from '../../atom/language';
 import {statusProblemAtom} from '../../atom/status';
-
+fix
 export default function LanguageSelector() {
 	const {data: LANGUAGES, isPending} = useGetLanguages();
 	const [languages, setLanguages] = useState<LanguageType[]>([]);
@@ -22,26 +22,25 @@ export default function LanguageSelector() {
 	const answer = useAtomValue(answerAtom);
 	const setLanguage = useSetAtom(languagesAtom);
 	const language = useAtomValue(languagesAtom);
-	// Filter languages based on the code object
+
 	useEffect(() => {
+		setLanguages(LANGUAGES ?? []);
 		if (status === 'private') {
 			setLanguages(LANGUAGES ?? []);
 			setLanguage(LANGUAGES?.[0]);
 			return;
+		} else {
+			if (answer) {
+				const filterLanguages = Object.keys(answer).map(l => {
+					if (answer[l]) {
+						return LANGUAGES?.find(lang => lang.value === l);
+					}
+				});
+				setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
+				setLanguage(filterLanguages?.[0]);
+			}
 		}
-	}, [LANGUAGES, status]);
-
-	useEffect(() => {
-		if (answer && status === 'public') {
-			const filterLanguages = Object.keys(answer).map(l => {
-				if (answer[l]) {
-					return LANGUAGES?.find(lang => lang.value === l);
-				}
-			});
-			setLanguages(filterLanguages.filter(Boolean) as LanguageType[]);
-			setLanguage(filterLanguages?.[0]);
-		}
-	}, [answer, status]);
+	}, [answer, LANGUAGES, status]);
 
 	const onChange = (value: string) => {
 		const selectedLanguage = LANGUAGES?.find(lang => lang.value === value);
